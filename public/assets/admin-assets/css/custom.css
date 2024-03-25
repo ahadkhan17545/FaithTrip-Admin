@@ -1,0 +1,188 @@
+.dashboard-card {
+    height: 160px;
+    overflow: hidden;
+}
+
+.sidebar-header {
+    background: #ffffff;
+    border-bottom: 1px solid #f3eeee;
+}
+
+.fixed .sidebar .sidebar-body {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 991px) {
+    .chat-container {
+        height: calc(100vh - 97px);
+    }
+    .message-content {
+        height: calc(100vh - 248px);
+    }
+}
+
+@media (min-width: 992px) {
+    .messenger-dialog__area {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+        border-right: 0;
+    }
+    .chat-container {
+        border-width: 1px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .chat-panel {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+.chat-area-bottom .form-control {
+    padding: 10px 50px 10px 20px;
+}
+
+.chat-panel .chat-header .btn {
+    padding: .375rem .75rem;
+    line-height: inherit;
+    margin-right: inherit;
+    font-size: inherit;
+    color: #fff;
+}
+
+.message-content .message .avatar {
+    margin: 0;
+    margin-right: 15px;
+}
+
+.radio-list label span.green,
+.message-content.bg-text-green .message .text.me {
+    background: #16994a;
+}
+
+.bg-1 {
+    background: #cfddf7;
+}
+
+.bg-2 {
+    background: #dffff9;
+}
+
+.bg-3 {
+    background: #d4efff;
+}
+
+.bg-4 {
+    background: #f5cedc;
+}
+
+.box-shadow-primary {
+    box-shadow: -3px 6px 13px 3px #a9a8af4d;
+}
+
+.brround {
+    border-radius: 50% !important;
+}
+
+.counter-icon {
+    width: 4rem;
+    height: 4rem;
+    line-height: 4rem;
+    text-align: center;
+    font-size: 29px;
+}
+
+.daterangepicker td.active,
+.daterangepicker td.active:hover {
+    background-color: #ef693d;
+}
+
+.daterangepicker td.in-range {
+    background-color: rgb(239 105 61 / 13%);
+}
+
+.daterangepicker td.active,
+.daterangepicker td.active {
+    background-color: #ef693d;
+}
+
+#accordionFlushExample .form-control {
+    height: 36px;
+}
+
+/* Box border animation */
+
+.balance-text {
+    font-weight: 700;
+}
+
+.animated-box {
+    padding: 12px 15px;
+    text-align: center;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
+/* The animation starts here */
+
+.animated-box {
+    position: relative;
+}
+
+.animated-box:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 4px;
+    background: linear-gradient( 60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+    background-size: 300% 300%;
+    clip-path: polygon( 0% 100%, 2px 100%, 2px 2px, calc(100% - 2px) 2px, calc(100% - 2px) calc(100% - 2px), 2px calc(100% - 2px), 2px 100%, 100% 100%, 100% 0%, 0% 0%);
+    -webkit-clip-path: polygon( 0% 100%, 2px 100%, 2px 2px, calc(100% - 2px) 2px, calc(100% - 2px) calc(100% - 2px), 2px calc(100% - 2px), 2px 100%, 100% 100%, 100% 0%, 0% 0%);
+}
+
+.animated-box.in:after {
+    animation: frame-enter 1s forwards ease-in-out reverse, gradient-animation 4s ease-in-out infinite;
+}
+
+/* form styles */
+
+.form-row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -5px;
+    margin-left: -5px;
+}
+
+.text-left {
+    text-align: left !important;
+}
+
+@media (min-width: 768px) {
+    .text-md-right {
+        text-align: right !important;
+    }
+}
+
+.form-control {
+    padding: 0.375rem 0.75rem !important;
+}
+
+.custom-control {
+    position: relative;
+    display: block;
+    min-height: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+/* end of form style */

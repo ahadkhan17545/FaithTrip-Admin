@@ -1,0 +1,136 @@
+Contact Email: webservices.support@sabre.com
+
+https://accounts.cert.havail.sabre.com/login/sc
+Agent ID/EPRs: 470936 
+Password: BC5C0VG1
+PCC: S00L
+
+
+
+1. For Auth Token (Authentication Traditional - Rest OAuth Token Create /v2)
+=========================================================================
+https://api-crt.cert.havail.sabre.com/v2/auth/token
+https://api.cert.platform.sabre.com/v2/auth/token (recommended)
+https://api.platform.sabre.com/v2/auth/token
+
+To Convert into Base64: https://www.base64encode.org
+
+Authorization Header Format: base64(base64(V1:user:group:domain):base64(password))
+Using My Dev Credentials: base64(base64(V1:hxp6cy145bjv5hy9:DEVCENTER:EXT):base64(Hp8tT6iN))
+After Converting into Base64: Basic VjE6aHhwNmN5MTQ1Ymp2NWh5OTpERVZDRU5URVI6RVhU:SHA4dFQ2aU4
+
+sample Response
+{
+    "access_token": "T1RLAQJgnnhf+y99xCxdXrEl6WovKnVfML9A5IcqobADhomEgBDNw4Btd1WLbn9rP99NxPfoAADgZl9agoTmznRiqHKD9Vwol6EayaPWbeJqwLqjgqg5isGVSorsWJBAIVsjXNxpD47ys8xv3sx3/ExNqza8UNBcwA4GGHgPzu0cXOeWWo07Ih8t8ZY0mwGwM10lO5qVW/yJZoaBA/20J02ZU5ztNsjSUt7ooYJ4yvXPc7X1zBkJEUawD7RDywzLQv3V8APMD814ziSkNktinPuvT64glmZcA9Rhmy9jZ8DiE0tYhn4V6ubKn/8gzifojjibwNY/NJPn6qvdmAmGpOmPDI5fTV13I5+CHA0rv73xM+cRdzNVn0o*",
+    "token_type": "bearer",
+    "expires_in": 604800
+}
+
+
+
+2. For Air Search (Air Shopping - Standard Shopping - Bargain Finder Max /v2 General Search)
+============================================================================================
+
+https://api.cert.platform.sabre.com/v5/offers/shop
+
+*Under Authorization select Bearer Token and use access_token from response of auth token api
+*Keep Blank in Conversation-ID under Header
+
+Here is the sample PHP Code
+
+<?php
+
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => 'https://api.cert.platform.sabre.com/v5/offers/shop',
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => '',
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 0,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => 'POST',
+  CURLOPT_POSTFIELDS =>'{
+	"OTA_AirLowFareSearchRQ": {
+		"Version": "2",
+		"POS": {
+			"Source": [{
+					"PseudoCityCode": "S00L",
+					"RequestorID": {
+						"Type": "1",
+						"ID": "1",
+						"CompanyName": {
+							"Code": "TN"
+						}
+					}
+				}
+			]
+		},
+		"OriginDestinationInformation": [{
+				"RPH": "1",
+				"DepartureDateTime": "2024-09-11T20:00:00",
+				"OriginLocation": {
+					"LocationCode": "ORD"
+				},
+				"DestinationLocation": {
+					"LocationCode": "DFW"
+				}
+			}, {
+				"RPH": "2",
+				"DepartureDateTime": "2024-09-18T20:00:00",
+				"OriginLocation": {
+					"LocationCode": "DFW"
+				},
+				"DestinationLocation": {
+					"LocationCode": "ORD"
+				}
+			}
+		],
+		"TravelPreferences": {
+			"TPA_Extensions": {
+				"DataSources": {
+					"NDC": "Disable",
+					"ATPCO": "Enable",
+					"LCC": "Disable"
+				},
+                 "PreferNDCSourceOnTie": {
+                    "Value": true
+                }
+
+			}
+		},
+		"TravelerInfoSummary": {
+			"AirTravelerAvail": [{
+					"PassengerTypeQuantity": [{
+							"Code": "ADT",
+							"Quantity": 1
+						}
+					]
+				}
+			]
+		},
+		"TPA_Extensions": {
+			"IntelliSellTransaction": {
+				"RequestType": {
+					"Name": "200ITINS"
+				}
+			}
+		}
+	}
+}',
+  CURLOPT_HTTPHEADER => array(
+    'Content-Type: application/json',
+    'Conversation-ID: ',
+    'Authorization: Bearer T1RLAQJgnnhf+y99xCxdXrEl6WovKnVfML9A5IcqobADhomEgBDNw4Btd1WLbn9rP99NxPfoAADgZl9agoTmznRiqHKD9Vwol6EayaPWbeJqwLqjgqg5isGVSorsWJBAIVsjXNxpD47ys8xv3sx3/ExNqza8UNBcwA4GGHgPzu0cXOeWWo07Ih8t8ZY0mwGwM10lO5qVW/yJZoaBA/20J02ZU5ztNsjSUt7ooYJ4yvXPc7X1zBkJEUawD7RDywzLQv3V8APMD814ziSkNktinPuvT64glmZcA9Rhmy9jZ8DiE0tYhn4V6ubKn/8gzifojjibwNY/NJPn6qvdmAmGpOmPDI5fTV13I5+CHA0rv73xM+cRdzNVn0o*',
+    'Cookie: incap_ses_1561_2768617=6jSGe8SMHyY7eUzG1smpFSe7/2UAAAAAv3cC2R4xW2f8pbh4+o6uOw==; visid_incap_2768617=CMmrEjpiT2uqtybd16i4/Ce7/2UAAAAAQUIPAAAAAAAvMTvmjB9uF7//pSsvuNc0; incap_ses_1561_2768614=RmTiGgp5kyRGuE/G1smpFZC9/2UAAAAA2tK8GEkNHOEoEAgn93NucA==; nlbi_2768614=a9xQArhWwj/Frr/rRh9LCAAAAACCZdybTjDfKKIP461PxX2o; visid_incap_2768614=oagYgS2rSheFlLqzITzLq5S6/2UAAAAAQUIPAAAAAADHLck2jT6mHfxrtvT5HVcc'
+  ),
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+echo $response;
+
+
+
