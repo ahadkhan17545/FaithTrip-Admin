@@ -40,6 +40,8 @@
 		<link href="{{url('assets')}}/admin-assets/css/extra.css" rel="stylesheet" />
 		<link href="{{url('assets')}}/module-assets//css/booking/search_box.css?v=8" rel="stylesheet" type="text/css" />
 		<link href="{{url('assets')}}/module-assets//css/booking/search_box_custom.min.css?v=8" rel="stylesheet" type="text/css" />
+
+        @yield('header_css')
 	</head>
 
 	<body data-departure="Departure" data-return="Return" class="fixed sidebar-mini" data-app-config>
@@ -125,6 +127,9 @@
 		<script src="{{url('assets')}}/admin-assets/js/sidebar.min.js"></script>
 		<script src="{{url('assets')}}/nanopkg-assets/js/tosterSession.min.js"></script>
 		<script defer src="{{url('assets')}}/nanopkg-assets/vendor/alpine/alpine.min.js"></script>
+
+        @yield('footer_js')
+
 	</body>
 
 </html>

@@ -1,5 +1,9 @@
 @extends('master')
 
+@section('header_css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+@endsection
+
 @section('content')
     <div class="search_box_container">
         <img class="search_bg" src="{{url('assets')}}/img/bg_search.jpg" alt />
@@ -27,13 +31,15 @@
                                 <div class="col-lg-6 px-0">
                                     <div class="input-group rounded">
                                         <div class="form-floating flight-form">
-                                        <label for="floatingInput">From</label>
-                                        <select class="round-trip-from-option form-control border-bottom-0 border-right select2" id="round-trip-from-option" name="from_airport_name" required tabindex="-1" aria-hidden="true">
-                                            
-                                            <option value="DAC">Dhaka, Bangladesh (DAC)</option>
-                                            <option value="NYC">New York, United States (JFK)</option>
-                                            
-                                        </select>
+                                            <label for="floatingInput">From</label>
+                                            {{-- <select class="round-trip-from-option form-control border-bottom-0 border-right select2" id="round-trip-from-option" name="from_airport_name" required tabindex="-1" aria-hidden="true">
+                                                @foreach ($cityAirports as $cityAirport)
+                                                    <option value="{{$cityAirport->airport_code}}">{{$cityAirport->city_name}}, {{$cityAirport->country_name}} ({{$cityAirport->city_code}})</option>
+                                                @endforeach
+                                            </select> --}}
+
+                                            <select class="form-control border-bottom-0 border-right livesearch" name="livesearch"></select>
+
                                         </div>
                                         <span class="input-group-text">
                                         <svg class="bi bi-arrow-left-right" id="round-swap" width="1.2em" height="1.2em"
@@ -49,23 +55,23 @@
                                         </svg>
                                         </span>
                                         <div class="form-floating flight-to">
-                                        <label for="floatingInput">To</label>
-                                        <select class="round-trip-to-option form-control border-bottom-0 border-right select2"
-                                            id="round-trip-to-option" name="to_airport_name" required tabindex="-1"
-                                            aria-hidden="true">
-                                            <option value="DAC">
-                                            Dhaka, Bangladesh (DAC)
-                                            </option>
-                                            <option value="YSO">
-                                            Postville, Canada (YSO)
-                                            </option>
-                                            <option value="DEL">
-                                            Delhi, India (DEL)
-                                            </option>
-                                            <option value="NYC">
-                                            New York, United States (JFK)
-                                            </option>
-                                        </select>
+                                            <label for="floatingInput">To</label>
+                                            <select class="round-trip-to-option form-control border-bottom-0 border-right select2"
+                                                id="round-trip-to-option" name="to_airport_name" required tabindex="-1"
+                                                aria-hidden="true">
+                                                <option value="DAC">
+                                                Dhaka, Bangladesh (DAC)
+                                                </option>
+                                                <option value="YSO">
+                                                Postville, Canada (YSO)
+                                                </option>
+                                                <option value="DEL">
+                                                Delhi, India (DEL)
+                                                </option>
+                                                <option value="NYC">
+                                                New York, United States (JFK)
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -76,94 +82,94 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-3 px-0">
-                                <div class="dropdown travellers-dropdown" id="dropdown-roundTrip">
-                                    <div class="form-floating" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                    aria-haspopup="true">
-                                    <input type="text" class="form-control dropdown-toggle" id="passengers-roundTrip"
-                                        value="1 Travellers, Economy" />
-                                    <label for="passengers">Traveller(s) cabin</label>
-                                    </div>
-                                    <div class="dropdown-menu dropdown-menu-right drop-down-round"
-                                    aria-labelledby="dropdownMenuButton">
-                                    <div class="tab-container">
-                                        <div class="triangle abs"></div>
-                                        <ul class="m-0 p-0">
-                                        <li class="noOf d-flex justify-content-between">
-                                            <span>
-                                            <input type="text" id="round-adult-input" class="all-input" readonly
-                                                value="1" />
-                                            <span class="fs-16 font-weight-500">Adult<span>S</span></span>
-                                            </span>
-                                            <div class="spinner d-flex">
-                                            <span id="round-adult-minus" class="minus">-</span>
-                                            <span id="round-adult-plus" class="plus">+</span>
+                                    <div class="dropdown travellers-dropdown" id="dropdown-roundTrip">
+                                        <div class="form-floating" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                        aria-haspopup="true">
+                                        <input type="text" class="form-control dropdown-toggle" id="passengers-roundTrip"
+                                            value="1 Travellers, Economy" />
+                                        <label for="passengers">Traveller(s) cabin</label>
+                                        </div>
+                                        <div class="dropdown-menu dropdown-menu-right drop-down-round"
+                                        aria-labelledby="dropdownMenuButton">
+                                        <div class="tab-container">
+                                            <div class="triangle abs"></div>
+                                            <ul class="m-0 p-0">
+                                            <li class="noOf d-flex justify-content-between">
+                                                <span>
+                                                <input type="text" id="round-adult-input" class="all-input" readonly
+                                                    value="1" />
+                                                <span class="fs-16 font-weight-500">Adult<span>S</span></span>
+                                                </span>
+                                                <div class="spinner d-flex">
+                                                <span id="round-adult-minus" class="minus">-</span>
+                                                <span id="round-adult-plus" class="plus">+</span>
+                                                </div>
+                                                <input hidden name="adult_members" id="adult_input" value="1" />
+                                            </li>
+                                            <li class="noOf d-flex justify-content-between">
+                                                <span>
+                                                <input type="text" id="round-child-input" class="all-input" readonly
+                                                    value="0" />
+                                                <span class="fs-16 font-weight-500">Child</span>
+                                                <span class="cat-info fs-13">2 11 years</span>
+                                                </span>
+                                                <input hidden name="child_members" id="child_input" value="0" />
+                                                <div class="spinner d-flex">
+                                                <span id="round-child-minus" class="minus" onclick="roundChildDec()">-</span>
+                                                <span id="round-child-plus" class="plus" onclick="roundChildInc()">+</span>
+                                                </div>
+                                            </li>
+                                            <li class="noOf d-flex justify-content-between">
+                                                <div data-child-total="0" class="_child_age_" id="_child_age_"></div>
+                                            </li>
+                                            <li class="noOf d-flex justify-content-between">
+                                                <span>
+                                                <input type="text" id="round-infant-input" class="all-input" readonly
+                                                    value="0" />
+                                                <span class="fs-16 font-weight-500">Infant</span>
+                                                <span class="cat-info fs-13">Below 2 years</span>
+                                                </span>
+                                                <input hidden name="infant_members" id="infant_input" value="0" />
+                                                <div class="spinner d-flex">
+                                                <span id="round-infant-minus" class="minus">-</span>
+                                                <span id="round-infant-plus" class="plus">+</span>
+                                                </div>
+                                            </li>
+                                            </ul>
+                                            <div class="class-type mt-2">
+                                            <div class="custom-control custom-radio pl-0">
+                                                <input type="radio" id="economy2" name="classType1"
+                                                class="custom-control-input economy1" checked />
+                                                <label class="custom-control-label fs-16 font-weight-500"
+                                                for="economy1">Economy</label>
                                             </div>
-                                            <input hidden name="adult_members" id="adult_input" value="1" />
-                                        </li>
-                                        <li class="noOf d-flex justify-content-between">
-                                            <span>
-                                            <input type="text" id="round-child-input" class="all-input" readonly
-                                                value="0" />
-                                            <span class="fs-16 font-weight-500">Child</span>
-                                            <span class="cat-info fs-13">2 11 years</span>
-                                            </span>
-                                            <input hidden name="child_members" id="child_input" value="0" />
-                                            <div class="spinner d-flex">
-                                            <span id="round-child-minus" class="minus" onclick="roundChildDec()">-</span>
-                                            <span id="round-child-plus" class="plus" onclick="roundChildInc()">+</span>
+                                            <div class="custom-control custom-radio pl-0">
+                                                <input type="radio" id="premiumEconomy2" name="classType1"
+                                                class="custom-control-input premiumEconomy1" />
+                                                <label class="custom-control-label fs-16 font-weight-500"
+                                                for="premiumEconomy1">Premium economy</label>
                                             </div>
-                                        </li>
-                                        <li class="noOf d-flex justify-content-between">
-                                            <div data-child-total="0" class="_child_age_" id="_child_age_"></div>
-                                        </li>
-                                        <li class="noOf d-flex justify-content-between">
-                                            <span>
-                                            <input type="text" id="round-infant-input" class="all-input" readonly
-                                                value="0" />
-                                            <span class="fs-16 font-weight-500">Infant</span>
-                                            <span class="cat-info fs-13">Below 2 years</span>
-                                            </span>
-                                            <input hidden name="infant_members" id="infant_input" value="0" />
-                                            <div class="spinner d-flex">
-                                            <span id="round-infant-minus" class="minus">-</span>
-                                            <span id="round-infant-plus" class="plus">+</span>
+                                            <div class="custom-control custom-radio pl-0">
+                                                <input type="radio" id="first2" name="classType1"
+                                                class="custom-control-input first1" />
+                                                <label class="custom-control-label fs-16 font-weight-500"
+                                                for="first1">First</label>
                                             </div>
-                                        </li>
-                                        </ul>
-                                        <div class="class-type mt-2">
-                                        <div class="custom-control custom-radio pl-0">
-                                            <input type="radio" id="economy2" name="classType1"
-                                            class="custom-control-input economy1" checked />
-                                            <label class="custom-control-label fs-16 font-weight-500"
-                                            for="economy1">Economy</label>
+                                            <div class="custom-control custom-radio pl-0">
+                                                <input type="radio" id="business2" name="classType1"
+                                                class="custom-control-input business1" />
+                                                <label class="custom-control-label fs-16 font-weight-500"
+                                                for="business1">Business</label>
+                                            </div>
+                                            </div>
+                                            <input hidden name="classType" id="class_type" value="Y" />
+                                            <div class="cat-sel mt-3 text-right">
+                                            <input type="button" class="btn btn-danger w-100"
+                                                onclick="roundTripTotalPassenger()" value="Confirm" />
+                                            </div>
                                         </div>
-                                        <div class="custom-control custom-radio pl-0">
-                                            <input type="radio" id="premiumEconomy2" name="classType1"
-                                            class="custom-control-input premiumEconomy1" />
-                                            <label class="custom-control-label fs-16 font-weight-500"
-                                            for="premiumEconomy1">Premium economy</label>
-                                        </div>
-                                        <div class="custom-control custom-radio pl-0">
-                                            <input type="radio" id="first2" name="classType1"
-                                            class="custom-control-input first1" />
-                                            <label class="custom-control-label fs-16 font-weight-500"
-                                            for="first1">First</label>
-                                        </div>
-                                        <div class="custom-control custom-radio pl-0">
-                                            <input type="radio" id="business2" name="classType1"
-                                            class="custom-control-input business1" />
-                                            <label class="custom-control-label fs-16 font-weight-500"
-                                            for="business1">Business</label>
-                                        </div>
-                                        </div>
-                                        <input hidden name="classType" id="class_type" value="Y" />
-                                        <div class="cat-sel mt-3 text-right">
-                                        <input type="button" class="btn btn-danger w-100"
-                                            onclick="roundTripTotalPassenger()" value="Confirm" />
                                         </div>
                                     </div>
-                                    </div>
-                                </div>
                                 </div>
                             </div>
                             <div id="btn-hub-round">
@@ -346,4 +352,30 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('footer_js')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script>
+        $('.livesearch').select2({
+            // placeholder: 'Select movie',
+            minimumInputLength: 2,
+            ajax: {
+                url: '/live/city/airport/search',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+    </script>
 @endsection
