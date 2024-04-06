@@ -1,7 +1,7 @@
 Contact Email: webservices.support@sabre.com
 
 https://accounts.cert.havail.sabre.com/login/sc
-Agent ID/EPRs: 470936 
+Agent ID/EPRs: 470936
 Password: BC5C0VG1
 PCC: S00L
 
