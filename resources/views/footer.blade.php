@@ -6,8 +6,7 @@
                 </div>
             </div>
             <div class="col-md-6 text-center text-md-end">
-                <div class="credit"> Designed &amp;amp; developed by: <a class="text-black text-capitalize" href="https://getup.com.bd/" target="_blank">GetUp</a>
-                </div>
+                <div class="credit">Designed &amp; Developed by: <a class="text-black text-capitalize" href="https://getup.com.bd/" target="_blank">GetUp</a></div>
             </div>
         </div>
     </div>
