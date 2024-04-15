@@ -361,6 +361,12 @@
             }
         });
 
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         function searchOneWayFlights(){
 
             var departureLocationId = $("#oneway_from").val();
@@ -406,7 +412,7 @@
                 processData: false,
                 success: function (data) {
                     $(".page-loader-wrapper").hide();
-                    window.location.href = "/flight/search-results";
+                    // window.location.href = "/flight/search-results";
                 },
                 error: function (data) {
                     // console.log('Error:', data);
