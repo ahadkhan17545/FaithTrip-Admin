@@ -20,7 +20,7 @@
         <nav class="sidebar-nav">
             <ul class="metismenu">
                 <li class="mm-active">
-                    <a class="text-capitalize" href="search.html">
+                    <a class="text-capitalize" href="{{url('/home')}}">
                     <i class="typcn typcn-zoom-outline"></i>
                     Search pad
                     </a>
