@@ -82,21 +82,22 @@ class HomeController extends Controller
     public function getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $adult, $child, $infant){
 
         // Define passenger types and quantities
-        // $passengerTypes = array();
-        // if($adult > 0){
-        //     $passengerTypes[] = array("Code" => "ADT", "Quantity" => $adult);
-        // }
-        // if($child > 0){
-        //     $passengerTypes[] = array("Code" => "CHD", "Quantity" => $child);
-        // }
-        // if($infant > 0){
-        //     $passengerTypes[] = array("Code" => "INF", "Quantity" => $infant);
-        // }
+        $passengerTypes = array();
+        if($adult > 0){
+            $passengerTypes[] = array("PassengerTypeQuantity" => array("Code" => "ADT", "Quantity" => (int) $adult));
+        }
+        if($child > 0){
+            $passengerTypes[] = array("PassengerTypeQuantity" => array("Code" => "CHD", "Quantity" => (int) $child));
+        }
+        if($infant > 0){
+            $passengerTypes[] = array("PassengerTypeQuantity" => array("Code" => "INF", "Quantity" => (int) $infant));
+        }
 
-        // // Convert passenger types to JSON format
-        // $passengerTypesJSON = json_encode($passengerTypes);
+        // Convert passenger types to JSON format
+        $passengerTypesJSON = json_encode($passengerTypes);
 
         // Sabre API request payload with dynamic query
+        $accessToken = session('access_token');
         $curl = curl_init();
         curl_setopt_array($curl, array(
         CURLOPT_URL => 'https://api.cert.platform.sabre.com/v5/offers/shop',
@@ -148,11 +149,12 @@ class HomeController extends Controller
                     }
                 },
                 "TravelerInfoSummary": {
-                    "AirTravelerAvail": [{
+                    "AirTravelerAvail": [
+                        {
                             "PassengerTypeQuantity": [
                                 {
                                     "Code": "ADT",
-                                    "Quantity": 1
+                                    "Quantity": 2
                                 }
                             ]
                         }
@@ -168,10 +170,9 @@ class HomeController extends Controller
             }
         }',
         CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json',
-            'Conversation-ID: ',
-            'Authorization: Bearer T1RLAQJZTvYCbnUraCS7RA2R3rIXxVL+XfU733qYqOf4vSG4exCOpf/pKHaBfNFvkwU7mWwRAADg1hOncy3bfWZ977XGicQtpnnukA2FFO6+9p55HErfKqc4tWIulp12sDGDfG3hJjvF+6Kvk86/iBN+qwqzSkBh9X9aM+UL3O4vOtGt7B7scNjU9UCRFhIUSfrB9mjz/6K8JulkIioq+vwfvJWREOmFP+/z2CZy0d8IAIiNhaT6Lj41OoJPcf4YioRe94bEnL5/4sz8Ea1kZ9r5BRKMmvPDH6mt9TAhU6KXVN++xTIE97nS3oynoI8vjzNtgenY87A9cbnC+1PtGKFuGnn1Dta3sI5q+GTTtm8hvx6KCo2Iaa0*',
-            'Cookie: visid_incap_2768617=CMmrEjpiT2uqtybd16i4/Ce7/2UAAAAAQUIPAAAAAAAvMTvmjB9uF7//pSsvuNc0; incap_ses_1787_2768614=CcAUVpIWFmNy74WBH7PMGF2xHGYAAAAAIpc34z3S3Q8jyR1+2Q+HMA==; nlbi_2768614=uWlMLUunkm8yyGEGRh9LCAAAAAAA3GnPshJ3E7mCKRrMlwvS; visid_incap_2768614=oagYgS2rSheFlLqzITzLq5S6/2UAAAAAQUIPAAAAAADHLck2jT6mHfxrtvT5HVcc'
+            "Content-Type: application/json",
+            "Conversation-ID: ",
+            "Authorization: Bearer $accessToken",
         ),
         ));
 
@@ -211,7 +212,6 @@ class HomeController extends Controller
 
         $searchResults = $this->getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $adult, $child, $infant);
         echo $searchResults;
-
 
     }
 
