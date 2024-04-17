@@ -83,97 +83,94 @@ class HomeController extends Controller
 
         // Define passenger types and quantities
         $passengerTypes = array();
-        if($adult > 0){
-            $passengerTypes[] = array("PassengerTypeQuantity" => array("Code" => "ADT", "Quantity" => (int) $adult));
+        if ($adult > 0) {
+            $passengerTypes[] = array("Code" => "ADT", "Quantity" => (int) $adult);
         }
-        if($child > 0){
-            $passengerTypes[] = array("PassengerTypeQuantity" => array("Code" => "CHD", "Quantity" => (int) $child));
+        if ($child > 0) {
+            $passengerTypes[] = array("Code" => "CHD", "Quantity" => (int) $child);
         }
-        if($infant > 0){
-            $passengerTypes[] = array("PassengerTypeQuantity" => array("Code" => "INF", "Quantity" => (int) $infant));
+        if ($infant > 0) {
+            $passengerTypes[] = array("Code" => "INF", "Quantity" => (int) $infant);
         }
 
-        // Convert passenger types to JSON format
-        $passengerTypesJSON = json_encode($passengerTypes);
+        // Transform passenger types into the required format
+        $airTravelerAvail = [];
+        foreach ($passengerTypes as $passengerType) {
+            $airTravelerAvail[] = array(
+                "PassengerTypeQuantity" => array($passengerType)
+            );
+        }
 
         // Sabre API request payload with dynamic query
         $accessToken = session('access_token');
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://api.cert.platform.sabre.com/v5/offers/shop',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS =>'{
-            "OTA_AirLowFareSearchRQ": {
-                "Version": "2",
-                "POS": {
-                    "Source": [{
-                            "PseudoCityCode": "S00L",
-                            "RequestorID": {
-                                "Type": "1",
-                                "ID": "1",
-                                "CompanyName": {
-                                    "Code": "TN"
-                                }
-                            }
-                        }
-                    ]
-                },
-                "OriginDestinationInformation": [
-                    {
-                        "RPH": "1",
-                        "DepartureDateTime": "'.$departureDate.'T00:00:00",
-                        "OriginLocation": {
-                            "LocationCode": "'.$originCityCode.'"
-                        },
-                        "DestinationLocation": {
-                            "LocationCode": "'.$destinationCityCode.'"
-                        }
-                    }
-                ],
-                "TravelPreferences": {
-                    "TPA_Extensions": {
-                        "DataSources": {
-                            "NDC": "Disable",
-                            "ATPCO": "Enable",
-                            "LCC": "Disable"
-                        },
-                        "PreferNDCSourceOnTie": {
-                            "Value": true
-                        }
-                    }
-                },
-                "TravelerInfoSummary": {
-                    "AirTravelerAvail": [
-                        {
-                            "PassengerTypeQuantity": [
-                                {
-                                    "Code": "ADT",
-                                    "Quantity": 2
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "TPA_Extensions": {
-                    "IntelliSellTransaction": {
-                        "RequestType": {
-                            "Name": "200ITINS"
-                        }
-                    }
-                }
-            }
-        }',
-        CURLOPT_HTTPHEADER => array(
-            "Content-Type: application/json",
-            "Conversation-ID: ",
-            "Authorization: Bearer $accessToken",
-        ),
+            CURLOPT_URL => 'https://api.cert.platform.sabre.com/v5/offers/shop',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode(array(
+                "OTA_AirLowFareSearchRQ" => array(
+                    "Version" => "2",
+                    "POS" => array(
+                        "Source" => array(
+                            array(
+                                "PseudoCityCode" => "S00L",
+                                "RequestorID" => array(
+                                    "Type" => "1",
+                                    "ID" => "1",
+                                    "CompanyName" => array(
+                                        "Code" => "TN"
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    "OriginDestinationInformation" => array(
+                        array(
+                            "RPH" => "1",
+                            "DepartureDateTime" => "$departureDate" . "T00:00:00",
+                            "OriginLocation" => array(
+                                "LocationCode" => $originCityCode
+                            ),
+                            "DestinationLocation" => array(
+                                "LocationCode" => $destinationCityCode
+                            )
+                        )
+                    ),
+                    "TravelPreferences" => array(
+                        "TPA_Extensions" => array(
+                            "DataSources" => array(
+                                "NDC" => "Disable",
+                                "ATPCO" => "Enable",
+                                "LCC" => "Disable"
+                            ),
+                            "PreferNDCSourceOnTie" => array(
+                                "Value" => true
+                            )
+                        )
+                    ),
+                    "TravelerInfoSummary" => array(
+                        "AirTravelerAvail" => $airTravelerAvail
+                    ),
+                    "TPA_Extensions" => array(
+                        "IntelliSellTransaction" => array(
+                            "RequestType" => array(
+                                "Name" => "200ITINS"
+                            )
+                        )
+                    )
+                )
+            )),
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json",
+                "Conversation-ID: ",
+                "Authorization: Bearer $accessToken",
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -211,11 +208,12 @@ class HomeController extends Controller
         $infant = $request->infant;
 
         $searchResults = $this->getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $adult, $child, $infant);
-        echo $searchResults;
+        session(['search_results' => $searchResults]);
 
     }
 
     public function showFlightSearchResults(){
-        return view('flight.search_results');
+        $searchResults = json_decode(session('search_results'), true);
+        return view('flight.search_results', compact('searchResults'));
     }
 }

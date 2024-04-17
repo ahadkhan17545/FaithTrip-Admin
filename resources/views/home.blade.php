@@ -67,9 +67,7 @@
                                         <div class="input-group rounded">
                                             <div class="form-floating flight-form">
                                                 <label for="floatingInput">From</label>
-                                                <select class="round-trip-from-option form-control border-bottom-0 border-right select2" id="round-trip-from-option" name="from_airport_name" required tabindex="-1" aria-hidden="true">
-                                                   <option value="DAC">Dhaka, Bangladesh (DAC)</option>
-                                                </select>
+                                                <select class="form-control border-bottom-0 border-right round_trip_from" id="round_trip_from" name="round_trip_from"></select>
                                             </div>
                                             <span class="input-group-text">
                                             <svg class="bi bi-arrow-left-right" id="round-swap" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -81,9 +79,7 @@
                                             </span>
                                             <div class="form-floating flight-to">
                                                 <label for="floatingInput">To</label>
-                                                <select class="round-trip-to-option form-control border-bottom-0 border-right select2" id="round-trip-to-option" name="to_airport_name" required tabindex="-1" aria-hidden="true">
-                                                    <option value="DAC">Dhaka, Bangladesh (DAC)</option>
-                                                </select>
+                                                <select class="form-control border-bottom-0 border-right round_trip_to" id="round_trip_to" name="round_trip_to"></select>
                                             </div>
                                         </div>
                                     </div>
@@ -340,7 +336,49 @@
             }
         });
 
+        $('.round_trip_from').select2({
+            placeholder: 'Search Departure City/Airport',
+            minimumInputLength: 2,
+            ajax: {
+                url: '/live/city/airport/search',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.search_result,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+
         $('.oneway_to').select2({
+            placeholder: 'Search Destination City/Airport',
+            minimumInputLength: 2,
+            ajax: {
+                url: '/live/city/airport/search',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.search_result,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $('.round_trip_to').select2({
             placeholder: 'Search Destination City/Airport',
             minimumInputLength: 2,
             ajax: {
@@ -412,7 +450,7 @@
                 processData: false,
                 success: function (data) {
                     $(".page-loader-wrapper").hide();
-                    // window.location.href = "/flight/search-results";
+                    window.location.href = "/flight/search-results";
                 },
                 error: function (data) {
                     // console.log('Error:', data);

@@ -1,15 +1,31 @@
 @extends('master')
 
+@php
+    function convertMinutesToHoursMinutes($minutes) {
+        $hours = floor($minutes / 60);
+        $remainingMinutes = $minutes % 60;
+
+        if ($hours == 0) {
+            return "{$remainingMinutes}min";
+        } elseif ($remainingMinutes == 0) {
+            return "{$hours}hr";
+        } else {
+            return "{$hours}hr {$remainingMinutes}min";
+        }
+    }
+@endphp
+
 @section('content')
 <div class="row">
     <div class="search-content-wrap m-auto">
         <div>
             <div class="sorting my-3">
                 <div class="badge bg-primary fs-16 mb-2 mb-lg-0">
+                    Total
                     <span class="font-weight-500">
-                        <b id="total_flights">10</b>
+                        <b id="total_flights">{{$searchResults['groupedItineraryResponse']['statistics']['itineraryCount']}}</b>
                     </span>
-                    Flights found out of 10
+                    Flights found
                 </div>
             </div>
 
@@ -110,13 +126,6 @@
                 <div class="col-lg-9 mainContent">
                     <div class="theiaStickySidebar">
 
-                        <div class="row align-items-center mb-2">
-                            <div class="col-10">
-                                <button class="btn btn-sm btn-primary">Previous day</button>
-                                <button class="btn btn-sm btn-primary ml-2">Next day</button>
-                            </div>
-                        </div>
-
                         <div class="alert alert-primary">
                             <div class="align-items-center g-3 row">
                                 <div class="col-md-10 col-sm-12">
@@ -125,11 +134,19 @@
                                             One Way :
                                         </span>
                                         <span class="ml-1">
-                                            Dhaka, Bangladesh (DAC)
-                                            <i class="fas fa-plane-departure"></i>
-                                            Dubai, United Arab Emirates (DXB),
-                                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                                            11-03-2024
+
+                                            @foreach ($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'] as $data)
+                                                @php
+                                                    $departureLocation = DB::table('city_airports')->where('city_code', $data['departureLocation'])->first();
+                                                    $arrivalLocation = DB::table('city_airports')->where('city_code', $data['arrivalLocation'])->first();
+                                                @endphp
+                                                {{$departureLocation->city_name}}, {{$departureLocation->country_name}} ({{$departureLocation->city_code}})
+                                                <i class="fas fa-plane-departure"></i>
+                                                {{$arrivalLocation->city_name}}, {{$arrivalLocation->country_name}} ({{$arrivalLocation->city_code}}),
+                                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                {{date("d-m-Y", strtotime($data['departureDate']))}}
+                                            @endforeach
+
                                         </span>
                                     </div>
                                 </div>
@@ -141,867 +158,433 @@
 
                         <div class="list-content" id="flight-infos">
 
-                            <div>
-                                <div class="bg-white hox list-item mb-3 rounded position-relative demo NonStop" id="oc-WY">
-                                    <div class="m-0 align-items-center row">
-                                    <div class="list-item_start text-center col-md-2">
-                                        <div class="d-flex d-md-block justify-content-center">
-                                        <div class="list-item_logo">
-                                            <img class="img-fluid" src="https://pics.avs.io/200/200/WY@2x.png" alt="WY">
-                                            <small class="d-block mt-1">Oman Air</small>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="list-body col-md-7">
-                                        <div class="d-none d-md-block">
-                                        <h6 class="list-hidden mb-1 fs-13 font-weight-bold text-primary">
-                                            One Way Trip</h6>
-                                        <h6 class="align-items-center d-flex flex-wrap fs-18 fw-bold mb-2">
-                                            <span>Dhaka, Bangladesh (DAC)</span>
-                                            <svg class="bi bi-arrow-right  mx-2" width="1em" height="1em" viewBox="0 0 16 16"
-                                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd"
-                                                d="M10.146 4.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 8l-2.647-2.646a.5.5 0 0 1 0-.708z">
-                                            </path>
-                                            <path fill-rule="evenodd"
-                                                d="M2 8a.5.5 0 0 1 .5-.5H13a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8z">
-                                            </path>
-                                            </svg>
-                                            <span>
-                                            Dubai, United Arab Emirates (DXB)
-                                            </span>
-                                        </h6>
-                                        </div>
-                                        <div class="mb-2 d-none d-md-flex row">
-                                        <div class="d-flex align-items-center flight-icon col">
-                                            <div class="fli-content">
-                                            <i class="fas fa-plane-departure"></i>
-                                            <div class="fli_title fs-13 mb-1 font-weight-600">
-                                                Take off </div>
-                                            <div class="fli-text fs-12 text-uppercase">
-                                                2024-03-11
-                                                16:20:00+06:00
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center flight-icon col">
-                                            <div class="fli-content">
-                                            <i class="fas fa-plane-arrival"></i>
-                                            <div class="fli_title fs-13 mb-1 font-weight-600">
-                                                Landing </div>
-                                            <div class="fli-text fs-12 text-uppercase">
-                                                2024-03-11
-                                                03:10:00+04:00
-                                            </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        <div class="d-none d-md-flex align-items-sm-center text-center text-sm-left fs-14">
-                                        <div class="fli-duration">
-                                            <strong class="mr-1">6hr 20min</strong>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="list-item_end title hotel-right clearfix grid-hidden d-flex align-items-center d-md-block mt-2 pt-2 col-md-3 justify-content-center">
-                                        <div data-main-price="5000" data-id="1" data-gds="Sabre"
-                                        class="price-area d-xl-flex align-items-xl-center justify-content-xl-center text-center">
-                                        <template x-if="!commission">
-                                            <div class="purchase-price fs-24 font-weight-600">
-                                            <div class="main-price">
-                                                ৳ 37676
-                                            </div>
-                                            </div>
-                                        </template>
-                                        </div>
-                                        <div class="d-flex d-md-block gap-4 ml-auto ms-3 mt-md-3 text-center">
-                                        <a href="book-now.html" id="BookNowBtn hox"
-                                            class="btn btn-primary text-uppercase font-weight-600 fs-13 btn_filters_responsive disable_book_now_cls">Book
-                                            now</a>
-                                        <a class="fli-det-link text-muted fs-14 gap-2 d-block mt-md-2 d-flex align-items-center justify-content-center mr-2 mr-md-0"
-                                            data-bs-toggle="collapse" href="#collapse1_0" role="button" aria-expanded="false"
-                                            aria-controls="collapse1">
-                                            Flight details<i class="fas fa-chevron-circle-down ml-1 text-success"></i></a>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div class="collapse" id="collapse1_0">
-                                    <div
-                                        class="bg-white fli-det card card-body rounded-0 border-0 p-0 pt-3 px-md-3 py-md-3">
-                                        <ul class="nav nav-tabs border-bottom-0  mb-3" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link rounded fs-14 font-weight-500 active" id="info-tab"
-                                            data-bs-toggle="tab" href="#info_0" role="tab" aria-controls="info"
-                                            aria-selected="true">Flight info</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link rounded fs-14 font-weight-500" id="fare-getails-tab"
-                                            data-bs-toggle="tab" href="#fare-getails_0" role="tab" aria-controls="home"
-                                            aria-selected="true">Fare details</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link rounded fs-14 font-weight-500" id="baggage-tab"
-                                            data-bs-toggle="tab" href="#baggage_0" role="tab" aria-controls="baggage"
-                                            aria-selected="false">Baggage</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link rounded fs-14 font-weight-500" id="cancellation-tab"
-                                            data-bs-toggle="tab" href="#cancellation_0" role="tab"
-                                            aria-controls="cancellation" aria-selected="false">Cancellation</a>
-                                        </li>
-                                        </ul>
-                                        <div class="tab-content">
-                                        <div class="tab-pane fade show active" id="info_0" role="tabpanel"
-                                            aria-labelledby="info-tab">
-                                            <div class="flight-info border rounded mb-2">
-                                            <div class="flight-scroll review-article">
-                                                <div
-                                                class="align-items-center d-flex custom-gap justify-content-between w-100">
-                                                <div class="align-items-center d-flex gap-4 text-center">
-                                                    <div class="brand-img">
-                                                    <img class
-                                                        src="https://skytripb2cmedia.s3.ap-southeast-1.amazonaws.com/airlineLogo/WY.png"
-                                                        onerror="this.onerror=null;this.src='https://tbbd-flight.s3.ap-southeast-1.amazonaws.com/airlines-logo/WY.png';">
-                                                    </div>
-                                                    <div class="airline-box">
-                                                    <div class="font-weight-600 fs-13">
-                                                        WY
-                                                    </div>
-                                                    <div class="font-weight-600 fs-13 text-muted w-max-content">
-                                                        WY
-                                                        -
-                                                        318
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                <div class="text-center">
-                                                    <div class="font-weight-600 fs-13">
-                                                    DAC
-                                                    </div>
-                                                    <span class="fs-12 font-weight-600">16:20:00+06:00</span><br>
-                                                    <span class="text-muted fs-12">
-                                                    Terminal -
-                                                    N/A
-                                                    </span>
-                                                </div>
-                                                <div class="text-center">
-                                                    <div class="font-weight-600 fs-13">
-                                                    MCT
-                                                    </div>
-                                                    <span class="fs-12 font-weight-600">19:25:00+04:00</span><br>
-                                                    <span class="text-muted fs-12">
-                                                    Terminal -
-                                                    N/A
-                                                    </span>
-                                                </div>
-                                                <div class="text-center fs-14 w-100">
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                    <span class="d-inline-flex align-items-center w-max-content">
-                                                        5hr 5min
-                                                    </span>
-                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                        <span class="text-muted">|</span>
-                                                        Meal -
-                                                        M
-                                                    </span>
-                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                        <span class="text-muted">|</span>&nbsp;Economy</span>
-                                                    </div>
-                                                    <div class="two-dots my-3 text-muted position-relative border-top">
-                                                    <span class="flight-service">
-                                                        <span class="type-text px-2 position-relative">Flight</span>
-                                                    </span>
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                    <span class="d-inline-flex align-items-center w-max-content">
-                                                        30
-                                                        kg
-                                                        &nbsp;</span>
-                                                    </span>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            </div>
+                            @php
+                                // print_r($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries']);
+                            @endphp
 
-                                            </div>
-                                            <div class="flight-info border rounded mb-2">
-                                            <div class="flight-scroll review-article">
-                                                <div
-                                                class="align-items-center d-flex custom-gap justify-content-between w-100">
-                                                <div class="align-items-center d-flex gap-4 text-center">
-                                                    <div class="brand-img">
-                                                    <img class
-                                                        src="https://skytripb2cmedia.s3.ap-southeast-1.amazonaws.com/airlineLogo/WY.png"
-                                                        onerror="this.onerror=null;this.src='https://tbbd-flight.s3.ap-southeast-1.amazonaws.com/airlines-logo/WY.png';">
+                            @foreach ($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'] as $index => $data)
+                                <div class="search_result">
+                                    <div class="bg-white hox list-item mb-3 rounded position-relative demo NonStop">
+                                        <div class="m-0 align-items-center row">
+                                            <div class="list-item_start text-center col-md-2">
+                                                <div class="d-flex d-md-block justify-content-center">
+                                                    <div class="list-item_logo">
+                                                        <img class="img-fluid" src="{{url('airlines_logo')}}/{{strtolower($data['pricingInformation'][0]['fare']['validatingCarrierCode'])}}.png" alt="{{strtolower($data['pricingInformation'][0]['fare']['validatingCarrierCode'])}}">
+                                                        <small class="d-block mt-1">
+                                                            @php
+                                                                $airlineInfo = DB::table('airlines')->where('iata', $data['pricingInformation'][0]['fare']['validatingCarrierCode'])->where('active', 'Y')->first();
+                                                                echo $airlineInfo ? $airlineInfo->name : '';
+                                                            @endphp
+                                                        </small>
                                                     </div>
-                                                    <div class="airline-box">
-                                                    <div class="font-weight-600 fs-13">
-                                                        WY
-                                                    </div>
-                                                    <div class="font-weight-600 fs-13 text-muted w-max-content">
-                                                        WY
-                                                        -
-                                                        601
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                <div class="text-center">
-                                                    <div class="font-weight-600 fs-13">
-                                                    MCT
-                                                    </div>
-                                                    <span class="fs-12 font-weight-600">01:55:00+04:00</span><br>
-                                                    <span class="text-muted fs-12">
-                                                    Terminal -
-                                                    N/A
-                                                    </span>
-                                                </div>
-                                                <div class="text-center">
-                                                    <div class="font-weight-600 fs-13">
-                                                    DXB
-                                                    </div>
-                                                    <span class="fs-12 font-weight-600">03:10:00+04:00</span><br>
-                                                    <span class="text-muted fs-12">
-                                                    Terminal -
-                                                    1
-                                                    </span>
-                                                </div>
-                                                <div class="text-center fs-14 w-100">
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                    <span class="d-inline-flex align-items-center w-max-content">
-                                                        1hr 15min
-                                                    </span>
-                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                        <span class="text-muted">|</span>
-                                                        Meal -
-                                                        M
-                                                    </span>
-                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                        <span class="text-muted">|</span>&nbsp;Economy</span>
-                                                    </div>
-                                                    <div class="two-dots my-3 text-muted position-relative border-top">
-                                                    <span class="flight-service">
-                                                        <span class="type-text px-2 position-relative">Flight</span>
-                                                    </span>
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                    <span class="d-inline-flex align-items-center w-max-content">
-                                                        30
-                                                        kg
-                                                        &nbsp;</span>
-                                                    </span>
-                                                    </div>
-                                                </div>
                                                 </div>
                                             </div>
+                                            <div class="list-body col-md-7">
+                                                <div class="d-none d-md-block">
+                                                    <h6 class="list-hidden mb-1 fs-13 font-weight-bold text-primary">One Way Trip</h6>
+                                                    <h6 class="align-items-center d-flex flex-wrap fs-18 fw-bold mb-2">
 
-                                            <div class="d-flex justify-center px-3">
-                                                <span class="fs-12 layover text-center">
-                                                17hr 30min
-                                                Layover
-                                                </span>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="fare-getails_0" role="tabpanel"
-                                            aria-labelledby="fare-getails-tab">
-                                            <div class="row">
-                                            <div class="col-md-12">
-                                                <table class="table table-bordered table-sm mb-0 text-center">
-                                                <tbody>
-                                                    <tr>
-                                                    <td><b>Passenger type</b></td>
-                                                    <td><b>Base fare</b></td>
-                                                    <td><b>Tax fare</b></td>
-                                                    <td><b>Total fare</b></td>
-                                                    </tr>
-                                                    <tr>
-                                                    <td>
-                                                        <b>
-                                                        1
-                                                        ADT
-                                                        </b>
-                                                    </td>
-                                                    <td>
-                                                        25410
-                                                        (BDT)
-                                                    </td>
-                                                    <td>
-                                                        12266
-                                                        (BDT)
-                                                    </td>
-                                                    <td>
-                                                        37676
-                                                        (BDT)
-                                                    </td>
-                                                    </tr>
-                                                </tbody>
-                                                </table>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="baggage_0" role="tabpanel"
-                                            aria-labelledby="baggage-tab">
-                                            <div class="row">
-                                            <div class="col-md-6 pr-md-2">
-                                                <table class="table table-bordered table-sm mb-0 text-center">
-                                                <tbody>
-                                                    <tr>
-                                                    <td>Passenger type</td>
-                                                    <td>Weight</td>
-                                                    <td>Number</td>
-                                                    </tr>
-                                                    <tr>
-                                                    <td>ADT
-                                                    </td>
-                                                    <td>
-                                                        30
-                                                        kg
-                                                    </td>
-                                                    <td> N/A </td>
-                                                    </tr>
-                                                </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="col-md-6  pl-md-2">
-                                                <p class="mb-0">The baggage information is just for reference please check
-                                                with airline before check in for more information visit airlines website</p>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="cancellation_0" role="tabpanel"
-                                            aria-labelledby="cancellation-tab">
-                                            <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="table-responsive">
-                                                <table class="table table-bordered table-sm text-center">
-                                                    <tbody>
-                                                    <tr>
-                                                        <td>Passenger typepassenger type</td>
-                                                        <td>Non refundable</td>
-                                                        <td>Class</td>
-                                                        <td>Available seats</td>
-                                                        <td>Booking code</td>
-                                                        <td>Meal code</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>ADT
-                                                        </td>
-                                                        <td>False
-                                                        </td>
-                                                        <td>
-                                                        Economy
-                                                        </td>
-                                                        <td>
-                                                        9
-                                                        </td>
-                                                        <td>
-                                                        O
-                                                        </td>
-                                                        <td>
-                                                        M
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+                                                        @php
+                                                            $beginAirportCode = $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['beginAirport'];
+                                                            $beginAirportInfo = DB::table('city_airports')->where('airport_code', $beginAirportCode)->first();
+                                                            $endAirportCode = $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['endAirport'];
+                                                            $endAirportInfo = DB::table('city_airports')->where('airport_code', $endAirportCode)->first();
+                                                        @endphp
+
+                                                        <span>{{$beginAirportInfo->airport_name}}, {{$beginAirportInfo->city_name}}, {{$beginAirportInfo->country_name}} ({{$beginAirportInfo->city_code}})</span>
+                                                        <svg class="bi bi-arrow-right  mx-2" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M10.146 4.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 8l-2.647-2.646a.5.5 0 0 1 0-.708z"></path>
+                                                            <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5H13a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8z"></path>
+                                                        </svg>
+                                                        <span>{{$endAirportInfo->airport_name}}, {{$endAirportInfo->city_name}}, {{$endAirportInfo->country_name}} ({{$endAirportInfo->city_code}})</span>
+                                                    </h6>
+                                                </div>
+                                                <div class="mb-2 d-none d-md-flex row">
+
+                                                    @php
+                                                        $legRef = $data['legs'][0]['ref'];
+                                                        $schedulesRef = $searchResults['groupedItineraryResponse']['legDescs'][$legRef-1]['schedules'][0]['ref'];
+                                                        $flightTiming = $searchResults['groupedItineraryResponse']['scheduleDescs'][$schedulesRef-1];
+                                                    @endphp
+
+                                                    <div class="d-flex align-items-center flight-icon col">
+                                                        <div class="fli-content">
+                                                            <i class="fas fa-plane-departure"></i>
+                                                            <div class="fli_title fs-13 mb-1 font-weight-600">Take off </div>
+                                                            <div class="fli-text fs-12 text-uppercase">
+                                                                {{$searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}} {{$flightTiming['departure']['time']}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex align-items-center flight-icon col">
+                                                        <div class="fli-content">
+                                                            <i class="fas fa-plane-arrival"></i>
+                                                            <div class="fli_title fs-13 mb-1 font-weight-600">Landing </div>
+                                                            <div class="fli-text fs-12 text-uppercase">
+                                                                {{$searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}} {{$flightTiming['arrival']['time']}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-none d-md-flex align-items-sm-center text-center text-sm-left fs-14">
+                                                    <div class="fli-duration">
+                                                        <strong class="mr-1">{{convertMinutesToHoursMinutes($flightTiming['elapsedTime'])}}</strong>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <hr>
-                                            <div class="col-md-12">
-                                                <h6 class="my-3">Return and refund policy </h6>
-                                                <table class="table table-bordered table-sm text-center">
-                                                <tbody>
-                                                    <tr class="font-weight-bold">
-                                                    <td>Type</td>
-                                                    <td>Changeable before departure</td>
-                                                    <td>Penalty</td>
-                                                    <td>Changeable after departure</td>
-                                                    <td>Penalty</td>
-                                                    </tr>
-                                                </tbody>
-                                                </table>
+                                            <div class="list-item_end title hotel-right clearfix grid-hidden d-flex align-items-center d-md-block mt-2 pt-2 col-md-3 justify-content-center">
+                                                <div class="price-area d-xl-flex align-items-xl-center justify-content-xl-center text-center">
+                                                    <div class="purchase-price fs-24 font-weight-600">
+                                                        <div class="main-price">
+                                                            {{-- ৳ 37676 --}}
+                                                            {{$data['pricingInformation'][0]['fare']['totalFare']['currency']}} {{$data['pricingInformation'][0]['fare']['totalFare']['totalPrice']}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex d-md-block gap-4 ml-auto ms-3 mt-md-3 text-center">
+                                                    <a href="book-now.html" id="BookNowBtn hox" class="btn btn-primary text-uppercase font-weight-600 fs-13 btn_filters_responsive disable_book_now_cls">Book now</a>
+                                                    <a class="fli-det-link text-muted fs-14 gap-2 d-block mt-md-2 d-flex align-items-center justify-content-center mr-2 mr-md-0" data-bs-toggle="collapse" href="#collapse1_0" role="button" aria-expanded="false" aria-controls="collapse1">
+                                                        Flight details
+                                                        <i class="fas fa-chevron-circle-down ml-1 text-success"></i>
+                                                    </a>
+                                                </div>
                                             </div>
+                                        </div>
+                                        <div class="collapse" id="collapse1_0">
+                                            <div class="bg-white fli-det card card-body rounded-0 border-0 p-0 pt-3 px-md-3 py-md-3">
+                                                <ul class="nav nav-tabs border-bottom-0  mb-3" role="tablist">
+                                                    <li class="nav-item" role="presentation">
+                                                        <a class="nav-link rounded fs-14 font-weight-500 active" id="info-tab" data-bs-toggle="tab" href="#info_0" role="tab" aria-controls="info" aria-selected="true">Flight info</a>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <a class="nav-link rounded fs-14 font-weight-500" id="fare-getails-tab" data-bs-toggle="tab" href="#fare-getails_0" role="tab" aria-controls="home" aria-selected="true">Fare details</a>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <a class="nav-link rounded fs-14 font-weight-500" id="baggage-tab" data-bs-toggle="tab" href="#baggage_0" role="tab" aria-controls="baggage" aria-selected="false">Baggage</a>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <a class="nav-link rounded fs-14 font-weight-500" id="cancellation-tab" data-bs-toggle="tab" href="#cancellation_0" role="tab" aria-controls="cancellation" aria-selected="false">Cancellation</a>
+                                                    </li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div class="tab-pane fade show active" id="info_0" role="tabpanel" aria-labelledby="info-tab">
+                                                        <div class="flight-info border rounded mb-2">
+                                                            <div class="flight-scroll review-article">
+                                                                <div class="align-items-center d-flex custom-gap justify-content-between w-100">
+                                                                <div class="align-items-center d-flex gap-4 text-center">
+                                                                    <div class="brand-img">
+                                                                    <img class
+                                                                        src="https://skytripb2cmedia.s3.ap-southeast-1.amazonaws.com/airlineLogo/WY.png"
+                                                                        onerror="this.onerror=null;this.src='https://tbbd-flight.s3.ap-southeast-1.amazonaws.com/airlines-logo/WY.png';">
+                                                                    </div>
+                                                                    <div class="airline-box">
+                                                                    <div class="font-weight-600 fs-13">
+                                                                        WY
+                                                                    </div>
+                                                                    <div class="font-weight-600 fs-13 text-muted w-max-content">
+                                                                        WY
+                                                                        -
+                                                                        318
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="text-center">
+                                                                    <div class="font-weight-600 fs-13">
+                                                                    DAC
+                                                                    </div>
+                                                                    <span class="fs-12 font-weight-600">16:20:00+06:00</span><br>
+                                                                    <span class="text-muted fs-12">
+                                                                    Terminal -
+                                                                    N/A
+                                                                    </span>
+                                                                </div>
+                                                                <div class="text-center">
+                                                                    <div class="font-weight-600 fs-13">
+                                                                    MCT
+                                                                    </div>
+                                                                    <span class="fs-12 font-weight-600">19:25:00+04:00</span><br>
+                                                                    <span class="text-muted fs-12">
+                                                                    Terminal -
+                                                                    N/A
+                                                                    </span>
+                                                                </div>
+                                                                <div class="text-center fs-14 w-100">
+                                                                    <div class="d-flex align-items-center justify-content-center">
+                                                                    <span class="d-inline-flex align-items-center w-max-content">
+                                                                        5hr 5min
+                                                                    </span>
+                                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
+                                                                        <span class="text-muted">|</span>
+                                                                        Meal -
+                                                                        M
+                                                                    </span>
+                                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
+                                                                        <span class="text-muted">|</span>&nbsp;Economy</span>
+                                                                    </div>
+                                                                    <div class="two-dots my-3 text-muted position-relative border-top">
+                                                                    <span class="flight-service">
+                                                                        <span class="type-text px-2 position-relative">Flight</span>
+                                                                    </span>
+                                                                    </div>
+                                                                    <div class="d-flex align-items-center justify-content-center">
+                                                                    <span class="d-inline-flex align-items-center w-max-content">
+                                                                        30
+                                                                        kg
+                                                                        &nbsp;</span>
+                                                                    </span>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flight-info border rounded mb-2">
+                                                            <div class="flight-scroll review-article">
+                                                                <div
+                                                                class="align-items-center d-flex custom-gap justify-content-between w-100">
+                                                                <div class="align-items-center d-flex gap-4 text-center">
+                                                                    <div class="brand-img">
+                                                                    <img class
+                                                                        src="https://skytripb2cmedia.s3.ap-southeast-1.amazonaws.com/airlineLogo/WY.png"
+                                                                        onerror="this.onerror=null;this.src='https://tbbd-flight.s3.ap-southeast-1.amazonaws.com/airlines-logo/WY.png';">
+                                                                    </div>
+                                                                    <div class="airline-box">
+                                                                    <div class="font-weight-600 fs-13">
+                                                                        WY
+                                                                    </div>
+                                                                    <div class="font-weight-600 fs-13 text-muted w-max-content">
+                                                                        WY
+                                                                        -
+                                                                        601
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="text-center">
+                                                                    <div class="font-weight-600 fs-13">
+                                                                    MCT
+                                                                    </div>
+                                                                    <span class="fs-12 font-weight-600">01:55:00+04:00</span><br>
+                                                                    <span class="text-muted fs-12">
+                                                                    Terminal -
+                                                                    N/A
+                                                                    </span>
+                                                                </div>
+                                                                <div class="text-center">
+                                                                    <div class="font-weight-600 fs-13">
+                                                                    DXB
+                                                                    </div>
+                                                                    <span class="fs-12 font-weight-600">03:10:00+04:00</span><br>
+                                                                    <span class="text-muted fs-12">
+                                                                    Terminal -
+                                                                    1
+                                                                    </span>
+                                                                </div>
+                                                                <div class="text-center fs-14 w-100">
+                                                                    <div class="d-flex align-items-center justify-content-center">
+                                                                    <span class="d-inline-flex align-items-center w-max-content">
+                                                                        1hr 15min
+                                                                    </span>
+                                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
+                                                                        <span class="text-muted">|</span>
+                                                                        Meal -
+                                                                        M
+                                                                    </span>
+                                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
+                                                                        <span class="text-muted">|</span>&nbsp;Economy</span>
+                                                                    </div>
+                                                                    <div class="two-dots my-3 text-muted position-relative border-top">
+                                                                    <span class="flight-service">
+                                                                        <span class="type-text px-2 position-relative">Flight</span>
+                                                                    </span>
+                                                                    </div>
+                                                                    <div class="d-flex align-items-center justify-content-center">
+                                                                    <span class="d-inline-flex align-items-center w-max-content">
+                                                                        30
+                                                                        kg
+                                                                        &nbsp;</span>
+                                                                    </span>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="d-flex justify-center px-3">
+                                                                <span class="fs-12 layover text-center">
+                                                                17hr 30min
+                                                                Layover
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="fare-getails_0" role="tabpanel"
+                                                        aria-labelledby="fare-getails-tab">
+                                                        <div class="row">
+                                                        <div class="col-md-12">
+                                                            <table class="table table-bordered table-sm mb-0 text-center">
+                                                            <tbody>
+                                                                <tr>
+                                                                <td><b>Passenger type</b></td>
+                                                                <td><b>Base fare</b></td>
+                                                                <td><b>Tax fare</b></td>
+                                                                <td><b>Total fare</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                <td>
+                                                                    <b>
+                                                                    1
+                                                                    ADT
+                                                                    </b>
+                                                                </td>
+                                                                <td>
+                                                                    25410
+                                                                    (BDT)
+                                                                </td>
+                                                                <td>
+                                                                    12266
+                                                                    (BDT)
+                                                                </td>
+                                                                <td>
+                                                                    37676
+                                                                    (BDT)
+                                                                </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            </table>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="baggage_0" role="tabpanel"
+                                                        aria-labelledby="baggage-tab">
+                                                        <div class="row">
+                                                        <div class="col-md-6 pr-md-2">
+                                                            <table class="table table-bordered table-sm mb-0 text-center">
+                                                            <tbody>
+                                                                <tr>
+                                                                <td>Passenger type</td>
+                                                                <td>Weight</td>
+                                                                <td>Number</td>
+                                                                </tr>
+                                                                <tr>
+                                                                <td>ADT
+                                                                </td>
+                                                                <td>
+                                                                    30
+                                                                    kg
+                                                                </td>
+                                                                <td> N/A </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-md-6  pl-md-2">
+                                                            <p class="mb-0">The baggage information is just for reference please check
+                                                            with airline before check in for more information visit airlines website</p>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="cancellation_0" role="tabpanel"
+                                                        aria-labelledby="cancellation-tab">
+                                                        <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="table-responsive">
+                                                            <table class="table table-bordered table-sm text-center">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td>Passenger typepassenger type</td>
+                                                                    <td>Non refundable</td>
+                                                                    <td>Class</td>
+                                                                    <td>Available seats</td>
+                                                                    <td>Booking code</td>
+                                                                    <td>Meal code</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>ADT
+                                                                    </td>
+                                                                    <td>False
+                                                                    </td>
+                                                                    <td>
+                                                                    Economy
+                                                                    </td>
+                                                                    <td>
+                                                                    9
+                                                                    </td>
+                                                                    <td>
+                                                                    O
+                                                                    </td>
+                                                                    <td>
+                                                                    M
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="col-md-12">
+                                                            <h6 class="my-3">Return and refund policy </h6>
+                                                            <table class="table table-bordered table-sm text-center">
+                                                            <tbody>
+                                                                <tr class="font-weight-bold">
+                                                                <td>Type</td>
+                                                                <td>Changeable before departure</td>
+                                                                <td>Penalty</td>
+                                                                <td>Changeable after departure</td>
+                                                                <td>Penalty</td>
+                                                                </tr>
+                                                            </tbody>
+                                                            </table>
+                                                        </div>
+                                                        </div>
+                                                        <h6>Terms &amp; Conditions</h6>
+                                                        <ul>
+                                                        <li>The charges are per passenger per sector and
+                                                            applicable
+                                                            only on refundable
+                                                            type tickets.</li>
+                                                        <li>Rescheduling Charges = Rescheduling/Change
+                                                            Penalty +
+                                                            Fare Difference (if
+                                                            applicable)</li>
+                                                        <li>Partial cancellation is not allowed on tickets
+                                                            booked
+                                                            under special
+                                                            discounted fares.</li>
+                                                        <li>In case of no-show or ticket not cancelled
+                                                            within
+                                                            the
+                                                            stipulated time, only
+                                                            statutory taxes are refundable subject to
+                                                            Goibibo
+                                                            Service Fee.</li>
+                                                        <li>No Baggage Allowance for Infants</li>
+                                                        <li>In case of restricted cases , no amendments
+                                                            /cancellation allowed.</li>
+                                                        <li>Airline penalty needs to be reconfirmed prior to
+                                                            any
+                                                            amendments or
+                                                            cancellation.</li>
+                                                        <li>Disclaimer: Airline Penalty changes are
+                                                            indicative
+                                                            and
+                                                            can change without
+                                                            prior notice</li>
+                                                        <li>NA means Not Available. Please check with
+                                                            airline
+                                                            for
+                                                            penalty information.
+                                                        </li>
+                                                        <li>If taxes are more than default cancellation
+                                                            penalty
+                                                            then
+                                                            all taxes will be
+                                                            refundable.</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <h6>Terms &amp; Conditions</h6>
-                                            <ul>
-                                            <li>The charges are per passenger per sector and
-                                                applicable
-                                                only on refundable
-                                                type tickets.</li>
-                                            <li>Rescheduling Charges = Rescheduling/Change
-                                                Penalty +
-                                                Fare Difference (if
-                                                applicable)</li>
-                                            <li>Partial cancellation is not allowed on tickets
-                                                booked
-                                                under special
-                                                discounted fares.</li>
-                                            <li>In case of no-show or ticket not cancelled
-                                                within
-                                                the
-                                                stipulated time, only
-                                                statutory taxes are refundable subject to
-                                                Goibibo
-                                                Service Fee.</li>
-                                            <li>No Baggage Allowance for Infants</li>
-                                            <li>In case of restricted cases , no amendments
-                                                /cancellation allowed.</li>
-                                            <li>Airline penalty needs to be reconfirmed prior to
-                                                any
-                                                amendments or
-                                                cancellation.</li>
-                                            <li>Disclaimer: Airline Penalty changes are
-                                                indicative
-                                                and
-                                                can change without
-                                                prior notice</li>
-                                            <li>NA means Not Available. Please check with
-                                                airline
-                                                for
-                                                penalty information.
-                                            </li>
-                                            <li>If taxes are more than default cancellation
-                                                penalty
-                                                then
-                                                all taxes will be
-                                                refundable.</li>
-                                            </ul>
                                         </div>
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div>
-                                <div class="bg-white hox list-item mb-3 rounded position-relative demo NonStop" id="oc-WY">
-                                    <div class="m-0 align-items-center row">
-                                    <div class="list-item_start text-center col-md-2">
-                                        <div class="d-flex d-md-block justify-content-center">
-                                        <div class="list-item_logo">
-                                            <img class="img-fluid" src="https://pics.avs.io/200/200/WY@2x.png" alt="WY">
-                                            <small class="d-block mt-1">Oman Air</small>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="list-body col-md-7">
-                                        <div class="d-none d-md-block">
-                                        <h6 class="list-hidden mb-1 fs-13 font-weight-bold text-primary">
-                                            One Way Trip</h6>
-                                        <h6 class="align-items-center d-flex flex-wrap fs-18 fw-bold mb-2">
-                                            <span>Dhaka, Bangladesh (DAC)</span>
-                                            <svg class="bi bi-arrow-right  mx-2" width="1em" height="1em" viewBox="0 0 16 16"
-                                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd"
-                                                d="M10.146 4.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 8l-2.647-2.646a.5.5 0 0 1 0-.708z">
-                                            </path>
-                                            <path fill-rule="evenodd"
-                                                d="M2 8a.5.5 0 0 1 .5-.5H13a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8z">
-                                            </path>
-                                            </svg>
-                                            <span>
-                                            Dubai, United Arab Emirates (DXB)
-                                            </span>
-                                        </h6>
-                                        </div>
-                                        <div class="mb-2 d-none d-md-flex row">
-                                        <div class="d-flex align-items-center flight-icon col">
-                                            <div class="fli-content">
-                                            <i class="fas fa-plane-departure"></i>
-                                            <div class="fli_title fs-13 mb-1 font-weight-600">
-                                                Take off </div>
-                                            <div class="fli-text fs-12 text-uppercase">
-                                                2024-03-11
-                                                16:20:00+06:00
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center flight-icon col">
-                                            <div class="fli-content">
-                                            <i class="fas fa-plane-arrival"></i>
-                                            <div class="fli_title fs-13 mb-1 font-weight-600">
-                                                Landing </div>
-                                            <div class="fli-text fs-12 text-uppercase">
-                                                2024-03-12
-                                                21:35:00+04:00
-                                            </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        <div class="d-none d-md-flex align-items-sm-center text-center text-sm-left fs-14">
-                                        <div class="fli-duration">
-                                            <strong class="mr-1">6hr 15min</strong>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="list-item_end title hotel-right clearfix grid-hidden d-flex align-items-center d-md-block mt-2 pt-2 col-md-3 justify-content-center">
-                                        <div data-main-price="5000" data-id="1" data-gds="Sabre"
-                                        class="price-area d-xl-flex align-items-xl-center justify-content-xl-center text-center">
-                                        <template x-if="!commission">
-                                            <div class="purchase-price fs-24 font-weight-600">
-                                            <div class="main-price">
-                                                ৳ 37676
-                                            </div>
-                                            </div>
-                                        </template>
-                                        </div>
-                                        <div class="d-flex d-md-block gap-4 ml-auto ms-3 mt-md-3 text-center">
-                                        <a href="book-now.html" id="BookNowBtn hox"
-                                            class="btn btn-primary text-uppercase font-weight-600 fs-13 btn_filters_responsive disable_book_now_cls">Book
-                                            now</a>
-                                        <a class="fli-det-link text-muted fs-14 gap-2 d-block mt-md-2 d-flex align-items-center justify-content-center mr-2 mr-md-0"
-                                            data-bs-toggle="collapse" href="#collapse1_1" role="button" aria-expanded="false"
-                                            aria-controls="collapse1">
-                                            Flight details<i class="fas fa-chevron-circle-down ml-1 text-success"></i></a>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div class="collapse" id="collapse1_1">
-                                    <div
-                                        class="bg-white fli-det card card-body rounded-0 border-0 p-0 pt-3 px-md-3 py-md-3">
-                                        <ul class="nav nav-tabs border-bottom-0  mb-3" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link rounded fs-14 font-weight-500 active" id="info-tab"
-                                            data-bs-toggle="tab" href="#info_1" role="tab" aria-controls="info"
-                                            aria-selected="true">Flight info</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link rounded fs-14 font-weight-500" id="fare-getails-tab"
-                                            data-bs-toggle="tab" href="#fare-getails_1" role="tab" aria-controls="home"
-                                            aria-selected="true">Fare details</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link rounded fs-14 font-weight-500" id="baggage-tab"
-                                            data-bs-toggle="tab" href="#baggage_1" role="tab" aria-controls="baggage"
-                                            aria-selected="false">Baggage</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link rounded fs-14 font-weight-500" id="cancellation-tab"
-                                            data-bs-toggle="tab" href="#cancellation_1" role="tab"
-                                            aria-controls="cancellation" aria-selected="false">Cancellation</a>
-                                        </li>
-                                        </ul>
-                                        <div class="tab-content">
-                                        <div class="tab-pane fade show active" id="info_1" role="tabpanel"
-                                            aria-labelledby="info-tab">
-                                            <div class="flight-info border rounded mb-2">
-                                            <div class="flight-scroll review-article">
-                                                <div
-                                                class="align-items-center d-flex custom-gap justify-content-between w-100">
-                                                <div class="align-items-center d-flex gap-4 text-center">
-                                                    <div class="brand-img">
-                                                    <img class
-                                                        src="https://skytripb2cmedia.s3.ap-southeast-1.amazonaws.com/airlineLogo/WY.png"
-                                                        onerror="this.onerror=null;this.src='https://tbbd-flight.s3.ap-southeast-1.amazonaws.com/airlines-logo/WY.png';">
-                                                    </div>
-                                                    <div class="airline-box">
-                                                    <div class="font-weight-600 fs-13">
-                                                        WY
-                                                    </div>
-                                                    <div class="font-weight-600 fs-13 text-muted w-max-content">
-                                                        WY
-                                                        -
-                                                        318
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                <div class="text-center">
-                                                    <div class="font-weight-600 fs-13">
-                                                    DAC
-                                                    </div>
-                                                    <span class="fs-12 font-weight-600">16:20:00+06:00</span><br>
-                                                    <span class="text-muted fs-12">
-                                                    Terminal -
-                                                    N/A
-                                                    </span>
-                                                </div>
-                                                <div class="text-center">
-                                                    <div class="font-weight-600 fs-13">
-                                                    MCT
-                                                    </div>
-                                                    <span class="fs-12 font-weight-600">19:25:00+04:00</span><br>
-                                                    <span class="text-muted fs-12">
-                                                    Terminal -
-                                                    N/A
-                                                    </span>
-                                                </div>
-                                                <div class="text-center fs-14 w-100">
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                    <span class="d-inline-flex align-items-center w-max-content">
-                                                        5hr 5min
-                                                    </span>
-                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                        <span class="text-muted">|</span>
-                                                        Meal -
-                                                        M
-                                                    </span>
-                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                        <span class="text-muted">|</span>&nbsp;Economy</span>
-                                                    </div>
-                                                    <div class="two-dots my-3 text-muted position-relative border-top">
-                                                    <span class="flight-service">
-                                                        <span class="type-text px-2 position-relative">Flight</span>
-                                                    </span>
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                    <span class="d-inline-flex align-items-center w-max-content">
-                                                        30
-                                                        kg
-                                                        &nbsp;</span>
-                                                    </span>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            </div>
-
-                                            </div>
-                                            <div class="flight-info border rounded mb-2">
-                                            <div class="flight-scroll review-article">
-                                                <div
-                                                class="align-items-center d-flex custom-gap justify-content-between w-100">
-                                                <div class="align-items-center d-flex gap-4 text-center">
-                                                    <div class="brand-img">
-                                                    <img class
-                                                        src="https://skytripb2cmedia.s3.ap-southeast-1.amazonaws.com/airlineLogo/WY.png"
-                                                        onerror="this.onerror=null;this.src='https://tbbd-flight.s3.ap-southeast-1.amazonaws.com/airlines-logo/WY.png';">
-                                                    </div>
-                                                    <div class="airline-box">
-                                                    <div class="font-weight-600 fs-13">
-                                                        WY
-                                                    </div>
-                                                    <div class="font-weight-600 fs-13 text-muted w-max-content">
-                                                        WY
-                                                        -
-                                                        611
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                <div class="text-center">
-                                                    <div class="font-weight-600 fs-13">
-                                                    MCT
-                                                    </div>
-                                                    <span class="fs-12 font-weight-600">20:25:00+04:00</span><br>
-                                                    <span class="text-muted fs-12">
-                                                    Terminal -
-                                                    N/A
-                                                    </span>
-                                                </div>
-                                                <div class="text-center">
-                                                    <div class="font-weight-600 fs-13">
-                                                    DXB
-                                                    </div>
-                                                    <span class="fs-12 font-weight-600">21:35:00+04:00</span><br>
-                                                    <span class="text-muted fs-12">
-                                                    Terminal -
-                                                    1
-                                                    </span>
-                                                </div>
-                                                <div class="text-center fs-14 w-100">
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                    <span class="d-inline-flex align-items-center w-max-content">
-                                                        1hr 10min
-                                                    </span>
-                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                        <span class="text-muted">|</span>
-                                                        Meal -
-                                                        M
-                                                    </span>
-                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                        <span class="text-muted">|</span>&nbsp;Economy</span>
-                                                    </div>
-                                                    <div class="two-dots my-3 text-muted position-relative border-top">
-                                                    <span class="flight-service">
-                                                        <span class="type-text px-2 position-relative">Flight</span>
-                                                    </span>
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                    <span class="d-inline-flex align-items-center w-max-content">
-                                                        30
-                                                        kg
-                                                        &nbsp;</span>
-                                                    </span>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="d-flex justify-center px-3">
-                                                <span class="fs-12 layover text-center">
-                                                1hr
-                                                Layover
-                                                </span>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="fare-getails_1" role="tabpanel"
-                                            aria-labelledby="fare-getails-tab">
-                                            <div class="row">
-                                            <div class="col-md-12">
-                                                <table class="table table-bordered table-sm mb-0 text-center">
-                                                <tbody>
-                                                    <tr>
-                                                    <td><b>Passenger type</b></td>
-                                                    <td><b>Base fare</b></td>
-                                                    <td><b>Tax fare</b></td>
-                                                    <td><b>Total fare</b></td>
-                                                    </tr>
-                                                    <tr>
-                                                    <td>
-                                                        <b>
-                                                        1
-                                                        ADT
-                                                        </b>
-                                                    </td>
-                                                    <td>
-                                                        25410
-                                                        (BDT)
-                                                    </td>
-                                                    <td>
-                                                        12266
-                                                        (BDT)
-                                                    </td>
-                                                    <td>
-                                                        37676
-                                                        (BDT)
-                                                    </td>
-                                                    </tr>
-                                                </tbody>
-                                                </table>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="baggage_1" role="tabpanel"
-                                            aria-labelledby="baggage-tab">
-                                            <div class="row">
-                                            <div class="col-md-6 pr-md-2">
-                                                <table class="table table-bordered table-sm mb-0 text-center">
-                                                <tbody>
-                                                    <tr>
-                                                    <td>Passenger type</td>
-                                                    <td>Weight</td>
-                                                    <td>Number</td>
-                                                    </tr>
-                                                    <tr>
-                                                    <td>ADT
-                                                    </td>
-                                                    <td>
-                                                        30
-                                                        kg
-                                                    </td>
-                                                    <td> N/A </td>
-                                                    </tr>
-                                                </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="col-md-6  pl-md-2">
-                                                <p class="mb-0">The baggage information is just for reference please check
-                                                with airline before check in for more information visit airlines website</p>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="cancellation_1" role="tabpanel"
-                                            aria-labelledby="cancellation-tab">
-                                            <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="table-responsive">
-                                                <table class="table table-bordered table-sm text-center">
-                                                    <tbody>
-                                                    <tr>
-                                                        <td>Passenger typepassenger type</td>
-                                                        <td>Non refundable</td>
-                                                        <td>Class</td>
-                                                        <td>Available seats</td>
-                                                        <td>Booking code</td>
-                                                        <td>Meal code</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>ADT
-                                                        </td>
-                                                        <td>False
-                                                        </td>
-                                                        <td>
-                                                        Economy
-                                                        </td>
-                                                        <td>
-                                                        9
-                                                        </td>
-                                                        <td>
-                                                        O
-                                                        </td>
-                                                        <td>
-                                                        M
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="col-md-12">
-                                                <h6 class="my-3">Return and refund policy </h6>
-                                                <table class="table table-bordered table-sm text-center">
-                                                <tbody>
-                                                    <tr class="font-weight-bold">
-                                                    <td>Type</td>
-                                                    <td>Changeable before departure</td>
-                                                    <td>Penalty</td>
-                                                    <td>Changeable after departure</td>
-                                                    <td>Penalty</td>
-                                                    </tr>
-                                                </tbody>
-                                                </table>
-                                            </div>
-                                            </div>
-                                            <h6>Terms &amp; Conditions</h6>
-                                            <ul>
-                                            <li>The charges are per passenger per sector and
-                                                applicable
-                                                only on refundable
-                                                type tickets.</li>
-                                            <li>Rescheduling Charges = Rescheduling/Change
-                                                Penalty +
-                                                Fare Difference (if
-                                                applicable)</li>
-                                            <li>Partial cancellation is not allowed on tickets
-                                                booked
-                                                under special
-                                                discounted fares.</li>
-                                            <li>In case of no-show or ticket not cancelled
-                                                within
-                                                the
-                                                stipulated time, only
-                                                statutory taxes are refundable subject to
-                                                Goibibo
-                                                Service Fee.</li>
-                                            <li>No Baggage Allowance for Infants</li>
-                                            <li>In case of restricted cases , no amendments
-                                                /cancellation allowed.</li>
-                                            <li>Airline penalty needs to be reconfirmed prior to
-                                                any
-                                                amendments or
-                                                cancellation.</li>
-                                            <li>Disclaimer: Airline Penalty changes are
-                                                indicative
-                                                and
-                                                can change without
-                                                prior notice</li>
-                                            <li>NA means Not Available. Please check with
-                                                airline
-                                                for
-                                                penalty information.
-                                            </li>
-                                            <li>If taxes are more than default cancellation
-                                                penalty
-                                                then
-                                                all taxes will be
-                                                refundable.</li>
-                                            </ul>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
 
                         </div>
                     </div>
