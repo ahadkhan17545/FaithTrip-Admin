@@ -16,6 +16,7 @@ Auth::routes([
 ]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/get/random/cities', [HomeController::class, 'getRandomCities'])->name('GetRandomCities');
 Route::get('/live/city/airport/search', [HomeController::class, 'liveCityAirportSearch'])->name('LiveCityAirportSearch');
 Route::post('/search/flights', [HomeController::class, 'searchFlights'])->name('SearchFlights');
 Route::get('/flight/search-results', [HomeController::class, 'showFlightSearchResults'])->name('ShowFlightSearchResults');
