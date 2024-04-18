@@ -10,12 +10,16 @@
         $beginAirportInfo = DB::table('city_airports')->where('airport_code', $beginAirportCode)->first();
         $endAirportCode = $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['endAirport'];
         $endAirportInfo = DB::table('city_airports')->where('airport_code', $endAirportCode)->first();
+
+        $legRef = $data['legs'][0]['ref'];
+        $schedulesRef = $searchResults['groupedItineraryResponse']['legDescs'][$legRef-1]['schedules'][0]['ref'];
+        $flightTiming = $searchResults['groupedItineraryResponse']['scheduleDescs'][$schedulesRef-1];
     @endphp
 
     <div class="row">
         <div class="col-3">
             <p class="mb-0 fs-14 font-weight-bold">{{$beginAirportInfo->city_name}}, {{$beginAirportInfo->country_name}} ({{$beginAirportInfo->city_code}})</p>
-            <p class="mb-0 fs-12">21:25:00+06:00</p>
+            <p class="mb-0 fs-12">{{$searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}} {{$flightTiming['departure']['time']}}</p>
         </div>
         <div class="col-6 text-center">
             <div class="two-dots m-2 text-muted position-relative border-top">
@@ -26,17 +30,28 @@
             <span class="mb-0 text-muted"></span>
         </div>
         <div class="col-3 text-right">
-            <p class="mb-0 fs-14 font-weight-bold">Dubai, United Arab Emirates (DXB)</p>
-            <p class="mb-0 fs-12">01:00:00+04:00</p>
+            <p class="mb-0 fs-14 font-weight-bold">{{$endAirportInfo->city_name}}, {{$endAirportInfo->country_name}} ({{$endAirportInfo->city_code}})</p>
+            <p class="mb-0 fs-12">{{$searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}} {{$flightTiming['arrival']['time']}}</p>
         </div>
     </div>
 
     <hr>
 
+    @php
+        $beginAirportCode = $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['beginAirport'];
+        $beginAirportInfo = DB::table('city_airports')->where('airport_code', $beginAirportCode)->first();
+        $endAirportCode = $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['endAirport'];
+        $endAirportInfo = DB::table('city_airports')->where('airport_code', $endAirportCode)->first();
+
+        $legRef = $data['legs'][1]['ref'];
+        $schedulesRef = $searchResults['groupedItineraryResponse']['legDescs'][$legRef-1]['schedules'][0]['ref'];
+        $flightTiming = $searchResults['groupedItineraryResponse']['scheduleDescs'][$schedulesRef-1];
+    @endphp
+
     <div class="row">
         <div class="col-3">
-            <p class="mb-0 fs-14 font-weight-bold">Dhaka, Bangladesh (DAC)</p>
-            <p class="mb-0 fs-12">21:25:00+06:00</p>
+            <p class="mb-0 fs-14 font-weight-bold">{{$beginAirportInfo->city_name}}, {{$beginAirportInfo->country_name}} ({{$beginAirportInfo->city_code}})</p>
+            <p class="mb-0 fs-12">{{$searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}} {{$flightTiming['departure']['time']}}</p>
         </div>
         <div class="col-6 text-center">
             <div class="two-dots m-2 text-muted position-relative border-top">
@@ -47,8 +62,8 @@
             <span class="mb-0 text-muted"></span>
         </div>
         <div class="col-3 text-right">
-            <p class="mb-0 fs-14 font-weight-bold">Dubai, United Arab Emirates (DXB)</p>
-            <p class="mb-0 fs-12">01:00:00+04:00</p>
+            <p class="mb-0 fs-14 font-weight-bold">{{$endAirportInfo->city_name}}, {{$endAirportInfo->country_name}} ({{$endAirportInfo->city_code}})</p>
+            <p class="mb-0 fs-12">{{$searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}} {{$flightTiming['arrival']['time']}}</p>
         </div>
     </div>
 
