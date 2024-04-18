@@ -60,7 +60,7 @@
                         <label class="checkbox-label d-inline-block font-weight-500 me-2 border rounded fs-14 bg-white" for="tab2">One way</label>
 
                         <div class="search-content d-none w-100 pt-3" id="search-content1">
-                            <form class="modify-search" action="#" method="post" onsubmit="disableButtonRound()">
+                            <form class="modify-search">
                                 <input type="hidden" name="round" value="1" />
                                 <div class="search-row row no-gutters position-relative mx-0 mb-4">
                                     <div class="col-lg-6 px-0">
@@ -101,8 +101,7 @@
                                                     <ul class="m-0 p-0">
                                                     <li class="noOf d-flex justify-content-between">
                                                         <span>
-                                                        <input type="text" id="round-adult-input" class="all-input" readonly
-                                                            value="1" />
+                                                        <input type="text" id="round-adult-input" class="all-input" readonly value="1" />
                                                         <span class="fs-16 font-weight-500">Adult<span>S</span></span>
                                                         </span>
                                                         <div class="spinner d-flex">
@@ -178,7 +177,7 @@
                                     </div>
                                 </div>
                                 <div id="btn-hub-round">
-                                    <a href="search-result.html" id="btn-search-round" class="btn btn-primary btn-search">
+                                    <button type="button" onclick="searchForFlights(2)" id="btn-search-round" class="btn btn-primary btn-search">
                                         Search flights
                                         <i class="fas fa-plane-departure"></i>
                                     </a>
@@ -226,8 +225,7 @@
                                                     <ul class="m-0 p-0">
                                                         <li class="noOf d-flex justify-content-between">
                                                             <span>
-                                                            <input type="text" id="oneway-adult-input" class="all-input" readonly
-                                                                value="1" />
+                                                            <input type="text" id="oneway-adult-input" class="all-input" readonly value="1" />
                                                             <span class="fs-16 font-weight-500">Adult<span>s</span></span>
                                                             </span>
                                                             <div class="spinner d-flex">
@@ -296,7 +294,7 @@
                                     </div>
                                 </div>
                                 <div id="btn-hub-oneway">
-                                    <button type="button" onclick="searchOneWayFlights()" id="btn-search-oneway" class="btn btn-primary btn-search">
+                                    <button type="button" onclick="searchForFlights(1)" id="btn-search-oneway" class="btn btn-primary btn-search">
                                         Search flights
                                         <i class="fas fa-plane-departure"></i>
                                     </button>
@@ -405,14 +403,28 @@
             }
         });
 
-        function searchOneWayFlights(){
+        function searchForFlights(flightType){
 
-            var departureLocationId = $("#oneway_from").val();
-            var destinationLocationId = $("#oneway_to").val();
-            var departureDate = document.querySelector('.t-check-in input[name="t-start"]').value;
-            var adult = Number($("#oneway-adult-input").val());
-            var child = Number($("#oneway-child-input").val());
-            var infant = Number($("#oneway-infant-input").val());
+            var flightType = flightType;// 1=>Oneway; 2=>Return
+            let returnDate = '';
+
+            if(flightType == 1){
+                var departureLocationId = $("#oneway_from").val();
+                var destinationLocationId = $("#oneway_to").val();
+                var departureDate = document.querySelector('#oneWayDatePicker .t-check-in input[name="t-start"]').value;
+                var adult = Number($("#oneway-adult-input").val());
+                var child = Number($("#oneway-child-input").val());
+                var infant = Number($("#oneway-infant-input").val());
+            } else {
+                var departureLocationId = $("#round_trip_from").val();
+                var destinationLocationId = $("#round_trip_to").val();
+                var departureDate = document.querySelector('#roundDatePicker .t-check-in input[name="t-start"]').value;
+                returnDate = document.querySelector('#roundDatePicker .t-check-out input[name="t-end"]').value;
+                var adult = Number($("#round-adult-input").val());
+                var child = Number($("#round-child-input").val());
+                var infant = Number($("#round-infant-input").val());
+            }
+
 
             if(!departureLocationId){
                 toastr.error("Departure Location is missing");
@@ -426,17 +438,24 @@
                 toastr.error("Departure Date is missing");
                 return false;
             }
+            if(flightType == 2 && returnDate == ''){
+                toastr.error("Return Date is mendatory for Round Trip");
+                return false;
+            }
             if((adult+child+infant) <= 0){
                 toastr.error("Please Provide Passanger Information");
                 return false;
             }
 
+
             $(".page-loader-wrapper").show();
 
             var formData = new FormData();
+            formData.append("flight_type", flightType);
             formData.append("departure_location_id", departureLocationId);
             formData.append("destination_location_id", destinationLocationId);
             formData.append("departure_date", departureDate);
+            formData.append("return_date", returnDate);
             formData.append("adult", adult);
             formData.append("child", child);
             formData.append("infant", infant);

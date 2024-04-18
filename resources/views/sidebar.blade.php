@@ -1,6 +1,6 @@
 <nav class="sidebar sidebar-bunker">
     <div class="sidebar-header">
-        <a href="search.html" class="sidebar-brand">
+        <a href="{{url('/')}}" class="sidebar-brand">
             <img class="max-h-45" src="{{ url('assets') }}/img/logo.svg" />
         </a>
     </div>
