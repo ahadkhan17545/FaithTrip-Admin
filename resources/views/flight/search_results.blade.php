@@ -166,6 +166,7 @@
                             @foreach ($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'] as $index => $data)
                                 <div class="search_result">
                                     <div class="bg-white hox list-item mb-3 rounded position-relative demo NonStop">
+
                                         <div class="m-0 align-items-center row">
                                             <div class="list-item_start text-center col-md-2">
                                                 <div class="d-flex d-md-block justify-content-center">
@@ -200,31 +201,32 @@
                                                 </div>
                                                 <div class="d-flex d-md-block gap-4 ml-auto ms-3 mt-md-3 text-center">
                                                     <a href="book-now.html" id="BookNowBtn hox" class="btn btn-primary text-uppercase font-weight-600 fs-13 btn_filters_responsive disable_book_now_cls">Book now</a>
-                                                    <a class="fli-det-link text-muted fs-14 gap-2 d-block mt-md-2 d-flex align-items-center justify-content-center mr-2 mr-md-0" data-bs-toggle="collapse" href="#collapse1_0" role="button" aria-expanded="false" aria-controls="collapse1">
+                                                    <a class="fli-det-link text-muted fs-14 gap-2 d-block mt-md-2 d-flex align-items-center justify-content-center mr-2 mr-md-0" data-bs-toggle="collapse" href="#collapse1_{{$index}}" role="button" aria-expanded="false" aria-controls="collapse1">
                                                         Flight details
                                                         <i class="fas fa-chevron-circle-down ml-1 text-success"></i>
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="collapse" id="collapse1_0">
+
+                                        <div class="collapse" id="collapse1_{{$index}}">
                                             <div class="bg-white fli-det card card-body rounded-0 border-0 p-0 pt-3 px-md-3 py-md-3">
                                                 <ul class="nav nav-tabs border-bottom-0  mb-3" role="tablist">
                                                     <li class="nav-item" role="presentation">
-                                                        <a class="nav-link rounded fs-14 font-weight-500 active" id="info-tab" data-bs-toggle="tab" href="#info_0" role="tab" aria-controls="info" aria-selected="true">Flight info</a>
+                                                        <a class="nav-link rounded fs-14 font-weight-500 active" id="info-tab" data-bs-toggle="tab" href="#info_{{$index}}" role="tab" aria-controls="info" aria-selected="true">Flight info</a>
                                                     </li>
                                                     <li class="nav-item" role="presentation">
-                                                        <a class="nav-link rounded fs-14 font-weight-500" id="fare-getails-tab" data-bs-toggle="tab" href="#fare-getails_0" role="tab" aria-controls="home" aria-selected="true">Fare details</a>
+                                                        <a class="nav-link rounded fs-14 font-weight-500" id="fare-getails-tab" data-bs-toggle="tab" href="#fare-getails_{{$index}}" role="tab" aria-controls="home" aria-selected="true">Fare details</a>
                                                     </li>
                                                     <li class="nav-item" role="presentation">
-                                                        <a class="nav-link rounded fs-14 font-weight-500" id="baggage-tab" data-bs-toggle="tab" href="#baggage_0" role="tab" aria-controls="baggage" aria-selected="false">Baggage</a>
+                                                        <a class="nav-link rounded fs-14 font-weight-500" id="baggage-tab" data-bs-toggle="tab" href="#baggage_{{$index}}" role="tab" aria-controls="baggage" aria-selected="false">Baggage</a>
                                                     </li>
                                                     <li class="nav-item" role="presentation">
-                                                        <a class="nav-link rounded fs-14 font-weight-500" id="cancellation-tab" data-bs-toggle="tab" href="#cancellation_0" role="tab" aria-controls="cancellation" aria-selected="false">Cancellation</a>
+                                                        <a class="nav-link rounded fs-14 font-weight-500" id="cancellation-tab" data-bs-toggle="tab" href="#cancellation_{{$index}}" role="tab" aria-controls="cancellation"  aria-selected="false">Cancellation</a>
                                                     </li>
                                                 </ul>
                                                 <div class="tab-content">
-                                                    <div class="tab-pane fade show active" id="info_0" role="tabpanel" aria-labelledby="info-tab">
+                                                    <div class="tab-pane fade show active" id="info_{{$index}}" role="tabpanel" aria-labelledby="info-tab">
                                                         <div class="flight-info border rounded mb-2">
                                                             <div class="flight-scroll review-article">
                                                                 <div class="align-items-center d-flex custom-gap justify-content-between w-100">
@@ -372,168 +374,148 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane fade" id="fare-getails_0" role="tabpanel"
-                                                        aria-labelledby="fare-getails-tab">
+                                                    <div class="tab-pane fade" id="fare-getails_{{$index}}" role="tabpanel" aria-labelledby="fare-getails-tab">
                                                         <div class="row">
-                                                        <div class="col-md-12">
-                                                            <table class="table table-bordered table-sm mb-0 text-center">
-                                                            <tbody>
-                                                                <tr>
-                                                                <td><b>Passenger type</b></td>
-                                                                <td><b>Base fare</b></td>
-                                                                <td><b>Tax fare</b></td>
-                                                                <td><b>Total fare</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                <td>
-                                                                    <b>
-                                                                    1
-                                                                    ADT
-                                                                    </b>
-                                                                </td>
-                                                                <td>
-                                                                    25410
-                                                                    (BDT)
-                                                                </td>
-                                                                <td>
-                                                                    12266
-                                                                    (BDT)
-                                                                </td>
-                                                                <td>
-                                                                    37676
-                                                                    (BDT)
-                                                                </td>
-                                                                </tr>
-                                                            </tbody>
-                                                            </table>
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane fade" id="baggage_0" role="tabpanel"
-                                                        aria-labelledby="baggage-tab">
-                                                        <div class="row">
-                                                        <div class="col-md-6 pr-md-2">
-                                                            <table class="table table-bordered table-sm mb-0 text-center">
-                                                            <tbody>
-                                                                <tr>
-                                                                <td>Passenger type</td>
-                                                                <td>Weight</td>
-                                                                <td>Number</td>
-                                                                </tr>
-                                                                <tr>
-                                                                <td>ADT
-                                                                </td>
-                                                                <td>
-                                                                    30
-                                                                    kg
-                                                                </td>
-                                                                <td> N/A </td>
-                                                                </tr>
-                                                            </tbody>
-                                                            </table>
-                                                        </div>
-                                                        <div class="col-md-6  pl-md-2">
-                                                            <p class="mb-0">The baggage information is just for reference please check
-                                                            with airline before check in for more information visit airlines website</p>
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane fade" id="cancellation_0" role="tabpanel"
-                                                        aria-labelledby="cancellation-tab">
-                                                        <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="table-responsive">
-                                                            <table class="table table-bordered table-sm text-center">
-                                                                <tbody>
-                                                                <tr>
-                                                                    <td>Passenger typepassenger type</td>
-                                                                    <td>Non refundable</td>
-                                                                    <td>Class</td>
-                                                                    <td>Available seats</td>
-                                                                    <td>Booking code</td>
-                                                                    <td>Meal code</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>ADT
-                                                                    </td>
-                                                                    <td>False
-                                                                    </td>
-                                                                    <td>
-                                                                    Economy
-                                                                    </td>
-                                                                    <td>
-                                                                    9
-                                                                    </td>
-                                                                    <td>
-                                                                    O
-                                                                    </td>
-                                                                    <td>
-                                                                    M
-                                                                    </td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
+                                                            <div class="col-md-12">
+                                                                <table class="table table-bordered table-sm mb-0 text-center">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td><b>Passenger type</b></td>
+                                                                            <td><b>Base fare</b></td>
+                                                                            <td><b>Tax fare</b></td>
+                                                                            <td><b>Total fare</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                @foreach ($data['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerData)
+                                                                                    <b>{{$passengerData['passengerInfo']['passengerNumber']}} {{$passengerData['passengerInfo']['passengerType']}}</b><br>
+                                                                                @endforeach
+                                                                            </td>
+                                                                            <td>
+                                                                                {{$data['pricingInformation'][0]['fare']['totalFare']['baseFareAmount']}}
+                                                                                ({{$data['pricingInformation'][0]['fare']['totalFare']['baseFareCurrency']}})
+                                                                            </td>
+                                                                            <td>
+                                                                                {{$data['pricingInformation'][0]['fare']['totalFare']['totalTaxAmount']}}
+                                                                                ({{$data['pricingInformation'][0]['fare']['totalFare']['currency']}})
+                                                                            </td>
+                                                                            <td>
+                                                                                {{$data['pricingInformation'][0]['fare']['totalFare']['totalPrice']}}
+                                                                                ({{$data['pricingInformation'][0]['fare']['totalFare']['currency']}})
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                         </div>
-                                                        <hr>
-                                                        <div class="col-md-12">
-                                                            <h6 class="my-3">Return and refund policy </h6>
-                                                            <table class="table table-bordered table-sm text-center">
-                                                            <tbody>
-                                                                <tr class="font-weight-bold">
-                                                                <td>Type</td>
-                                                                <td>Changeable before departure</td>
-                                                                <td>Penalty</td>
-                                                                <td>Changeable after departure</td>
-                                                                <td>Penalty</td>
-                                                                </tr>
-                                                            </tbody>
-                                                            </table>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="baggage_{{$index}}" role="tabpanel" aria-labelledby="baggage-tab">
+                                                        <div class="row">
+                                                            <div class="col-md-6 pr-md-2">
+                                                                <table class="table table-bordered table-sm mb-0 text-center">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>Passenger type</td>
+                                                                            <td>Weight</td>
+                                                                            <td>Provision Type</td>
+                                                                        </tr>
+                                                                        @foreach ($data['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerData)
+                                                                        <tr>
+                                                                            <td>{{$passengerData['passengerInfo']['passengerNumber']}} {{$passengerData['passengerInfo']['passengerType']}}</td>
+                                                                            <td>
+                                                                                @php
+                                                                                    $baggageRef = $passengerData['passengerInfo']['baggageInformation'][0]['allowance']['ref'] - 1;
+                                                                                    $baggageAllowance = $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef];
+                                                                                    echo ($passengerData['passengerInfo']['passengerNumber']*$baggageAllowance['weight'])." ".$baggageAllowance['unit'];
+                                                                                @endphp
+                                                                            </td>
+                                                                            <td>{{$passengerData['passengerInfo']['baggageInformation'][0]['provisionType']}} ({{$passengerData['passengerInfo']['baggageInformation'][0]['airlineCode']}})</td>
+                                                                        </tr>
+                                                                        @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="col-md-6  pl-md-2">
+                                                                <p class="mb-0">The baggage information is just for reference please check with airline before check in for more information visit airlines website</p>
+                                                            </div>
                                                         </div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="cancellation_{{$index}}" role="tabpanel" aria-labelledby="cancellation-tab">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-bordered table-sm text-center">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>Passenger type</td>
+                                                                                <td>Non refundable</td>
+                                                                                <td>Class</td>
+                                                                                <td>Available seats</td>
+                                                                                <td>Booking code</td>
+                                                                                <td>Meal code</td>
+                                                                            </tr>
+                                                                            @foreach ($data['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerData)
+                                                                            <tr>
+                                                                                <td>{{$passengerData['passengerInfo']['passengerNumber']}} {{$passengerData['passengerInfo']['passengerType']}}</td>
+                                                                                <td>
+                                                                                    @php
+                                                                                        echo $aaa = (string) $passengerData['passengerInfo']['nonRefundable'];
+                                                                                    @endphp
+                                                                                </td>
+                                                                                <td>Economy</td>
+                                                                                <td>
+                                                                                    @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $index => $segment)
+                                                                                        Segment-{{$index+1}}: {{$segment['segment']['seatsAvailable']}}&nbsp;
+                                                                                    @endforeach
+                                                                                </td>
+                                                                                <td>
+                                                                                    @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $index => $segment)
+                                                                                        Segment-{{$index+1}}: {{$segment['segment']['bookingCode']}}&nbsp;
+                                                                                    @endforeach
+                                                                                </td>
+                                                                                <td>
+                                                                                    @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $index => $segment)
+                                                                                        @if(isset($segment['segment']['mealCode']))
+                                                                                        Segment-{{$index+1}}: {{$segment['segment']['mealCode']}}&nbsp;
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                </td>
+                                                                            </tr>
+                                                                            @endforeach
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
+                                                            <hr>
+
+                                                            <div class="col-md-12">
+                                                                <h6 class="my-3">Return and refund policy </h6>
+                                                                <table class="table table-bordered table-sm text-center">
+                                                                    <tbody>
+                                                                        <tr class="font-weight-bold">
+                                                                            <td>Type</td>
+                                                                            <td>Changeable before departure</td>
+                                                                            <td>Penalty</td>
+                                                                            <td>Changeable after departure</td>
+                                                                            <td>Penalty</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
                                                         <h6>Terms &amp; Conditions</h6>
                                                         <ul>
-                                                        <li>The charges are per passenger per sector and
-                                                            applicable
-                                                            only on refundable
-                                                            type tickets.</li>
-                                                        <li>Rescheduling Charges = Rescheduling/Change
-                                                            Penalty +
-                                                            Fare Difference (if
-                                                            applicable)</li>
-                                                        <li>Partial cancellation is not allowed on tickets
-                                                            booked
-                                                            under special
-                                                            discounted fares.</li>
-                                                        <li>In case of no-show or ticket not cancelled
-                                                            within
-                                                            the
-                                                            stipulated time, only
-                                                            statutory taxes are refundable subject to
-                                                            Goibibo
-                                                            Service Fee.</li>
-                                                        <li>No Baggage Allowance for Infants</li>
-                                                        <li>In case of restricted cases , no amendments
-                                                            /cancellation allowed.</li>
-                                                        <li>Airline penalty needs to be reconfirmed prior to
-                                                            any
-                                                            amendments or
-                                                            cancellation.</li>
-                                                        <li>Disclaimer: Airline Penalty changes are
-                                                            indicative
-                                                            and
-                                                            can change without
-                                                            prior notice</li>
-                                                        <li>NA means Not Available. Please check with
-                                                            airline
-                                                            for
-                                                            penalty information.
-                                                        </li>
-                                                        <li>If taxes are more than default cancellation
-                                                            penalty
-                                                            then
-                                                            all taxes will be
-                                                            refundable.</li>
+                                                            <li>The charges are per passenger per sector and applicable only on refundable type tickets.</li>
+                                                            <li>Rescheduling Charges = Rescheduling/Change Penalty + Fare Difference (if applicable)</li>
+                                                            <li>Partial cancellation is not allowed on tickets booked under special discounted fares.</li>
+                                                            <li>In case of no-show or ticket not cancelled within the stipulated time, only statutory taxes are refundable subject to Goibibo Service Fee.</li>
+                                                            <li>No Baggage Allowance for Infants</li>
+                                                            <li>In case of restricted cases , no amendments/cancellation allowed.</li>
+                                                            <li>Airline penalty needs to be reconfirmed prior to any amendments or cancellation.</li>
+                                                            <li>Disclaimer: Airline Penalty changes are indicative and can change without prior notice</li>
+                                                            <li>NA means Not Available. Please check with airline for penalty information.</li>
+                                                            <li>If taxes are more than default cancellation penalty then all taxes will be refundable.</li>
                                                         </ul>
                                                     </div>
                                                 </div>
