@@ -47,7 +47,7 @@
     </div>
     <div class="d-none d-md-flex align-items-sm-center text-center text-sm-left fs-14">
         <div class="fli-duration">
-            <strong class="mr-1">{{convertMinutesToHoursMinutes($flightTiming['elapsedTime'])}}</strong>
+            <strong class="mr-1">{{App\Models\CustomFunction::convertMinToHrMin($flightTiming['elapsedTime'])}}</strong>
         </div>
     </div>
 </div>

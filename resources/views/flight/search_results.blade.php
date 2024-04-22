@@ -1,20 +1,5 @@
 @extends('master')
 
-@php
-    function convertMinutesToHoursMinutes($minutes) {
-        $hours = floor($minutes / 60);
-        $remainingMinutes = $minutes % 60;
-
-        if ($hours == 0) {
-            return "{$remainingMinutes}min";
-        } elseif ($remainingMinutes == 0) {
-            return "{$hours}hr";
-        } else {
-            return "{$hours}hr {$remainingMinutes}min";
-        }
-    }
-@endphp
-
 @section('content')
 <div class="row">
     <div class="search-content-wrap m-auto">
@@ -227,152 +212,84 @@
                                                 </ul>
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade show active" id="info_{{$index}}" role="tabpanel" aria-labelledby="info-tab">
+
+                                                        @php
+                                                            $segmentArray = array();
+                                                            $legsArray = $data['legs'];
+                                                            foreach ($legsArray as $key => $leg) {
+                                                                $legRef = $leg['ref'] - 1;
+                                                                $legDescription = $searchResults['groupedItineraryResponse']['legDescs'][$legRef];
+                                                                $schedulesArray = $legDescription['schedules'];
+                                                                foreach ($schedulesArray as $index => $schedule) {
+                                                                    $scheduleRef = $schedule['ref'] - 1;
+                                                                    $segmentArray[] = $searchResults['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
+                                                                }
+                                                            }
+                                                        @endphp
+
+                                                        @foreach($segmentArray as $segmentIndex => $segmentData)
                                                         <div class="flight-info border rounded mb-2">
                                                             <div class="flight-scroll review-article">
                                                                 <div class="align-items-center d-flex custom-gap justify-content-between w-100">
-                                                                <div class="align-items-center d-flex gap-4 text-center">
-                                                                    <div class="brand-img">
-                                                                    <img class
-                                                                        src="https://skytripb2cmedia.s3.ap-southeast-1.amazonaws.com/airlineLogo/WY.png"
-                                                                        onerror="this.onerror=null;this.src='https://tbbd-flight.s3.ap-southeast-1.amazonaws.com/airlines-logo/WY.png';">
+                                                                    <div class="align-items-center d-flex gap-4 text-center">
+                                                                        <div class="brand-img">
+                                                                            <img class src="{{url('airlines_logo')}}/{{$segmentData['carrier']['operating']}}.png">
+                                                                        </div>
+                                                                        <div class="airline-box">
+                                                                            <div class="font-weight-600 fs-13">{{$segmentData['carrier']['operating']}}</div>
+                                                                            <div class="font-weight-600 fs-13 text-muted w-max-content">{{$segmentData['carrier']['operatingFlightNumber']}} - {{$segmentData['carrier']['equipment']['code']}}</div>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="airline-box">
-                                                                    <div class="font-weight-600 fs-13">
-                                                                        WY
+                                                                    <div class="text-center">
+                                                                        <div class="font-weight-600 fs-13">{{$segmentData['departure']['city']}}</div>
+                                                                        <span class="fs-12 font-weight-600">{{$segmentData['departure']['time']}}</span><br>
+                                                                        <span class="text-muted fs-12">Terminal - {{isset($segmentData['departure']['terminal']) ? $segmentData['departure']['terminal'] : 'N/A'}}</span>
                                                                     </div>
-                                                                    <div class="font-weight-600 fs-13 text-muted w-max-content">
-                                                                        WY
-                                                                        -
-                                                                        318
+                                                                    <div class="text-center">
+                                                                        <div class="font-weight-600 fs-13">{{$segmentData['arrival']['city']}}</div>
+                                                                        <span class="fs-12 font-weight-600">{{$segmentData['arrival']['time']}}</span><br>
+                                                                        <span class="text-muted fs-12">Terminal - {{isset($segmentData['arrival']['terminal']) ? $segmentData['arrival']['terminal'] : 'N/A'}}</span>
                                                                     </div>
+                                                                    <div class="text-center fs-14 w-100">
+                                                                        <div class="d-flex align-items-center justify-content-center">
+                                                                            <span class="d-inline-flex align-items-center w-max-content">{{App\Models\CustomFunction::convertMinToHrMin($segmentData['elapsedTime'])}}</span>
+                                                                            <span class="d-inline-flex align-items-center w-max-content">
+                                                                                &nbsp;<span class="text-muted">|</span>&nbsp;
+                                                                                {{isset($data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['mealCode']) ? 'Meal - '.$data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['mealCode'] : 'N/A'}}
+                                                                            </span>
+                                                                            <span class="d-inline-flex align-items-center w-max-content">
+                                                                                &nbsp;<span class="text-muted">|</span>&nbsp;
+                                                                                {{isset($data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['bookingCode']) ? 'Booking Code - '.$data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['bookingCode'] : 'N/A'}}
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="two-dots my-3 text-muted position-relative border-top">
+                                                                            <span class="flight-service">
+                                                                                <span class="type-text px-2 position-relative">Flight</span>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="d-flex align-items-center justify-content-center">
+                                                                            <span class="d-inline-flex align-items-center w-max-content">
+                                                                                @php
+                                                                                    if(isset($data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][$segmentIndex]['segments'][$segmentIndex]['id'])){
+                                                                                        $baggageIndex = $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][$segmentIndex]['segments'][$segmentIndex]['id'];
+                                                                                        if(isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageIndex])){
+                                                                                            echo $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageIndex]['weight']." ".$searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageIndex]['unit'];
+                                                                                        }
+                                                                                    }
+                                                                                @endphp
+                                                                                &nbsp;
+                                                                            </span>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="text-center">
-                                                                    <div class="font-weight-600 fs-13">
-                                                                    DAC
-                                                                    </div>
-                                                                    <span class="fs-12 font-weight-600">16:20:00+06:00</span><br>
-                                                                    <span class="text-muted fs-12">
-                                                                    Terminal -
-                                                                    N/A
-                                                                    </span>
-                                                                </div>
-                                                                <div class="text-center">
-                                                                    <div class="font-weight-600 fs-13">
-                                                                    MCT
-                                                                    </div>
-                                                                    <span class="fs-12 font-weight-600">19:25:00+04:00</span><br>
-                                                                    <span class="text-muted fs-12">
-                                                                    Terminal -
-                                                                    N/A
-                                                                    </span>
-                                                                </div>
-                                                                <div class="text-center fs-14 w-100">
-                                                                    <div class="d-flex align-items-center justify-content-center">
-                                                                    <span class="d-inline-flex align-items-center w-max-content">
-                                                                        5hr 5min
-                                                                    </span>
-                                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                                        <span class="text-muted">|</span>
-                                                                        Meal -
-                                                                        M
-                                                                    </span>
-                                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                                        <span class="text-muted">|</span>&nbsp;Economy</span>
-                                                                    </div>
-                                                                    <div class="two-dots my-3 text-muted position-relative border-top">
-                                                                    <span class="flight-service">
-                                                                        <span class="type-text px-2 position-relative">Flight</span>
-                                                                    </span>
-                                                                    </div>
-                                                                    <div class="d-flex align-items-center justify-content-center">
-                                                                    <span class="d-inline-flex align-items-center w-max-content">
-                                                                        30
-                                                                        kg
-                                                                        &nbsp;</span>
-                                                                    </span>
-                                                                    </div>
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="flight-info border rounded mb-2">
-                                                            <div class="flight-scroll review-article">
-                                                                <div
-                                                                class="align-items-center d-flex custom-gap justify-content-between w-100">
-                                                                <div class="align-items-center d-flex gap-4 text-center">
-                                                                    <div class="brand-img">
-                                                                    <img class
-                                                                        src="https://skytripb2cmedia.s3.ap-southeast-1.amazonaws.com/airlineLogo/WY.png"
-                                                                        onerror="this.onerror=null;this.src='https://tbbd-flight.s3.ap-southeast-1.amazonaws.com/airlines-logo/WY.png';">
-                                                                    </div>
-                                                                    <div class="airline-box">
-                                                                    <div class="font-weight-600 fs-13">
-                                                                        WY
-                                                                    </div>
-                                                                    <div class="font-weight-600 fs-13 text-muted w-max-content">
-                                                                        WY
-                                                                        -
-                                                                        601
-                                                                    </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="text-center">
-                                                                    <div class="font-weight-600 fs-13">
-                                                                    MCT
-                                                                    </div>
-                                                                    <span class="fs-12 font-weight-600">01:55:00+04:00</span><br>
-                                                                    <span class="text-muted fs-12">
-                                                                    Terminal -
-                                                                    N/A
-                                                                    </span>
-                                                                </div>
-                                                                <div class="text-center">
-                                                                    <div class="font-weight-600 fs-13">
-                                                                    DXB
-                                                                    </div>
-                                                                    <span class="fs-12 font-weight-600">03:10:00+04:00</span><br>
-                                                                    <span class="text-muted fs-12">
-                                                                    Terminal -
-                                                                    1
-                                                                    </span>
-                                                                </div>
-                                                                <div class="text-center fs-14 w-100">
-                                                                    <div class="d-flex align-items-center justify-content-center">
-                                                                    <span class="d-inline-flex align-items-center w-max-content">
-                                                                        1hr 15min
-                                                                    </span>
-                                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                                        <span class="text-muted">|</span>
-                                                                        Meal -
-                                                                        M
-                                                                    </span>
-                                                                    <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                                        <span class="text-muted">|</span>&nbsp;Economy</span>
-                                                                    </div>
-                                                                    <div class="two-dots my-3 text-muted position-relative border-top">
-                                                                    <span class="flight-service">
-                                                                        <span class="type-text px-2 position-relative">Flight</span>
-                                                                    </span>
-                                                                    </div>
-                                                                    <div class="d-flex align-items-center justify-content-center">
-                                                                    <span class="d-inline-flex align-items-center w-max-content">
-                                                                        30
-                                                                        kg
-                                                                        &nbsp;</span>
-                                                                    </span>
-                                                                    </div>
-                                                                </div>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="d-flex justify-center px-3">
-                                                                <span class="fs-12 layover text-center">
-                                                                17hr 30min
-                                                                Layover
-                                                                </span>
-                                                            </div>
+                                                            {{-- <div class="d-flex justify-center px-3">
+                                                                <span class="fs-12 layover text-center">17hr 30min Layover</span>
+                                                            </div> --}}
                                                         </div>
+                                                        @endforeach
+
                                                     </div>
                                                     <div class="tab-pane fade" id="fare-getails_{{$index}}" role="tabpanel" aria-labelledby="fare-getails-tab">
                                                         <div class="row">
