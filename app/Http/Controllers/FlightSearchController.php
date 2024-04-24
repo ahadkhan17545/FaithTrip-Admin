@@ -85,7 +85,7 @@ class FlightSearchController extends Controller
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => json_encode(array(
                 "OTA_AirLowFareSearchRQ" => array(
-                    "Version" => "2",
+                    "Version" => "5",
                     "POS" => array(
                         "Source" => array(
                             array(
@@ -167,13 +167,38 @@ class FlightSearchController extends Controller
         $infant = $request->infant;
         $flightType = $request->flight_type;
 
+        // storing search query into session for modify search
+        session([
+            'departure_location_id' => $departureLocationId,
+            'origin_city_Code' => $originCityCode,
+            'destination_location_id' => $destinationLocationId,
+            'destination_City_Code' => $destinationCityCode,
+            'departure_date' => $departureDate,
+            'return_date' => $returnDate,
+            'adult' => $adult,
+            'child' => $child,
+            'infant' => $infant,
+            'flight_type' => $flightType,
+        ]);
+
         $searchResults = $this->getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType);
         session(['search_results' => $searchResults]);
+
+
+        // for carrier filters
+        $searchResults = json_decode($searchResults, true);
+        $operatingCodes = [];
+        foreach ($searchResults['groupedItineraryResponse']['scheduleDescs'] as $schedule) {
+            $operatingCodes[] = $schedule['carrier']['operating'];
+        }
+        $operatingCodes = array_unique($operatingCodes);
+        session(['search_results_operating_carriers' => $operatingCodes]);
 
     }
 
     public function showFlightSearchResults(){
         $searchResults = json_decode(session('search_results'), true);
-        return view('flight.search_results', compact('searchResults'));
+        $search_results_operating_carriers = session('search_results_operating_carriers');
+        return view('flight.search_results', compact('searchResults', 'search_results_operating_carriers'));
     }
 }
