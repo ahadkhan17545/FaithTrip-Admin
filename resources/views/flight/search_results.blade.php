@@ -220,7 +220,7 @@
                                                                 $legRef = $leg['ref'] - 1;
                                                                 $legDescription = $searchResults['groupedItineraryResponse']['legDescs'][$legRef];
                                                                 $schedulesArray = $legDescription['schedules'];
-                                                                foreach ($schedulesArray as $index => $schedule) {
+                                                                foreach ($schedulesArray as $schedule) {
                                                                     $scheduleRef = $schedule['ref'] - 1;
                                                                     $segmentArray[] = $searchResults['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
                                                                 }
@@ -270,12 +270,30 @@
                                                                         <div class="d-flex align-items-center justify-content-center">
                                                                             <span class="d-inline-flex align-items-center w-max-content">
                                                                                 @php
-                                                                                    // if(isset($data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][$segmentIndex]['segments'][$segmentIndex]['id'])){
-                                                                                    //     $baggageIndex = $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][$segmentIndex]['segments'][$segmentIndex]['id'];
-                                                                                    //     if(isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageIndex])){
-                                                                                    //         echo $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageIndex]['weight']." ".$searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageIndex]['unit'];
-                                                                                    //     }
-                                                                                    // }
+                                                                                    $passangerWisebaggage = $data['pricingInformation'][0]['fare']['passengerInfoList'];
+
+                                                                                    foreach ($passangerWisebaggage as $passangerWisebaggageInfo) {
+                                                                                        if(isset($passangerWisebaggageInfo['passengerInfo']['baggageInformation'][0]['allowance']['ref'])){
+                                                                                            $baggageRef = $passangerWisebaggageInfo['passengerInfo']['baggageInformation'][0]['allowance']['ref'];
+                                                                                            if(isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1])){
+
+                                                                                                echo $passangerWisebaggageInfo['passengerInfo']['passengerType']."(".$passangerWisebaggageInfo['passengerInfo']['passengerNumber']."): ";
+
+                                                                                                if(isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1]['pieceCount'])){
+                                                                                                    echo "Piece Count: ".$searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1]['pieceCount']*$passangerWisebaggageInfo['passengerInfo']['passengerNumber'];
+                                                                                                }
+                                                                                                if(isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1]['weight'])){
+                                                                                                    echo $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1]['weight']*$passangerWisebaggageInfo['passengerInfo']['passengerNumber'];
+                                                                                                }
+                                                                                                if(isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1]['unit'])){
+                                                                                                    echo " ".$searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1]['unit'];
+                                                                                                }
+
+                                                                                                echo "&nbsp;&nbsp;";
+                                                                                            }
+                                                                                        }
+                                                                                    }
+
                                                                                 @endphp
                                                                                 &nbsp;
                                                                             </span>
@@ -340,13 +358,34 @@
                                                                         <tr>
                                                                             <td>{{$passengerData['passengerInfo']['passengerNumber']}} {{$passengerData['passengerInfo']['passengerType']}}</td>
                                                                             <td>
-                                                                                {{-- @php
-                                                                                    $baggageRef = $passengerData['passengerInfo']['baggageInformation'][0]['allowance']['ref'] - 1;
-                                                                                    $baggageAllowance = $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef];
-                                                                                    echo ($passengerData['passengerInfo']['passengerNumber']*$baggageAllowance['weight'])." ".$baggageAllowance['unit'];
-                                                                                @endphp --}}
+                                                                                @php
+                                                                                    if(isset($passengerData['passengerInfo']['baggageInformation'][0]['allowance']['ref'])){
+                                                                                        $baggageRef = $passengerData['passengerInfo']['baggageInformation'][0]['allowance']['ref'];
+                                                                                        if(isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1])){
+
+                                                                                            if(isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1]['pieceCount'])){
+                                                                                                echo "Piece Count: ".$searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1]['pieceCount']*$passengerData['passengerInfo']['passengerNumber'];
+                                                                                            }
+                                                                                            if(isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1]['weight'])){
+                                                                                                echo $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1]['weight']*$passengerData['passengerInfo']['passengerNumber'];
+                                                                                            }
+                                                                                            if(isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1]['unit'])){
+                                                                                                echo $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef-1]['unit'];
+                                                                                            }
+
+                                                                                            echo "&nbsp;";
+                                                                                        }
+                                                                                    }
+                                                                                @endphp
                                                                             </td>
-                                                                            <td>{{$passengerData['passengerInfo']['baggageInformation'][0]['provisionType']}} ({{$passengerData['passengerInfo']['baggageInformation'][0]['airlineCode']}})</td>
+                                                                            <td>
+                                                                                @if(isset($passengerData['passengerInfo']['baggageInformation'][0]['provisionType']))
+                                                                                    {{$passengerData['passengerInfo']['baggageInformation'][0]['provisionType']}}
+                                                                                @endif
+                                                                                @if(isset($passengerData['passengerInfo']['baggageInformation'][0]['airlineCode']))
+                                                                                    -&nbsp;{{$passengerData['passengerInfo']['baggageInformation'][0]['airlineCode']}}
+                                                                                @endif
+                                                                            </td>
                                                                         </tr>
                                                                         @endforeach
                                                                     </tbody>
@@ -381,19 +420,19 @@
                                                                                 </td>
                                                                                 <td>Economy</td>
                                                                                 <td>
-                                                                                    @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $index => $segment)
-                                                                                        Segment-{{$index+1}}: {{$segment['segment']['seatsAvailable']}}&nbsp;
+                                                                                    @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $itemIndex => $segment)
+                                                                                        Segment-{{$itemIndex+1}}: {{$segment['segment']['seatsAvailable']}}&nbsp;
                                                                                     @endforeach
                                                                                 </td>
                                                                                 <td>
-                                                                                    @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $index => $segment)
-                                                                                        Segment-{{$index+1}}: {{$segment['segment']['bookingCode']}}&nbsp;
+                                                                                    @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $itemIndex => $segment)
+                                                                                        Segment-{{$itemIndex+1}}: {{$segment['segment']['bookingCode']}}&nbsp;
                                                                                     @endforeach
                                                                                 </td>
                                                                                 <td>
-                                                                                    @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $index => $segment)
+                                                                                    @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $itemIndex => $segment)
                                                                                         @if(isset($segment['segment']['mealCode']))
-                                                                                        Segment-{{$index+1}}: {{$segment['segment']['mealCode']}}&nbsp;
+                                                                                        Segment-{{$itemIndex+1}}: {{$segment['segment']['mealCode']}}&nbsp;
                                                                                         @endif
                                                                                     @endforeach
                                                                                 </td>
