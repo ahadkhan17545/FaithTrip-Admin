@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use DateTime;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\DB;
 
 class FlightSearchController extends Controller
 {
     public function generateAccessToken(){
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -193,6 +196,8 @@ class FlightSearchController extends Controller
         }
         $operatingCodes = array_unique($operatingCodes);
         session(['search_results_operating_carriers' => $operatingCodes]);
+        session()->forget('filter_min_price');
+        session()->forget('filter_max_price');
 
     }
 
@@ -200,5 +205,22 @@ class FlightSearchController extends Controller
         $searchResults = json_decode(session('search_results'), true);
         $search_results_operating_carriers = session('search_results_operating_carriers');
         return view('flight.search_results', compact('searchResults', 'search_results_operating_carriers'));
+    }
+
+    public function priceRangeFilter(Request $request){
+        if($request->min_price > 0){
+            session(['filter_min_price' => $request->min_price]);
+        }
+        if($request->max_price > 0){
+            session(['filter_max_price' => $request->max_price]);
+        }
+    }
+
+    public function clearPriceRangeFilter(Request $request){
+        session()->forget('filter_min_price');
+        session()->forget('filter_max_price');
+
+        Toastr::success('Filter Cleared', 'No Price Filter Added');
+        return back();
     }
 }
