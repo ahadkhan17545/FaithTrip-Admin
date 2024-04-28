@@ -21,8 +21,9 @@
 
     <div class="mb-3 d-flex justify-content-between align-items-end">
         <h4 class="fs-16 mb-0">Airline Carriers</h4>
-        <a href="javascript:void(0)" class="reset fs-13 font-weight-500" style="font-weight: 600">Clear Carrier Filter</a>
+        <a href="{{url('clear/airline/carrier/filter')}}" class="reset fs-13 font-weight-500" style="font-weight: 600">Clear Carrier Filter</a>
     </div>
+
     @if (count($search_results_operating_carriers) > 0)
         @foreach ($search_results_operating_carriers as $carrierCode)
             @php
@@ -30,7 +31,7 @@
             @endphp
             @if ($carrierCodeInfo)
                 <div class="custom-control custom-checkbox fs-14 d-flex check-area">
-                    <input id="airline-{{ $carrierCode }}" type="checkbox" value="{{ $carrierCode }}" class="custom-control-input px-2 single-check">
+                    <input id="airline-{{ $carrierCode }}" onclick="airlineCarrierFilter('{{ $carrierCode }}')" type="checkbox" value="{{ $carrierCode }}" class="custom-control-input px-2 single-check">
                     <label class="custom-control-label px-2  d-flex align-items-center" for="airline-{{ $carrierCode }}">
                         <span class="checkbox-img d-flex align-items-center position-relative overflow-hidden">
                             <img src="{{ url('airlines_logo') }}/{{ $carrierCode }}.png">

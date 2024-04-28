@@ -447,6 +447,11 @@
                 return false;
             }
 
+            if(departureLocationId == destinationLocationId){
+                toastr.error("Departure & Destination Cannot be Same");
+                return false;
+            }
+
 
             $(".page-loader-wrapper").show();
 

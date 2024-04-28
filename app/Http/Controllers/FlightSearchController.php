@@ -160,9 +160,11 @@ class FlightSearchController extends Controller
 
 
         $departureLocationId = $request->departure_location_id;
-        $originCityCode = DB::table('city_airports')->where('id', $departureLocationId)->first()->city_code;
+        $originCityInfo = DB::table('city_airports')->where('id', $departureLocationId)->first();
+        $originCityCode = $originCityInfo->city_code;
         $destinationLocationId = $request->destination_location_id;
-        $destinationCityCode = DB::table('city_airports')->where('id', $destinationLocationId)->first()->city_code;
+        $destinationCityInfo = DB::table('city_airports')->where('id', $destinationLocationId)->first();
+        $destinationCityCode = $destinationCityInfo->city_code;
         $departureDate = date("Y-m-d", strtotime($request->departure_date));
         $returnDate = date("Y-m-d", strtotime($request->return_date));
         $adult = $request->adult;
@@ -173,9 +175,9 @@ class FlightSearchController extends Controller
         // storing search query into session for modify search
         session([
             'departure_location_id' => $departureLocationId,
-            'origin_city_Code' => $originCityCode,
+            'origin_city_name' => $originCityInfo->city_name,
             'destination_location_id' => $destinationLocationId,
-            'destination_City_Code' => $destinationCityCode,
+            'destination_city_name' => $destinationCityInfo->city_name,
             'departure_date' => $departureDate,
             'return_date' => $returnDate,
             'adult' => $adult,
@@ -191,14 +193,16 @@ class FlightSearchController extends Controller
         // for carrier filters
         $searchResults = json_decode($searchResults, true);
         $operatingCodes = [];
-        foreach ($searchResults['groupedItineraryResponse']['scheduleDescs'] as $schedule) {
-            $operatingCodes[] = $schedule['carrier']['operating'];
+        if(isset($searchResults['groupedItineraryResponse'])){
+            foreach ($searchResults['groupedItineraryResponse']['scheduleDescs'] as $schedule) {
+                $operatingCodes[] = $schedule['carrier']['operating'];
+            }
         }
         $operatingCodes = array_unique($operatingCodes);
         session(['search_results_operating_carriers' => $operatingCodes]);
         session()->forget('filter_min_price');
         session()->forget('filter_max_price');
-
+        session()->forget('airline_carrier_code');
     }
 
     public function showFlightSearchResults(){
@@ -221,6 +225,39 @@ class FlightSearchController extends Controller
         session()->forget('filter_max_price');
 
         Toastr::success('Filter Cleared', 'No Price Filter Added');
+        return back();
+    }
+
+    public function airlineCarrierFilter(Request $request){
+
+        if($request->type == 'add'){
+            if(session('airline_carrier_code')){
+                $airlineCarrierFilterArray = array();
+                $airlineCarrierFilterArray = session('airline_carrier_code');
+                if (!in_array($request->airline_carrier_code, $airlineCarrierFilterArray)) {
+                    $airlineCarrierFilterArray[] = $request->airline_carrier_code;
+                }
+                session(['airline_carrier_code' => $airlineCarrierFilterArray]);
+            } else {
+                $airlineCarrierFilterArray = array();
+                $airlineCarrierFilterArray[] = $request->airline_carrier_code;
+                session(['airline_carrier_code' => $airlineCarrierFilterArray]);
+            }
+        } else {
+            $airlineCarrierFilterArray = session('airline_carrier_code');
+            $key = array_search($request->airline_carrier_code, $airlineCarrierFilterArray);
+            if ($key !== false) {
+                unset($airlineCarrierFilterArray[$key]);
+            }
+            session(['airline_carrier_code' => $airlineCarrierFilterArray]);
+        }
+
+    }
+
+    public function clearAirlineCarrierFilter(Request $request){
+        session()->forget('airline_carrier_code');
+
+        Toastr::success('Filter Cleared', 'No Airline Carrier Selected');
         return back();
     }
 }

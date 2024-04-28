@@ -1,5 +1,45 @@
 @extends('master')
 
+@section('header_css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-selection{
+            position: relative !important;
+            box-shadow: none !important;
+        }
+
+        .select2-selection__rendered{
+            position: absolute !important;
+            top: 42px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 230px;
+            padding-left: 20px !important;
+        }
+
+        .select2-container .select2-selection--single .select2-selection__rendered{
+            padding-left: 20px !important;
+        }
+
+        .select2-container--open .select2-dropdown{
+            top: 45px !important;
+        }
+
+        .select2-selection__arrow{
+            display: none;
+        }
+
+        .select2-selection__placeholder{
+            font-weight: 600;
+        }
+
+        .input-group{
+            height: 76px
+        }
+    </style>
+@endsection
+
 @section('content')
 
     <div class="row">
@@ -42,18 +82,21 @@
                                                                 @php
                                                                     $departureLocation = DB::table('city_airports')
                                                                         ->where('city_code', $data['departureLocation'])
+                                                                        ->orWhere('airport_code', $data['departureLocation'])
                                                                         ->first();
                                                                     $arrivalLocation = DB::table('city_airports')
                                                                         ->where('city_code', $data['arrivalLocation'])
+                                                                        ->orWhere('airport_code', $data['arrivalLocation'])
                                                                         ->first();
                                                                 @endphp
+
                                                                 {{ $departureLocation->city_name }},
                                                                 {{ $departureLocation->country_name }}
                                                                 ({{ $departureLocation->city_code }})
                                                                 <i class="fas fa-plane-departure"></i>
-                                                                {{ $arrivalLocation->city_name }},
-                                                                {{ $arrivalLocation->country_name }}
-                                                                ({{ $arrivalLocation->city_code }}),
+                                                                {{ $arrivalLocation ? $arrivalLocation->city_name : '' }},
+                                                                {{ $arrivalLocation ? $arrivalLocation->country_name : '' }}
+                                                                ({{ $arrivalLocation ? $arrivalLocation->city_code : '' }}),
                                                                 <i class="fa fa-calendar" aria-hidden="true"></i>
                                                                 {{ date('d-m-Y', strtotime($data['departureDate'])) }}
                                                             @endforeach
@@ -92,22 +135,55 @@
                                         $totalPrice = $data['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
                                         $minPrice = session('filter_min_price');
                                         $maxPrice = session('filter_max_price');
+                                        $airlineCarrierFilterArray = session('airline_carrier_code');
                                     @endphp
 
                                     @if (($minPrice && $minPrice > 0) && (!$maxPrice && $maxPrice == 0))
                                         @if ($totalPrice >= $minPrice)
-                                            @include('flight.result_row')
+
+                                            @if(session('airline_carrier_code') && in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                                @include('flight.result_row')
+                                            @endif
+
+                                            @if(!session('airline_carrier_code'))
+                                                @include('flight.result_row')
+                                            @endif
+
                                         @endif
                                     @elseif (($maxPrice && $maxPrice > 0) && (!$minPrice && $minPrice == 0))
                                         @if ($totalPrice <= $maxPrice)
-                                            @include('flight.result_row')
+
+                                            @if(session('airline_carrier_code') && in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                                @include('flight.result_row')
+                                            @endif
+
+                                            @if(!session('airline_carrier_code'))
+                                                @include('flight.result_row')
+                                            @endif
+
                                         @endif
                                     @elseif (($minPrice && $minPrice > 0) && ($maxPrice && $maxPrice > 0))
                                         @if ($totalPrice >= $minPrice && $totalPrice <= $maxPrice)
-                                            @include('flight.result_row')
+
+                                            @if(session('airline_carrier_code') && in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                                @include('flight.result_row')
+                                            @endif
+
+                                            @if(!session('airline_carrier_code'))
+                                                @include('flight.result_row')
+                                            @endif
+
                                         @endif
                                     @else
-                                        @include('flight.result_row')
+
+                                        @if(session('airline_carrier_code') && in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                            @include('flight.result_row')
+                                        @endif
+
+                                        @if(!session('airline_carrier_code'))
+                                            @include('flight.result_row')
+                                        @endif
+
                                     @endif
 
                                 @endforeach
@@ -137,7 +213,93 @@
 @endsection
 
 @section('footer_js')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script>
+
+        $('.oneway_from').select2({
+            placeholder: 'Search Departure City/Airport',
+            minimumInputLength: 2,
+            ajax: {
+                url: '/live/city/airport/search',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.search_result,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $('.oneway_to').select2({
+            placeholder: 'Search Destination City/Airport',
+            minimumInputLength: 2,
+            ajax: {
+                url: '/live/city/airport/search',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.search_result,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $('.round_trip_from').select2({
+            placeholder: 'Search Depart. City/Airport',
+            minimumInputLength: 2,
+            ajax: {
+                url: '/live/city/airport/search',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.search_result,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $('.round_trip_to').select2({
+            placeholder: 'Search Dest. City/Airport',
+            minimumInputLength: 2,
+            ajax: {
+                url: '/live/city/airport/search',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.search_result,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+
         function priceRangeFilter(){
 
             var minPrice = Number($("#filter_min_price").val());
@@ -172,6 +334,130 @@
                     }
                 });
             }
+        }
+
+        function airlineCarrierFilter(carrierCode){
+            if(!carrierCode || carrierCode == '' || carrierCode == null){
+                toastr.error("Airline Carrier Code is Null");
+                return false;
+            } else {
+
+                $(".page-loader-wrapper").show();
+
+                var formData = new FormData();
+                formData.append("airline_carrier_code", carrierCode);
+                if($("#airline-"+carrierCode).is(":checked")){
+                    formData.append("type", 'add');
+                } else {
+                    formData.append("type", 'remove');
+                }
+
+                $.ajax({
+                    data: formData,
+                    url: "{{ url('airline/carrier/filter') }}",
+                    type: "POST",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        $(".page-loader-wrapper").hide();
+                        location.reload();
+                    },
+                    error: function (data) {
+                        $(".page-loader-wrapper").hide();
+                        toastr.error("Someting Went Wrong! Please Try Again");
+                    }
+                });
+            }
+        }
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        function searchForFlights(flightType){
+
+            var flightType = flightType;// 1=>Oneway; 2=>Return
+            let returnDate = '';
+
+            if(flightType == 1){
+                var departureLocationId = $("#oneway_from").val();
+                var destinationLocationId = $("#oneway_to").val();
+                var departureDate = document.querySelector('#oneWayDatePicker .t-check-in input[name="t-start"]').value;
+                var adult = Number($("#oneway-adult-input").val());
+                var child = Number($("#oneway-child-input").val());
+                var infant = Number($("#oneway-infant-input").val());
+            } else {
+                var departureLocationId = $("#round_trip_from").val();
+                var destinationLocationId = $("#round_trip_to").val();
+                var departureDate = document.querySelector('#roundDatePicker .t-check-in input[name="t-start"]').value;
+                returnDate = document.querySelector('#roundDatePicker .t-check-out input[name="t-end"]').value;
+                var adult = Number($("#round-adult-input").val());
+                var child = Number($("#round-child-input").val());
+                var infant = Number($("#round-infant-input").val());
+            }
+
+
+            if(!departureLocationId){
+                toastr.error("Departure Location is missing");
+                return false;
+            }
+            if(!destinationLocationId){
+                toastr.error("Destination Location is missing");
+                return false;
+            }
+            if(departureDate == ''){
+                toastr.error("Departure Date is missing");
+                return false;
+            }
+            if(flightType == 2 && returnDate == ''){
+                toastr.error("Return Date is mendatory for Round Trip");
+                return false;
+            }
+            if((adult+child+infant) <= 0){
+                toastr.error("Please Provide Passanger Information");
+                return false;
+            }
+
+            if(departureLocationId == destinationLocationId){
+                toastr.error("Departure & Destination Cannot be Same");
+                return false;
+            }
+
+
+            $(".page-loader-wrapper").show();
+
+            var formData = new FormData();
+            formData.append("flight_type", flightType);
+            formData.append("departure_location_id", departureLocationId);
+            formData.append("destination_location_id", destinationLocationId);
+            formData.append("departure_date", departureDate);
+            formData.append("return_date", returnDate);
+            formData.append("adult", adult);
+            formData.append("child", child);
+            formData.append("infant", infant);
+
+            $.ajax({
+                data: formData,
+                url: "{{ url('search/flights') }}",
+                type: "POST",
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    $(".page-loader-wrapper").hide();
+                    // window.location.href = "/flight/search-results";
+                    location.reload();
+                },
+                error: function (data) {
+                    // console.log('Error:', data);
+                    $(".page-loader-wrapper").hide();
+                    toastr.error("Someting Went Wrong! Please Try Again");
+                }
+            });
+
         }
     </script>
 @endsection

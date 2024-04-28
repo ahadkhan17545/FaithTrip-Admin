@@ -1,4 +1,3 @@
-1. Null Search Results Check
-2. Return Refund Policy
-3. Roundtrip
-4. Modify Search
+1. Return Refund Policy
+2. Modify Search
+3. User Profile
