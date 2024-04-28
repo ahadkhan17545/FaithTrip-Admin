@@ -20,7 +20,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/live/city/airport/search', [HomeController::class, 'liveCityAirportSearch'])->name('LiveCityAirportSearch');
 
 
-Route::group(['middleware' => ['auth', 'CheckUserType']], function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::post('/search/flights', [FlightSearchController::class, 'searchFlights'])->name('SearchFlights');
     Route::get('/flight/search-results', [FlightSearchController::class, 'showFlightSearchResults'])->name('ShowFlightSearchResults');
 
