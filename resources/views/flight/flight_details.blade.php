@@ -52,8 +52,7 @@
                                 <div
                                     class="align-items-center d-flex gap-4 text-center">
                                     <div class="brand-img">
-                                        <img
-                                            src="{{ url('airlines_logo') }}/{{ $segmentData['carrier']['operating'] }}.png">
+                                        <img src="{{ url('airlines_logo') }}/{{ strtolower($segmentData['carrier']['operating']) }}.png">
                                     </div>
                                     <div class="airline-box">
                                         <div class="font-weight-600 fs-13">
