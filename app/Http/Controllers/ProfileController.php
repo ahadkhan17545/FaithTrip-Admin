@@ -86,4 +86,8 @@ class ProfileController extends Controller
 
         }
     }
+
+    public function myProfile(){
+        return view('profile.user');
+    }
 }

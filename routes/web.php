@@ -31,9 +31,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/airline/carrier/filter', [FlightSearchController::class, 'airlineCarrierFilter'])->name('AirlineCarrierFilter');
     Route::get('/clear/airline/carrier/filter', [FlightSearchController::class, 'clearAirlineCarrierFilter'])->name('ClearAirlineCarrierFilter');
 
-    // profile routes
+    // company profile routes
     Route::get('/company/profile', [ProfileController::class, 'companyProfile'])->name('CompanyProfile');
     Route::post('/update/company/profile', [ProfileController::class, 'updateCompanyProfile'])->name('UpdateCompanyProfile');
     Route::get('/remove/company/logo', [ProfileController::class, 'removeCompanyLogo'])->name('RemoveCompanyLogo');
+
+    // user profile routes
+    Route::get('/my/profile', [ProfileController::class, 'myProfile'])->name('MyProfile');
+    
 });
 

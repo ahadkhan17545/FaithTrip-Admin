@@ -14,14 +14,16 @@
     </div>
     <div class="profile-element d-block align-items-center flex-shrink-0">
         <div class="avatar online mb-2">
-            <img src="{{ url('assets') }}/img/user.jpg" class="img-fluid rounded-circle" />
+            <img src="{{ url('assets') }}/img/user.jpg" class="img-fluid rounded-circle w-100 h-100" />
         </div>
-        <div class="profile-text text-center">
+        <div class="profile-text text-center" style="margin-left: 0px;">
             <h6 class="m-0">{{ Auth::user()->name }}</h6>
+            @if($companyProfile && $companyProfile->name)
             <span class="text-muted">
-                <i class="typcn typcn-media-record text-success"></i>
-                Administrator
+                {{-- <i class="typcn typcn-media-record text-success"></i> --}}
+                {{ $companyProfile->name }}
             </span>
+            @endif
         </div>
     </div>
     <div class="sidebar-body">
