@@ -53,8 +53,9 @@ class ProfileController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
-            Toastr::success('Company Profile Updated', 'Success');
-            return back();
+            $companyProfile = CompanyProfile::where('user_id', Auth::user()->id)->first();
+            $successMsg = "Company Profile Updated";
+            return view('profile.company', compact('companyProfile', 'successMsg'));
 
         } else {
 
@@ -79,8 +80,9 @@ class ProfileController extends Controller
                 'created_at' => Carbon::now(),
             ]);
 
-            Toastr::success('Company Profile Created', 'Success');
-            return back();
+            $companyProfile = CompanyProfile::where('user_id', Auth::user()->id)->first();
+            $successMsg = "Company Profile Updated";
+            return view('profile.company', compact('companyProfile', 'successMsg'));
 
         }
     }

@@ -8,8 +8,8 @@
                 @csrf
                 <div class="card">
                     <div class="card-header">
-                        <div class="alert alert-warning" role="alert">
-                            <h4 class="alert-heading">Edit Company Profile</h4>
+                        <div class="alert alert-success" role="alert">
+                            <h4 class="alert-heading">Company Profile</h4>
                         </div>
                     </div>
                     <div class="card-body">
@@ -65,4 +65,12 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('footer_js')
+    @if(isset($successMsg))
+        <script>
+            toastr.success("Company Profile Updated");
+        </script>
+    @endif
 @endsection
