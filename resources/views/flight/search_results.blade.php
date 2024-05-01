@@ -213,6 +213,7 @@
 @endsection
 
 @section('footer_js')
+    <script src="{{ url('assets') }}/module-assets/js/booking/search_box.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script>
 

@@ -1,7 +1,15 @@
+@php
+    $companyProfile = App\Models\CompanyProfile::where('user_id', Auth::user()->id)->first();
+@endphp
+
 <nav class="sidebar sidebar-bunker">
     <div class="sidebar-header">
         <a href="{{url('/')}}" class="sidebar-brand">
-            <img class="max-h-45" src="{{ url('assets') }}/img/logo.svg" />
+            @if($companyProfile && $companyProfile->logo && file_exists(public_path($companyProfile->logo)))
+                <img class="max-h-45" src="{{url($companyProfile->logo)}}" />
+            @else
+                <img class="max-h-45" src="{{ url('assets') }}/img/logo.svg" />
+            @endif
         </a>
     </div>
     <div class="profile-element d-block align-items-center flex-shrink-0">

@@ -43,6 +43,11 @@
     <link href="{{ url('assets') }}/module-assets//css/booking/search_box.css?v=8" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets') }}/module-assets//css/booking/search_box_custom.min.css?v=8" rel="stylesheet" type="text/css" />
 
+    <style>
+        .body-content {
+            padding: 1.5rem;
+        }
+    </style>
     @yield('header_css')
 
 </head>
@@ -139,7 +144,7 @@
     <script src="{{ url('assets') }}/admin-assets/vendor/moment/moment.min.js"></script>
     <script src="{{ url('assets') }}/admin-assets/vendor/daterangepicker/daterangepicker.min.js"></script>
     <script src="{{ url('assets') }}/admin-assets/js/ajax_form_submission.min.js"></script>
-    <script src="{{ url('assets') }}/module-assets/js/booking/search_box.js"></script>
+    {{-- <script src="{{ url('assets') }}/module-assets/js/booking/search_box.js"></script> --}}
     <script src="{{ url('assets') }}/module-assets/js/booking/booking.min.js"></script>
     <script src="{{ url('assets') }}/module-assets/js/setting/setting.min.js"></script>
     <script src="{{ url('assets') }}/nanopkg-assets/js/main.min.js"></script>
