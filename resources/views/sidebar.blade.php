@@ -14,7 +14,13 @@
     </div>
     <div class="profile-element d-block align-items-center flex-shrink-0">
         <div class="avatar online mb-2">
-            <img src="{{ url('assets') }}/img/user.jpg" class="img-fluid rounded-circle w-100 h-100" />
+
+            @if(Auth::user()->image && file_exists(public_path(Auth::user()->image)))
+                <img src="{{ url(Auth::user()->image) }}" class="img-fluid rounded-circle w-100 h-100"/>
+            @else
+                <img src="{{ url('assets') }}/img/user.jpg" class="img-fluid rounded-circle w-100 h-100"/>
+            @endif
+
         </div>
         <div class="profile-text text-center" style="margin-left: 0px;">
             <h6 class="m-0">{{ Auth::user()->name }}</h6>

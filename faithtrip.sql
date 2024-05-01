@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2024 at 01:43 PM
+-- Generation Time: May 01, 2024 at 09:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -15200,6 +15200,13 @@ CREATE TABLE `company_profiles` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `company_profiles`
+--
+
+INSERT INTO `company_profiles` (`id`, `user_id`, `name`, `logo`, `address`, `phone`, `email`, `tin`, `bin`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Getup Ltd.', NULL, 'Dhaka, Bangladesh', 'getuplimited@gmail.com', 'getuplimited@gmail.com', '45874589654', 'AAFFWE-12548', '2024-05-01 15:26:17', '2024-05-01 19:18:40');
+
 -- --------------------------------------------------------
 
 --
@@ -15291,8 +15298,10 @@ CREATE TABLE `personal_access_tokens` (
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `phone` varchar(255) DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
@@ -15304,8 +15313,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'admin@gmail.com', '2024-03-27 05:27:23', '$2y$10$JtmbfwKyLz4moqNiYTHnNudFYY5sSxhozz.jyo4gwdbGOpfjlW5tq', NULL, '2024-03-27 05:27:23', NULL);
+INSERT INTO `users` (`id`, `image`, `name`, `email`, `phone`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'userImages/YUuex1714591027.jpg', 'Md Fahim Hossain', 'admin@gmail.com', '01969005035', '2024-03-27 05:27:23', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, '2024-03-27 05:27:23', '2024-05-01 19:18:49');
 
 --
 -- Indexes for dumped tables
@@ -15389,7 +15398,7 @@ ALTER TABLE `city_airports`
 -- AUTO_INCREMENT for table `company_profiles`
 --
 ALTER TABLE `company_profiles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`

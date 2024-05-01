@@ -25,7 +25,7 @@
                                         <input type="email" name="email" @if($companyProfile) value="{{$companyProfile->email}}" @endif id="email" class="form-control" placeholder="Email" required="">
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="phone" class="col-form-label fw-bold justify-content-start d-flex">Company phone <i class="text-danger">*</i></label>
+                                        <label for="phone" class="col-form-label fw-bold justify-content-start d-flex">Company Phone <i class="text-danger">*</i></label>
                                         <input type="text" name="phone" @if($companyProfile) value="{{$companyProfile->email}}" @endif id="phone" class="form-control" placeholder="Phone Number" required="">
                                     </div>
                                     <div class="col-md-12">
@@ -43,15 +43,15 @@
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label for="tin" class="col-form-label fw-bold justify-content-start d-flex">TIN No</label>
+                                        <label for="tin" class="col-form-label fw-bold justify-content-start d-flex">Tax Identification No (TIN)</label>
                                         <input type="text" name="tin" id="tin" class="form-control" placeholder="TIN No" @if($companyProfile) value="{{$companyProfile->tin}}" @endif>
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="bin" class="col-form-label fw-bold justify-content-start d-flex">BIN No</label>
+                                        <label for="bin" class="col-form-label fw-bold justify-content-start d-flex">Business Identification No (BIN)</label>
                                         <input type="text" name="bin" id="bin" class="form-control" placeholder="BIN No" @if($companyProfile) value="{{$companyProfile->bin}}" @endif>
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="address" class="col-form-label fw-bold justify-content-start d-flex">Address <i class="text-danger">*</i></label>
+                                        <label for="address" class="col-form-label fw-bold justify-content-start d-flex">Company Address <i class="text-danger">*</i></label>
                                         <textarea name="address" rows="4" id="address" class="form-control" placeholder="Address">@if($companyProfile){{$companyProfile->address}}@endif</textarea>
                                     </div>
                                 </div>
@@ -68,7 +68,7 @@
 @endsection
 
 @section('footer_js')
-    @if(isset($successMsg))
+    @if ($errors->any())
         <script>
             toastr.success("Company Profile Updated");
         </script>

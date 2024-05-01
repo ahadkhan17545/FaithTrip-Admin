@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\CompanyProfile;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class ProfileController extends Controller
@@ -24,8 +26,7 @@ class ProfileController extends Controller
             $companyProfile->updated_at = Carbon::now();
             $companyProfile->save();
         }
-        Toastr::success('Company Brand Logo Removed', 'Success');
-        return back();
+        return redirect()->back()->withErrors(['success_message' => 'Company Profile Updated']);
     }
 
     public function updateCompanyProfile(Request $request){
@@ -53,9 +54,7 @@ class ProfileController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
-            $companyProfile = CompanyProfile::where('user_id', Auth::user()->id)->first();
-            $successMsg = "Company Profile Updated";
-            return view('profile.company', compact('companyProfile', 'successMsg'));
+            return redirect()->back()->withErrors(['success_message' => 'Company Profile Updated']);
 
         } else {
 
@@ -80,9 +79,7 @@ class ProfileController extends Controller
                 'created_at' => Carbon::now(),
             ]);
 
-            $companyProfile = CompanyProfile::where('user_id', Auth::user()->id)->first();
-            $successMsg = "Company Profile Updated";
-            return view('profile.company', compact('companyProfile', 'successMsg'));
+            return redirect()->back()->withErrors(['success_message' => 'Company Profile Updated']);
 
         }
     }
@@ -90,4 +87,57 @@ class ProfileController extends Controller
     public function myProfile(){
         return view('profile.user');
     }
+
+    public function updateProfile(Request $request){
+
+        $userProfile = User::where('id', Auth::user()->id)->first();
+
+        $image = $userProfile->image;
+        if ($request->hasFile('image')){
+            $get_image = $request->file('image');
+            $image_name = str::random(5) . time() . '.' . $get_image->getClientOriginalExtension();
+            $location = public_path('userImages/');
+            $get_image->move($location, $image_name);
+            $image = "userImages/" . $image_name;
+        }
+
+        User::where('id', Auth::user()->id)->update([
+            'image' => $image,
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'updated_at' => Carbon::now(),
+        ]);
+
+        if($request->curent_password && $request->new_password){
+            if (Hash::check($request->curent_password, Auth::user()->password)){
+                
+                User::where('id', Auth::user()->id)->update([
+                    'password' => Hash::make($request->new_password),
+                ]);
+
+            } else {
+                return redirect()->back()->withErrors(['error_message' => 'Wrong Current Password']);
+            }
+
+        }
+
+        Toastr::success('User Profile Updated', 'Success');
+        return back();
+
+    }
+
+    public function removeUserImage(){
+        $userProfile = User::where('id', Auth::user()->id)->first();
+        if (file_exists(public_path($userProfile->image))){
+            unlink(public_path($userProfile->image));
+            $userProfile->image = null;
+            $userProfile->updated_at = Carbon::now();
+            $userProfile->save();
+        }
+
+        Toastr::success('User Profile Updated', 'Success');
+        return back();
+
+    }
+
 }

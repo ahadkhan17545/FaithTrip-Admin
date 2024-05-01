@@ -6,9 +6,14 @@
     <div class="navbar-icon d-flex">
         <ul class="navbar-nav flex-row align-items-center">
             <li class="nav-item dropdown notification user-header-menu">
-                <a class="nav-link dropdown-toggle p-0" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <img class="img-fluid rounded-circle" src="{{ url('assets') }}/img/user.jpg" />
+                <a class="nav-link dropdown-toggle p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                    @if(Auth::user()->image && file_exists(public_path(Auth::user()->image)))
+                        <img src="{{ url(Auth::user()->image) }}" class="img-fluid rounded-circle"/>
+                    @else
+                        <img src="{{ url('assets') }}/img/user.jpg" class="img-fluid rounded-circle"/>
+                    @endif
+    
                 </a>
                 <div class="dropdown-menu">
                     <div class="dropdown-header d-sm-none">
@@ -16,10 +21,28 @@
                     </div>
                     <div class="user-header">
                         <div class="img-user">
-                            <img src="{{ url('assets') }}/img/user.jpg" />
+
+                            @if(Auth::user()->image && file_exists(public_path(Auth::user()->image)))
+                                <img src="{{ url(Auth::user()->image) }}" />
+                            @else
+                                <img src="{{ url('assets') }}/img/user.jpg" />
+                            @endif
+                            
                         </div>
                         <h6>{{ Auth::user()->name }}</h6>
-                        <span><a href="#" class="__cf_email__">{{ Auth::user()->email }}</a></span>
+
+                        @php
+                            $companyProfile = App\Models\CompanyProfile::where('user_id', Auth::user()->id)->first();
+                        @endphp
+
+                        @if($companyProfile && $companyProfile->name)
+                        <span>
+                            <a href="#" class="__cf_email__">
+                            {{ $companyProfile->name }}
+                            </a>
+                        </span>
+                        @endif
+
                     </div>
                     <a href="{{url('my/profile')}}" class="dropdown-item">
                         <i class="typcn typcn-user-outline"></i>

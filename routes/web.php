@@ -38,6 +38,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // user profile routes
     Route::get('/my/profile', [ProfileController::class, 'myProfile'])->name('MyProfile');
+    Route::post('update/user/profile', [ProfileController::class, 'updateProfile'])->name('UpdateProfile');
+    Route::get('/remove/user/image', [ProfileController::class, 'removeUserImage'])->name('RemoveUserImage');
     
 });
 
