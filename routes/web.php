@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FlightSearchController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\GdsController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -40,6 +41,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/my/profile', [ProfileController::class, 'myProfile'])->name('MyProfile');
     Route::post('update/user/profile', [ProfileController::class, 'updateProfile'])->name('UpdateProfile');
     Route::get('/remove/user/image', [ProfileController::class, 'removeUserImage'])->name('RemoveUserImage');
+
+    // setup gds routes
+    Route::get('setup/gds', [GdsController::class, 'setupGds'])->name('SetupGds');
     
 });
 

@@ -132,12 +132,12 @@
                 </li>
                 <li>
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
-                        <i class="typcn typcn-plane-outline"></i> Airline setup
+                        <i class="typcn typcn-plane-outline"></i> Airline Setup
                     </a>
                     <ul class="nav-second-level">
                         <li class>
-                            <a class="text-capitalize" href="./setup/gds-setting.html">
-                                Gds setting
+                            <a class="text-capitalize" href="{{url('setup/gds')}}">
+                                Gds Setting
                             </a>
                         </li>
                         <li class>

@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="alert alert-success" role="alert">
-                            <h4 class="alert-heading">Company Profile</h4>
+                            <h4 class="alert-heading mb-0">Company Profile</h4>
                         </div>
                     </div>
                     <div class="card-body">

@@ -8,9 +8,9 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-4">
-                                <div>
-                                    <h6 class="fs-17 fw-semi-bold mb-0">Profile</h6>
+                            <div class="col-12">
+                                <div class="alert alert-success mb-0">
+                                    <h6 class="fs-17 fw-semi-bold mb-0">My Profile</h6>
                                 </div>
                             </div>
                         </div>
@@ -22,7 +22,7 @@
 
                                     @if(Auth::user()->image && file_exists(public_path(Auth::user()->image)))
                                         <img src="{{ url(Auth::user()->image) }}" class="avatar avatar-xl rounded-circle img-border height-100 mb-2">
-                                        <a href="{{url('remove/user/image')}}" class="profile-image">❌ Remove</a>
+                                        <a href="{{url('remove/user/image')}}" class="profile-image" style="border: 1px solid #d22929; padding: 2px 8px; border-radius: 4px; font-size: 12px;">❌ Remove Photo</a>
                                     @else
                                         <img src="{{ url('assets') }}/img/user.jpg" class="avatar avatar-xl rounded-circle img-border height-100 mb-2">
                                     @endif
