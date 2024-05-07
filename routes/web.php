@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FlightSearchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GdsController;
+use App\Http\Controllers\CkeditorController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -20,6 +21,9 @@ Auth::routes([
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/live/city/airport/search', [HomeController::class, 'liveCityAirportSearch'])->name('LiveCityAirportSearch');
+
+Route::get('ckeditor', [CkeditorController::class, 'index']);
+Route::post('ckeditor/upload', [CkeditorController::class, 'upload'])->name('ckeditor.upload');
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -44,6 +48,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     // setup gds routes
     Route::get('setup/gds', [GdsController::class, 'setupGds'])->name('SetupGds');
+    Route::post('gds/status/update', [GdsController::class, 'gdsStatusUpdate'])->name('GdsStatusUpdate');
+    Route::get('edit/gds/{code}', [GdsController::class, 'editGdsInfo'])->name('EditGdsInfo');
+    Route::post('update/sabre/gds/info', [GdsController::class, 'updateSabreGdsInfo'])->name('UpdateSabreGdsInfo');
     
 });
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2024 at 01:39 PM
+-- Generation Time: May 07, 2024 at 12:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -15226,6 +15226,32 @@ CREATE TABLE `failed_jobs` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `gds`
+--
+
+CREATE TABLE `gds` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `logo` varchar(255) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `serial` double NOT NULL DEFAULT 1,
+  `status` tinyint(4) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `gds`
+--
+
+INSERT INTO `gds` (`id`, `name`, `code`, `logo`, `description`, `serial`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Amadeus GDS API', 'amadeus', 'gds_logo/amadeus.png', 'To configure or setup credentials click on settings', 1, 0, '2024-05-07 10:18:38', '2024-05-07 10:39:26'),
+(2, 'Sabre GDS API', 'sabre', 'gds_logo/sabre.jpg', 'To configure or setup credentials click on settings', 2, 1, '2024-05-07 10:19:18', '2024-05-07 10:39:28');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -15245,7 +15271,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (3, '2014_10_12_100000_create_password_resets_table', 1),
 (4, '2019_08_19_000000_create_failed_jobs_table', 1),
 (5, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(6, '2024_04_28_153555_create_company_profiles_table', 2);
+(6, '2024_04_28_153555_create_company_profiles_table', 2),
+(7, '2024_05_07_161536_create_gds_table', 3),
+(8, '2024_05_07_164600_create_sabre_gds_configs_table', 4);
 
 -- --------------------------------------------------------
 
@@ -15289,6 +15317,28 @@ CREATE TABLE `personal_access_tokens` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sabre_gds_configs`
+--
+
+CREATE TABLE `sabre_gds_configs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` varchar(255) DEFAULT NULL COMMENT 'V1:user:group:domain',
+  `password` varchar(255) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sabre_gds_configs`
+--
+
+INSERT INTO `sabre_gds_configs` (`id`, `user_id`, `password`, `description`, `created_at`, `updated_at`) VALUES
+(1, NULL, NULL, NULL, '2024-05-07 10:53:58', NULL);
 
 -- --------------------------------------------------------
 
@@ -15346,6 +15396,12 @@ ALTER TABLE `failed_jobs`
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
 --
+-- Indexes for table `gds`
+--
+ALTER TABLE `gds`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -15370,6 +15426,12 @@ ALTER TABLE `personal_access_tokens`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
+
+--
+-- Indexes for table `sabre_gds_configs`
+--
+ALTER TABLE `sabre_gds_configs`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -15407,16 +15469,28 @@ ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `gds`
+--
+ALTER TABLE `gds`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `sabre_gds_configs`
+--
+ALTER TABLE `sabre_gds_configs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`

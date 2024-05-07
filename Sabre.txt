@@ -15,6 +15,7 @@ https://api.platform.sabre.com/v2/auth/token
 
 To Convert into Base64: https://www.base64encode.org
 
+To get this Info: https://developer.sabre.com/user/alifhossain174gmailcom/applications
 Authorization Header Format: base64(base64(V1:user:group:domain):base64(password))
 Using My Dev Credentials: base64(base64(V1:hxp6cy145bjv5hy9:DEVCENTER:EXT):base64(Hp8tT6iN))
 After Converting into Base64: Basic VjE6aHhwNmN5MTQ1Ymp2NWh5OTpERVZDRU5URVI6RVhU:SHA4dFQ2aU4

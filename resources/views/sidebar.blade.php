@@ -33,9 +33,12 @@
         </div>
     </div>
     <div class="sidebar-body">
+        @php
+            $currentRoute = request()->route()->getName();
+        @endphp
         <nav class="sidebar-nav">
             <ul class="metismenu">
-                <li class="mm-active">
+                <li class="@if($currentRoute == 'home') mm-active @endif">
                     <a class="text-capitalize" href="{{ url('/home') }}">
                         <i class="typcn typcn-zoom-outline"></i>
                         Search pad
@@ -130,7 +133,7 @@
                         </li>
                     </ul>
                 </li>
-                <li>
+                <li class="@if($currentRoute == 'SetupGds' || $currentRoute == 'EditGdsInfo') mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-plane-outline"></i> Airline Setup
                     </a>
