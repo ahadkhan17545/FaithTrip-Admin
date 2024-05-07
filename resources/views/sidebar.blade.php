@@ -133,7 +133,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="@if($currentRoute == 'SetupGds' || $currentRoute == 'EditGdsInfo') mm-active @endif">
+                <li class="@if($currentRoute == 'SetupGds' || $currentRoute == 'EditGdsInfo' || $currentRoute == 'ViewExcludedAirlines') mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-plane-outline"></i> Airline Setup
                     </a>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2024 at 03:37 PM
+-- Generation Time: May 07, 2024 at 09:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -15221,6 +15221,16 @@ CREATE TABLE `excluded_airlines` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `excluded_airlines`
+--
+
+INSERT INTO `excluded_airlines` (`id`, `code`, `name`, `created_at`, `updated_at`) VALUES
+(5, 'SEC', '3D Aviation', '2024-05-07 19:00:14', NULL),
+(6, 'BZS', 'Aero Biniza', '2024-05-07 19:00:40', NULL),
+(7, 'AAK', 'Alaska Island Air', '2024-05-07 19:01:00', NULL),
+(8, 'CBG', 'GX Airlines', '2024-05-07 19:01:38', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -15488,7 +15498,7 @@ ALTER TABLE `company_profiles`
 -- AUTO_INCREMENT for table `excluded_airlines`
 --
 ALTER TABLE `excluded_airlines`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
