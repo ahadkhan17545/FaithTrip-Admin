@@ -30,13 +30,13 @@
                 $carrierCodeInfo = DB::table('airlines')->where('iata', $carrierCode)->first();
             @endphp
             @if ($carrierCodeInfo)
-                <div class="custom-control custom-checkbox fs-14 d-flex check-area">
+                <div class="custom-control custom-checkbox fs-14 d-flex check-area" style="padding-left: 7px">
                     <input id="airline-{{ $carrierCode }}" onclick="airlineCarrierFilter('{{ $carrierCode }}')" type="checkbox" value="{{ $carrierCode }}" class="custom-control-input px-2 single-check">
                     <label class="custom-control-label px-2  d-flex align-items-center" for="airline-{{ $carrierCode }}">
                         <span class="checkbox-img d-flex align-items-center position-relative overflow-hidden">
                             <img src="{{ url('airlines_logo') }}/{{ strtolower($carrierCode) }}.png">
                         </span>
-                        <span class="airlines-name p-2" style="width: 190px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <span class="airlines-name p-2" style="width: 195px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                             {{ $carrierCodeInfo->name }}
                         </span>
                     </label>

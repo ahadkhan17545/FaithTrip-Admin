@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2024 at 09:02 PM
+-- Generation Time: May 07, 2024 at 10:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -15271,7 +15271,7 @@ CREATE TABLE `gds` (
 
 INSERT INTO `gds` (`id`, `name`, `code`, `logo`, `description`, `serial`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Amadeus GDS API', 'amadeus', 'gds_logo/amadeus.png', 'To configure or setup credentials click on settings', 2, 0, '2024-05-07 10:18:38', '2024-05-07 12:23:32'),
-(2, 'Sabre GDS API', 'sabre', 'gds_logo/sabre.jpg', 'To configure or setup credentials click on settings', 1, 1, '2024-05-07 10:19:18', '2024-05-07 12:23:31');
+(2, 'Sabre GDS API', 'sabre', 'gds_logo/sabre.jpg', 'To configure or setup credentials click on settings', 1, 1, '2024-05-07 10:19:18', '2024-05-07 19:51:12');
 
 -- --------------------------------------------------------
 
@@ -15298,7 +15298,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (6, '2024_04_28_153555_create_company_profiles_table', 2),
 (7, '2024_05_07_161536_create_gds_table', 3),
 (8, '2024_05_07_164600_create_sabre_gds_configs_table', 4),
-(9, '2024_05_07_193257_create_excluded_airlines_table', 5);
+(9, '2024_05_07_193257_create_excluded_airlines_table', 5),
+(10, '2024_05_08_142348_create_sms_gateways_table', 6);
 
 -- --------------------------------------------------------
 
@@ -15365,6 +15366,34 @@ CREATE TABLE `sabre_gds_configs` (
 
 INSERT INTO `sabre_gds_configs` (`id`, `gds_id`, `user_id`, `password`, `description`, `created_at`, `updated_at`) VALUES
 (1, 2, 'V1:hxp6cy145bjv5hy9:DEVCENTER:EXT', 'Hp8tT6iN', '<p>Contact Email: webservices.support@sabre.com</p>\r\n\r\n<p>https://accounts.cert.havail.sabre.com/login/sc<br />\r\nAgent ID/EPRs: 470936<br />\r\nPassword:&nbsp;BC5C0VG1<br />\r\nPCC: S00L</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>1. For Auth Token (Authentication Traditional - Rest OAuth Token Create /v2)<br />\r\n=========================================================================<br />\r\nhttps://api-crt.cert.havail.sabre.com/v2/auth/token<br />\r\nhttps://api.cert.platform.sabre.com/v2/auth/token (recommended)<br />\r\nhttps://api.platform.sabre.com/v2/auth/token</p>\r\n\r\n<p>To Convert into Base64: https://www.base64encode.org</p>\r\n\r\n<p>To get this Info: https://developer.sabre.com/user/alifhossain174gmailcom/applications<br />\r\nAuthorization Header Format: base64(base64(V1:user:group:domain):base64(password))<br />\r\nUsing My Dev Credentials: base64(base64(V1:hxp6cy145bjv5hy9:DEVCENTER:EXT):base64(Hp8tT6iN))<br />\r\nAfter Converting into Base64: Basic VjE6aHhwNmN5MTQ1Ymp2NWh5OTpERVZDRU5URVI6RVhU:SHA4dFQ2aU4</p>\r\n\r\n<p>sample Response<br />\r\n{<br />\r\n&nbsp;&nbsp;&nbsp; &quot;access_token&quot;: &quot;T1RLAQJgnnhf+y99xCxdXrEl6WovKnVfML9A5IcqobADhomEgBDNw4Btd1WLbn9rP99NxPfoAADgZl9agoTmznRiqHKD9Vwol6EayaPWbeJqwLqjgqg5isGVSorsWJBAIVsjXNxpD47ys8xv3sx3/ExNqza8UNBcwA4GGHgPzu0cXOeWWo07Ih8t8ZY0mwGwM10lO5qVW/yJZoaBA/20J02ZU5ztNsjSUt7ooYJ4yvXPc7X1zBkJEUawD7RDywzLQv3V8APMD814ziSkNktinPuvT64glmZcA9Rhmy9jZ8DiE0tYhn4V6ubKn/8gzifojjibwNY/NJPn6qvdmAmGpOmPDI5fTV13I5+CHA0rv73xM+cRdzNVn0o*&quot;,<br />\r\n&nbsp;&nbsp;&nbsp; &quot;token_type&quot;: &quot;bearer&quot;,<br />\r\n&nbsp;&nbsp;&nbsp; &quot;expires_in&quot;: 604800<br />\r\n}</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>2. For Air Search (Air Shopping - Standard Shopping - Bargain Finder Max /v2 General Search)<br />\r\n============================================================================================</p>\r\n\r\n<p>https://api.cert.platform.sabre.com/v5/offers/shop</p>\r\n\r\n<p>*Under Authorization select Bearer Token and use access_token from response of auth token api<br />\r\n*Keep Blank in Conversation-ID under Header</p>\r\n\r\n<p>Here is the sample PHP Code</p>\r\n\r\n<p><!--?php</p--></p>\r\n\r\n<p>$curl = curl_init();</p>\r\n\r\n<p>curl_setopt_array($curl, array(<br />\r\n&nbsp; CURLOPT_URL =&gt; &#39;https://api.cert.platform.sabre.com/v5/offers/shop&#39;,<br />\r\n&nbsp; CURLOPT_RETURNTRANSFER =&gt; true,<br />\r\n&nbsp; CURLOPT_ENCODING =&gt; &#39;&#39;,<br />\r\n&nbsp; CURLOPT_MAXREDIRS =&gt; 10,<br />\r\n&nbsp; CURLOPT_TIMEOUT =&gt; 0,<br />\r\n&nbsp; CURLOPT_FOLLOWLOCATION =&gt; true,<br />\r\n&nbsp; CURLOPT_HTTP_VERSION =&gt; CURL_HTTP_VERSION_1_1,<br />\r\n&nbsp; CURLOPT_CUSTOMREQUEST =&gt; &#39;POST&#39;,<br />\r\n&nbsp; CURLOPT_POSTFIELDS =&gt;&#39;{<br />\r\n&nbsp;&nbsp; &nbsp;&quot;OTA_AirLowFareSearchRQ&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Version&quot;: &quot;2&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;POS&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Source&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;PseudoCityCode&quot;: &quot;S00L&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RequestorID&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Type&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;ID&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;CompanyName&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Code&quot;: &quot;TN&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginDestinationInformation&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RPH&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DepartureDateTime&quot;: &quot;2024-09-11T20:00:00&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;ORD&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DestinationLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;DFW&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}, {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RPH&quot;: &quot;2&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DepartureDateTime&quot;: &quot;2024-09-18T20:00:00&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;DFW&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DestinationLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;ORD&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;],<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TravelPreferences&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TPA_Extensions&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DataSources&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;NDC&quot;: &quot;Disable&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;ATPCO&quot;: &quot;Enable&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LCC&quot;: &quot;Disable&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;PreferNDCSourceOnTie&quot;: {<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Value&quot;: true<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>\r\n\r\n<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TravelerInfoSummary&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;AirTravelerAvail&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;PassengerTypeQuantity&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Code&quot;: &quot;ADT&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Quantity&quot;: 1<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TPA_Extensions&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;IntelliSellTransaction&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RequestType&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Name&quot;: &quot;200ITINS&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;}<br />\r\n}&#39;,<br />\r\n&nbsp; CURLOPT_HTTPHEADER =&gt; array(<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Content-Type: application/json&#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Conversation-ID: &#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Authorization: Bearer T1RLAQJgnnhf+y99xCxdXrEl6WovKnVfML9A5IcqobADhomEgBDNw4Btd1WLbn9rP99NxPfoAADgZl9agoTmznRiqHKD9Vwol6EayaPWbeJqwLqjgqg5isGVSorsWJBAIVsjXNxpD47ys8xv3sx3/ExNqza8UNBcwA4GGHgPzu0cXOeWWo07Ih8t8ZY0mwGwM10lO5qVW/yJZoaBA/20J02ZU5ztNsjSUt7ooYJ4yvXPc7X1zBkJEUawD7RDywzLQv3V8APMD814ziSkNktinPuvT64glmZcA9Rhmy9jZ8DiE0tYhn4V6ubKn/8gzifojjibwNY/NJPn6qvdmAmGpOmPDI5fTV13I5+CHA0rv73xM+cRdzNVn0o*&#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Cookie: incap_ses_1561_2768617=6jSGe8SMHyY7eUzG1smpFSe7/2UAAAAAv3cC2R4xW2f8pbh4+o6uOw==; visid_incap_2768617=CMmrEjpiT2uqtybd16i4/Ce7/2UAAAAAQUIPAAAAAAAvMTvmjB9uF7//pSsvuNc0; incap_ses_1561_2768614=RmTiGgp5kyRGuE/G1smpFZC9/2UAAAAA2tK8GEkNHOEoEAgn93NucA==; nlbi_2768614=a9xQArhWwj/Frr/rRh9LCAAAAACCZdybTjDfKKIP461PxX2o; visid_incap_2768614=oagYgS2rSheFlLqzITzLq5S6/2UAAAAAQUIPAAAAAADHLck2jT6mHfxrtvT5HVcc&#39;<br />\r\n&nbsp; ),<br />\r\n));</p>\r\n\r\n<p>$response = curl_exec($curl);</p>\r\n\r\n<p>curl_close($curl);<br />\r\necho $response;</p>', '2024-05-07 10:53:58', '2024-05-07 12:22:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sms_gateways`
+--
+
+CREATE TABLE `sms_gateways` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `provider_name` varchar(255) NOT NULL,
+  `api_endpoint` varchar(255) NOT NULL,
+  `api_key` varchar(255) DEFAULT NULL,
+  `secret_key` varchar(255) DEFAULT NULL,
+  `sender_id` varchar(255) DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '0=>Inactive; 1=>Active',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sms_gateways`
+--
+
+INSERT INTO `sms_gateways` (`id`, `image`, `provider_name`, `api_endpoint`, `api_key`, `secret_key`, `sender_id`, `status`, `created_at`, `updated_at`) VALUES
+(1, NULL, 'ElitBuzz', 'https://880sms.com/smsapi', 'C20095786bf436075.858353215', NULL, 'GenericCommerceV1', 0, '2023-06-13 03:43:26', '2024-05-07 20:04:07'),
+(2, NULL, 'Reve', 'https://smpp.revesms.com:7790/sendtext', '2f18546bcfb66ebe', '7927fa55', 'Getup', 0, '2023-06-13 03:43:26', '2024-05-07 20:04:07'),
+(3, NULL, 'KhudeBarta', 'http://192.168.18.119:8585/send', '5d2a', '465', '8801847', 1, '2024-02-29 06:10:13', '2024-05-07 20:04:07');
 
 -- --------------------------------------------------------
 
@@ -15466,6 +15495,12 @@ ALTER TABLE `sabre_gds_configs`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `sms_gateways`
+--
+ALTER TABLE `sms_gateways`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -15516,7 +15551,7 @@ ALTER TABLE `gds`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -15529,6 +15564,12 @@ ALTER TABLE `personal_access_tokens`
 --
 ALTER TABLE `sabre_gds_configs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `sms_gateways`
+--
+ALTER TABLE `sms_gateways`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`

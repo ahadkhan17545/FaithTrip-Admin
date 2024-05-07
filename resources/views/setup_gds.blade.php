@@ -46,8 +46,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading mb-0">Setup GDS</h4>
+                    <div class="alert alert-success mb-0" role="alert">
+                        <h5 class="alert-heading mb-0">Setup GDS</h5>
                     </div>
                 </div>
                 <div class="card-body">

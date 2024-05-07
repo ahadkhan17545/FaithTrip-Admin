@@ -138,26 +138,36 @@
                         <i class="typcn typcn-plane-outline"></i> Airline Setup
                     </a>
                     <ul class="nav-second-level">
-                        <li class>
+                        <li class="@if($currentRoute == 'SetupGds') mm-active @endif">
                             <a class="text-capitalize" href="{{url('setup/gds')}}">
                                 Gds Setting
                             </a>
                         </li>
-                        <li class>
+                        <li class="@if($currentRoute == 'ViewExcludedAirlines') mm-active @endif">
                             <a class="text-capitalize" href="{{url('view/excluded/airlines')}}">
                                 Exclude Airlines
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li>
+                <li class="@if($currentRoute == 'ViewSmsGateways' || $currentRoute == 'GeneralSettings') mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
-                        <i class="typcn typcn-cog-outline"></i> Application setting
+                        <i class="typcn typcn-cog-outline"></i> Application Setting
                     </a>
                     <ul class="nav-second-level">
+                        <li class="@if($currentRoute == 'GeneralSettings') mm-active @endif">
+                            <a class="text-capitalize" href="{{url('general/settings')}}">
+                                General Settings
+                            </a>
+                        </li>
                         <li class>
                             <a class="text-capitalize" href="./setting/general-setting.html">
-                                General setting
+                                Mail Server
+                            </a>
+                        </li>
+                        <li class="@if($currentRoute == 'ViewSmsGateways') mm-active @endif">
+                            <a class="text-capitalize" href="{{url('setup/sms/gateways')}}">
+                                SMS Gateway
                             </a>
                         </li>
                     </ul>

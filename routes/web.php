@@ -7,6 +7,7 @@ use App\Http\Controllers\FlightSearchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GdsController;
 use App\Http\Controllers\CkeditorController;
+use App\Http\Controllers\SystemController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -55,6 +56,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('save/excluded/airline', [GdsController::class, 'saveExcludedAirline'])->name('SaveExcludedAirline');
     Route::get('delete/excluded/airline/{id}', [GdsController::class, 'deleteExcludedAirline'])->name('DeleteExcludedAirline');
     Route::get('excluded/airline/info/{id}', [GdsController::class, 'excludedAirlineInfo'])->name('ExcludedAirlineInfo');
+
+
+    // system route for sms gateway
+    Route::get('/setup/sms/gateways', [SystemController::class, 'viewSmsGateways'])->name('ViewSmsGateways');
+    Route::post('/update/sms/gateway/info', [SystemController::class, 'updateSmsGatewayInfo'])->name('UpdateSmsGatewayInfo');
+    Route::get('/change/gateway/status/{provider}', [SystemController::class, 'changeGatewayStatus'])->name('ChangeGatewayStatus');
+    
     
 });
 
