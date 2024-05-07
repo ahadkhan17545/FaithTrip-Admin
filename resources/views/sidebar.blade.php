@@ -144,8 +144,8 @@
                             </a>
                         </li>
                         <li class>
-                            <a class="text-capitalize" href="./setup/exclude-airline.html">
-                                Exclude airline
+                            <a class="text-capitalize" href="{{url('view/excluded/airlines')}}">
+                                Exclude Airlines
                             </a>
                         </li>
                     </ul>

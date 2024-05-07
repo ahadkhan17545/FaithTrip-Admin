@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Gds;
 use App\Models\SabreGdsConfig;
 use Carbon\Carbon;
-use Brian2694\Toastr\Facades\Toastr;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -45,5 +45,45 @@ class GdsController extends Controller
             'updated_at' => Carbon::now()
         ]);
         return redirect()->back()->withErrors(['success_message' => 'Company Profile Updated']);
+    }
+
+    public function viewExcludedAirlines(Request $request){
+
+        if ($request->ajax()) {
+            
+            $data = DB::table('products')
+                        ->leftJoin('categories', 'products.category_id', '=', 'categories.id')
+                        ->leftJoin('flags', 'products.flag_id', '=', 'flags.id')
+                        ->leftJoin('units', 'products.unit_id', '=', 'units.id')
+                        ->select('products.*', 'units.name as unit_name', 'categories.name as category_name', 'flags.name as flag_name')
+                        ->orderBy('products.id', 'desc')
+                        ->get();
+
+            return Datatables::of($data)
+                    ->editColumn('image', function($data) {
+                        if(!$data->image || !file_exists(public_path(''. $data->image)))
+                            return '';
+                        else
+                            return $data->image;
+                    })
+                    ->editColumn('status', function($data) {
+                        if($data->status == 1){
+                            return '<span class="btn btn-sm btn-success d-inline-block">Active</span>';
+                        } else {
+                            return '<span class="btn btn-sm btn-danger d-inline-block">Inactive</span>';
+                        }
+                    })
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $link = env('APP_FRONTEND_URL')."/product/details/".$data->slug;
+                        $btn = ' <a target="_blank" href="'.$link.'" class="mb-1 btn-sm btn-success rounded d-inline-block" title="For Frontend Product View"><i class="fa fa-eye"></i></a>';
+                        $btn .= ' <a href="'.url('edit/product').'/'.$data->slug.'" class="mb-1 btn-sm btn-warning rounded d-inline-block"><i class="fas fa-edit"></i></a>';
+                        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Delete" class="btn-sm btn-danger rounded d-inline-block deleteBtn"><i class="fas fa-trash-alt"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action', 'price', 'status'])
+                    ->make(true);
+        }
+        return view('backend.product.view');
     }
 }
