@@ -34,7 +34,7 @@
     <link href="{{ url('assets') }}/nanopkg-assets/vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/nanopkg-assets/vendor/fontawesome-free-6.3.0-web/css/all.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/nanopkg-assets/vendor/bootstrap-icons/css/bootstrap-icons.min.css" rel="stylesheet" />
-    <link href="{{ url('assets') }}/nanopkg-assets/vendor/toastr/build/toastr.min.css?v=6" rel="stylesheet" />
+    <link href="{{ url('assets') }}/nanopkg-assets/vendor/toastr/build/toastr.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/nanopkg-assets/css/arrow-hidden.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/nanopkg-assets/css/custom.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/admin-assets/css/style-new.css" rel="stylesheet" />

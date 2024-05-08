@@ -38,7 +38,7 @@
                                         </div>
                                     </div>
                 
-                                    <form class="needs-validation" method="POST" action="{{url('update/sms/gateway/info')}}" enctype="multipart/form-data">
+                                    <form method="POST" action="{{url('update/sms/gateway/info')}}" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="provider" value="khudebarta">
                                         <div class="row">
@@ -108,7 +108,7 @@
                                         </div>
                                     </div>
                 
-                                    <form class="needs-validation" method="POST" action="{{url('update/sms/gateway/info')}}" enctype="multipart/form-data">
+                                    <form method="POST" action="{{url('update/sms/gateway/info')}}" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="provider" value="revesms">
                                         <div class="row">
@@ -179,7 +179,7 @@
                                         </div>
                                     </div>
                 
-                                    <form class="needs-validation" method="POST" action="{{url('update/sms/gateway/info')}}" enctype="multipart/form-data">
+                                    <form method="POST" action="{{url('update/sms/gateway/info')}}" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="provider" value="elitbuzz">
                                         <div class="row">

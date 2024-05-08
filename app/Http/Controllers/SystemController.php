@@ -57,7 +57,6 @@ class SystemController extends Controller
 
         Toastr::success('Info Updated', 'Success');
         return back();
-
     }
 
     public function changeGatewayStatus($provider){
