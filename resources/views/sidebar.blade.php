@@ -150,17 +150,12 @@
                         </li>
                     </ul>
                 </li>
-                <li class="@if($currentRoute == 'ViewSmsGateways' || $currentRoute == 'GeneralSettings') mm-active @endif">
+                <li class="@if($currentRoute == 'ViewSmsGateways' || $currentRoute == 'ViewEmailConfig') mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-cog-outline"></i> Application Setting
                     </a>
                     <ul class="nav-second-level">
-                        <li class="@if($currentRoute == 'GeneralSettings') mm-active @endif">
-                            <a class="text-capitalize" href="{{url('general/settings')}}">
-                                General Settings
-                            </a>
-                        </li>
-                        <li class>
+                        <li class="@if($currentRoute == 'ViewEmailConfig') mm-active @endif">
                             <a class="text-capitalize" href="{{url('view/email/config')}}">
                                 Mail Server
                             </a>
