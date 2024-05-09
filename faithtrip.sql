@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2024 at 10:06 PM
+-- Generation Time: May 09, 2024 at 08:15 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -15210,6 +15210,32 @@ INSERT INTO `company_profiles` (`id`, `user_id`, `name`, `logo`, `address`, `pho
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `email_configures`
+--
+
+CREATE TABLE `email_configures` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `host` varchar(255) NOT NULL,
+  `port` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `mail_from_name` varchar(255) DEFAULT NULL,
+  `mail_from_email` varchar(255) DEFAULT NULL,
+  `encryption` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0=>None; 1=>TLS; 2=>SSL',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `email_configures`
+--
+
+INSERT INTO `email_configures` (`id`, `host`, `port`, `email`, `password`, `mail_from_name`, `mail_from_email`, `encryption`, `created_at`, `updated_at`) VALUES
+(1, 'smtp.gmail.com', 587, 'alifhossain174@gmail.com', '12345678', 'Getup Ltd', 'getup@gmail.com', 1, '2024-05-09 06:12:54', '2024-05-09 06:12:54');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `excluded_airlines`
 --
 
@@ -15299,7 +15325,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (7, '2024_05_07_161536_create_gds_table', 3),
 (8, '2024_05_07_164600_create_sabre_gds_configs_table', 4),
 (9, '2024_05_07_193257_create_excluded_airlines_table', 5),
-(10, '2024_05_08_142348_create_sms_gateways_table', 6);
+(10, '2024_05_08_142348_create_sms_gateways_table', 6),
+(13, '2024_05_09_112203_create_email_configures_table', 7);
 
 -- --------------------------------------------------------
 
@@ -15391,9 +15418,9 @@ CREATE TABLE `sms_gateways` (
 --
 
 INSERT INTO `sms_gateways` (`id`, `image`, `provider_name`, `api_endpoint`, `api_key`, `secret_key`, `sender_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, NULL, 'ElitBuzz', 'https://880sms.com/smsapi', 'C20095786bf436075.858353215', NULL, 'GenericCommerceV1', 0, '2023-06-13 03:43:26', '2024-05-07 20:04:07'),
-(2, NULL, 'Reve', 'https://smpp.revesms.com:7790/sendtext', '2f18546bcfb66ebe', '7927fa55', 'Getup', 0, '2023-06-13 03:43:26', '2024-05-07 20:04:07'),
-(3, NULL, 'KhudeBarta', 'http://192.168.18.119:8585/send', '5d2a', '465', '8801847', 1, '2024-02-29 06:10:13', '2024-05-07 20:04:07');
+(1, NULL, 'ElitBuzz', 'https://880sms.com/smsapi', 'C20095786bf436075.858353215', NULL, 'GenericCommerceV1', 0, '2023-06-13 03:43:26', '2024-05-08 17:04:22'),
+(2, NULL, 'Reve', 'https://smpp.revesms.com:7790/sendtext', '2f18546bcfb66ebe', '7927fa55', 'Getup', 0, '2023-06-13 03:43:26', '2024-05-08 17:04:22'),
+(3, NULL, 'KhudeBarta', 'http://192.168.18.119:8585/send', '5d2a', '465', '8801847', 1, '2024-02-29 06:10:13', '2024-05-08 17:04:22');
 
 -- --------------------------------------------------------
 
@@ -15441,6 +15468,12 @@ ALTER TABLE `city_airports`
 -- Indexes for table `company_profiles`
 --
 ALTER TABLE `company_profiles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `email_configures`
+--
+ALTER TABLE `email_configures`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -15530,6 +15563,12 @@ ALTER TABLE `company_profiles`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `email_configures`
+--
+ALTER TABLE `email_configures`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `excluded_airlines`
 --
 ALTER TABLE `excluded_airlines`
@@ -15551,7 +15590,7 @@ ALTER TABLE `gds`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`

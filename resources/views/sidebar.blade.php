@@ -161,7 +161,7 @@
                             </a>
                         </li>
                         <li class>
-                            <a class="text-capitalize" href="./setting/general-setting.html">
+                            <a class="text-capitalize" href="{{url('view/email/config')}}">
                                 Mail Server
                             </a>
                         </li>

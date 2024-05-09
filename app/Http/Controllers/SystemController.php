@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SmsGateway;
+use App\Models\EmailConfigure;
 use Illuminate\Support\Facades\DB;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
@@ -90,4 +91,25 @@ class SystemController extends Controller
         return response()->json(['success' => 'Updated Successfully.']);
 
     }
+
+    public function viewEmailConfig(){
+        $config = EmailConfigure::where('id', 1)->first();
+        return view('system.email_config', compact('config'));
+    }
+
+    public function updateEmailConfig(Request $request){
+        EmailConfigure::where('id', 1)->update([
+            'host' => $request->host,
+            'port' => $request->port,
+            'email' => $request->email,
+            'password' => $request->password,
+            'mail_from_name' => $request->mail_from_name,
+            'mail_from_email' => $request->mail_from_email,
+            'encryption' => $request->encryption,
+            'created_at' => Carbon::now()
+        ]);
+
+        return redirect()->back()->withErrors(['success_message' => 'Email Config Updated']);
+    }
+
 }
