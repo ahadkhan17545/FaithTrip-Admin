@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2024 at 08:21 AM
+-- Generation Time: May 09, 2024 at 08:32 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -15437,6 +15437,8 @@ CREATE TABLE `users` (
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
+  `user_type` tinyint(4) NOT NULL DEFAULT 3 COMMENT '1=>Admin; 2=>System User; 3=>Customer',
+  `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '0=>Inactive; 1=>Active',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -15445,8 +15447,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `image`, `name`, `email`, `phone`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'userImages/YUuex1714591027.jpg', 'Md Fahim Hossain', 'admin@gmail.com', '01969005035', '2024-03-27 05:27:23', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, '2024-03-27 05:27:23', '2024-05-01 19:18:49');
+INSERT INTO `users` (`id`, `image`, `name`, `email`, `phone`, `email_verified_at`, `password`, `remember_token`, `user_type`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'userImages/YUuex1714591027.jpg', 'Md Fahim Hossain', 'admin@gmail.com', '01969005035', '2024-03-27 05:27:23', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 3, 1, '2024-03-27 05:27:23', '2024-05-01 19:18:49');
 
 --
 -- Indexes for dumped tables
