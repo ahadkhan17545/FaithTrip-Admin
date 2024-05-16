@@ -35,12 +35,14 @@
                     <div class="purchase-price fs-24 font-weight-600">
                         <div class="main-price">
                             {{ $data['pricingInformation'][0]['fare']['totalFare']['currency'] }}
-                            {{ $data['pricingInformation'][0]['fare']['totalFare']['totalPrice'] }}
+                            {{ number_format($data['pricingInformation'][0]['fare']['totalFare']['totalPrice']) }}
                         </div>
                     </div>
                 </div>
                 <div class="d-flex d-md-block gap-4 ml-auto ms-3 mt-md-3 text-center">
-                    <a href="#" id="BookNowBtn hox" class="btn btn-primary text-uppercase font-weight-600 fs-13 btn_filters_responsive disable_book_now_cls">Book now</a>
+                    <a href="#" id="BookNowBtn hox" class="btn btn-primary text-uppercase font-weight-600 fs-13 btn_filters_responsive disable_book_now_cls">
+                        Select Flight
+                    </a>
                     <a class="fli-det-link text-muted fs-14 gap-2 d-block mt-md-2 d-flex align-items-center justify-content-center mr-2 mr-md-0" data-bs-toggle="collapse" href="#collapse1_{{ $index }}" role="button" aria-expanded="false" aria-controls="collapse1">
                         Flight details
                         <i class="fas fa-chevron-circle-down ml-1 text-success"></i>
