@@ -39,12 +39,10 @@
                 @endphp
 
                 @foreach ($segmentArray as $segmentIndex => $segmentData)
-                    <div class="flight-info border rounded mb-2">
+                    <div class="flight-info border rounded mt-1 mb-1">
                         <div class="flight-scroll review-article">
-                            <div
-                                class="align-items-center d-flex custom-gap justify-content-between w-100">
-                                <div
-                                    class="align-items-center d-flex gap-4 text-center">
+                            <div class="align-items-center d-flex custom-gap justify-content-between w-100">
+                                <div class="align-items-center d-flex gap-4 text-center">
                                     <div class="brand-img">
                                         <img src="{{ url('airlines_logo') }}/{{ strtolower($segmentData['carrier']['operating']) }}.png">
                                     </div>
@@ -52,8 +50,7 @@
                                         <div class="font-weight-600 fs-13">
                                             {{ $segmentData['carrier']['operating'] }}
                                         </div>
-                                        <div
-                                            class="font-weight-600 fs-13 text-muted w-max-content">
+                                        <div class="font-weight-600 fs-13 text-muted w-max-content">
                                             {{ $segmentData['carrier']['operatingFlightNumber'] }}
                                             -
                                             {{ $segmentData['carrier']['equipment']['code'] }}
@@ -64,8 +61,7 @@
                                     <div class="font-weight-600 fs-13">
                                         {{ $segmentData['departure']['city'] }}
                                     </div>
-                                    <span
-                                        class="fs-12 font-weight-600">{{ $segmentData['departure']['time'] }}</span><br>
+                                    <span class="fs-12 font-weight-600">{{ $segmentData['departure']['time'] }}</span><br>
                                     <span class="text-muted fs-12">
                                         Terminal -
                                         {{ isset($segmentData['departure']['terminal']) ? $segmentData['departure']['terminal'] : 'N/A' }}
@@ -75,44 +71,31 @@
                                     <div class="font-weight-600 fs-13">
                                         {{ $segmentData['arrival']['city'] }}
                                     </div>
-                                    <span
-                                        class="fs-12 font-weight-600">{{ $segmentData['arrival']['time'] }}</span><br>
+                                    <span class="fs-12 font-weight-600">{{ $segmentData['arrival']['time'] }}</span><br>
                                     <span class="text-muted fs-12">
                                         Terminal -
                                         {{ isset($segmentData['arrival']['terminal']) ? $segmentData['arrival']['terminal'] : 'N/A' }}
                                     </span>
                                 </div>
                                 <div class="text-center fs-14 w-100">
-                                    <div
-                                        class="d-flex align-items-center justify-content-center">
-                                        <span
-                                            class="d-inline-flex align-items-center w-max-content">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <span class="d-inline-flex align-items-center w-max-content">
                                             {{ App\Models\CustomFunction::convertMinToHrMin($segmentData['elapsedTime']) }}
                                         </span>
-                                        <span
-                                            class="d-inline-flex align-items-center w-max-content">
-                                            &nbsp;<span
-                                                class="text-muted">|</span>&nbsp;
+                                        <span class="d-inline-flex align-items-center w-max-content">&nbsp;<span class="text-muted">|</span>&nbsp;
                                             {{ isset($data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['mealCode']) ? 'Meal - ' . $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['mealCode'] : 'N/A' }}
                                         </span>
-                                        <span
-                                            class="d-inline-flex align-items-center w-max-content">
-                                            &nbsp;<span
-                                                class="text-muted">|</span>&nbsp;
+                                        <span class="d-inline-flex align-items-center w-max-content">&nbsp;<span class="text-muted">|</span>&nbsp;
                                             {{ isset($data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['bookingCode']) ? 'Booking Code - ' . $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['bookingCode'] : 'N/A' }}
                                         </span>
                                     </div>
-                                    <div
-                                        class="two-dots my-3 text-muted position-relative border-top">
+                                    <div class="two-dots my-3 text-muted position-relative border-top">
                                         <span class="flight-service">
-                                            <span
-                                                class="type-text px-2 position-relative">Flight</span>
+                                            <span class="type-text px-2 position-relative">Flight</span>
                                         </span>
                                     </div>
-                                    <div
-                                        class="d-flex align-items-center justify-content-center">
-                                        <span
-                                            class="d-inline-flex align-items-center w-max-content">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <span class="d-inline-flex align-items-center w-max-content">
                                             @php
                                                 $passangerWisebaggage = $data['pricingInformation'][0]['fare']['passengerInfoList'];
 
@@ -145,11 +128,27 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="d-flex justify-center px-3">
-                            <span class="fs-12 layover text-center">17hr 30min Layover</span>
-                        </div>
                     </div>
+
+                    @if(isset($segmentArray[$segmentIndex+1]) && isset($segmentData['arrival']['time']) && $segmentArray[$segmentIndex+1]['departure']['time'])
+                    <div class="d-flex justify-center px-3">
+                        <span class="fs-12 layover text-center">
+                            @php
+                                $time1 = substr($segmentData['arrival']['time'],0,8);
+                                $time2 = substr($segmentArray[$segmentIndex+1]['departure']['time'],0,8);
+                                $time1Obj = DateTime::createFromFormat('H:i:s', $time1);
+                                $time2Obj = DateTime::createFromFormat('H:i:s', $time2);
+                                $interval = $time1Obj->diff($time2Obj);
+                                $formattedDifference = sprintf(
+                                    "%dhr %dmin",
+                                    $interval->h + ($interval->days * 24), // Total hours, including days if any
+                                    $interval->i // Minutes
+                                );
+                                echo $formattedDifference." Layover";
+                            @endphp
+                        </span>
+                    </div>
+                    @endif
                 @endforeach
 
             </div>

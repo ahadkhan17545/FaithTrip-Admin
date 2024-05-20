@@ -1,2 +1,2 @@
-1. Create PNR
-2. 
+1. Price Revalidayte API Error while multiple segments in a flight
+1. Show Flight Details in Select Flight (Before doing pnr)

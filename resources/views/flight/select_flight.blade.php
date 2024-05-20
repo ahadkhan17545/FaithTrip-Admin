@@ -47,74 +47,133 @@
                 <div class="card shadow border-0 mb-3">
                     <div class="card-body">
 
-                        <div class="flight-info border rounded mb-2">
-                            <div class="flight-scroll review-article">
-                                <div class="align-items-center d-flex custom-gap justify-content-between w-100">
-                                    <div class="align-items-center d-flex gap-4 text-center">
-                                        <div class="brand-img">
-                                            <img class="" src="https://tbbd-flight.s3.ap-southeast-1.amazonaws.com/airlines-logo/BS.png">
-                                        </div>
-                                        <div class="airline-box">
-                                            <div class="font-weight-600 fs-13">
-                                                BS
-                                            </div>
-                                            <div class="font-weight-600 fs-13 text-muted w-max-content">
-                                                BS
-                                                -
-                                                341
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="font-weight-600 fs-13">
-                                            DAC
-                                        </div>
-                                        <span class="fs-12 font-weight-600">21:45:00+06:00</span><br>
-                                        <span class="text-muted fs-12">
-                                            Terminal -
-                                            1
-                                        </span>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="font-weight-600 fs-13">
-                                            DXB
-                                        </div>
-                                        <span class="fs-12 font-weight-600">01:00:00+04:00</span><br>
-                                        <span class="text-muted fs-12">
-                                            Terminal -
-                                            1
-                                        </span>
-                                    </div>
-                                    <div class="text-center fs-14 w-100">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <span class="d-inline-flex align-items-center w-max-content">
-                                                5hr 15min
-                                            </span>
-                                            <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                <span class="text-muted">|</span>
-                                                Meal -
-                                                N/A
-                                            </span>
-                                            <span class="d-inline-flex align-items-center w-max-content">&nbsp;
-                                                <span class="text-muted">|</span>&nbsp;Economy</span>
-                                        </div>
-                                        <div class="two-dots my-3 text-muted position-relative border-top">
-                                            <span class="flight-service">
-                                                <span class="type-text px-2 position-relative">Flight</span>
-                                            </span>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <span class="d-inline-flex align-items-center w-max-content">
-                                                30
-                                                kg
-                                                &nbsp;</span>
+                        @php
+                            $segmentArray = [];
+                            $legsArray = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['legs'];
+                            foreach ($legsArray as $key => $leg) {
+                                $legRef = $leg['ref'] - 1;
+                                $legDescription = $revlidatedData['groupedItineraryResponse']['legDescs'][$legRef];
+                                $schedulesArray = $legDescription['schedules'];
+                                foreach ($schedulesArray as $schedule) {
+                                    $scheduleRef = $schedule['ref'] - 1;
+                                    $segmentArray[] = $revlidatedData['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
+                                }
+                            }
+                        @endphp
 
+                        @foreach ($segmentArray as $segmentIndex => $segmentData)
+                            <div class="flight-info border rounded mb-2">
+                                <div class="flight-scroll review-article">
+                                    <div class="align-items-center d-flex custom-gap justify-content-between w-100">
+                                        <div class="align-items-center d-flex gap-4 text-center">
+                                            <div class="brand-img">
+                                                <img src="{{ url('airlines_logo') }}/{{ strtolower($segmentData['carrier']['operating']) }}.png">
+                                            </div>
+                                            <div class="airline-box">
+                                                <div class="font-weight-600 fs-13">
+                                                    {{ $segmentData['carrier']['operating'] }}
+                                                </div>
+                                                <div class="font-weight-600 fs-13 text-muted w-max-content">
+                                                    {{ $segmentData['carrier']['operatingFlightNumber'] }}
+                                                    -
+                                                    {{ $segmentData['carrier']['equipment']['code'] }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="font-weight-600 fs-13">
+                                                {{ $segmentData['departure']['city'] }}
+                                            </div>
+                                            <span class="fs-12 font-weight-600">{{ $segmentData['departure']['time'] }}</span><br>
+                                            <span class="text-muted fs-12">
+                                                Terminal -
+                                                {{ isset($segmentData['departure']['terminal']) ? $segmentData['departure']['terminal'] : 'N/A' }}
+                                            </span>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="font-weight-600 fs-13">
+                                                {{ $segmentData['arrival']['city'] }}
+                                            </div>
+                                            <span class="fs-12 font-weight-600">{{ $segmentData['arrival']['time'] }}</span><br>
+                                            <span class="text-muted fs-12">
+                                                Terminal -
+                                                {{ isset($segmentData['arrival']['terminal']) ? $segmentData['arrival']['terminal'] : 'N/A' }}
+                                            </span>
+                                        </div>
+                                        <div class="text-center fs-14 w-100">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <span class="d-inline-flex align-items-center w-max-content">
+                                                    {{ App\Models\CustomFunction::convertMinToHrMin($segmentData['elapsedTime']) }}
+                                                </span>
+                                                <span class="d-inline-flex align-items-center w-max-content">&nbsp;<span class="text-muted">|</span>&nbsp;
+                                                    {{ isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['mealCode']) ? 'Meal - ' . $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['mealCode'] : 'N/A' }}
+                                                </span>
+                                                <span class="d-inline-flex align-items-center w-max-content">&nbsp;<span class="text-muted">|</span>&nbsp;
+                                                    {{ isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['bookingCode']) ? 'Booking Code - ' . $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['bookingCode'] : 'N/A' }}
+                                                </span>
+                                            </div>
+                                            <div class="two-dots my-3 text-muted position-relative border-top">
+                                                <span class="flight-service">
+                                                    <span class="type-text px-2 position-relative">Flight</span>
+                                                </span>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <span class="d-inline-flex align-items-center w-max-content">
+                                                    @php
+                                                        $passangerWisebaggage = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'];
+
+                                                        foreach ($passangerWisebaggage as $passangerWisebaggageInfo) {
+                                                            if (isset($passangerWisebaggageInfo['passengerInfo']['baggageInformation'][0]['allowance']['ref'])) {
+
+                                                                $baggageRef = $passangerWisebaggageInfo['passengerInfo']['baggageInformation'][0]['allowance']['ref'];
+                                                                if (isset($revlidatedData['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1])) {
+                                                                    echo $passangerWisebaggageInfo['passengerInfo']['passengerType'] . '(' . $passangerWisebaggageInfo['passengerInfo']['passengerNumber'] . '): ';
+
+                                                                    if (isset($revlidatedData['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['pieceCount'])) {
+                                                                        echo 'Piece Count: ' . $revlidatedData['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['pieceCount'] * $passangerWisebaggageInfo['passengerInfo']['passengerNumber'];
+                                                                    }
+                                                                    if (isset($revlidatedData['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['weight'])) {
+                                                                        echo $revlidatedData['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['weight'] * $passangerWisebaggageInfo['passengerInfo']['passengerNumber'];
+                                                                    }
+                                                                    if (isset($revlidatedData['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['unit'])) {
+                                                                        echo ' ' . $revlidatedData['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['unit'];
+                                                                    }
+
+                                                                    echo '&nbsp;&nbsp;';
+                                                                }
+                                                            }
+                                                        }
+
+                                                    @endphp
+                                                    &nbsp;
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                        </div>
+                            @if(isset($segmentArray[$segmentIndex+1]) && isset($segmentData['arrival']['time']) && $segmentArray[$segmentIndex+1]['departure']['time'])
+                            <div class="d-flex justify-center px-3">
+                                <span class="fs-12 layover text-center">
+                                    @php
+                                        $time1 = substr($segmentData['arrival']['time'],0,8);
+                                        $time2 = substr($segmentArray[$segmentIndex+1]['departure']['time'],0,8);
+                                        $time1Obj = DateTime::createFromFormat('H:i:s', $time1);
+                                        $time2Obj = DateTime::createFromFormat('H:i:s', $time2);
+                                        $interval = $time1Obj->diff($time2Obj);
+                                        $formattedDifference = sprintf(
+                                            "%dhr %dmin",
+                                            $interval->h + ($interval->days * 24), // Total hours, including days if any
+                                            $interval->i // Minutes
+                                        );
+                                        echo $formattedDifference." Layover";
+                                    @endphp
+                                </span>
+                            </div>
+                            @endif
+
+                        @endforeach
 
                     </div>
                 </div>
