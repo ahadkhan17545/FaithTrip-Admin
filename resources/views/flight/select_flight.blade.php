@@ -1,45 +1,5 @@
 @extends('master')
 
-@section('header_css')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <style>
-        .select2-selection {
-            position: relative !important;
-            box-shadow: none !important;
-        }
-
-        .select2-selection__rendered {
-            position: absolute !important;
-            top: 42px !important;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 230px;
-            padding-left: 20px !important;
-        }
-
-        .select2-container .select2-selection--single .select2-selection__rendered {
-            padding-left: 20px !important;
-        }
-
-        .select2-container--open .select2-dropdown {
-            top: 45px !important;
-        }
-
-        .select2-selection__arrow {
-            display: none;
-        }
-
-        .select2-selection__placeholder {
-            font-weight: 600;
-        }
-
-        .input-group {
-            height: 76px
-        }
-    </style>
-@endsection
-
 @section('content')
     <div class="row">
         <div class="col-xl-8 mainContent">
