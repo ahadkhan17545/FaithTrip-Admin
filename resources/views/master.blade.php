@@ -154,6 +154,8 @@
 
     @yield('footer_js')
 
+    {!! Toastr::message() !!}
+
 </body>
 
 </html>

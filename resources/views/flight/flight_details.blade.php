@@ -29,17 +29,11 @@
                     $legsArray = $data['legs'];
                     foreach ($legsArray as $key => $leg) {
                         $legRef = $leg['ref'] - 1;
-                        $legDescription =
-                            $searchResults['groupedItineraryResponse'][
-                                'legDescs'
-                            ][$legRef];
+                        $legDescription = $searchResults['groupedItineraryResponse']['legDescs'][$legRef];
                         $schedulesArray = $legDescription['schedules'];
                         foreach ($schedulesArray as $schedule) {
                             $scheduleRef = $schedule['ref'] - 1;
-                            $segmentArray[] =
-                                $searchResults['groupedItineraryResponse'][
-                                    'scheduleDescs'
-                                ][$scheduleRef];
+                            $segmentArray[] = $searchResults['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
                         }
                     }
                 @endphp
@@ -120,147 +114,23 @@
                                         <span
                                             class="d-inline-flex align-items-center w-max-content">
                                             @php
-                                                $passangerWisebaggage =
-                                                    $data[
-                                                        'pricingInformation'
-                                                    ][0]['fare'][
-                                                        'passengerInfoList'
-                                                    ];
+                                                $passangerWisebaggage = $data['pricingInformation'][0]['fare']['passengerInfoList'];
 
-                                                foreach (
-                                                    $passangerWisebaggage
-                                                    as $passangerWisebaggageInfo
-                                                ) {
-                                                    if (
-                                                        isset(
-                                                            $passangerWisebaggageInfo[
-                                                                'passengerInfo'
-                                                            ][
-                                                                'baggageInformation'
-                                                            ][0][
-                                                                'allowance'
-                                                            ]['ref'],
-                                                        )
-                                                    ) {
-                                                        $baggageRef =
-                                                            $passangerWisebaggageInfo[
-                                                                'passengerInfo'
-                                                            ][
-                                                                'baggageInformation'
-                                                            ][0][
-                                                                'allowance'
-                                                            ]['ref'];
-                                                        if (
-                                                            isset(
-                                                                $searchResults[
-                                                                    'groupedItineraryResponse'
-                                                                ][
-                                                                    'baggageAllowanceDescs'
-                                                                ][
-                                                                    $baggageRef -
-                                                                        1
-                                                                ],
-                                                            )
-                                                        ) {
-                                                            echo $passangerWisebaggageInfo[
-                                                                'passengerInfo'
-                                                            ][
-                                                                'passengerType'
-                                                            ] .
-                                                                '(' .
-                                                                $passangerWisebaggageInfo[
-                                                                    'passengerInfo'
-                                                                ][
-                                                                    'passengerNumber'
-                                                                ] .
-                                                                '): ';
+                                                foreach ($passangerWisebaggage as $passangerWisebaggageInfo) {
+                                                    if (isset($passangerWisebaggageInfo['passengerInfo']['baggageInformation'][0]['allowance']['ref'])) {
 
-                                                            if (
-                                                                isset(
-                                                                    $searchResults[
-                                                                        'groupedItineraryResponse'
-                                                                    ][
-                                                                        'baggageAllowanceDescs'
-                                                                    ][
-                                                                        $baggageRef -
-                                                                            1
-                                                                    ][
-                                                                        'pieceCount'
-                                                                    ],
-                                                                )
-                                                            ) {
-                                                                echo 'Piece Count: ' .
-                                                                    $searchResults[
-                                                                        'groupedItineraryResponse'
-                                                                    ][
-                                                                        'baggageAllowanceDescs'
-                                                                    ][
-                                                                        $baggageRef -
-                                                                            1
-                                                                    ][
-                                                                        'pieceCount'
-                                                                    ] *
-                                                                        $passangerWisebaggageInfo[
-                                                                            'passengerInfo'
-                                                                        ][
-                                                                            'passengerNumber'
-                                                                        ];
+                                                        $baggageRef = $passangerWisebaggageInfo['passengerInfo']['baggageInformation'][0]['allowance']['ref'];
+                                                        if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1])) {
+                                                            echo $passangerWisebaggageInfo['passengerInfo']['passengerType'] . '(' . $passangerWisebaggageInfo['passengerInfo']['passengerNumber'] . '): ';
+
+                                                            if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['pieceCount'])) {
+                                                                echo 'Piece Count: ' . $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['pieceCount'] * $passangerWisebaggageInfo['passengerInfo']['passengerNumber'];
                                                             }
-                                                            if (
-                                                                isset(
-                                                                    $searchResults[
-                                                                        'groupedItineraryResponse'
-                                                                    ][
-                                                                        'baggageAllowanceDescs'
-                                                                    ][
-                                                                        $baggageRef -
-                                                                            1
-                                                                    ][
-                                                                        'weight'
-                                                                    ],
-                                                                )
-                                                            ) {
-                                                                echo $searchResults[
-                                                                    'groupedItineraryResponse'
-                                                                ][
-                                                                    'baggageAllowanceDescs'
-                                                                ][
-                                                                    $baggageRef -
-                                                                        1
-                                                                ][
-                                                                    'weight'
-                                                                ] *
-                                                                    $passangerWisebaggageInfo[
-                                                                        'passengerInfo'
-                                                                    ][
-                                                                        'passengerNumber'
-                                                                    ];
+                                                            if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['weight'])) {
+                                                                echo $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['weight'] * $passangerWisebaggageInfo['passengerInfo']['passengerNumber'];
                                                             }
-                                                            if (
-                                                                isset(
-                                                                    $searchResults[
-                                                                        'groupedItineraryResponse'
-                                                                    ][
-                                                                        'baggageAllowanceDescs'
-                                                                    ][
-                                                                        $baggageRef -
-                                                                            1
-                                                                    ][
-                                                                        'unit'
-                                                                    ],
-                                                                )
-                                                            ) {
-                                                                echo ' ' .
-                                                                    $searchResults[
-                                                                        'groupedItineraryResponse'
-                                                                    ][
-                                                                        'baggageAllowanceDescs'
-                                                                    ][
-                                                                        $baggageRef -
-                                                                            1
-                                                                    ][
-                                                                        'unit'
-                                                                    ];
+                                                            if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['unit'])) {
+                                                                echo ' ' . $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['unit'];
                                                             }
 
                                                             echo '&nbsp;&nbsp;';
@@ -276,9 +146,9 @@
                             </div>
                         </div>
 
-                        {{-- <div class="d-flex justify-center px-3">
+                        <div class="d-flex justify-center px-3">
                             <span class="fs-12 layover text-center">17hr 30min Layover</span>
-                        </div> --}}
+                        </div>
                     </div>
                 @endforeach
 

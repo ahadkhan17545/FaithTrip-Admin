@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\SabreFlightRevalidate;
 use Illuminate\Http\Request;
 use DateTime;
 use Brian2694\Toastr\Facades\Toastr;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class FlightSearchController extends Controller
 {
-    public function generateAccessToken(){
+    public static function generateAccessToken(){
 
         $curl = curl_init();
 
@@ -259,5 +259,15 @@ class FlightSearchController extends Controller
 
         Toastr::success('Filter Cleared', 'No Airline Carrier Selected');
         return back();
+    }
+
+    public function revalidateFlight($sessionIndex){
+        $revlidatedData = json_decode(SabreFlightRevalidate::flightRevalidate($sessionIndex), true);
+        if(isset($revlidatedData['groupedItineraryResponse'])){
+            return view('flight.select_flight', compact('revlidatedData'));
+        } else {
+            Toastr::error('Flight is not available for Booking', 'Sorry! Please Search Again');
+            return redirect('/home');
+        }
     }
 }

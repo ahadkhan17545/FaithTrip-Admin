@@ -30,6 +30,7 @@ Route::post('ckeditor/upload', [CkeditorController::class, 'upload'])->name('cke
 Route::group(['middleware' => ['auth']], function () {
     Route::post('/search/flights', [FlightSearchController::class, 'searchFlights'])->name('SearchFlights');
     Route::get('/flight/search-results', [FlightSearchController::class, 'showFlightSearchResults'])->name('ShowFlightSearchResults');
+    Route::get('select/flight/{session_index}', [FlightSearchController::class, 'revalidateFlight'])->name('RevalidateFlight');
 
     // filter routes
     Route::post('/price/range/filter', [FlightSearchController::class, 'priceRangeFilter'])->name('PriceRangeFilter');
