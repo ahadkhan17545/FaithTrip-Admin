@@ -39,21 +39,72 @@ class SabreFlightRevalidate extends Model
         }
         // making passanger info array end
 
+
+        // fetching segment of flights
         $searchResults = json_decode(session('search_results'), true);
-        $originLocation = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureLocation'];
-        $destinationLocation = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['arrivalLocation'];
+        $segmentArray = [];
+        $legsArray = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['legs'];
+        foreach ($legsArray as $key => $leg) {
+            $legRef = $leg['ref'] - 1;
+            $legDescription = $searchResults['groupedItineraryResponse']['legDescs'][$legRef];
+            $schedulesArray = $legDescription['schedules'];
+            foreach ($schedulesArray as $schedule) {
+                $scheduleRef = $schedule['ref'] - 1;
+                $segmentArray[] = $searchResults['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
+            }
+        }
 
-        // getting flight data from selected flight of search result start
-        $legRef = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['legs'][0]['ref'];
-        $scheduleRef = $searchResults['groupedItineraryResponse']['legDescs'][$legRef-1]['schedules'][0]['ref'];
-        $scheduleDescription = $searchResults['groupedItineraryResponse']['scheduleDescs'][$scheduleRef-1];
-        // getting flight data from selected flight of search result end
 
-        $flightNumber = $scheduleDescription['carrier']['operatingFlightNumber'];
-        $departureDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($scheduleDescription['departure']['time'], 0, 8);
-        $arrivalDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($scheduleDescription['arrival']['time'], 0, 8);
-        $operatingAirline = $scheduleDescription['carrier']['operating'];
-        $marketingAirline = $scheduleDescription['carrier']['marketing'];
+        $OriginDestinationInformation = [];
+        foreach ($segmentArray as $key2 => $segmentData) {
+
+            $departureDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['departure']['time'], 0, 8);
+            $originLocation = $segmentData['departure']['city'];
+            $destinationLocation = $segmentData['arrival']['city'];
+            $flightNumber = $segmentData['carrier']['operatingFlightNumber'];
+            $arrivalDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['arrival']['time'], 0, 8);
+            $operatingAirline = $segmentData['carrier']['operating'];
+            $marketingAirline = $segmentData['carrier']['marketing'];
+
+            // Create segment array
+            $segment = [
+                "RPH" => (string) ($key2 + 1),
+                "DepartureDateTime" => $departureDateTime,
+                "OriginLocation" => [
+                    "LocationCode" => $originLocation
+                ],
+                "DestinationLocation" => [
+                    "LocationCode" => $destinationLocation
+                ],
+                "TPA_Extensions" => [
+                    "SegmentType" => [
+                        "Code" => "O"
+                    ],
+                    "Flight" => [
+                        [
+                            "Number" => $flightNumber,
+                            "DepartureDateTime" => $departureDateTime,
+                            "ArrivalDateTime" => $arrivalDateTime,
+                            "Type" => "A",
+                            "ClassOfService" => "K",
+                            "OriginLocation" => [
+                                "LocationCode" => $originLocation
+                            ],
+                            "DestinationLocation" => [
+                                "LocationCode" => $destinationLocation
+                            ],
+                            "Airline" => [
+                                "Operating" => $operatingAirline,
+                                "Marketing" => $marketingAirline
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
+            // Add segment to OriginDestinationInformation
+            $OriginDestinationInformation[] = $segment;
+        }
 
 
         // check for access token start
@@ -101,42 +152,7 @@ class SabreFlightRevalidate extends Model
                         ]
                     ]
                 ],
-                "OriginDestinationInformation" => [
-                    [
-                        "RPH" => "1",
-                        "DepartureDateTime" => $departureDateTime,
-                        "OriginLocation" => [
-                            "LocationCode" => $originLocation
-                        ],
-                        "DestinationLocation" => [
-                            "LocationCode" => $destinationLocation
-                        ],
-                        "TPA_Extensions" => [
-                            "SegmentType" => [
-                                "Code" => "O"
-                            ],
-                            "Flight" => [
-                                [
-                                    "Number" => $flightNumber,
-                                    "DepartureDateTime" => $departureDateTime,
-                                    "ArrivalDateTime" => $arrivalDateTime,
-                                    "Type" => "A",
-                                    "ClassOfService" => "K",
-                                    "OriginLocation" => [
-                                        "LocationCode" => $originLocation
-                                    ],
-                                    "DestinationLocation" => [
-                                        "LocationCode" => $destinationLocation
-                                    ],
-                                    "Airline" => [
-                                        "Operating" => $operatingAirline,
-                                        "Marketing" => $marketingAirline
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ],
+                "OriginDestinationInformation" => $OriginDestinationInformation,
                 "TPA_Extensions" => [
                     "IntelliSellTransaction" => [
                         "RequestType" => [
@@ -146,6 +162,9 @@ class SabreFlightRevalidate extends Model
                 ]
             ]
         ];
+
+        // return $data;
+        // exit();
 
         $authorizationToken = 'Authorization: Bearer '.session('access_token');
         $jsonData = json_encode($data);

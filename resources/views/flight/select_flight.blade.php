@@ -132,52 +132,63 @@
                                 </span>
                             </div>
                             @endif
-
                         @endforeach
 
                     </div>
                 </div>
                 <form id="submit_ticket_reservation_info" action="{{url('create/pnr/with/booking')}}" method="POST" class="on-submit">
-
-                    <input type="hidden" name="_token" value="Ta2gCXRL0AN3FD70KOu6Xu4XhCdKsV63j1obg92B">
-                    <input type="hidden" name="rsp" value="ynx5vP664aff93e40f8">
-                    <input type="hidden" name="fare_info" value="">
+                    @csrf
                     <input type="hidden" name="departure_date" value="2024-05-25">
                     <input type="hidden" name="gds" value="Sabre">
 
 
+                    {{-- pricing info start --}}
                     <div class="card shadow border-0 mb-3 d-xl-none">
                         <div class="card-body">
                             <h3 class="fs-17 mb-0">Fare summary</h3>
-                            <p class="fs-14"> Travellers 1 ADT</p>
+                            <p class="fs-14">
+                                Travellers :
+                                @foreach ($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerData)
+                                    <b>
+                                        {{ $passengerData['passengerInfo']['passengerNumber'] }}
+                                        {{ $passengerData['passengerInfo']['passengerType'] }}
+                                    </b><br>
+                                @endforeach
+                            </p>
                             <hr>
                             <div class="d-flex align-items-center justify-content-between mb-3">
                                 <div class="summary-text">
-                                    <div class="font-weight-500">Base fare</div>
+                                    <div class="font-weight-500">Base Fare</div>
                                 </div>
-                                <div class="fs-16 font-weight-500">
-                                    32760
+                                <div class="fs-16 font-weight-500" style="font-weight: 600;">
+                                    ({{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareCurrency'] }})
+                                    {{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'] }}
                                 </div>
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-3">
                                 <div class="summary-text">
-                                    <div class="font-weight-500">Tax &amp; charge</div>
+                                    <div class="font-weight-500">Total Tax Amount</div>
                                 </div>
-                                <div class="fs-16 font-weight-500">
-                                    9426
+                                <div class="fs-16 font-weight-500" style="font-weight: 600;">
+                                    ({{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['currency'] }})
+                                    {{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalTaxAmount'] }}
                                 </div>
                             </div>
                             <hr>
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="">
-                                    <div class="fs-14 font-weight-300">Payable amount</div>
+                                    <div class="fs-14 font-weight-300">Total Payable Amount</div>
                                 </div>
-                                <div class="fs-16 font-weight-500"> ৳
-                                    <span class="ml-2 text-primary">42186</span>
+                                <div class="fs-16 font-weight-500">
+                                    <span class="ml-2 text-primary" style="font-weight: 600;">
+                                        ({{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['currency'] }})
+                                        {{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalPrice'] }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {{-- pricing info end --}}
 
 
                     <div class="card shadow border-0 mb-3">
@@ -824,25 +835,19 @@
                             </div>
                         </div>
                     </div>
+
                 </form>
                 <div class="card shadow border-0 mb-3">
                     <div class="card-body py-5 px-5">
                         <div class="fs-14 mb-0 ">
                             <h5 class="fw-bold">Mandatory check list for passengers</h5>
                             <ul class="list-style ps-3">
-                                <li>Please download and activate the aarogya setu app on your phone</li>
-                                <li>Certify your health status through the aarogya setu app or the self declaration form
-                                </li>
-                                <li>Remember to do web check in before arriving at the airport please do carry an e boarding
-                                    pass on your mobile alternatively you can carry the printout of the boarding pass</li>
+                                <li>Certify your health status through the aarogya setu app or the self declaration form</li>
+                                <li>Remember to do web check in before arriving at the airport please do carry an e boarding pass on your mobile alternatively you can carry the printout of the boarding pass</li>
                                 <li>Please reach at least 2 hours prior to flight departure</li>
                                 <li>No meal service will be available on board</li>
                                 <li>Face masks are compulsory we urge you to carry your own</li>
-                                <li>You are requested to print and paste the baggage tag attached to your booking
-                                    confirmation alternatively you can write your name pnr and flight number on an a4 sheet
-                                    and affix on your bag</li>
-                                <li>Aliquam rhoncus ante a neque molestie sed euismod odio facilisis</li>
-                                <li>Nunc eu arcu ut odio varius dapibus</li>
+                                <li>You are requested to print and paste the baggage tag attached to your booking confirmation alternatively you can write your name pnr and flight number on an a4 sheet and affix on your bag</li>
                             </ul>
                         </div>
                     </div>
@@ -850,38 +855,54 @@
             </div>
         </div>
         <div class="col-xl-4 rightSidebar">
+            {{-- pricing info start --}}
             <div class="theiaStickySidebar">
                 <div class="card shadow border-0 mb-3 d-none d-xl-block">
                     <div class="card-body">
                         <h3 class="fs-17 mb-0">Fare summary</h3>
                         <p class="fs-14"> Travellers
-                            1 ADT
+                            @foreach ($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerData)
+                                <b>
+                                    {{ $passengerData['passengerInfo']['passengerNumber'] }}
+                                    {{ $passengerData['passengerInfo']['passengerType'] }}
+                                </b><br>
+                            @endforeach
                         </p>
                         <hr>
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <div class="summary-text">
-                                <div class="font-weight-500">Base fare</div>
+                                <div class="font-weight-500">Base Fare</div>
                             </div>
-                            <div class="fs-16 font-weight-500"> ৳ 32760</div>
+                            <div class="fs-16 font-weight-500" style="font-weight: 600;">
+                                ({{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareCurrency'] }})
+                                {{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'] }}
+                            </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <div class="summary-text">
-                                <div class="font-weight-500"> Tax &amp; charge </div>
+                                <div class="font-weight-500"> Total Tax Amount </div>
                             </div>
-                            <div class="fs-16 font-weight-500"> ৳ 9426 </div>
+                            <div class="fs-16 font-weight-500" style="font-weight: 600;">
+                                ({{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['currency'] }})
+                                {{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalTaxAmount'] }}
+                            </div>
                         </div>
                         <hr>
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="">
-                                <div class="fs-14 font-weight-300">Payable amount</div>
+                                <div class="fs-14 font-weight-300">Total Payable Amount</div>
                             </div>
-                            <div class="fs-16 font-weight-500"> ৳
-                                <span class="ml-2 text-primary">42186</span>
+                            <div class="fs-16 font-weight-500">
+                                <span class="ml-2 text-primary" style="font-weight: 600;">
+                                    ({{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['currency'] }})
+                                    {{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalPrice'] }}
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            {{-- pricing info end --}}
         </div>
     </div>
 @endsection
