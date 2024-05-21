@@ -139,9 +139,20 @@
                 <form id="submit_ticket_reservation_info" action="{{url('create/pnr/with/booking')}}" method="POST" class="on-submit">
                     @csrf
 
-                    <input type="hidden" name="departure_date" value="2024-05-25">
                     <input type="hidden" name="gds" value="Sabre">
-
+                    <input type="hidden" name="gds_unique_id" value="SOOL">
+                    <input type="hidden" name="departure_date" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}}">
+                    <input type="hidden" name="departure_location" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureLocation']}}">
+                    <input type="hidden" name="arrival_location" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['arrivalLocation']}}">
+                    <input type="hidden" name="governing_carriers" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['governingCarriers']}}">
+                    <input type="hidden" name="adult" value="{{session('adult')}}">
+                    <input type="hidden" name="child" value="{{session('child')}}">
+                    <input type="hidden" name="infant" value="{{session('infant')}}">
+                    <input type="hidden" name="base_fare_amount" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount']}}">
+                    <input type="hidden" name="total_tax_amount" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalTaxAmount']}}">
+                    <input type="hidden" name="total_fare" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalPrice']}}">
+                    <input type="hidden" name="currency" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['currency']}}">
+                    <input type="hidden" name="last_ticket_datetime" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate']." ".$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketTime'].":00"}}">
 
                     {{-- pricing info start --}}
                     <div class="card shadow border-0 mb-3 d-xl-none">
@@ -202,114 +213,109 @@
                         <div class="card-body">
                             <div class="form-row">
                                 <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-2 mb-md-0 pr-3 px-3">
-                                    <label for="Email">Email</label>
+                                    <label for="Email">Name</label>
                                     <span class="text-danger">*</span>
                                 </div>
                                 <div class="col-12 col-md-8 mb-2 mb-sm-3">
-                                    <input name="email" type="email" class="form-control bg-white shadow-none" placeholder="Email id" required="">
+                                    <input name="traveller_name" type="text" class="form-control" placeholder="Traveller Name" required="">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-2 mb-md-0 pr-3 px-3">
-                                    Contact number <span class="text-danger">*</span>
+                                    <label for="Email">Email</label>
+                                    <span class="text-danger">*</span>
                                 </div>
                                 <div class="col-12 col-md-8 mb-2 mb-sm-3">
-                                    <input name="phone" type="text" class="form-control bg-white shadow-none" placeholder="+8801*********" required="">
+                                    <input name="traveller_email" type="email" class="form-control" placeholder="Email id" required="">
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-2 mb-md-0 pr-3 px-3">
+                                    Contact Number <span class="text-danger">*</span>
+                                </div>
+                                <div class="col-12 col-md-8 mb-2 mb-sm-3">
+                                    <input name="traveller_contact" type="text" class="form-control" placeholder="+8801*********" required="">
+                                </div>
+                            </div>
+
                             <hr>
-                            <h6 class="fw-bold"> Please fill the information for ADT </h6>
+
+                            <h6 class="fw-bold">Please fill the information for ADT</h6>
+                            <input type="hidden" name="passanger_type[]" value="">
                             <div class="form-row mt-3">
-                                <div
-                                    class="col-sm-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                    Passenger title <span class="text-danger">*</span>
+                                <div class="col-sm-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                    Passenger Title <span class="text-danger">*</span>
                                 </div>
                                 <div class="col-sm-6 col-md-6 mb-3 mb-sm-3">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="pxn_title_1" id="inlineRadio0_0" value="Mr." required="">
+                                        <input class="form-check-input" type="radio" name="passanger_title[]" id="inlineRadio0_0" value="Mr." required="">
                                         <label class="form-check-label" for="inlineRadio0_0">Mr.</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="pxn_title_1"
-                                            id="inlineRadio1_0" value="Mrs.">
+                                        <input class="form-check-input" type="radio" name="passanger_title[]" id="inlineRadio1_0" value="Mrs.">
                                         <label class="form-check-label" for="inlineRadio1_0">Mrs.</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="pxn_title_1"
-                                            id="inlineRadio2_0" value="Ms.">
+                                        <input class="form-check-input" type="radio" name="passanger_title[]" id="inlineRadio2_0" value="Ms.">
                                         <label class="form-check-label" for="inlineRadio2_0">Ms.</label>
                                     </div>
                                 </div>
                             </div>
-                            <input type="hidden" name="pxn_type[]" value="ADT">
                             <div class="form-row">
-                                <div
-                                    class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                    First name <span class="text-danger">*</span>
+                                <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                    First Name <span class="text-danger">*</span>
                                 </div>
                                 <div class="col-12 col-md-8 mb-3 mb-sm-3">
                                     <div class="input-select position-relative">
-                                        <input name="first_name[]" type="text"
-                                            class="form-control bg-white shadow-none" placeholder="First name"
-                                            required="">
+                                        <input name="first_name[]" type="text" class="form-control" placeholder="First name" required="">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div
-                                    class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                    Last name <span class="text-danger">*</span>
+                                <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                    Last Name <span class="text-danger">*</span>
                                 </div>
                                 <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                    <input name="last_name[]" type="text" class="form-control bg-white shadow-none"
-                                        placeholder="Last name" required="">
+                                    <input name="last_name[]" type="text" class="form-control" placeholder="Last name" required="">
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div
-                                    class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
                                     Date of birth <span class="text-danger">*</span>
                                 </div>
                                 <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                    <input required="" class="form-control bg-white shadow-none" type="date"
-                                        placeholder="dd-mm-yyyy" name="dob[]" min="1924-05-20" max="2024-05-20">
+                                    <input required="" class="form-control" type="date" placeholder="dd-mm-yyyy" name="dob[]" min="1900-01-01" max="{{date("Y-m-d")}}">
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div
-                                    class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                    Document type <span class="text-danger">*</span>
+                                <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                    Document Type <span class="text-danger">*</span>
                                 </div>
                                 <div class="col-12 col-md-8 mb-3 mb-sm-3">
                                     <div class="row g-3">
                                         <div class="col-md-6">
-                                            <select name="doc_type[]" class="form-select">
-                                                <option value="P" selected="">Passport</option>
-                                                <option value="I">National id</option>
+                                            <select name="document_type[]" class="form-select" required>
+                                                <option value="1" selected="">Passport</option>
+                                                <option value="2">National id</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
-                                            <input name="doc_number[]" type="text"
-                                                class="form-control bg-white shadow-none " placeholder="Document number"
-                                                required="">
+                                            <input name="document_no[]" type="text" class="form-control" placeholder="Document Number" required="">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div
-                                    class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
                                     Document expiration <span class="text-danger">*</span>
                                 </div>
                                 <div class="col-12 col-md-8 mb-3 mb-sm-3">
                                     <div class="row g-3">
                                         <div class="col-md-6">
-                                            <input required="" name="doc_expire_date[]" type="date"
-                                                class="form-control bg-white shadow-none">
+                                            <input required="" name="document_expire_date[]" type="date" class="form-control">
                                         </div>
                                         <div class="col-md-6">
-                                            <select required="" name="doc_issue_country[]" class="form-select"
-                                                aria-label="Default select example">
+                                            <select required="" name="document_issue_country[]" class="form-select" aria-label="Default select example">
                                                 <option selected="" disabled="">--- Select Issue Country ---</option>
                                                 <option value="AFG">Afghan</option>
                                                 <option value="ALA">Åland Island</option>
@@ -566,16 +572,13 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div
-                                    class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
                                     Nationality <span class="text-danger">*</span>
                                 </div>
                                 <div class="col-12 col-md-8 mb-3 mb-sm-3">
                                     <div class="input-select position-relative">
-                                        <select required="" name="nationality[]" class="form-select"
-                                            aria-label="Default select example">
-                                            <option selected="" disabled="">---------- Please Select Nationality
-                                                ----------</option>
+                                        <select required="" name="nationality[]" class="form-select" aria-label="Default select example">
+                                            <option selected="" disabled="">---------- Please Select Nationality ----------</option>
                                             <option value="AFG">Afghan</option>
                                             <option value="ALA">Åland Island</option>
                                             <option value="ALB">Albanian</option>
@@ -830,6 +833,7 @@
                                 </div>
                             </div>
                             <hr>
+
                             <div class="text-end">
                                 <button type="submit" class="btn btn-primary">Make booking</button>
                             </div>
