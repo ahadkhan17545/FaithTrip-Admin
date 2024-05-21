@@ -189,7 +189,6 @@ class FlightSearchController extends Controller
         $searchResults = $this->getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType);
         session(['search_results' => $searchResults]);
 
-
         // for carrier filters
         $searchResults = json_decode($searchResults, true);
         $operatingCodes = [];
@@ -208,6 +207,12 @@ class FlightSearchController extends Controller
     public function showFlightSearchResults(){
         $searchResults = json_decode(session('search_results'), true);
         $search_results_operating_carriers = session('search_results_operating_carriers');
+
+        // echo "<pre>";
+        // print_r($searchResults);
+        // echo "</pre>";
+        // exit();
+
         return view('flight.search_results', compact('searchResults', 'search_results_operating_carriers'));
     }
 
