@@ -152,7 +152,12 @@
                     <input type="hidden" name="total_tax_amount" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalTaxAmount']}}">
                     <input type="hidden" name="total_fare" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalPrice']}}">
                     <input type="hidden" name="currency" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['currency']}}">
-                    <input type="hidden" name="last_ticket_datetime" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate']." ".$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketTime'].":00"}}">
+
+                    @if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate']))
+                        <input type="hidden" name="last_ticket_datetime" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate']." ".$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketTime'].":00"}}">
+                    @else
+                        <input type="hidden" name="last_ticket_datetime" value="">
+                    @endif
 
                     {{-- pricing info start --}}
                     <div class="card shadow border-0 mb-3 d-xl-none">

@@ -26,8 +26,7 @@ class FlightSearchController extends Controller
         CURLOPT_POSTFIELDS =>'grant_type=client_credentials',
         CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/x-www-form-urlencoded',
-                'Authorization: Basic VmpFNk5EY3dPVE0yT2xNd01FdzZRVUU9OlpqVjBNM1EzYkRJPQ==',
-                'Cookie: visid_incap_2768617=CMmrEjpiT2uqtybd16i4/Ce7/2UAAAAAQUIPAAAAAAAvMTvmjB9uF7//pSsvuNc0; incap_ses_1787_2768614=CcAUVpIWFmNy74WBH7PMGF2xHGYAAAAAIpc34z3S3Q8jyR1+2Q+HMA==; nlbi_2768614=uWlMLUunkm8yyGEGRh9LCAAAAAAA3GnPshJ3E7mCKRrMlwvS; visid_incap_2768614=oagYgS2rSheFlLqzITzLq5S6/2UAAAAAQUIPAAAAAADHLck2jT6mHfxrtvT5HVcc'
+                'Authorization: Basic VmpFNk5EY3dPVE0yT2xNd01FdzZRVUU9OlpqVjBNM1EzYkRJPQ=='
             ),
         ));
 
@@ -45,25 +44,26 @@ class FlightSearchController extends Controller
 
     public function getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType){
 
-
         // travellers info
         $passengerTypes = array();
         if ($adult > 0) {
             $passengerTypes[] = array("Code" => "ADT", "Quantity" => (int) $adult);
         }
         if ($child > 0) {
-            $passengerTypes[] = array("Code" => "CHD", "Quantity" => (int) $child);
+            $passengerTypes[] = array("Code" => "CNN", "Quantity" => (int) $child);
         }
         if ($infant > 0) {
             $passengerTypes[] = array("Code" => "INF", "Quantity" => (int) $infant);
         }
 
         $airTravelerAvail = [];
+        $passengerTypeQuantity = [];
         foreach ($passengerTypes as $passengerType) {
-            $airTravelerAvail[] = array(
-                "PassengerTypeQuantity" => array($passengerType)
-            );
+            $passengerTypeQuantity[] = $passengerType;
         }
+        $airTravelerAvail[] = array(
+            "PassengerTypeQuantity" => $passengerTypeQuantity
+        );
 
         // oneway or return flights
         $flightTypeData = array();
@@ -136,7 +136,6 @@ class FlightSearchController extends Controller
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
         return $response;
     }
@@ -207,12 +206,6 @@ class FlightSearchController extends Controller
     public function showFlightSearchResults(){
         $searchResults = json_decode(session('search_results'), true);
         $search_results_operating_carriers = session('search_results_operating_carriers');
-
-        // echo "<pre>";
-        // print_r($searchResults);
-        // echo "</pre>";
-        // exit();
-
         return view('flight.search_results', compact('searchResults', 'search_results_operating_carriers'));
     }
 

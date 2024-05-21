@@ -197,7 +197,9 @@ function oneWayTotalPassenger() {
   totalPass.value = `${total} Travellers, ${patType}`;
 
   const mainDropDown = document.querySelectorAll(".dropdown-menu");
-  mainDropDown[3].classList.remove("show");
+  mainDropDown[0].classList.remove("show");
+  mainDropDown[1].classList.remove("show");
+  mainDropDown[2].classList.remove("show");
 }
 
 const roundDatePicker = document.getElementById("roundDatePicker");

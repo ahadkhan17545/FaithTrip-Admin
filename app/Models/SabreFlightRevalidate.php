@@ -26,7 +26,7 @@ class SabreFlightRevalidate extends Model
             $passengerTypes[] = array("Code" => "ADT", "Quantity" => (int) $adult);
         }
         if ($child > 0) {
-            $passengerTypes[] = array("Code" => "CHD", "Quantity" => (int) $child);
+            $passengerTypes[] = array("Code" => "CNN", "Quantity" => (int) $child);
         }
         if ($infant > 0) {
             $passengerTypes[] = array("Code" => "INF", "Quantity" => (int) $infant);
