@@ -1,3 +1,4 @@
 1. Price Validate API Error while 3 segment with different carrier code
+2. JFK Destination diye Multiple Passanger type dile price validate api te error
 3. Passanger onujhai form multiple hobe
 4. make pnr & booking and save data into database

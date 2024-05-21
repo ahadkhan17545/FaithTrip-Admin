@@ -168,7 +168,7 @@
                                     <td>
                                         @foreach ($data['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerData)
                                             <b>{{ $passengerData['passengerInfo']['passengerNumber'] }}
-                                                {{ $passengerData['passengerInfo']['passengerType'] }}</b><br>
+                                                {{ $passengerData['passengerInfo']['passengerType'] }}</b>&nbsp;
                                         @endforeach
                                     </td>
                                     <td>
