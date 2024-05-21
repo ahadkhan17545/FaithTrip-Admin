@@ -83,10 +83,10 @@
                                             {{ App\Models\CustomFunction::convertMinToHrMin($segmentData['elapsedTime']) }}
                                         </span>
                                         <span class="d-inline-flex align-items-center w-max-content">&nbsp;<span class="text-muted">|</span>&nbsp;
-                                            {{ isset($data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['mealCode']) ? 'Meal - ' . $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['mealCode'] : 'N/A' }}
+                                            {{ isset($data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['mealCode']) ? 'Meal - ' . $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['mealCode'] : 'N/A' }}
                                         </span>
                                         <span class="d-inline-flex align-items-center w-max-content">&nbsp;<span class="text-muted">|</span>&nbsp;
-                                            {{ isset($data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['bookingCode']) ? 'Booking Code - ' . $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][$segmentIndex]['segments'][$segmentIndex]['segment']['bookingCode'] : 'N/A' }}
+                                            {{ isset($data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode']) ? 'Booking Code - ' . $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'] : 'N/A' }}
                                         </span>
                                     </div>
                                     <div class="two-dots my-3 text-muted position-relative border-top">

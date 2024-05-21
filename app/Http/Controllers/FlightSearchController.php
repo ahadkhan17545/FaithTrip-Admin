@@ -261,6 +261,12 @@ class FlightSearchController extends Controller
 
     public function revalidateFlight($sessionIndex){
         $revlidatedData = json_decode(SabreFlightRevalidate::flightRevalidate($sessionIndex), true);
+
+        // echo "<pre>";
+        // print_r($revlidatedData);
+        // echo "</pre>";
+        // exit();
+
         if(isset($revlidatedData['groupedItineraryResponse'])){
             return view('flight.select_flight', compact('revlidatedData'));
         } else {

@@ -32,11 +32,13 @@ class SabreFlightRevalidate extends Model
             $passengerTypes[] = array("Code" => "INF", "Quantity" => (int) $infant);
         }
         $airTravelerAvail = [];
+        $passengerTypeQuantity = [];
         foreach ($passengerTypes as $passengerType) {
-            $airTravelerAvail[] = array(
-                "PassengerTypeQuantity" => array($passengerType)
-            );
+            $passengerTypeQuantity[] = $passengerType;
         }
+        $airTravelerAvail[] = array(
+            "PassengerTypeQuantity" => $passengerTypeQuantity
+        );
         // making passanger info array end
 
 
@@ -58,13 +60,34 @@ class SabreFlightRevalidate extends Model
         $OriginDestinationInformation = [];
         foreach ($segmentArray as $key2 => $segmentData) {
 
-            $departureDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['departure']['time'], 0, 8);
+            // modify departure date if the date change
+            if($key2 == 0) {
+                $departureDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['departure']['time'], 0, 8);
+            } else{
+                $departureDateTime = substr($OriginDestinationInformation[$key2-1]['TPA_Extensions']['Flight'][0]['ArrivalDateTime'],0,10)."T".substr($segmentData['departure']['time'], 0, 8);
+            }
+
+            // modify arrival date if the date change
+            $originalDepartureDateTime = new DateTime($departureDateTime);
+            $dateTime = new DateTime($departureDateTime);
+            $dateTime->modify("+" . $segmentData['elapsedTime'] . " minutes");
+            $originalDate = $originalDepartureDateTime->format('Y-m-d');
+            $modifiedDate = $dateTime->format('Y-m-d');
+            if ($originalDate != $modifiedDate) {
+                $newdateTime = DateTime::createFromFormat("Y-m-d\TH:i:s", $departureDateTime);
+                $newdateTime->modify("+1 day");
+                $arrivalDateTime = $dateTime->format("Y-m-d\TH:i:s");
+            } else {
+                $arrivalDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['arrival']['time'], 0, 8);
+            }
+
+
             $originLocation = $segmentData['departure']['city'];
             $destinationLocation = $segmentData['arrival']['city'];
             $flightNumber = $segmentData['carrier']['operatingFlightNumber'];
-            $arrivalDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['arrival']['time'], 0, 8);
             $operatingAirline = $segmentData['carrier']['operating'];
             $marketingAirline = $segmentData['carrier']['marketing'];
+
 
             // Create segment array
             $segment = [
