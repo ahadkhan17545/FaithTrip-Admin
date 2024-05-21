@@ -138,6 +138,7 @@
                 </div>
                 <form id="submit_ticket_reservation_info" action="{{url('create/pnr/with/booking')}}" method="POST" class="on-submit">
                     @csrf
+
                     <input type="hidden" name="departure_date" value="2024-05-25">
                     <input type="hidden" name="gds" value="Sabre">
 
@@ -309,8 +310,7 @@
                                         <div class="col-md-6">
                                             <select required="" name="doc_issue_country[]" class="form-select"
                                                 aria-label="Default select example">
-                                                <option selected="" disabled="">--- Select Issue Country ---
-                                                </option>
+                                                <option selected="" disabled="">--- Select Issue Country ---</option>
                                                 <option value="AFG">Afghan</option>
                                                 <option value="ALA">Åland Island</option>
                                                 <option value="ALB">Albanian</option>

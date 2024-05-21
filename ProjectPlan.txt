@@ -1,3 +1,79 @@
 1. Price Revalidayte API Error while multiple segments in a flight
 2. Show Pricing with tax in select flight page
 3. make pnr & booking and save data into database
+
+
+flight_booking_db
+===================
+slug (custom)
+
+pnr_id (from sabre)
+booking_id (from sabre)
+ticket_id (from sabre)
+booked_by
+gds
+traveller_name
+traveller_email
+traveller_contact
+departure_date
+departure_location
+arrival_location
+governing_carriers
+adult
+child
+infant
+base_fare_amount
+total_tax_amount
+total_fare
+currency
+
+last_booking_cancel_datetime
+last_ticket_datetime
+last_ticket_cancel_datetime
+
+booking_cancelled_at
+ticket_issued_at
+ticket_cancelled_at
+status [1=>Booking Done; 2=>Ticketing Done; 3=>Booking Cancelled; 4=>Ticket Cancelled]
+
+
+flight_passanger
+================
+flight_booking_id (table_id)
+type
+title
+first_name
+last_name
+dob
+document_type
+document_no
+document_expire_date
+document_issue_country
+nationality
+
+
+segments:
+    flight_booking_id (table_id)
+    totalMilesFlown
+    elapsedTime
+    booking_code
+    cabin_code
+    baggage_allowance
+
+    departure_airport
+    departure_city
+    departure_country
+    departure_time
+    departure_terminal
+
+    arrival_airport
+    arrival_city
+    arrival_country
+    arrival_time
+    arrival_terminal
+
+    carrier_marketing_code
+    carrier_marketing_flight_number
+    carrier_operating_code
+    carrier_operating_flight_number
+    carrier_equipment_code

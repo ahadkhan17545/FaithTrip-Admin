@@ -26,7 +26,7 @@ class FlightSearchController extends Controller
         CURLOPT_POSTFIELDS =>'grant_type=client_credentials',
         CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/x-www-form-urlencoded',
-                'Authorization: Basic VmpFNmFIaHdObU41TVRRMVltcDJOV2g1T1RwRVJWWkRSVTVVUlZJNlJWaFU6U0hBNGRGUTJhVTQ',
+                'Authorization: Basic VmpFNk5EY3dPVE0yT2xNd01FdzZRVUU9OlpqVjBNM1EzYkRJPQ==',
                 'Cookie: visid_incap_2768617=CMmrEjpiT2uqtybd16i4/Ce7/2UAAAAAQUIPAAAAAAAvMTvmjB9uF7//pSsvuNc0; incap_ses_1787_2768614=CcAUVpIWFmNy74WBH7PMGF2xHGYAAAAAIpc34z3S3Q8jyR1+2Q+HMA==; nlbi_2768614=uWlMLUunkm8yyGEGRh9LCAAAAAAA3GnPshJ3E7mCKRrMlwvS; visid_incap_2768614=oagYgS2rSheFlLqzITzLq5S6/2UAAAAAQUIPAAAAAADHLck2jT6mHfxrtvT5HVcc'
             ),
         ));
