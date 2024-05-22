@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('flight_passangers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('flight_booking_id')->nullable()->comment('FlightBooking Table Id');
-            $table->string('passanger_type')->nullable()->comment('1=>Adult;2=>Child;3=>Infant');
+            $table->string('passanger_type')->nullable();
             $table->string('title')->nullable()->comment('Mr/Mrs/Miss');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();

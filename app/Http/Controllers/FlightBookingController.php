@@ -1,0 +1,135 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\FlightBooking;
+use App\Models\FlightPassanger;
+use App\Models\FlightSegment;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
+class FlightBookingController extends Controller
+{
+    public function bookFlightWithPnr(Request $request){
+
+        DB::transaction(function () use ($request) {
+
+            // fetching price using session for security (not from hidden field)
+            $revlidatedData = session('revlidatedData');
+            if($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareCurrency'] == 'USD'){
+                $base_fare_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'] * $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['currencyConversion']['exchangeRateUsed'];
+            }
+            else{
+                $base_fare_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'];
+            }
+            $total_tax_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalTaxAmount'];
+            $total_fare = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
+
+
+            $flightBookingId = FlightBooking::insertGetId([
+                'booking_no' => str::random(3) . "-" . time(),
+                'booked_by' => Auth::user()->id,
+                'pnr_id' => null,
+                'gds' => $request->gds,
+                'gds_unique_id' => $request->gds_unique_id,
+                'traveller_name' => $request->traveller_name,
+                'traveller_email' => $request->traveller_email,
+                'traveller_contact' => $request->traveller_contact,
+                'departure_date' => $request->departure_date,
+                'departure_location' => $request->departure_location,
+                'arrival_location' => $request->arrival_location,
+                'governing_carriers' => $request->governing_carriers,
+                'adult' => session('adult'),
+                'child' => session('child'),
+                'infant' => session('infant'),
+                'base_fare_amount' => $base_fare_amount,
+                'total_tax_amount' => $total_tax_amount,
+                'total_fare' => $total_fare,
+                'currency' => $request->currency,
+                'last_ticket_datetime' => $request->last_ticket_datetime,
+                'status' => 1,
+                'created_at' => Carbon::now()
+            ]);
+
+
+            $segmentArray = [];
+            $legsArray = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['legs'];
+            foreach ($legsArray as $key => $leg) {
+                $legRef = $leg['ref'] - 1;
+                $legDescription = $revlidatedData['groupedItineraryResponse']['legDescs'][$legRef];
+                $schedulesArray = $legDescription['schedules'];
+                foreach ($schedulesArray as $schedule) {
+                    $scheduleRef = $schedule['ref'] - 1;
+                    $segmentArray[] = $revlidatedData['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
+                }
+            }
+
+
+            foreach ($segmentArray as $segmentIndex => $segmentData){
+
+                $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'];
+                $cabinCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'];
+                $baggageAllowanceRef = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][0]['allowance']['ref'];
+                $baggageAllowanceDescs = $revlidatedData['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageAllowanceRef-1];
+                if(isset($baggageAllowanceDescs['weight'])){
+                    $baggageAllowance = $baggageAllowanceDescs['weight']." ".$baggageAllowanceDescs['unit'];
+                } else if(isset($baggageAllowance['pieceCount'])){
+                    $baggageAllowance = $baggageAllowanceDescs['pieceCount']." Pieces";
+                } else{
+                    $baggageAllowance = null;
+                }
+
+                FlightSegment::insert([
+                    'flight_booking_id' => $flightBookingId,
+                    'total_miles_flown' => $segmentData['totalMilesFlown'],
+                    'elapsed_time' => $segmentData['elapsedTime'],
+                    'booking_code' => $bookingCode,
+                    'cabin_code' => $cabinCode,
+                    'baggage_allowance' => $baggageAllowance,
+                    'departure_airport_code' => $segmentData['departure']['airport'],
+                    'departure_city_code' => $segmentData['departure']['city'],
+                    'departure_country_code' => $segmentData['departure']['country'],
+                    'departure_time' => $segmentData['departure']['time'],
+                    'departure_terminal' => $segmentData['departure']['terminal'],
+                    'arrival_airport_code' => $segmentData['arrival']['airport'],
+                    'arrival_city_code' => $segmentData['arrival']['city'],
+                    'arrival_country_code' => $segmentData['arrival']['country'],
+                    'arrival_time' => $segmentData['arrival']['time'],
+                    'arrival_terminal' => isset($segmentData['arrival']['terminal']) ? $segmentData['arrival']['terminal'] : null,
+                    'carrier_marketing_code' => $segmentData['carrier']['marketing'],
+                    'carrier_marketing_flight_number' => $segmentData['carrier']['marketingFlightNumber'],
+                    'carrier_operating_code' => $segmentData['carrier']['operating'],
+                    'carrier_operating_flight_number' => $segmentData['carrier']['operatingFlightNumber'],
+                    'carrier_equipment_code' => $segmentData['carrier']['equipment']['code'],
+                    'created_at' => Carbon::now()
+                ]);
+            }
+
+            foreach($request->first_name as $passangerIndex => $firstName){
+                FlightPassanger::insert([
+                    'flight_booking_id' => $flightBookingId,
+                    'passanger_type' => $request->passanger_type[$passangerIndex],
+                    'title' => null,
+                    'first_name' => $firstName,
+                    'last_name' => $request->last_name[$passangerIndex],
+                    'dob' => $request->dob[$passangerIndex],
+                    'document_type' => $request->document_type[$passangerIndex],
+                    'document_no' => $request->document_no[$passangerIndex],
+                    'document_expire_date' => $request->document_expire_date[$passangerIndex],
+                    'document_issue_country' => $request->document_issue_country[$passangerIndex],
+                    'nationality' => $request->nationality[$passangerIndex],
+                    'created_at' => Carbon::now()
+                ]);
+            }
+
+        }, 5);
+
+        session()->forget(['adult', 'child', 'infant', 'revlidatedData']);
+        Toastr::success('Flight Booked Successfully', 'Success');
+        return redirect('/home');
+    }
+}

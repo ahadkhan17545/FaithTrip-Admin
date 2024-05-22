@@ -139,18 +139,16 @@
                 <form id="submit_ticket_reservation_info" action="{{url('create/pnr/with/booking')}}" method="POST" class="on-submit">
                     @csrf
 
+                    @php
+                        session(['revlidatedData' => $revlidatedData]);
+                    @endphp
+
                     <input type="hidden" name="gds" value="Sabre">
                     <input type="hidden" name="gds_unique_id" value="SOOL">
                     <input type="hidden" name="departure_date" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}}">
                     <input type="hidden" name="departure_location" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureLocation']}}">
                     <input type="hidden" name="arrival_location" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['arrivalLocation']}}">
                     <input type="hidden" name="governing_carriers" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['governingCarriers']}}">
-                    <input type="hidden" name="adult" value="{{session('adult')}}">
-                    <input type="hidden" name="child" value="{{session('child')}}">
-                    <input type="hidden" name="infant" value="{{session('infant')}}">
-                    <input type="hidden" name="base_fare_amount" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount']}}">
-                    <input type="hidden" name="total_tax_amount" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalTaxAmount']}}">
-                    <input type="hidden" name="total_fare" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalPrice']}}">
                     <input type="hidden" name="currency" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['currency']}}">
 
                     @if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate']))
@@ -169,7 +167,7 @@
                                     <b>
                                         {{ $passengerData['passengerInfo']['passengerNumber'] }}
                                         {{ $passengerData['passengerInfo']['passengerType'] }}
-                                    </b><br>
+                                    </b>&nbsp;
                                 @endforeach
                             </p>
                             <hr>
@@ -243,31 +241,32 @@
                                 </div>
                             </div>
 
-                            <hr>
-
+                            @php $passangerTitleIndex=0; @endphp
                             @foreach ($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerInfoList)
-                                <h6 class="fw-bold">Please fill the information for ADT</h6>
-                                <input type="hidden" name="passanger_type[]" value="">
-                                <div class="form-row mt-3">
+                                @for ($i=1; $i<=$passengerInfoList['passengerInfo']['passengerNumber']; $i++)
+                                <hr>
+                                <h6 class="fw-bold">Please fill the information for {{$passengerInfoList['passengerInfo']['passengerType']}} - {{$i}}</h6>
+                                <input type="hidden" name="passanger_type[]" value="{{$passengerInfoList['passengerInfo']['passengerType']}}">
+                                {{-- <div class="form-row mt-3">
                                     <div class="col-sm-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
                                         Passenger Title <span class="text-danger">*</span>
                                     </div>
                                     <div class="col-sm-6 col-md-6 mb-3 mb-sm-3">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="passanger_title[]" id="inlineRadio0_0" value="Mr." required="">
-                                            <label class="form-check-label" for="inlineRadio0_0">Mr.</label>
+                                            <input class="form-check-input" type="radio" name="{{$passengerInfoList['passengerInfo']['passengerType']}}[]" id="inlineRadio0_{{$passangerTitleIndex}}" value="Mr." required="">
+                                            <label class="form-check-label" for="inlineRadio0_{{$passangerTitleIndex}}">Mr.</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="passanger_title[]" id="inlineRadio1_0" value="Mrs.">
-                                            <label class="form-check-label" for="inlineRadio1_0">Mrs.</label>
+                                            <input class="form-check-input" type="radio" name="{{$passengerInfoList['passengerInfo']['passengerType']}}[]" id="inlineRadio1_{{$passangerTitleIndex}}" value="Mrs.">
+                                            <label class="form-check-label" for="inlineRadio1_{{$passangerTitleIndex}}">Mrs.</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="passanger_title[]" id="inlineRadio2_0" value="Ms.">
-                                            <label class="form-check-label" for="inlineRadio2_0">Ms.</label>
+                                            <input class="form-check-input" type="radio" name="{{$passengerInfoList['passengerInfo']['passengerType']}}[]" id="inlineRadio2_{{$passangerTitleIndex}}" value="Ms.">
+                                            <label class="form-check-label" for="inlineRadio2_{{$passangerTitleIndex}}">Ms.</label>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-row">
+                                </div> --}}
+                                <div class="form-row mt-3">
                                     <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
                                         First Name <span class="text-danger">*</span>
                                     </div>
@@ -838,6 +837,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                @php $passangerTitleIndex++; @endphp
+                                @endfor
                             @endforeach
 
                             <hr>
@@ -872,12 +873,12 @@
                 <div class="card shadow border-0 mb-3 d-none d-xl-block">
                     <div class="card-body">
                         <h3 class="fs-17 mb-0">Fare summary</h3>
-                        <p class="fs-14"> Travellers
+                        <p class="fs-14">Travellers :
                             @foreach ($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerData)
                                 <b>
                                     {{ $passengerData['passengerInfo']['passengerNumber'] }}
                                     {{ $passengerData['passengerInfo']['passengerType'] }}
-                                </b><br>
+                                </b>&nbsp;
                             @endforeach
                         </p>
                         <hr>

@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GdsController;
 use App\Http\Controllers\CkeditorController;
 use App\Http\Controllers\SystemController;
+use App\Http\Controllers\FlightBookingController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -64,6 +65,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/change/gateway/status/{provider}', [SystemController::class, 'changeGatewayStatus'])->name('ChangeGatewayStatus');
     Route::get('/view/email/config', [SystemController::class, 'viewEmailConfig'])->name('ViewEmailConfig');
     Route::post('/update/email/config', [SystemController::class, 'updateEmailConfig'])->name('UpdateEmailConfig');
+
+    // flight booking routes
+    Route::post('create/pnr/with/booking', [FlightBookingController::class, 'bookFlightWithPnr'])->name('BookFlightWithPnr');
 
 });
 

@@ -76,7 +76,7 @@ class SabreFlightRevalidate extends Model
             if ($originalDate != $modifiedDate) {
                 $newdateTime = DateTime::createFromFormat("Y-m-d\TH:i:s", $departureDateTime);
                 $newdateTime->modify("+1 day");
-                $arrivalDateTime = $dateTime->format("Y-m-d\TH:i:s");
+                $arrivalDateTime = $dateTime->format("Y-m-d")."T".substr($segmentData['arrival']['time'],0,8);
             } else {
                 $arrivalDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['arrival']['time'], 0, 8);
             }
@@ -210,7 +210,9 @@ class SabreFlightRevalidate extends Model
         ]);
         $response = curl_exec($curl);
         curl_close($curl);
+
         return $response;
+        // return $OriginDestinationInformation;
 
     }
 }

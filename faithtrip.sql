@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 21, 2024 at 01:07 PM
+-- Generation Time: May 22, 2024 at 11:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -15313,6 +15313,13 @@ CREATE TABLE `flight_bookings` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `flight_bookings`
+--
+
+INSERT INTO `flight_bookings` (`id`, `booking_no`, `booked_by`, `pnr_id`, `booking_id`, `ticket_id`, `gds`, `gds_unique_id`, `traveller_name`, `traveller_email`, `traveller_contact`, `departure_date`, `departure_location`, `arrival_location`, `governing_carriers`, `adult`, `child`, `infant`, `base_fare_amount`, `total_tax_amount`, `total_fare`, `currency`, `last_booking_cancel_datetime`, `last_ticket_datetime`, `last_ticket_cancel_datetime`, `booking_cancelled_at`, `ticket_issued_at`, `ticket_cancelled_at`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'QZg-1716411283', 1, NULL, NULL, NULL, 'Sabre', 'SOOL', 'Patrick Byers', 'nowurocud@mailinator.com', 'Voluptates delectus', '2024-06-18', 'DAC', 'CXB', 'BS', '2', '0', '0', 11048, 1950, 12998, 'BDT', NULL, '2024-05-24 23:59:00', NULL, NULL, NULL, NULL, 1, '2024-05-22 20:54:43', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -15322,7 +15329,7 @@ CREATE TABLE `flight_bookings` (
 CREATE TABLE `flight_passangers` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `flight_booking_id` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'FlightBooking Table Id',
-  `passanger_type` varchar(255) DEFAULT NULL COMMENT '1=>Adult;2=>Child;3=>Infant',
+  `passanger_type` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL COMMENT 'Mr/Mrs/Miss',
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
@@ -15335,6 +15342,14 @@ CREATE TABLE `flight_passangers` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `flight_passangers`
+--
+
+INSERT INTO `flight_passangers` (`id`, `flight_booking_id`, `passanger_type`, `title`, `first_name`, `last_name`, `dob`, `document_type`, `document_no`, `document_expire_date`, `document_issue_country`, `nationality`, `created_at`, `updated_at`) VALUES
+(1, 1, 'ADT', NULL, 'Wallace', 'Stevens', '1972-01-14', '1', 'Tempore quam hic no', '1981-08-29', 'SLB', 'URY', '2024-05-22 20:54:43', NULL),
+(2, 1, 'ADT', NULL, 'Brenda', 'Cruz', '1995-08-10', '2', 'Occaecat illo omnis', '1983-06-24', 'GRC', 'MRT', '2024-05-22 20:54:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -15368,6 +15383,13 @@ CREATE TABLE `flight_segments` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `flight_segments`
+--
+
+INSERT INTO `flight_segments` (`id`, `flight_booking_id`, `total_miles_flown`, `elapsed_time`, `booking_code`, `cabin_code`, `baggage_allowance`, `departure_airport_code`, `departure_city_code`, `departure_country_code`, `departure_time`, `departure_terminal`, `arrival_airport_code`, `arrival_city_code`, `arrival_country_code`, `arrival_time`, `arrival_terminal`, `carrier_marketing_code`, `carrier_marketing_flight_number`, `carrier_operating_code`, `carrier_operating_flight_number`, `carrier_equipment_code`, `created_at`, `updated_at`) VALUES
+(1, 1, '189', '65', 'X', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '07:15:00+06:00', 'D', 'CXB', 'CXB', 'BD', '08:20:00+06:00', NULL, 'BS', '141', 'BS', '141', 'AT7', '2024-05-22 20:54:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -15703,19 +15725,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `flight_bookings`
 --
 ALTER TABLE `flight_bookings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `flight_passangers`
 --
 ALTER TABLE `flight_passangers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `flight_segments`
 --
 ALTER TABLE `flight_segments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `gds`
