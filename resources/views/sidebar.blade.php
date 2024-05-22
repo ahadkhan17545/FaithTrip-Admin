@@ -44,19 +44,19 @@
                         Search pad
                     </a>
                 </li>
-                <li>
+                <li class="@if($currentRoute == 'ViewAllBooking' || $currentRoute == 'ViewCancelBooking' || $currentRoute == 'FlightBookingDetails') mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
-                        <i class="typcn typcn-info-outline"></i> Pnr information
+                        <i class="typcn typcn-info-outline"></i> Booking Information
                     </a>
                     <ul class="nav-second-level">
-                        <li class>
-                            <a class="text-capitalize" href="./pnr/pnr-list.html">
-                                Pnr list
+                        <li class="@if($currentRoute == 'ViewAllBooking') mm-active @endif">
+                            <a class="text-capitalize" href="{{url('view/all/booking')}}">
+                                Booking List
                             </a>
                         </li>
-                        <li class>
-                            <a class="text-capitalize" href="./pnr/company-cancel-pnr.html">
-                                Cancelled pnr list
+                        <li class="@if($currentRoute == 'ViewCancelBooking') mm-active @endif">
+                            <a class="text-capitalize" href="{{url('view/cancel/booking')}}">
+                                Cancelled Booking List
                             </a>
                         </li>
                     </ul>

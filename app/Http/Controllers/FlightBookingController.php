@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FlightBooking;
+use Yajra\DataTables\DataTables;
 use App\Models\FlightPassanger;
 use App\Models\FlightSegment;
 use Carbon\Carbon;
@@ -130,6 +131,51 @@ class FlightBookingController extends Controller
 
         session()->forget(['adult', 'child', 'infant', 'revlidatedData']);
         Toastr::success('Flight Booked Successfully', 'Success');
-        return redirect('/home');
+        return redirect('/view/all/booking');
+    }
+
+    public function viewAllBooking(Request $request){
+
+        if ($request->ajax()) {
+            $data = FlightBooking::orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                    ->editColumn('created_at', function($data) {
+                        return date("Y-m-d h:i a", strtotime($data->created_at));
+                    })
+                    ->editColumn('total_fare', function($data) {
+                        return $data->currency." ".number_format($data->total_fare);
+                    })
+                    ->editColumn('status', function($data) {
+                        if($data->status == 1)
+                            return "<span style='font-weight:600; color:green'>Booked</span>";
+                        if($data->status == 2)
+                            return "<span style='font-weight:600; color:green'>Issued</span>";
+                        if($data->status == 3)
+                            return "<span style='font-weight:600; color:red'>Cancelled</span>";
+                        if($data->status == 4)
+                            return "<span style='font-weight:600; color:red'>Cancelled</span>";
+
+                    })
+                    ->addColumn('total_passangers', function($data){
+                        return $data->adult+$data->child+$data->infant;
+                    })
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $btn = ' <a href="'.url('flight/booking/details')."/".$data->booking_no.'" class="btn-sm btn-info text-white rounded d-inline-block mb-1"><i class="fas fa-eye"></i></a>';
+                        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Cancel" class="btn-sm btn-danger rounded d-inline-block cancelBtn"><i class="fas fa-times-circle"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action', 'status'])
+                    ->make(true);
+        }
+        return view('booking.view');
+
+    }
+
+    public function flightBookingDetails($bookingNo){
+        $flightBookingDetails = FlightBooking::where('booking_no', $bookingNo)->first();
+        $flightSegments = FlightSegment::where('flight_booking_id', $flightBookingDetails->id)->get();
+        $flightPassangers = FlightPassanger::where('flight_booking_id', $flightBookingDetails->id)->get();
+        return view('booking.details', compact('flightBookingDetails', 'flightSegments', 'flightPassangers'));
     }
 }

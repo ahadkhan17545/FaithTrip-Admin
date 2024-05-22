@@ -68,6 +68,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     // flight booking routes
     Route::post('create/pnr/with/booking', [FlightBookingController::class, 'bookFlightWithPnr'])->name('BookFlightWithPnr');
+    Route::get('view/all/booking', [FlightBookingController::class, 'viewAllBooking'])->name('ViewAllBooking');
+    Route::get('view/cancel/booking', [FlightBookingController::class, 'viewCancelBooking'])->name('ViewCancelBooking');
+    Route::get('flight/booking/details/{booking_no}', [FlightBookingController::class, 'flightBookingDetails'])->name('FlightBookingDetails');
 
 });
 
