@@ -1,0 +1,195 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class SabreFlightBooking extends Model
+{
+    use HasFactory;
+
+    public static function flightBooking($revlidatedData, $travellerContact, $travellerName, $travellerEmail){
+
+        $givenName = explode(" ",$travellerName)[0];
+        $surName = explode(" ",$travellerName);
+        $surName = end($surName);
+
+        $request_body = array(
+            "CreatePassengerNameRecordRQ" => array(
+                "version" => "2.5.0",
+                "targetCity" => "S00L",
+                "haltOnAirPriceError" => true,
+                "TravelItineraryAddInfo" => array(
+                    "AgencyInfo" => array(
+                        "Address" => array(
+                            "AddressLine" => "SABRE TRAVEL",
+                            "CityName" => "SOUTHLAKE",
+                            "CountryCode" => "US",
+                            "PostalCode" => "76092",
+                            "StateCountyProv" => array(
+                                "StateCode" => "TX"
+                            ),
+                            "StreetNmbr" => "3150 SABRE DRIVE"
+                        ),
+                        "Ticketing" => array(
+                            "TicketType" => "7TAW"
+                        )
+                    ),
+                    "CustomerInfo" => array(
+                        "ContactNumbers" => array(
+                            "ContactNumber" => array(
+                                array(
+                                    "NameNumber" => "1.1",
+                                    "Phone" => $travellerContact,
+                                    "PhoneUseType" => "H"
+                                )
+                            )
+                        ),
+                        "CreditCardData" => array(
+                            "PreferredCustomer" => array(
+                                "ind" => true
+                            )
+                        ),
+                        "PersonName" => array(
+                            array(
+                                "NameNumber" => "1.1",
+                                "PassengerType" => "ADT",
+                                "GivenName" => $givenName,
+                                "Surname" => $surName
+                            )
+                        ),
+                        "Email" => array(
+                            array(
+                                "Address" => $travellerEmail,
+                                "Type" => "BC"
+                            )
+                        )
+                    )
+                ),
+                "AirBook" => array(
+                    "HaltOnStatus" => array(
+                        array("Code" => "HL"),
+                        array("Code" => "KK"),
+                        array("Code" => "LL"),
+                        array("Code" => "NN"),
+                        array("Code" => "NO"),
+                        array("Code" => "UC"),
+                        array("Code" => "US")
+                    ),
+                    "OriginDestinationInformation" => array(
+                        "FlightSegment" => array(
+                            array(
+                                "DepartureDateTime" => "2024-05-28T10:40:00",
+                                "FlightNumber" => "147",
+                                "NumberInParty" => "1",
+                                "ResBookDesigCode" => "Y",
+                                "Status" => "NN",
+                                "DestinationLocation" => array("LocationCode" => "CXB"),
+                                "MarketingAirline" => array("Code" => "BS", "FlightNumber" => "147"),
+                                "MarriageGrp" => "O",
+                                "OriginLocation" => array("LocationCode" => "DAC")
+                            )
+                        )
+                    ),
+                    "RedisplayReservation" => array(
+                        "NumAttempts" => 3,
+                        "WaitInterval" => 1000
+                    )
+                ),
+                "AirPrice" => array(
+                    array(
+                        "PriceRequestInformation" => array(
+                            "Retain" => true,
+                            "OptionalQualifiers" => array(
+                                "PricingQualifiers" => array(
+                                    "NameSelect" => array(
+                                        array("NameNumber" => "1.1")
+                                    ),
+                                    "PassengerType" => array(
+                                        array("Code" => "ADT", "Quantity" => "1")
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                // "SpecialReqDetails" => array(
+                //     "AddRemark" => array(
+                //         "RemarkInfo" => array(
+                //             "Remark" => array(
+                //                 array("Type" => "General", "Text" => "WDF100433"),
+                //                 array("Type" => "Historical", "Text" => "TEST01"),
+                //                 array("Type" => "Client Address", "Text" => "3399 CURE AVE 76554 GALLUP TX"),
+                //                 array("Type" => "Invoice", "Text" => "S*UD18 PROMO515")
+                //             )
+                //         )
+                //     ),
+                //     "SpecialService" => array(
+                //         "SpecialServiceInfo" => array(
+                //             "SecureFlight" => array(
+                //                 array(
+                //                     "SegmentNumber" => "A",
+                //                     "PersonName" => array(
+                //                         "DateOfBirth" => "1989-01-01",
+                //                         "Gender" => "M",
+                //                         "NameNumber" => "1.1",
+                //                         "GivenName" => "JOE",
+                //                         "Surname" => "DOE"
+                //                     )
+                //                 )
+                //             ),
+                //             "Service" => array(
+                //                 array(
+                //                     "SSR_Code" => "CTCE",
+                //                     "SegmentNumber" => "A",
+                //                     "Text" => "ADMIN//CURE.NET",
+                //                     "PersonName" => array("NameNumber" => "1.1")
+                //                 ),
+                //                 array(
+                //                     "SSR_Code" => "CTCM",
+                //                     "Text" => "5551231234",
+                //                     "PersonName" => array("NameNumber" => "1.1")
+                //                 )
+                //             )
+                //         )
+                //     )
+                // ),
+                "PostProcessing" => array(
+                    "RedisplayReservation" => array("waitInterval" => 100),
+                    "EndTransaction" => array(
+                        "Source" => array("ReceivedFrom" => "API TEST")
+                    )
+                )
+            )
+        );
+
+
+        // Convert the request body array to JSON format
+        $request_json = json_encode($request_body);
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.cert.platform.sabre.com/v2.5.0/passenger/records?mode=create',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $request_json,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Conversation-ID: 2021.01.DevStudio',
+                'Authorization: Bearer T1RLAQIY3fUQ3uOWHsLxmCG0z4ci2rMeOsNIoR/hE4v2FTgiDxBBC0guZPclUjX6/bg5maxuAADQAdtFAvRCIZx2effNJ53DvwpPWvGH3UmQnqfw6DyPt209DMrO/H23G06lkTC8dGfkNxjMtWffSnkmK354yg1/9OPSIUPa9zt7VBKLHFaD0zLwhk6ICFruA5otSkIUmDDCqoJva/qd7Hvw2CgXEXYQ4t+wNRMpqnBieyv6LL8zqRkmKelnrvbDe5BdCzSP5V+Xmbh/oSytRGeCEHxW0q4pgVED0rZiqMWFuXtZYeAfxXaXJh71LC9SMscrvKdC5bcETmWExHoBsJBP0+iI8GAHGw**'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return $response;
+
+    }
+}

@@ -6,6 +6,7 @@ use App\Models\FlightBooking;
 use Yajra\DataTables\DataTables;
 use App\Models\FlightPassanger;
 use App\Models\FlightSegment;
+use App\Models\SabreFlightBooking;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,9 @@ use Illuminate\Support\Str;
 class FlightBookingController extends Controller
 {
     public function bookFlightWithPnr(Request $request){
+
+        $revlidatedData = session('revlidatedData');
+        SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->traveller_name, $request->traveller_email);
 
         DB::transaction(function () use ($request) {
 
