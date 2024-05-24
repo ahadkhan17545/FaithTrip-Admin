@@ -11,6 +11,48 @@ class SabreFlightBooking extends Model
 
     public static function flightBooking($revlidatedData, $travellerContact, $travellerName, $travellerEmail){
 
+        $passengerTypes = array();
+        if (session('adult') > 0) {
+            $passengerTypes[] = array("Code" => "ADT", "Quantity" => (string) session('adult'));
+        }
+        if (session('child') > 0) {
+            $passengerTypes[] = array("Code" => "CNN", "Quantity" => (string) session('child'));
+        }
+        if (session('infant') > 0) {
+            $passengerTypes[] = array("Code" => "INF", "Quantity" => (string) session('infant'));
+        }
+
+
+        // making flight segment start
+        $flightSegment = array();
+        $segmentArray = [];
+        $legsArray = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['legs'];
+        foreach ($legsArray as $key => $leg) {
+            $legRef = $leg['ref'] - 1;
+            $legDescription = $revlidatedData['groupedItineraryResponse']['legDescs'][$legRef];
+            $schedulesArray = $legDescription['schedules'];
+            foreach ($schedulesArray as $schedule) {
+                $scheduleRef = $schedule['ref'] - 1;
+                $segmentArray[] = $revlidatedData['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
+            }
+        }
+
+        foreach ($segmentArray as $segmentIndex => $segmentData){
+            $flightSegment[] = array(
+                "DepartureDateTime" => $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['departure']['time'], 0, 8),
+                "FlightNumber" => (string) $segmentData['carrier']['marketingFlightNumber'],
+                "NumberInParty" => (string) 1,
+                "ResBookDesigCode" => "Y",
+                "Status" => "NN",
+                "DestinationLocation" => array("LocationCode" => $segmentData['arrival']['city']),
+                "MarketingAirline" => array("Code" => $segmentData['carrier']['marketing'], "FlightNumber" => (string) $segmentData['carrier']['marketingFlightNumber']),
+                "MarriageGrp" => "O",
+                "OriginLocation" => array("LocationCode" => $segmentData['departure']['city'])
+            );
+        }
+        // making flight segment end
+
+
         $givenName = explode(" ",$travellerName)[0];
         $surName = explode(" ",$travellerName);
         $surName = end($surName);
@@ -78,19 +120,7 @@ class SabreFlightBooking extends Model
                         array("Code" => "US")
                     ),
                     "OriginDestinationInformation" => array(
-                        "FlightSegment" => array(
-                            array(
-                                "DepartureDateTime" => "2024-05-28T10:40:00",
-                                "FlightNumber" => "147",
-                                "NumberInParty" => "1",
-                                "ResBookDesigCode" => "Y",
-                                "Status" => "NN",
-                                "DestinationLocation" => array("LocationCode" => "CXB"),
-                                "MarketingAirline" => array("Code" => "BS", "FlightNumber" => "147"),
-                                "MarriageGrp" => "O",
-                                "OriginLocation" => array("LocationCode" => "DAC")
-                            )
-                        )
+                        "FlightSegment" => $flightSegment
                     ),
                     "RedisplayReservation" => array(
                         "NumAttempts" => 3,
@@ -106,9 +136,7 @@ class SabreFlightBooking extends Model
                                     "NameSelect" => array(
                                         array("NameNumber" => "1.1")
                                     ),
-                                    "PassengerType" => array(
-                                        array("Code" => "ADT", "Quantity" => "1")
-                                    )
+                                    "PassengerType" => $passengerTypes
                                 )
                             )
                         )

@@ -19,9 +19,23 @@ class FlightBookingController extends Controller
     public function bookFlightWithPnr(Request $request){
 
         $revlidatedData = session('revlidatedData');
-        SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->traveller_name, $request->traveller_email);
+        $onlineBookingInfo = json_decode(SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->traveller_name, $request->traveller_email), true);
 
-        DB::transaction(function () use ($request) {
+        // echo "<pre>";
+        // print_r($onlineBookingInfo);
+        // echo "</pre>";
+        // exit();
+
+
+        $bookinPndID = null;
+        if($onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status'] == 'Complete'){
+            $bookinPndID = $onlineBookingInfo['CreatePassengerNameRecordRS']['ItineraryRef']['ID'];
+        } else{
+            Toastr::error('Something Went Wrong While Booking', 'Failed to Book');
+            return back();
+        }
+
+        DB::transaction(function () use ($request, $bookinPndID) {
 
             // fetching price using session for security (not from hidden field)
             $revlidatedData = session('revlidatedData');
@@ -38,7 +52,7 @@ class FlightBookingController extends Controller
             $flightBookingId = FlightBooking::insertGetId([
                 'booking_no' => str::random(3) . "-" . time(),
                 'booked_by' => Auth::user()->id,
-                'pnr_id' => null,
+                'pnr_id' => $bookinPndID,
                 'gds' => $request->gds,
                 'gds_unique_id' => $request->gds_unique_id,
                 'traveller_name' => $request->traveller_name,
@@ -141,7 +155,7 @@ class FlightBookingController extends Controller
     public function viewAllBooking(Request $request){
 
         if ($request->ajax()) {
-            $data = FlightBooking::orderBy('id', 'desc')->get();
+            $data = FlightBooking::where('status', 1)->orWhere('status', 2)->orderBy('id', 'desc')->get();
             return Datatables::of($data)
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d h:i a", strtotime($data->created_at));
@@ -166,7 +180,7 @@ class FlightBookingController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($data){
                         $btn = ' <a href="'.url('flight/booking/details')."/".$data->booking_no.'" class="btn-sm btn-info text-white rounded d-inline-block mb-1"><i class="fas fa-eye"></i></a>';
-                        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Cancel" class="btn-sm btn-danger rounded d-inline-block cancelBtn"><i class="fas fa-times-circle"></i></a>';
+                        // $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Cancel" class="btn-sm btn-danger rounded d-inline-block cancelBtn"><i class="fas fa-times-circle"></i></a>';
                         return $btn;
                     })
                     ->rawColumns(['action', 'status'])
@@ -176,10 +190,93 @@ class FlightBookingController extends Controller
 
     }
 
+    public function viewCancelBooking(Request $request){
+
+        if ($request->ajax()) {
+            $data = FlightBooking::where('status', 3)->orWhere('status', 4)->orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                    ->editColumn('created_at', function($data) {
+                        return date("Y-m-d h:i a", strtotime($data->created_at));
+                    })
+                    ->editColumn('total_fare', function($data) {
+                        return $data->currency." ".number_format($data->total_fare);
+                    })
+                    ->editColumn('status', function($data) {
+                        if($data->status == 1)
+                            return "<span style='font-weight:600; color:green'>Booked</span>";
+                        if($data->status == 2)
+                            return "<span style='font-weight:600; color:green'>Issued</span>";
+                        if($data->status == 3)
+                            return "<span style='font-weight:600; color:red'>Cancelled</span>";
+                        if($data->status == 4)
+                            return "<span style='font-weight:600; color:red'>Cancelled</span>";
+
+                    })
+                    ->addColumn('total_passangers', function($data){
+                        return $data->adult+$data->child+$data->infant;
+                    })
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $btn = ' <a href="'.url('flight/booking/details')."/".$data->booking_no.'" class="btn-sm btn-info text-white rounded d-inline-block mb-1"><i class="fas fa-eye"></i></a>';
+                        // $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Cancel" class="btn-sm btn-danger rounded d-inline-block cancelBtn"><i class="fas fa-times-circle"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action', 'status'])
+                    ->make(true);
+        }
+        return view('booking.cancelled');
+
+    }
+
     public function flightBookingDetails($bookingNo){
         $flightBookingDetails = FlightBooking::where('booking_no', $bookingNo)->first();
         $flightSegments = FlightSegment::where('flight_booking_id', $flightBookingDetails->id)->get();
         $flightPassangers = FlightPassanger::where('flight_booking_id', $flightBookingDetails->id)->get();
         return view('booking.details', compact('flightBookingDetails', 'flightSegments', 'flightPassangers'));
+    }
+
+    public function cancelFlightBooking($pnrId){
+
+        $data = array(
+            "confirmationId" => $pnrId,
+            "retrieveBooking" => true,
+            "cancelAll" => true,
+            "errorHandlingPolicy" => "ALLOW_PARTIAL_CANCEL"
+        );
+        $payload = json_encode($data);
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.cert.platform.sabre.com/v1/trip/orders/cancelBooking',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Conversation-ID: 2021.01.DevStudio',
+                'Authorization: Bearer T1RLAQIY3fUQ3uOWHsLxmCG0z4ci2rMeOsNIoR/hE4v2FTgiDxBBC0guZPclUjX6/bg5maxuAADQAdtFAvRCIZx2effNJ53DvwpPWvGH3UmQnqfw6DyPt209DMrO/H23G06lkTC8dGfkNxjMtWffSnkmK354yg1/9OPSIUPa9zt7VBKLHFaD0zLwhk6ICFruA5otSkIUmDDCqoJva/qd7Hvw2CgXEXYQ4t+wNRMpqnBieyv6LL8zqRkmKelnrvbDe5BdCzSP5V+Xmbh/oSytRGeCEHxW0q4pgVED0rZiqMWFuXtZYeAfxXaXJh71LC9SMscrvKdC5bcETmWExHoBsJBP0+iI8GAHGw**',
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $cancelResponse = json_decode($response, true);
+        if($cancelResponse['booking']['bookingId'] == $pnrId){
+            FlightBooking::where('pnr_id', $pnrId)->update([
+                'status' => 3,
+                'booking_cancelled_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+        }
+
+        Toastr::success('Flight Booking Cancelled Successfully', 'Cancelled');
+        return back();
+
     }
 }
