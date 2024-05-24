@@ -113,7 +113,7 @@ class FlightBookingController extends Controller
                     'departure_city_code' => $segmentData['departure']['city'],
                     'departure_country_code' => $segmentData['departure']['country'],
                     'departure_time' => $segmentData['departure']['time'],
-                    'departure_terminal' => $segmentData['departure']['terminal'],
+                    'departure_terminal' => isset($segmentData['departure']['terminal']) ? $segmentData['departure']['terminal'] : null,
                     'arrival_airport_code' => $segmentData['arrival']['airport'],
                     'arrival_city_code' => $segmentData['arrival']['city'],
                     'arrival_country_code' => $segmentData['arrival']['country'],
