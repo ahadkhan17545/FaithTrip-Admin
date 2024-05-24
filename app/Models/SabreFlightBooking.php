@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,7 +25,7 @@ class SabreFlightBooking extends Model
 
 
         // making flight segment start
-        $flightSegment = array();
+
         $segmentArray = [];
         $legsArray = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['legs'];
         foreach ($legsArray as $key => $leg) {
@@ -37,17 +38,40 @@ class SabreFlightBooking extends Model
             }
         }
 
+        $flightSegment = array();
+        $arrivalDateTimeArray = array();
         foreach ($segmentArray as $segmentIndex => $segmentData){
+
+            // modify departure date if the date change
+            if($segmentIndex == 0) {
+                $departureDateTime = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['departure']['time'], 0, 8);
+                $elapsedDate = date('Y-m-d', strtotime($departureDateTime . ' +'.$segmentData['elapsedTime'].' minutes'));
+                $arrivalDateTime = $elapsedDate."T".substr($segmentData['arrival']['time'], 0, 8);
+            } else{
+                $time1 = substr($segmentData['departure']['time'],0,8);
+                $time2 = substr($segmentArray[$segmentIndex-1]['arrival']['time'],0,8);
+                $time1Obj = DateTime::createFromFormat('H:i:s', $time1);
+                $time2Obj = DateTime::createFromFormat('H:i:s', $time2);
+                $interval = $time1Obj->diff($time2Obj);
+                $totalMinutes = ($interval->h * 60) + $interval->i;
+
+                $departureDateTime = date('Y-m-d', strtotime($arrivalDateTimeArray[$segmentIndex-1] . ' +'.$totalMinutes.' minutes'))."T".substr($segmentData['departure']['time'], 0, 8);
+                $elapsedDate = date('Y-m-d', strtotime($departureDateTime . ' +'.$segmentData['elapsedTime'].' minutes'));
+                $arrivalDateTime = $elapsedDate."T".substr($segmentData['arrival']['time'], 0, 8);
+            }
+            $arrivalDateTimeArray[] = $arrivalDateTime;
+
+
             $flightSegment[] = array(
-                "DepartureDateTime" => $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['departure']['time'], 0, 8),
+                "DepartureDateTime" => $departureDateTime,
                 "FlightNumber" => (string) $segmentData['carrier']['marketingFlightNumber'],
                 "NumberInParty" => (string) 1,
                 "ResBookDesigCode" => "Y",
                 "Status" => "NN",
-                "DestinationLocation" => array("LocationCode" => $segmentData['arrival']['city']),
+                "DestinationLocation" => array("LocationCode" => $segmentData['arrival']['airport']),
                 "MarketingAirline" => array("Code" => $segmentData['carrier']['marketing'], "FlightNumber" => (string) $segmentData['carrier']['marketingFlightNumber']),
                 "MarriageGrp" => "O",
-                "OriginLocation" => array("LocationCode" => $segmentData['departure']['city'])
+                "OriginLocation" => array("LocationCode" => $segmentData['departure']['airport'])
             );
         }
         // making flight segment end

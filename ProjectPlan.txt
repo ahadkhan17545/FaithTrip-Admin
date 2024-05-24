@@ -3,6 +3,5 @@ Issue:
 2. JFK Destination diye Multiple Passanger type dile price validate api te error
 
 Task:
-1. Hit Booking API and Update PNR ID
 2. Share PNR Option in Email
 3. Print Booking Preview

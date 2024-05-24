@@ -57,41 +57,46 @@ class SabreFlightRevalidate extends Model
         }
 
 
+        // echo "<pre>";
+        // print_r($segmentArray);
+        // echo "</pre>";
+        // exit();
+
+
         $OriginDestinationInformation = [];
         foreach ($segmentArray as $key2 => $segmentData) {
 
-            // modify departure date if the date change
+
             if($key2 == 0) {
                 $departureDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['departure']['time'], 0, 8);
+                $elapsedDate = date('Y-m-d', strtotime($departureDateTime . ' +'.$segmentData['elapsedTime'].' minutes'));
+                $arrivalDateTime = $elapsedDate."T".substr($segmentData['arrival']['time'], 0, 8);
             } else{
-                $departureDateTime = substr($OriginDestinationInformation[$key2-1]['TPA_Extensions']['Flight'][0]['ArrivalDateTime'],0,10)."T".substr($segmentData['departure']['time'], 0, 8);
-            }
+                $time1 = substr($segmentData['departure']['time'],0,8);
+                $time2 = substr($segmentArray[$key2-1]['arrival']['time'],0,8);
+                $time1Obj = DateTime::createFromFormat('H:i:s', $time1);
+                $time2Obj = DateTime::createFromFormat('H:i:s', $time2);
+                $interval = $time1Obj->diff($time2Obj);
+                $totalMinutes = ($interval->h * 60) + $interval->i;
 
-            // modify arrival date if the date change
-            $originalDepartureDateTime = new DateTime($departureDateTime);
-            $dateTime = new DateTime($departureDateTime);
-            $dateTime->modify("+" . $segmentData['elapsedTime'] . " minutes");
-            $originalDate = $originalDepartureDateTime->format('Y-m-d');
-            $modifiedDate = $dateTime->format('Y-m-d');
-            if ($originalDate != $modifiedDate) {
-                $newdateTime = DateTime::createFromFormat("Y-m-d\TH:i:s", $departureDateTime);
-                $newdateTime->modify("+1 day");
-                $arrivalDateTime = $dateTime->format("Y-m-d")."T".substr($segmentData['arrival']['time'],0,8);
-            } else {
-                $arrivalDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['arrival']['time'], 0, 8);
+                $departureDateTime = date('Y-m-d', strtotime($OriginDestinationInformation[$key2-1]['TPA_Extensions']['Flight'][0]['ArrivalDateTime'] . ' +'.$totalMinutes.' minutes'))."T".substr($segmentData['departure']['time'], 0, 8);
+                $elapsedDate = date('Y-m-d', strtotime($departureDateTime . ' +'.$segmentData['elapsedTime'].' minutes'));
+                $arrivalDateTime = $elapsedDate."T".substr($segmentData['arrival']['time'], 0, 8);
             }
 
 
-            $originLocation = $segmentData['departure']['city'];
-            $destinationLocation = $segmentData['arrival']['city'];
+            $originLocation = $segmentData['departure']['airport'];
+            $destinationLocation = $segmentData['arrival']['airport'];
             $flightNumber = $segmentData['carrier']['operatingFlightNumber'];
             $operatingAirline = $segmentData['carrier']['operating'];
             $marketingAirline = $segmentData['carrier']['marketing'];
+            // $bookingCode = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$key2]['segment']['bookingCode'];
+
 
 
             // Create segment array
             $segment = [
-                "RPH" => (string) ($key2 + 1),
+                "RPH" => (string) 1,
                 "DepartureDateTime" => $departureDateTime,
                 "OriginLocation" => [
                     "LocationCode" => $originLocation
