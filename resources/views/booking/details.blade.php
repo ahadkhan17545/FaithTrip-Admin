@@ -10,7 +10,7 @@
                             <h6 class="mb-0" style="font-size: 18px"><b>Flight Booking Details</b></h6>
                         </div>
                         <div class="col-lg-7 text-end">
-                            <a href="#" class="btn btn-sm btn-primary d-inline-block"><i class="fa fa-print"></i> Booking Preview</a>
+                            <a href="{{url('booking/preview')}}/{{$flightBookingDetails->booking_no}}" class="btn btn-sm btn-primary d-inline-block"><i class="fa fa-print"></i> Booking Preview</a>
 
                             @if($flightBookingDetails->status == 1)
                                 <a href="#" class="btn btn-sm btn-success d-inline-block"><i class="fas fa-check"></i> Issue Ticket</a>

@@ -26,7 +26,6 @@ class FlightBookingController extends Controller
         // echo "</pre>";
         // exit();
 
-
         $bookinPndID = null;
         if($onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status'] == 'Complete'){
             $bookinPndID = $onlineBookingInfo['CreatePassengerNameRecordRS']['ItineraryRef']['ID'];
@@ -259,7 +258,7 @@ class FlightBookingController extends Controller
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
                 'Conversation-ID: 2021.01.DevStudio',
-                'Authorization: Bearer T1RLAQIY3fUQ3uOWHsLxmCG0z4ci2rMeOsNIoR/hE4v2FTgiDxBBC0guZPclUjX6/bg5maxuAADQAdtFAvRCIZx2effNJ53DvwpPWvGH3UmQnqfw6DyPt209DMrO/H23G06lkTC8dGfkNxjMtWffSnkmK354yg1/9OPSIUPa9zt7VBKLHFaD0zLwhk6ICFruA5otSkIUmDDCqoJva/qd7Hvw2CgXEXYQ4t+wNRMpqnBieyv6LL8zqRkmKelnrvbDe5BdCzSP5V+Xmbh/oSytRGeCEHxW0q4pgVED0rZiqMWFuXtZYeAfxXaXJh71LC9SMscrvKdC5bcETmWExHoBsJBP0+iI8GAHGw**',
+                'Authorization: Bearer '. session('access_token'),
             ),
         ));
 
@@ -277,6 +276,12 @@ class FlightBookingController extends Controller
 
         Toastr::success('Flight Booking Cancelled Successfully', 'Cancelled');
         return back();
+    }
 
+    public function bookingPreview($bookingNo){
+        $flightBookingDetails = FlightBooking::where('booking_no', $bookingNo)->first();
+        $flightSegments = FlightSegment::where('flight_booking_id', $flightBookingDetails->id)->get();
+        $flightPassangers = FlightPassanger::where('flight_booking_id', $flightBookingDetails->id)->get();
+        return view('booking.preview', compact('flightBookingDetails', 'flightSegments', 'flightPassangers'));
     }
 }

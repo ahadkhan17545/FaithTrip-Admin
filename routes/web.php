@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('view/cancel/booking', [FlightBookingController::class, 'viewCancelBooking'])->name('ViewCancelBooking');
     Route::get('flight/booking/details/{booking_no}', [FlightBookingController::class, 'flightBookingDetails'])->name('FlightBookingDetails');
     Route::get('cancel/flight/booking/{pnr_id}', [FlightBookingController::class, 'cancelFlightBooking'])->name('CancelFlightBooking');
+    Route::get('booking/preview/{pnr_id}', [FlightBookingController::class, 'bookingPreview'])->name('BookingPreview');
 
 });
 

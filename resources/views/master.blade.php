@@ -48,6 +48,7 @@
             padding: 1.5rem;
         }
     </style>
+
     @yield('header_css')
 
 </head>
