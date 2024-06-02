@@ -289,13 +289,22 @@ class FlightBookingController extends Controller
     public function issueFlightTicket($pnrId){
         $ticketIssueResponse = json_decode(SabreFlightTicketIssue::issueTicket($pnrId), true);
 
-        echo "<pre>";
-        print_r($ticketIssueResponse);
-        echo "</pre>";
+        // echo "<pre>";
+        // print_r($ticketIssueResponse);
+        // echo "</pre>";
+        // exit();
 
-        // status change
+        if(isset($ticketIssueResponse['AirTicketRS']['ApplicationResults']['status']) && $ticketIssueResponse['AirTicketRS']['ApplicationResults']['status'] == 'Complete'){
+            FlightBooking::where('pnr_id', $pnrId)->update([
+                'status' => 2,
+                'ticket_issued_at' => Carbon::now()
+            ]);
+            return redirect('view/issued/tickets');
+        } else {
+            Toastr::success('Ticket Issued Successfully', 'Successful');
+            return back();
+        }
 
-        return redirect('view/issued/tickets');
     }
 
     public function viewIssuedTickets(Request $request){
