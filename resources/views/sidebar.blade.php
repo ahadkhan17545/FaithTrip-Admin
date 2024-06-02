@@ -44,7 +44,7 @@
                         Search pad
                     </a>
                 </li>
-                <li class="@if($currentRoute == 'ViewAllBooking' || $currentRoute == 'ViewCancelBooking' || $currentRoute == 'FlightBookingDetails') mm-active @endif">
+                <li class="@if($currentRoute == 'ViewAllBooking' || $currentRoute == 'ViewCancelBooking') mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-info-outline"></i> Booking Information
                     </a>
@@ -61,19 +61,19 @@
                         </li>
                     </ul>
                 </li>
-                <li>
+                <li class="@if($currentRoute == 'ViewIssuedTickets' || $currentRoute == 'ViewCancelledTickets') mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-ticket"></i> Ticket information
                     </a>
                     <ul class="nav-second-level">
-                        <li class>
-                            <a class="text-capitalize" href="./ticket/ticket-list.html">
-                                Ticket list
+                        <li class="@if($currentRoute == 'ViewIssuedTickets') mm-active @endif">
+                            <a class="text-capitalize" href="{{url('view/issued/tickets')}}">
+                                Issued Ticket List
                             </a>
                         </li>
-                        <li class>
-                            <a class="text-capitalize" href="./ticket/ticket-cancelled.html">
-                                Cancelled ticket list
+                        <li class="@if($currentRoute == 'ViewCancelledTickets') mm-active @endif">
+                            <a class="text-capitalize" href="{{url('view/cancelled/tickets')}}">
+                                Cancelled Ticket List
                             </a>
                         </li>
                     </ul>

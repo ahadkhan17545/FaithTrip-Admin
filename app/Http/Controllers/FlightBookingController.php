@@ -7,6 +7,7 @@ use Yajra\DataTables\DataTables;
 use App\Models\FlightPassanger;
 use App\Models\FlightSegment;
 use App\Models\SabreFlightBooking;
+use App\Models\SabreFlightTicketIssue;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -154,7 +155,7 @@ class FlightBookingController extends Controller
     public function viewAllBooking(Request $request){
 
         if ($request->ajax()) {
-            $data = FlightBooking::where('status', 1)->orWhere('status', 2)->orderBy('id', 'desc')->get();
+            $data = FlightBooking::where('status', 1)->orderBy('id', 'desc')->get();
             return Datatables::of($data)
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d h:i a", strtotime($data->created_at));
@@ -192,7 +193,7 @@ class FlightBookingController extends Controller
     public function viewCancelBooking(Request $request){
 
         if ($request->ajax()) {
-            $data = FlightBooking::where('status', 3)->orWhere('status', 4)->orderBy('id', 'desc')->get();
+            $data = FlightBooking::where('status', 3)->orderBy('id', 'desc')->get();
             return Datatables::of($data)
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d h:i a", strtotime($data->created_at));
@@ -283,5 +284,88 @@ class FlightBookingController extends Controller
         $flightSegments = FlightSegment::where('flight_booking_id', $flightBookingDetails->id)->get();
         $flightPassangers = FlightPassanger::where('flight_booking_id', $flightBookingDetails->id)->get();
         return view('booking.preview', compact('flightBookingDetails', 'flightSegments', 'flightPassangers'));
+    }
+
+    public function issueFlightTicket($pnrId){
+        $ticketIssueResponse = json_decode(SabreFlightTicketIssue::issueTicket($pnrId), true);
+
+        echo "<pre>";
+        print_r($ticketIssueResponse);
+        echo "</pre>";
+
+        // status change
+
+        return redirect('view/issued/tickets');
+    }
+
+    public function viewIssuedTickets(Request $request){
+        if ($request->ajax()) {
+            $data = FlightBooking::where('status', 2)->orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                    ->editColumn('created_at', function($data) {
+                        return date("Y-m-d h:i a", strtotime($data->created_at));
+                    })
+                    ->editColumn('total_fare', function($data) {
+                        return $data->currency." ".number_format($data->total_fare);
+                    })
+                    ->editColumn('status', function($data) {
+                        if($data->status == 1)
+                            return "<span style='font-weight:600; color:green'>Booked</span>";
+                        if($data->status == 2)
+                            return "<span style='font-weight:600; color:green'>Issued</span>";
+                        if($data->status == 3)
+                            return "<span style='font-weight:600; color:red'>Cancelled</span>";
+                        if($data->status == 4)
+                            return "<span style='font-weight:600; color:red'>Cancelled</span>";
+
+                    })
+                    ->addColumn('total_passangers', function($data){
+                        return $data->adult+$data->child+$data->infant;
+                    })
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $btn = ' <a href="'.url('flight/booking/details')."/".$data->booking_no.'" class="btn-sm btn-info text-white rounded d-inline-block mb-1"><i class="fas fa-eye"></i></a>';
+                        // $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Cancel" class="btn-sm btn-danger rounded d-inline-block cancelBtn"><i class="fas fa-times-circle"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action', 'status'])
+                    ->make(true);
+        }
+        return view('booking.issued_ticket');
+    }
+    public function viewCancelledTickets(Request $request){
+        if ($request->ajax()) {
+            $data = FlightBooking::where('status', 4)->orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                    ->editColumn('created_at', function($data) {
+                        return date("Y-m-d h:i a", strtotime($data->created_at));
+                    })
+                    ->editColumn('total_fare', function($data) {
+                        return $data->currency." ".number_format($data->total_fare);
+                    })
+                    ->editColumn('status', function($data) {
+                        if($data->status == 1)
+                            return "<span style='font-weight:600; color:green'>Booked</span>";
+                        if($data->status == 2)
+                            return "<span style='font-weight:600; color:green'>Issued</span>";
+                        if($data->status == 3)
+                            return "<span style='font-weight:600; color:red'>Cancelled</span>";
+                        if($data->status == 4)
+                            return "<span style='font-weight:600; color:red'>Cancelled</span>";
+
+                    })
+                    ->addColumn('total_passangers', function($data){
+                        return $data->adult+$data->child+$data->infant;
+                    })
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $btn = ' <a href="'.url('flight/booking/details')."/".$data->booking_no.'" class="btn-sm btn-info text-white rounded d-inline-block mb-1"><i class="fas fa-eye"></i></a>';
+                        // $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Cancel" class="btn-sm btn-danger rounded d-inline-block cancelBtn"><i class="fas fa-times-circle"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action', 'status'])
+                    ->make(true);
+        }
+        return view('booking.cancelled_ticket');
     }
 }
