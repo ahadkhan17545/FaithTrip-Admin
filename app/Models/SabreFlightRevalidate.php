@@ -66,12 +66,14 @@ class SabreFlightRevalidate extends Model
         $OriginDestinationInformation = [];
         foreach ($segmentArray as $key2 => $segmentData) {
 
-
             if($key2 == 0) {
+
                 $departureDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['departure']['time'], 0, 8);
                 $elapsedDate = date('Y-m-d', strtotime($departureDateTime . ' +'.$segmentData['elapsedTime'].' minutes'));
                 $arrivalDateTime = $elapsedDate."T".substr($segmentData['arrival']['time'], 0, 8);
+
             } else{
+
                 $time1 = substr($segmentData['departure']['time'],0,8);
                 $time2 = substr($segmentArray[$key2-1]['arrival']['time'],0,8);
                 $time1Obj = DateTime::createFromFormat('H:i:s', $time1);
@@ -79,7 +81,13 @@ class SabreFlightRevalidate extends Model
                 $interval = $time1Obj->diff($time2Obj);
                 $totalMinutes = ($interval->h * 60) + $interval->i;
 
-                $departureDateTime = date('Y-m-d', strtotime($OriginDestinationInformation[$key2-1]['TPA_Extensions']['Flight'][0]['ArrivalDateTime'] . ' +'.$totalMinutes.' minutes'))."T".substr($segmentData['departure']['time'], 0, 8);
+                // checking its a return segment or not
+                if(isset($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]) && $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation'] == $segmentData['departure']['airport']){
+                    $departureDateTime = date('Y-m-d', strtotime($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureDate']))."T".substr($segmentData['departure']['time'], 0, 8);
+                } else {
+                    $departureDateTime = date('Y-m-d', strtotime($OriginDestinationInformation[$key2-1]['TPA_Extensions']['Flight'][0]['ArrivalDateTime'] . ' +'.$totalMinutes.' minutes'))."T".substr($segmentData['departure']['time'], 0, 8);
+                }
+
                 $elapsedDate = date('Y-m-d', strtotime($departureDateTime . ' +'.$segmentData['elapsedTime'].' minutes'));
                 $arrivalDateTime = $elapsedDate."T".substr($segmentData['arrival']['time'], 0, 8);
             }

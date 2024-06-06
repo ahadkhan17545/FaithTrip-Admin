@@ -263,7 +263,7 @@ class FlightSearchController extends Controller
         $revlidatedData = json_decode(SabreFlightRevalidate::flightRevalidate($sessionIndex), true);
 
         // echo "<pre>";
-        // print_r($revlidatedData);
+        // print_r(SabreFlightRevalidate::flightRevalidate($sessionIndex));
         // echo "</pre>";
         // exit();
 

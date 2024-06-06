@@ -55,7 +55,13 @@ class SabreFlightBooking extends Model
                 $interval = $time1Obj->diff($time2Obj);
                 $totalMinutes = ($interval->h * 60) + $interval->i;
 
-                $departureDateTime = date('Y-m-d', strtotime($arrivalDateTimeArray[$segmentIndex-1] . ' +'.$totalMinutes.' minutes'))."T".substr($segmentData['departure']['time'], 0, 8);
+                // checking its a return flight or not
+                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]) && $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation'] == $segmentData['departure']['airport']){
+                    $departureDateTime = date('Y-m-d', strtotime($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureDate']))."T".substr($segmentData['departure']['time'], 0, 8);
+                } else {
+                    $departureDateTime = date('Y-m-d', strtotime($arrivalDateTimeArray[$segmentIndex-1] . ' +'.$totalMinutes.' minutes'))."T".substr($segmentData['departure']['time'], 0, 8);
+                }
+
                 $elapsedDate = date('Y-m-d', strtotime($departureDateTime . ' +'.$segmentData['elapsedTime'].' minutes'));
                 $arrivalDateTime = $elapsedDate."T".substr($segmentData['arrival']['time'], 0, 8);
             }

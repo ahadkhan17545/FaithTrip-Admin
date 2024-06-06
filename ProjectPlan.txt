@@ -4,4 +4,13 @@ Issue:
 
 Task:
 2. Share PNR Option in Email
-3. Print Booking Preview
+
+Bugs:
+1. Cannot Book (DAC->CGP->DAC)
+2. Dhaka->London->Dhaka (Showing 171 Flights but showing 1 Row only)
+3. Dhaka->Newyork->Dhaka (Air India cannot be booked)
+4. DAC->WAS errro while booking
+5. FLight Details e Undefined Array key (Segment)
+6. HNL / BWI/ CXB/ FCO ow/rt kono tai hoi na
+7. Singapore City show kore na search e
+8. DAC -> DPS Routtrip booking error
