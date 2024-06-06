@@ -55,7 +55,7 @@ class SabreFlightBooking extends Model
                 $interval = $time1Obj->diff($time2Obj);
                 $totalMinutes = ($interval->h * 60) + $interval->i;
 
-                // checking its a return flight or not
+                // checking its a return flight or
                 if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]) && $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation'] == $segmentData['departure']['airport']){
                     $departureDateTime = date('Y-m-d', strtotime($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureDate']))."T".substr($segmentData['departure']['time'], 0, 8);
                 } else {
@@ -70,7 +70,7 @@ class SabreFlightBooking extends Model
 
             $flightSegment[] = array(
                 "DepartureDateTime" => $departureDateTime,
-                "FlightNumber" => (string) $segmentData['carrier']['marketingFlightNumber'],
+                "FlightNumber" => (string) $segmentData['carrier']['operatingFlightNumber'],
                 "NumberInParty" => (string) 1,
                 "ResBookDesigCode" => "Y",
                 "Status" => "NN",
@@ -248,6 +248,7 @@ class SabreFlightBooking extends Model
         $response = curl_exec($curl);
         curl_close($curl);
         return $response;
+        // return $flightSegment;
 
     }
 }

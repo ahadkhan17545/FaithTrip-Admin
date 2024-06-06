@@ -37,7 +37,7 @@ class HomeController extends Controller
                             ->where('city_name', 'LIKE', "%$search%")
                             ->orWhere('airport_name', 'LIKE', "%$search%")
                             ->orWhere('airport_code', 'LIKE', "%$search%")
-                            ->orWhere('city_code', 'LIKE', "%$search%")
+                            // ->orWhere('city_code', 'LIKE', "%$search%")
                             ->skip(0)
                             ->limit(5)
                             ->get();

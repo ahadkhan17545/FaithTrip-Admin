@@ -92,10 +92,9 @@ class SabreFlightRevalidate extends Model
                 $arrivalDateTime = $elapsedDate."T".substr($segmentData['arrival']['time'], 0, 8);
             }
 
-
             $originLocation = $segmentData['departure']['airport'];
             $destinationLocation = $segmentData['arrival']['airport'];
-            $flightNumber = $segmentData['carrier']['operatingFlightNumber'];
+            $flightNumber = $segmentData['carrier']['marketingFlightNumber'];
             $operatingAirline = $segmentData['carrier']['operating'];
             $marketingAirline = $segmentData['carrier']['marketing'];
             // $bookingCode = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$key2]['segment']['bookingCode'];

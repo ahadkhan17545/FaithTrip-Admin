@@ -22,10 +22,10 @@ class FlightBookingController extends Controller
         $revlidatedData = session('revlidatedData');
         $onlineBookingInfo = json_decode(SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->traveller_name, $request->traveller_email), true);
 
-        // echo "<pre>";
-        // print_r($onlineBookingInfo);
-        // echo "</pre>";
-        // exit();
+        echo "<pre>";
+        print_r($onlineBookingInfo);
+        echo "</pre>";
+        exit();
 
         $bookinPndID = null;
         if($onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status'] == 'Complete'){

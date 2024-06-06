@@ -29,6 +29,16 @@
             $legRef = $data['legs'][0]['ref'];
             $schedulesRef = $searchResults['groupedItineraryResponse']['legDescs'][$legRef-1]['schedules'][0]['ref'];
             $flightTiming = $searchResults['groupedItineraryResponse']['scheduleDescs'][$schedulesRef-1];
+
+            // calculating total flight time
+            $totalFlightTiming = 0;
+            $legRefArray = $data['legs'];
+            foreach ($legRefArray as $legRefItem) {
+                $schedulesRefArray = $searchResults['groupedItineraryResponse']['legDescs'][$legRefItem['ref']-1]['schedules'];
+                foreach ($schedulesRefArray as $schedulesRefItem) {
+                    $totalFlightTiming = $totalFlightTiming + $searchResults['groupedItineraryResponse']['scheduleDescs'][$schedulesRefItem['ref']-1]['elapsedTime'];
+                }
+            }
         @endphp
 
         <div class="d-flex align-items-center flight-icon col">
@@ -52,7 +62,7 @@
     </div>
     <div class="d-none d-md-flex align-items-sm-center text-center text-sm-left fs-14">
         <div class="fli-duration">
-            <strong class="mr-1">{{App\Models\CustomFunction::convertMinToHrMin($flightTiming['elapsedTime'])}}</strong>
+            <strong class="mr-1">{{App\Models\CustomFunction::convertMinToHrMin($totalFlightTiming)}}</strong>
         </div>
     </div>
 </div>

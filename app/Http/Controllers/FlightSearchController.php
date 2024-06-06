@@ -160,10 +160,10 @@ class FlightSearchController extends Controller
 
         $departureLocationId = $request->departure_location_id;
         $originCityInfo = DB::table('city_airports')->where('id', $departureLocationId)->first();
-        $originCityCode = $originCityInfo->city_code;
+        $originCityCode = $originCityInfo->airport_code;
         $destinationLocationId = $request->destination_location_id;
         $destinationCityInfo = DB::table('city_airports')->where('id', $destinationLocationId)->first();
-        $destinationCityCode = $destinationCityInfo->city_code;
+        $destinationCityCode = $destinationCityInfo->airport_code;
         $departureDate = date("Y-m-d", strtotime($request->departure_date));
         $returnDate = date("Y-m-d", strtotime($request->return_date));
         $adult = $request->adult;
@@ -267,7 +267,7 @@ class FlightSearchController extends Controller
         // echo "</pre>";
         // exit();
 
-        if(isset($revlidatedData['groupedItineraryResponse'])){
+        if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'])){
             return view('flight.select_flight', compact('revlidatedData'));
         } else {
             Toastr::error('Flight is not available for Booking', 'Sorry! Please Search Again');
