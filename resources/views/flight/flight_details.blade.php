@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="text-center">
                                     <div class="font-weight-600 fs-13">
-                                        {{ $segmentData['departure']['city'] }}
+                                        {{ $segmentData['departure']['airport'] }}
                                     </div>
                                     <span class="fs-12 font-weight-600">{{ $segmentData['departure']['time'] }}</span><br>
                                     <span class="text-muted fs-12">
@@ -69,7 +69,7 @@
                                 </div>
                                 <div class="text-center">
                                     <div class="font-weight-600 fs-13">
-                                        {{ $segmentData['arrival']['city'] }}
+                                        {{ $segmentData['arrival']['airport'] }}
                                     </div>
                                     <span class="fs-12 font-weight-600">{{ $segmentData['arrival']['time'] }}</span><br>
                                     <span class="text-muted fs-12">
