@@ -3,7 +3,14 @@
 @section('content')
     <div class="left_section w-100">
         <div class="mb-3">
-            <img class="brand_logo" src="{{url('assets')}}/img/logo.svg" alt="" style="width: 50%" />
+            @php
+                $companyProfile = DB::table('company_profiles')->where('id', 1)->first();
+            @endphp
+
+            @if($companyProfile && file_exists(public_path($companyProfile->logo)))
+            <img class="brand_logo" src="{{url($companyProfile->logo)}}" alt="" style="width: 50%" />
+            @endif
+
             <h3 class="fs-24 fw-bold heading mt-2">Welcome back</h3>
             <p class="sub_heading mb-0">
                 Nice to see you! please log in with your account
