@@ -6,10 +6,9 @@ Task:
 2. Share PNR Option in Email
 
 Bugs:
-1. Dhaka->London->Dhaka (Cannot Book FLights)
+1. Dhaka->London->Dhaka (Check in Prod)
 2. Dhaka->Newyork->Dhaka (Air India cannot be booked)
 3. DAC->WAS errro while booking
 4. FLight Details e Undefined Array key (Segment)
-5. HNL / BWI/ CXB/ FCO ow/rt kono tai hoi na
-6. Singapore City show kore na search e
+5. HNL / BWI/ FCO ow/rt kono tai hoi na
 7. DAC -> DPS Routtrip booking error

@@ -76,6 +76,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('issue/flight/ticket/{pnr_id}', [FlightBookingController::class, 'issueFlightTicket'])->name('IssueFlightTicket');
     Route::get('view/issued/tickets', [FlightBookingController::class, 'viewIssuedTickets'])->name('ViewIssuedTickets');
     Route::get('view/cancelled/tickets', [FlightBookingController::class, 'viewCancelledTickets'])->name('ViewCancelledTickets');
+    Route::post('update/pnr/booking', [FlightBookingController::class, 'updatePnrBooking'])->name('UpdatePnrBooking');
 
 });
 

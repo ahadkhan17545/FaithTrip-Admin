@@ -106,6 +106,9 @@
                                 <tr>
                                     <th>Status </th>
                                     <td>:
+                                        @if ($flightBookingDetails->status == 0)
+                                            <span style="color: goldenrod; font-weight: 600">Booking Requested</span>
+                                        @endif
                                         @if ($flightBookingDetails->status == 1)
                                             <span style="color: green; font-weight: 600">Booking Done</span>
                                         @endif
@@ -258,6 +261,36 @@
                             </table>
                         </div>
                     </div>
+
+                    @if($flightBookingDetails->status == 0)
+                    <hr>
+                    <h5>For Booking Requested Flights Only</h5>
+                    <div class="row">
+                        <div class="col-lg-7">
+                            In Sandbox Environment Some flights cannot be booked throught Automation. You need to book them manually and update the PNR ID for later processing like Ticket Issue or Cancel Booking. During Sandbox enviroment system can book BG, BS, EK, QR, TK etc. So please try to test booking in between these airlines.
+                        </div>
+                        <div class="col-lg-5">
+                            <form action="{{url('update/pnr/booking')}}" method="POST">
+                                @csrf
+                                <input type="hidden" name="booking_no" value="{{$flightBookingDetails->booking_no}}">
+                                <div class="row">
+                                    <div class="co-lg-12 mb-2">
+                                        <input type="text" class="form-control" name="pnr_id" placeholder="PNR ID" required>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <select class="form-select" name="status" required>
+                                            <option value="">Select Status</option>
+                                            <option value="1">Booking Done</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <button type="submit" class="btn btn-primary w-100">Update</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    @endif
 
                 </div>
             </div>

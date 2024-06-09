@@ -27,7 +27,7 @@
     @if (count($search_results_operating_carriers) > 0)
         @foreach ($search_results_operating_carriers as $carrierCode)
             @php
-                $carrierCodeInfo = DB::table('airlines')->where('iata', $carrierCode)->first();
+                $carrierCodeInfo = DB::table('airlines')->where('iata', $carrierCode)->where('active', 'Y')->first();
             @endphp
             @if ($carrierCodeInfo)
                 <div class="custom-control custom-checkbox fs-14 d-flex check-area" style="padding-left: 7px">

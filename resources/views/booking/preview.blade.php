@@ -87,11 +87,17 @@
             </div>
             <div class="i-ticket-container">
                 <div class="airline-info">
-                    <div class="airline-name">
-                        {{ DB::table('airlines')->where('iata', $flightBookingDetails->governing_carriers)->where('active', 'Y')->first()->name }}
+                    <div class="airline-name mb-2">
+                        Governing Carriers:<br>
+                        @php
+                            $governingCarriersArray = array_unique(explode(" ",$flightBookingDetails->governing_carriers));
+                            foreach ($governingCarriersArray as $governingCarrier) {
+                               echo DB::table('airlines')->where('iata', $governingCarrier)->where('active', 'Y')->first()->name."<br>";
+                            }
+                        @endphp
                     </div>
-                    <div class="flight-details">{{ $flightSegments[0]->carrier_operating_code }}
-                        {{ $flightSegments[0]->carrier_operating_flight_number }}</div>
+                    {{-- <div class="flight-details">{{ $flightSegments[0]->carrier_operating_code }}
+                        {{ $flightSegments[0]->carrier_operating_flight_number }}</div> --}}
                     <div class="duration-label">Duration:</div>
                     <div class="flight-duration">
                         @php
@@ -111,6 +117,9 @@
                     <div class="cabin-class">{{ $flightSegments[0]->cabin_code }}</div>
                     <div class="status-label">Status :</div>
                     <div class="flight-status">
+                        @if ($flightBookingDetails->status == 0)
+                            Booking Requested
+                        @endif
                         @if ($flightBookingDetails->status == 1)
                             Booking Done
                         @endif

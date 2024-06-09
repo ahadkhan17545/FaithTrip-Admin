@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Brian2694\Toastr\Facades\Toastr;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -30,12 +31,14 @@ class FlightBookingController extends Controller
         $bookinPndID = null;
         if($onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status'] == 'Complete'){
             $bookinPndID = $onlineBookingInfo['CreatePassengerNameRecordRS']['ItineraryRef']['ID'];
+            $status = 1;
         } else{
-            Toastr::error('Something Went Wrong While Booking', 'Failed to Book');
-            return back();
+            $status = 0;
+            // Toastr::error('Something Went Wrong While Booking', 'Failed to Book');
+            // return back();
         }
 
-        DB::transaction(function () use ($request, $bookinPndID) {
+        DB::transaction(function () use ($request, $bookinPndID, $status) {
 
             // fetching price using session for security (not from hidden field)
             $revlidatedData = session('revlidatedData');
@@ -70,7 +73,7 @@ class FlightBookingController extends Controller
                 'total_fare' => $total_fare,
                 'currency' => $request->currency,
                 'last_ticket_datetime' => $request->last_ticket_datetime,
-                'status' => 1,
+                'status' => $status,
                 'created_at' => Carbon::now()
             ]);
 
@@ -153,14 +156,21 @@ class FlightBookingController extends Controller
         }, 5);
 
         session()->forget(['adult', 'child', 'infant', 'revlidatedData']);
-        Toastr::success('Flight Booked Successfully', 'Success');
-        return redirect('/view/all/booking');
+
+        if($status == 0){
+            Toastr::success('Flight Booking Request Sent', 'Success');
+            return redirect('/view/all/booking');
+        } else {
+            Toastr::success('Flight Booked Successfully', 'Success');
+            return redirect('/view/all/booking');
+        }
+
     }
 
     public function viewAllBooking(Request $request){
 
         if ($request->ajax()) {
-            $data = FlightBooking::where('status', 1)->orderBy('id', 'desc')->get();
+            $data = FlightBooking::where('status', 1)->orWhere('status', 0)->orderBy('id', 'desc')->get();
             return Datatables::of($data)
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d h:i a", strtotime($data->created_at));
@@ -169,6 +179,8 @@ class FlightBookingController extends Controller
                         return $data->currency." ".number_format($data->total_fare);
                     })
                     ->editColumn('status', function($data) {
+                        if($data->status == 0)
+                            return "<span style='font-weight:600; color:goldenrod'>Booking Request</span>";
                         if($data->status == 1)
                             return "<span style='font-weight:600; color:green'>Booked</span>";
                         if($data->status == 2)
@@ -242,6 +254,22 @@ class FlightBookingController extends Controller
 
     public function cancelFlightBooking($pnrId){
 
+        if(session('access_token') && session('access_token') != '' && session('expires_in') != ''){
+
+            $seconds = session('expires_in');
+            $date = new DateTime();
+            $date->setTimestamp(time() + $seconds);
+            $tokenExpireDate = $date->format('Y-m-d');
+            $currentDate = date("Y-m-d");
+
+            if($currentDate >= $tokenExpireDate){
+                FlightSearchController::generateAccessToken();
+            }
+
+        } else {
+            FlightSearchController::generateAccessToken();
+        }
+
         $data = array(
             "confirmationId" => $pnrId,
             "retrieveBooking" => true,
@@ -272,12 +300,15 @@ class FlightBookingController extends Controller
         curl_close($curl);
 
         $cancelResponse = json_decode($response, true);
-        if($cancelResponse['booking']['bookingId'] == $pnrId){
+        if(isset($cancelResponse['booking']['bookingId']) && $cancelResponse['booking']['bookingId'] == $pnrId){
             FlightBooking::where('pnr_id', $pnrId)->update([
                 'status' => 3,
                 'booking_cancelled_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
+        } else {
+            Toastr::error('Something Went Wrong', 'Try Again Later');
+            return back();
         }
 
         Toastr::success('Flight Booking Cancelled Successfully', 'Cancelled');
@@ -381,5 +412,16 @@ class FlightBookingController extends Controller
                     ->make(true);
         }
         return view('booking.cancelled_ticket');
+    }
+
+    public function updatePnrBooking(Request $request){
+        FlightBooking::where('booking_no', $request->booking_no)->update([
+            'pnr_id' => $request->pnr_id,
+            'status' => $request->status,
+            'created_at' => Carbon::now(),
+        ]);
+
+        Toastr::success('Flight Booked Successfully', 'Successful');
+        return back();
     }
 }

@@ -147,7 +147,10 @@
                     <input type="hidden" name="gds_unique_id" value="SOOL">
                     <input type="hidden" name="departure_date" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}}">
                     <input type="hidden" name="departure_location" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureLocation']}}">
-                    <input type="hidden" name="arrival_location" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['arrivalLocation']}}">
+                    @php
+                        $legDescriptionsLastIndex = count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'])-1;
+                    @endphp
+                    <input type="hidden" name="arrival_location" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][$legDescriptionsLastIndex]['arrivalLocation']}}">
                     <input type="hidden" name="governing_carriers" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['governingCarriers']}}">
                     <input type="hidden" name="currency" value="{{$revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['currency']}}">
 
