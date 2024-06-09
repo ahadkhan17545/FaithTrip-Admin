@@ -8,6 +8,11 @@
                     <div class="card-body">
 
                         @php
+
+                            // echo "<pre>";
+                            // print_r($revlidatedData);
+                            // echo "</pre>";
+
                             $segmentArray = [];
                             $legsArray = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['legs'];
                             foreach ($legsArray as $key => $leg) {
