@@ -196,7 +196,7 @@ class FlightSearchController extends Controller
                 $operatingCodes[] = $schedule['carrier']['operating'];
             }
         }
-        $operatingCodes = array_unique($operatingCodes);
+        $operatingCodes = array_values(array_unique($operatingCodes));
         session(['search_results_operating_carriers' => $operatingCodes]);
         session()->forget('filter_min_price');
         session()->forget('filter_max_price');
