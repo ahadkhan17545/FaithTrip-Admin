@@ -14,13 +14,11 @@
     </div>
     <div class="profile-element d-block align-items-center flex-shrink-0">
         <div class="avatar online mb-2">
-
             @if(Auth::user()->image && file_exists(public_path(Auth::user()->image)))
                 <img src="{{ url(Auth::user()->image) }}" class="img-fluid rounded-circle w-100 h-100"/>
             @else
                 <img src="{{ url('assets') }}/img/user.jpg" class="img-fluid rounded-circle w-100 h-100"/>
             @endif
-
         </div>
         <div class="profile-text text-center" style="margin-left: 0px;">
             <h6 class="m-0">{{ Auth::user()->name }}</h6>
@@ -74,6 +72,33 @@
                         <li class="@if($currentRoute == 'ViewCancelledTickets') mm-active @endif">
                             <a class="text-capitalize" href="{{url('view/cancelled/tickets')}}">
                                 Cancelled Ticket List
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="@if(in_array($currentRoute, ['ViewBankAccounts', 'AddBankAccount', 'EditBankAccount', 'ViewMfsAccounts', 'AddMfsAccount', 'EditMfsAccount', 'CreateTopupRequest', 'ViewRechargeRequests'])) mm-active @endif">
+                    <a class="has-arrow material-ripple" href="javascript:void(0);">
+                        <i class="typcn typcn-credit-card "></i> Account Recharge
+                    </a>
+                    <ul class="nav-second-level">
+                        <li class="@if(in_array($currentRoute, ['ViewBankAccounts', 'AddBankAccount', 'EditBankAccount'])) mm-active @endif">
+                            <a class="text-capitalize" href="{{url('view/bank/accounts')}}">
+                                Bank Accounts
+                            </a>
+                        </li>
+                        <li class="@if(in_array($currentRoute, ['ViewMfsAccounts', 'AddMfsAccount', 'EditMfsAccount'])) mm-active @endif">
+                            <a class="text-capitalize" href="{{url('view/mfs/accounts')}}">
+                                MFS Accounts
+                            </a>
+                        </li>
+                        <li class="@if(in_array($currentRoute, ['CreateTopupRequest'])) mm-active @endif">
+                            <a class="text-capitalize" href="{{url('create/topup/request')}}">
+                                Submit Topup Request
+                            </a>
+                        </li>
+                        <li class="@if(in_array($currentRoute, ['ViewRechargeRequests'])) mm-active @endif">
+                            <a class="text-capitalize" href="{{url('view/recharge/requests')}}">
+                                View Transactions
                             </a>
                         </li>
                     </ul>

@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GdsController;
 use App\Http\Controllers\CkeditorController;
 use App\Http\Controllers\SystemController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\FlightBookingController;
 
 Route::get('/', function () {
@@ -77,6 +78,30 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('view/issued/tickets', [FlightBookingController::class, 'viewIssuedTickets'])->name('ViewIssuedTickets');
     Route::get('view/cancelled/tickets', [FlightBookingController::class, 'viewCancelledTickets'])->name('ViewCancelledTickets');
     Route::post('update/pnr/booking', [FlightBookingController::class, 'updatePnrBooking'])->name('UpdatePnrBooking');
+
+    // bank accounts
+    Route::get('view/bank/accounts', [PaymentController::class, 'viewBankAccounts'])->name('ViewBankAccounts');
+    Route::get('add/bank/account', [PaymentController::class, 'addBankAccount'])->name('AddBankAccount');
+    Route::post('save/bank/account', [PaymentController::class, 'saveBankAccount'])->name('SaveBankAccount');
+    Route::get('delete/bank/account/{slug}', [PaymentController::class, 'deleteBankAccount'])->name('DeleteBankAccount');
+    Route::get('edit/bank/account/{slug}', [PaymentController::class, 'editBankAccount'])->name('EditBankAccount');
+    Route::post('update/bank/account', [PaymentController::class, 'updateBankAccount'])->name('UpdateBankAccount');
+
+    // mfs accounts
+    Route::get('view/mfs/accounts', [PaymentController::class, 'viewMfsAccounts'])->name('ViewMfsAccounts');
+    Route::get('add/mfs/account', [PaymentController::class, 'addMfsAccount'])->name('AddMfsAccount');
+    Route::post('save/mfs/account', [PaymentController::class, 'saveMfsAccount'])->name('SaveMfsAccount');
+    Route::get('delete/mfs/account/{slug}', [PaymentController::class, 'deleteMfsAccount'])->name('DeleteMfsAccount');
+    Route::get('edit/mfs/account/{slug}', [PaymentController::class, 'editMfsAccount'])->name('EditMfsAccount');
+    Route::post('update/mfs/account', [PaymentController::class, 'updateMfsAccount'])->name('UpdateMfsAccount');
+
+    // recharge
+    Route::get('create/topup/request', [PaymentController::class, 'createTopupRequest'])->name('CreateTopupRequest');
+    Route::post('submit/recharge/request', [PaymentController::class, 'submitRechargeRequest'])->name('SubmitRechargeRequest');
+    Route::get('view/recharge/requests', [PaymentController::class, 'viewRechargeRequests'])->name('ViewRechargeRequests');
+    Route::get('delete/recharge/request/{slug}', [PaymentController::class, 'deleteRechargeRequest'])->name('ViewRechargeRequests');
+    Route::get('approve/recharge/request/{slug}', [PaymentController::class, 'approveRechargeRequest'])->name('ApproveRechargeRequest');
+    Route::get('deny/recharge/request/{slug}', [PaymentController::class, 'denyRechargeRequest'])->name('DenyRechargeRequest');
 
 });
 

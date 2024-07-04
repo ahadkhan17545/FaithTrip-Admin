@@ -1,0 +1,322 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\BankAccount;
+use App\Models\MfsAccount;
+use App\Models\RechargeRequest;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
+class PaymentController extends Controller
+{
+    public function viewBankAccounts(Request $request){
+
+        if ($request->ajax()) {
+            $data = BankAccount::orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                    ->editColumn('status', function($data) {
+                        if($data->status == 0)
+                            return "<span style='font-weight:600; color:red'>Inactive</span>";
+                        if($data->status == 1)
+                            return "<span style='font-weight:600; color:green'>Active</span>";
+
+                    })
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $btn = ' <a href="'.url('edit/bank/account')."/".$data->slug.'" class="btn-sm btn-warning rounded d-inline-block mb-1"><i class="fa fa-edit"></i></a>';
+                        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Delete" class="btn-sm btn-danger rounded d-inline-block deleteBtn"><i class="fa fa-trash"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action', 'status'])
+                    ->make(true);
+        }
+        return view('bank_accounts.view');
+    }
+
+    public function addBankAccount(){
+        return view('bank_accounts.create');
+    }
+
+    public function saveBankAccount(Request $request){
+        BankAccount::insert([
+            'bank_name' => $request->bank_name,
+            'branch_name' => $request->branch_name,
+            'routing_no' => $request->routing_no,
+            'acc_holder_name' => $request->acc_holder_name,
+            'acc_no' => $request->acc_no,
+            'swift_code' => $request->swift_code,
+            'status' => 1,
+            'slug' => str::random(3) . "-" . time(),
+            'created_at' => Carbon::now(),
+        ]);
+
+        Toastr::success('New Bank Account Saved');
+        return back();
+    }
+
+    public function deleteBankAccount($slug){
+        BankAccount::where('slug', $slug)->delete();
+        return response()->json(['success' => 'Deleted successfully.']);
+    }
+
+    public function editBankAccount($slug){
+        $data = BankAccount::where('slug', $slug)->first();
+        return view('bank_accounts.update', compact('data'));
+    }
+
+    public function updateBankAccount(Request $request){
+        BankAccount::where('slug', $request->slug)->update([
+            'bank_name' => $request->bank_name,
+            'branch_name' => $request->branch_name,
+            'routing_no' => $request->routing_no,
+            'acc_holder_name' => $request->acc_holder_name,
+            'acc_no' => $request->acc_no,
+            'swift_code' => $request->swift_code,
+            'status' => $request->status,
+            'updated_at' => Carbon::now(),
+        ]);
+
+        Toastr::success('Bank Account Updated');
+        return back();
+    }
+
+    public function viewMfsAccounts(Request $request){
+        if ($request->ajax()) {
+            $data = MfsAccount::orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                    ->editColumn('status', function($data) {
+                        if($data->status == 0)
+                            return "<span style='font-weight:600; color:red'>Inactive</span>";
+                        if($data->status == 1)
+                            return "<span style='font-weight:600; color:green'>Active</span>";
+
+                    })
+                    ->editColumn('account_type', function($data) {
+                        if($data->account_type  == 1)
+                            return "bKash";
+                        if($data->account_type  == 2)
+                            return "Nagad";
+                        if($data->account_type  == 3)
+                            return "Rocket";
+                        if($data->account_type  == 4)
+                            return "Upay";
+                        if($data->account_type  == 5)
+                            return "Sure Cash";
+
+                    })
+                    ->editColumn('created_at', function($data) {
+                        return date("Y-m-d", strtotime($data->created_at));
+                    })
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $btn = ' <a href="'.url('edit/mfs/account')."/".$data->slug.'" class="btn-sm btn-warning rounded d-inline-block mb-1"><i class="fa fa-edit"></i></a>';
+                        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Delete" class="btn-sm btn-danger rounded d-inline-block deleteBtn"><i class="fa fa-trash"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action', 'status'])
+                    ->make(true);
+        }
+        return view('mfs_accounts.view');
+    }
+
+    public function addMfsAccount(){
+        return view('mfs_accounts.create');
+    }
+
+    public function saveMfsAccount(Request $request){
+
+        MfsAccount::insert([
+            'account_type' => $request->account_type,
+            'acc_no' => $request->acc_no,
+            'status' => 1,
+            'slug' => str::random(3) . "-" . time(),
+            'created_at' => Carbon::now(),
+        ]);
+
+        Toastr::success('New MFS Account Saved');
+        return back();
+    }
+
+    public function deleteMfsAccount($slug){
+        MfsAccount::where('slug', $slug)->delete();
+        return response()->json(['success' => 'Deleted Successfully.']);
+    }
+
+    public function editMfsAccount($slug){
+        $data = MfsAccount::where('slug', $slug)->first();
+        return view('mfs_accounts.update', compact('data'));
+    }
+
+    public function updateMfsAccount(Request $request){
+        MfsAccount::where('slug', $request->slug)->update([
+            'account_type' => $request->account_type,
+            'acc_no' => $request->acc_no,
+            'status' => $request->status,
+            'updated_at' => Carbon::now(),
+        ]);
+
+        Toastr::success('MFS Account Updated');
+        return back();
+    }
+
+    public function createTopupRequest(){
+        $bankAccounts = BankAccount::where('status', 1)->orderBy('id', 'asc')->get();
+        $mfsAccounts = MfsAccount::where('status', 1)->orderBy('id', 'asc')->get();
+        return view('recharge.create', compact('bankAccounts', 'mfsAccounts'));
+    }
+
+    public function submitRechargeRequest(Request $request){
+
+        $attachment = null;
+        if ($request->hasFile('attachment')){
+            $file = $request->file('attachment');
+            $file_name = str::random(5) . time() . '.' . $file->getClientOriginalExtension();
+            $file_location = public_path('recharge_attachments/');
+            $file->move($file_location, $file_name);
+            $attachment = "recharge_attachments/" . $file_name;
+        }
+
+        RechargeRequest::insert([
+            'user_id' => Auth::user()->id,
+            'admin_bank_account_id' => $request->payment_method == 1 ? $request->admin_bank_account_id : null,
+            'admin_mfs_account_id' => in_array($request->payment_method, [3,4,5,6,7]) ? $request->admin_mfs_account_id : null,
+            'payment_method' => $request->payment_method,
+
+            'acc_holder_name' => $request->acc_holder_name,
+            'acc_no' => $request->acc_no,
+            'bank_name' => $request->bank_name,
+            'branch_name' => $request->branch_name,
+            'routing_no' => $request->routing_no,
+            'swift_code' => $request->swift_code,
+            'mobile_no' => $request->mobile_no,
+            'cheque_no' => $request->cheque_no,
+            'cheque_bank_name' => $request->cheque_bank_name,
+            'deposite_date' => $request->deposite_date,
+
+            'recharge_amount' => $request->recharge_amount,
+            'transaction_id' => $request->transaction_id,
+            'attachment' => $attachment,
+            'remarks' => $request->remarks,
+            'status' => 0,
+            'slug' => str::random(5) . time(),
+            'created_at' => Carbon::now()
+        ]);
+
+        Toastr::success('Recharge Request Submitted');
+        return back();
+    }
+
+    public function viewRechargeRequests(Request $request){
+        if ($request->ajax()) {
+            $data = RechargeRequest::orderBy('id', 'desc')->get();
+            return Datatables::of($data)
+                    ->addColumn('receiving_channel', function($data){
+                        if($data->admin_bank_account_id){
+                            $bankInfo = BankAccount::where('id', $data->admin_bank_account_id)->first();
+                            return $bankInfo->bank_name."-".$bankInfo->acc_no;
+                        }
+                        if($data->admin_mfs_account_id){
+                            $mfsInfo = MfsAccount::where('id', $data->admin_mfs_account_id)->first();
+                            if($mfsInfo && $mfsInfo->account_type == 1)
+                                return $mfsInfo->acc_no." (bKash)";
+                            if($mfsInfo && $mfsInfo->account_type == 2)
+                                return $mfsInfo->acc_no." (Nagad)";
+                            if($mfsInfo && $mfsInfo->account_type == 3)
+                                return $mfsInfo->acc_no." (Rocket)";
+                            if($mfsInfo && $mfsInfo->account_type == 4)
+                                return $mfsInfo->acc_no." (Upay)";
+                            if($mfsInfo && $mfsInfo->account_type == 5)
+                                return $mfsInfo->acc_no." (SureCash)";
+                        }
+                    })
+                    ->editColumn('status', function($data) {
+                        if($data->status == 0)
+                            return "<span style='font-weight:600; color:goldenrod'>Pending</span>";
+                        if($data->status == 1)
+                            return "<span style='font-weight:600; color:green'>Approved</span>";
+                        if($data->status == 2)
+                            return "<span style='font-weight:600; color:red'>Denied</span>";
+                    })
+                    ->editColumn('bank_name', function($data) {
+                        if($data->admin_bank_account_id)
+                            return $data->bank_name;
+                        if($data->admin_bank_account_id == null && $data->admin_mfs_account_id == null)
+                            return $data->cheque_bank_name;
+                    })
+                    ->editColumn('acc_no', function($data) {
+                        if($data->admin_bank_account_id)
+                            return $data->acc_no;
+                        if($data->admin_mfs_account_id)
+                            return $data->mobile_no;
+                        if($data->admin_bank_account_id == null && $data->admin_mfs_account_id == null)
+                            return $data->cheque_no;
+                    })
+                    ->editColumn('recharge_amount', function($data) {
+                        return number_format($data->recharge_amount);
+                    })
+                    ->editColumn('attachment', function($data) {
+                        if($data->attachment)
+                            return "<a href='".url($data->attachment)."' target='_blank'>Attachment</a>";
+                    })
+                    ->editColumn('payment_method', function($data) {
+                        if($data->payment_method  == 1)
+                            return "Bank Transfer";
+                        if($data->payment_method  == 2)
+                            return "Bank Cheque";
+                        if($data->payment_method  == 3)
+                            return "bKash";
+                        if($data->payment_method  == 4)
+                            return "Nagad";
+                        if($data->payment_method  == 5)
+                            return "Rocket";
+                        if($data->payment_method  == 6)
+                            return "Upay";
+                        if($data->payment_method  == 7)
+                            return "SureCash";
+                    })
+                    ->editColumn('created_at', function($data) {
+                        return date("Y-m-d", strtotime($data->created_at));
+                    })
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $btn = "";
+                        if($data->status == 0){
+                            $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Delete" class="btn-sm btn-danger rounded d-inline-block deleteBtn mb-1"><i class="fa fa-trash"></i></a>';
+                            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Approve" class="btn-sm btn-success rounded d-inline-block approveBtn mb-1" style="background: green; box-shadow: none;"><i class="fa fa-check"></i></a>';
+                            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Denied" class="btn-sm btn-warning rounded d-inline-block denyBtn mb-1" style="background: goldenrod; box-shadow: none;"><i class="fa fa-times"></i></a>';
+                        }
+                        return $btn;
+                    })
+                    ->rawColumns(['action', 'status', 'attachment'])
+                    ->make(true);
+        }
+        return view('recharge.view');
+    }
+
+    public function deleteRechargeRequest($slug){
+        RechargeRequest::where('slug', $slug)->delete();
+        return response()->json(['success' => 'Deleted Successfully.']);
+    }
+
+    public function approveRechargeRequest($slug){
+        RechargeRequest::where('slug', $slug)->update([
+            'status' => 1,
+            'updated_at' => Carbon::now(),
+        ]);
+        return response()->json(['success' => 'Approved Successfully.']);
+    }
+
+    public function denyRechargeRequest($slug){
+        RechargeRequest::where('slug', $slug)->update([
+            'status' => 2,
+            'updated_at' => Carbon::now(),
+        ]);
+        return response()->json(['success' => 'Denied Successfully.']);
+    }
+
+}

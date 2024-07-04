@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2024 at 09:50 PM
+-- Generation Time: Jul 04, 2024 at 01:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -6213,6 +6213,34 @@ INSERT INTO `airlines` (`id`, `name`, `alias`, `iata`, `icao`, `callsign`, `coun
 (21268, 'Jetgo Australia', NULL, 'JG', 'N', NULL, 'Australia', 'Y'),
 (21270, 'Air Carnival', NULL, '2S', 'N', NULL, 'India', 'Y'),
 (21317, 'Svyaz Rossiya', 'Russian Commuter', '7R', 'SJM', 'RussianConnecty', 'Russia', 'Y');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bank_accounts`
+--
+
+CREATE TABLE `bank_accounts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `bank_name` varchar(255) DEFAULT NULL,
+  `branch_name` varchar(255) DEFAULT NULL,
+  `routing_no` varchar(255) DEFAULT NULL,
+  `acc_holder_name` varchar(255) DEFAULT NULL,
+  `acc_no` varchar(255) DEFAULT NULL,
+  `swift_code` varchar(255) DEFAULT NULL,
+  `status` tinyint(4) DEFAULT NULL COMMENT '0=>Inactive; 1=>Active',
+  `slug` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `bank_accounts`
+--
+
+INSERT INTO `bank_accounts` (`id`, `bank_name`, `branch_name`, `routing_no`, `acc_holder_name`, `acc_no`, `swift_code`, `status`, `slug`, `created_at`, `updated_at`) VALUES
+(1, 'SIBL - Social Islami Bank PLC', 'New Eskaton', '225566', 'FaithTrip', '055134455877', '00214', 1, '321654987IUYI', '2024-07-04 07:11:30', '2024-07-04 07:33:43'),
+(2, 'The City Bank', 'Banani', '221144', 'FaithTrip - Habibur', '254477889901', '54052', 1, '721654987IAYI', '2024-07-04 07:11:59', '2024-07-04 07:33:34');
 
 -- --------------------------------------------------------
 
@@ -15205,7 +15233,7 @@ CREATE TABLE `company_profiles` (
 --
 
 INSERT INTO `company_profiles` (`id`, `user_id`, `name`, `logo`, `address`, `phone`, `email`, `tin`, `bin`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Getup Ltd.', NULL, 'Dhaka, Bangladesh', 'getuplimited@gmail.com', 'getuplimited@gmail.com', '45874589654', 'AAFFWE-12548', '2024-05-01 15:26:17', '2024-05-01 19:18:40');
+(1, 1, 'Getup Ltd.', 'companyLogo/edAFN1717060920.svg', 'Dhaka, Bangladesh', 'getuplimited@gmail.com', 'getuplimited@gmail.com', '45874589654', 'AAFFWE-12548', '2024-05-01 15:26:17', '2024-05-30 09:22:00');
 
 -- --------------------------------------------------------
 
@@ -15313,6 +15341,13 @@ CREATE TABLE `flight_bookings` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `flight_bookings`
+--
+
+INSERT INTO `flight_bookings` (`id`, `booking_no`, `booked_by`, `pnr_id`, `booking_id`, `ticket_id`, `gds`, `gds_unique_id`, `traveller_name`, `traveller_email`, `traveller_contact`, `departure_date`, `departure_location`, `arrival_location`, `governing_carriers`, `adult`, `child`, `infant`, `base_fare_amount`, `total_tax_amount`, `total_fare`, `currency`, `last_booking_cancel_datetime`, `last_ticket_datetime`, `last_ticket_cancel_datetime`, `booking_cancelled_at`, `ticket_issued_at`, `ticket_cancelled_at`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'LTN-1717958526', 1, 'QLIHZD', NULL, NULL, 'Sabre', 'SOOL', 'Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-06-14', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 11048, 1950, 12998, 'BDT', NULL, '2024-06-10 04:41:00', NULL, '2024-06-10 00:46:24', NULL, NULL, 3, '2024-06-09 18:42:06', '2024-06-09 18:46:24');
+
 -- --------------------------------------------------------
 
 --
@@ -15335,6 +15370,13 @@ CREATE TABLE `flight_passangers` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `flight_passangers`
+--
+
+INSERT INTO `flight_passangers` (`id`, `flight_booking_id`, `passanger_type`, `title`, `first_name`, `last_name`, `dob`, `document_type`, `document_no`, `document_expire_date`, `document_issue_country`, `nationality`, `created_at`, `updated_at`) VALUES
+(1, 1, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '98798654', '2029-12-10', 'BGD', 'BGD', '2024-06-09 18:42:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -15369,6 +15411,14 @@ CREATE TABLE `flight_segments` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `flight_segments`
+--
+
+INSERT INTO `flight_segments` (`id`, `flight_booking_id`, `total_miles_flown`, `elapsed_time`, `booking_code`, `cabin_code`, `baggage_allowance`, `departure_airport_code`, `departure_city_code`, `departure_country_code`, `departure_time`, `departure_terminal`, `arrival_airport_code`, `arrival_city_code`, `arrival_country_code`, `arrival_time`, `arrival_terminal`, `carrier_marketing_code`, `carrier_marketing_flight_number`, `carrier_operating_code`, `carrier_operating_flight_number`, `carrier_equipment_code`, `created_at`, `updated_at`) VALUES
+(1, 1, '189', '65', 'T', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '13:50:00+06:00', 'D', 'CXB', 'CXB', 'BD', '14:55:00+06:00', NULL, 'BS', '151', 'BS', '151', 'AT7', '2024-06-09 18:42:06', NULL),
+(2, 1, '189', '65', 'T', 'Y', '20 kg', 'CXB', 'CXB', 'BD', '14:15:00+06:00', NULL, 'DAC', 'DAC', 'BD', '15:20:00+06:00', 'D', 'BS', '150', 'BS', '150', 'AT7', '2024-06-09 18:42:06', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -15394,6 +15444,30 @@ CREATE TABLE `gds` (
 INSERT INTO `gds` (`id`, `name`, `code`, `logo`, `description`, `serial`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Amadeus GDS API', 'amadeus', 'gds_logo/amadeus.png', 'To configure or setup credentials click on settings', 2, 0, '2024-05-07 10:18:38', '2024-05-07 12:23:32'),
 (2, 'Sabre GDS API', 'sabre', 'gds_logo/sabre.jpg', 'To configure or setup credentials click on settings', 1, 1, '2024-05-07 10:19:18', '2024-05-07 19:51:12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mfs_accounts`
+--
+
+CREATE TABLE `mfs_accounts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `account_type` tinyint(4) DEFAULT NULL COMMENT '1=>Bkash; 2=>Nagad; 3=>Rocket; 4=>Upay; 5=>Sure Cash',
+  `acc_no` varchar(255) DEFAULT NULL,
+  `status` tinyint(4) DEFAULT NULL COMMENT '0=>Inactive; 1=>Active',
+  `slug` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `mfs_accounts`
+--
+
+INSERT INTO `mfs_accounts` (`id`, `account_type`, `acc_no`, `status`, `slug`, `created_at`, `updated_at`) VALUES
+(2, 2, '01969887743', 1, 'wam-1720080625', '2024-07-04 08:10:25', '2024-07-04 09:16:26'),
+(3, 1, '01969005065', 1, 'jPs-1720084598', '2024-07-04 09:16:38', NULL);
 
 -- --------------------------------------------------------
 
@@ -15425,7 +15499,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (13, '2024_05_09_112203_create_email_configures_table', 7),
 (14, '2024_05_21_150248_create_flight_bookings_table', 8),
 (15, '2024_05_21_165417_create_flight_passangers_table', 9),
-(16, '2024_05_21_165921_create_flight_segments_table', 10);
+(16, '2024_05_21_165921_create_flight_segments_table', 10),
+(17, '2024_07_04_113602_create_recharge_requests_table', 11),
+(18, '2024_07_04_114441_create_bank_accounts_table', 12),
+(20, '2024_07_04_135448_create_mfs_accounts_table', 13);
 
 -- --------------------------------------------------------
 
@@ -15469,6 +15546,47 @@ CREATE TABLE `personal_access_tokens` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `recharge_requests`
+--
+
+CREATE TABLE `recharge_requests` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `admin_bank_account_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `admin_mfs_account_id` int(11) DEFAULT NULL,
+  `payment_method` tinyint(4) DEFAULT NULL COMMENT '1=>Bank Transfer; 2\r\n=>Bank Cheque; 3=>Bkash; 4=>Nagad; 5=>Rocket; 6=>Upay; 7=>Sure Cash',
+  `acc_holder_name` varchar(255) DEFAULT NULL,
+  `acc_no` varchar(255) DEFAULT NULL,
+  `cheque_no` varchar(255) DEFAULT NULL,
+  `cheque_bank_name` varchar(255) DEFAULT NULL,
+  `deposite_date` varchar(255) DEFAULT NULL,
+  `bank_name` varchar(255) DEFAULT NULL,
+  `branch_name` varchar(255) DEFAULT NULL,
+  `routing_no` varchar(255) DEFAULT NULL,
+  `swift_code` varchar(255) DEFAULT NULL,
+  `mobile_no` varchar(255) DEFAULT NULL,
+  `recharge_amount` double NOT NULL DEFAULT 0,
+  `transaction_id` varchar(255) DEFAULT NULL,
+  `attachment` varchar(255) DEFAULT NULL,
+  `remarks` longtext DEFAULT NULL,
+  `status` tinyint(4) DEFAULT NULL COMMENT '0=>Pending; 1=>Approved; 3=>Denied',
+  `slug` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `recharge_requests`
+--
+
+INSERT INTO `recharge_requests` (`id`, `user_id`, `admin_bank_account_id`, `admin_mfs_account_id`, `payment_method`, `acc_holder_name`, `acc_no`, `cheque_no`, `cheque_bank_name`, `deposite_date`, `bank_name`, `branch_name`, `routing_no`, `swift_code`, `mobile_no`, `recharge_amount`, `transaction_id`, `attachment`, `remarks`, `status`, `slug`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, NULL, 1, 'Md Fahim Hossain', '22558877401', NULL, NULL, NULL, 'Midland Bank Ltd.', 'Banani', '5874', NULL, NULL, 25000, '23423424', 'recharge_attachments/gRpYu1720090659.docx', 'Testing', 0, 'UYTTRE987654', '2024-07-04 10:57:39', NULL),
+(2, 1, NULL, NULL, 2, NULL, NULL, '11887458020', 'The City Bank', '2024-07-18', NULL, NULL, NULL, NULL, NULL, 50000, '987654321', 'recharge_attachments/VQFAt1720090722.docx', 'Testing', 2, 'UYTTRE987602', '2024-07-04 10:58:42', '2024-07-04 11:30:31'),
+(3, 1, NULL, 3, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '01969005035', 6000, '7854789658', NULL, 'Testing BKash', 1, 'UYTTRE987603', '2024-07-04 10:59:57', '2024-07-04 11:28:35');
 
 -- --------------------------------------------------------
 
@@ -15560,6 +15678,12 @@ ALTER TABLE `airlines`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `bank_accounts`
+--
+ALTER TABLE `bank_accounts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `city_airports`
 --
 ALTER TABLE `city_airports`
@@ -15615,6 +15739,12 @@ ALTER TABLE `gds`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `mfs_accounts`
+--
+ALTER TABLE `mfs_accounts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -15639,6 +15769,12 @@ ALTER TABLE `personal_access_tokens`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
+
+--
+-- Indexes for table `recharge_requests`
+--
+ALTER TABLE `recharge_requests`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `sabre_gds_configs`
@@ -15668,6 +15804,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `airlines`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21318;
+
+--
+-- AUTO_INCREMENT for table `bank_accounts`
+--
+ALTER TABLE `bank_accounts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `city_airports`
@@ -15703,19 +15845,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `flight_bookings`
 --
 ALTER TABLE `flight_bookings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `flight_passangers`
 --
 ALTER TABLE `flight_passangers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `flight_segments`
 --
 ALTER TABLE `flight_segments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `gds`
@@ -15724,16 +15866,28 @@ ALTER TABLE `gds`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `mfs_accounts`
+--
+ALTER TABLE `mfs_accounts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `recharge_requests`
+--
+ALTER TABLE `recharge_requests`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sabre_gds_configs`
