@@ -17,9 +17,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->nullable();
+            $table->string('nid')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->tinyInteger('user_type')->comment('1=>Admin; 2=>System User; 3=>Customer')->default(3);
+            $table->tinyInteger('user_type')->comment('1=>Admin; 2=>B2B User; 3=>Customer')->default(3);
+            $table->double('balance')->default(0);
             $table->tinyInteger('status')->default(1)->comment("0=>Inactive; 1=>Active");
             $table->rememberToken();
             $table->timestamps();

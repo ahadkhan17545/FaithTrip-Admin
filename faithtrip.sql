@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2024 at 01:32 PM
+-- Generation Time: Jul 04, 2024 at 03:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -15233,7 +15233,8 @@ CREATE TABLE `company_profiles` (
 --
 
 INSERT INTO `company_profiles` (`id`, `user_id`, `name`, `logo`, `address`, `phone`, `email`, `tin`, `bin`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Getup Ltd.', 'companyLogo/edAFN1717060920.svg', 'Dhaka, Bangladesh', 'getuplimited@gmail.com', 'getuplimited@gmail.com', '45874589654', 'AAFFWE-12548', '2024-05-01 15:26:17', '2024-05-30 09:22:00');
+(1, 1, 'Getup Ltd.', 'companyLogo/edAFN1717060920.svg', 'Dhaka, Bangladesh', 'getuplimited@gmail.com', 'getuplimited@gmail.com', '45874589654', 'AAFFWE-12548', '2024-05-01 15:26:17', '2024-05-30 09:22:00'),
+(2, 2, 'Getup Ltd', NULL, 'Dhaka, Bangladesh', '01969005035', NULL, '987654321', '321654987', '2024-07-04 12:58:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -15651,10 +15652,12 @@ CREATE TABLE `users` (
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `phone` varchar(255) DEFAULT NULL,
+  `nid` varchar(255) DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `user_type` tinyint(4) NOT NULL DEFAULT 3 COMMENT '1=>Admin; 2=>System User; 3=>Customer',
+  `balance` double NOT NULL DEFAULT 0,
   `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '0=>Inactive; 1=>Active',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -15664,8 +15667,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `image`, `name`, `email`, `phone`, `email_verified_at`, `password`, `remember_token`, `user_type`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'userImages/YUuex1714591027.jpg', 'Admin', 'admin@gmail.com', '01969005035', '2024-03-27 05:27:23', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 3, 1, '2024-03-27 05:27:23', '2024-05-01 19:18:49');
+INSERT INTO `users` (`id`, `image`, `name`, `email`, `phone`, `nid`, `email_verified_at`, `password`, `remember_token`, `user_type`, `balance`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'userImages/YUuex1714591027.jpg', 'Admin', 'admin@gmail.com', '01969005035', NULL, '2024-03-27 05:27:23', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 3, 0, 1, '2024-03-27 05:27:23', '2024-05-01 19:18:49'),
+(2, NULL, 'Test B2B User', 'b2b@user.com', '0154788554', '987654321', NULL, '$2y$12$GkJj7rl0WGAYOissCXzNXehNd7jgqbtJtNLvhVQ2CJJakU1gDxTFC', NULL, 2, 0, 1, '2024-07-04 12:58:06', NULL);
 
 --
 -- Indexes for dumped tables
@@ -15821,7 +15825,7 @@ ALTER TABLE `city_airports`
 -- AUTO_INCREMENT for table `company_profiles`
 --
 ALTER TABLE `company_profiles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `email_configures`
@@ -15905,7 +15909,7 @@ ALTER TABLE `sms_gateways`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

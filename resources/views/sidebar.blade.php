@@ -128,22 +128,17 @@
 
                 <li>
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
-                        <i class="typcn typcn-lock-open-outline"></i> User access role
+                        <i class="typcn typcn-lock-open-outline"></i>User Management
                     </a>
                     <ul class="nav-second-level">
                         <li>
-                            <a class="text-capitalize" href="./role/permission.html">
-                                Permission
+                            <a class="text-capitalize" href="{{url('create/b2b/users')}}">
+                                Create B2B User
                             </a>
                         </li>
                         <li>
-                            <a class="text-capitalize" href="./role/role.html">
-                                Role
-                            </a>
-                        </li>
-                        <li>
-                            <a class="text-capitalize" href="./role/user.html">
-                                User
+                            <a class="text-capitalize" href="{{url('view/b2b/users')}}">
+                                View B2B Users
                             </a>
                         </li>
                     </ul>

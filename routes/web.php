@@ -10,6 +10,7 @@ use App\Http\Controllers\CkeditorController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\FlightBookingController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -102,6 +103,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('delete/recharge/request/{slug}', [PaymentController::class, 'deleteRechargeRequest'])->name('ViewRechargeRequests');
     Route::get('approve/recharge/request/{slug}', [PaymentController::class, 'approveRechargeRequest'])->name('ApproveRechargeRequest');
     Route::get('deny/recharge/request/{slug}', [PaymentController::class, 'denyRechargeRequest'])->name('DenyRechargeRequest');
+
+    // b2b user management
+    Route::get('create/b2b/users', [UserController::class, 'createB2bUser'])->name('CreateB2bUser');
+    Route::post('save/b2b/user', [UserController::class, 'saveB2bUser'])->name('SaveB2bUser');
+    Route::get('view/b2b/users', [UserController::class, 'viewB2bUser'])->name('ViewB2bUser');
 
 });
 
