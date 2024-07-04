@@ -42,7 +42,7 @@
                         Search pad
                     </a>
                 </li>
-                <li class="@if($currentRoute == 'ViewAllBooking' || $currentRoute == 'ViewCancelBooking') mm-active @endif">
+                <li class="@if(in_array($currentRoute, ['ViewAllBooking', 'ViewCancelBooking'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-info-outline"></i> Booking Information
                     </a>
@@ -59,7 +59,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="@if($currentRoute == 'ViewIssuedTickets' || $currentRoute == 'ViewCancelledTickets') mm-active @endif">
+                <li class="@if(in_array($currentRoute, ['ViewIssuedTickets', 'ViewCancelledTickets'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-ticket"></i> Ticket information
                     </a>
@@ -103,62 +103,53 @@
                         </li>
                     </ul>
                 </li>
-                <li>
+                {{-- <li>
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-chart-bar-outline"></i> Reports
                     </a>
                     <ul class="nav-second-level">
-                        <li class>
+                        <li>
                             <a class="text-capitalize" href="./report/pnr-report.html">
-                                Pnr report
+                                Booking report
                             </a>
                         </li>
-                        <li class>
-                            <a class="text-capitalize" href="./report/pnr-cancel-report.html">
-                                Pnr cancellation report
-                            </a>
-                        </li>
-                        <li class>
+                        <li>
                             <a class="text-capitalize" href="./report/ticket-report.html">
                                 Ticket report
                             </a>
                         </li>
-                        <li class>
-                            <a class="text-capitalize" href="./report/ticket-cancel-report.html">
-                                Ticket cancellation report
-                            </a>
-                        </li>
-                        <li class>
+                        <li>
                             <a class="text-capitalize" href="./report/transaction-summery.html">
-                                Transaction summery
+                                Sales Report
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
+
                 <li>
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
-                        <i class="typcn typcn-lock-open-outline"></i> User access
-                        role
+                        <i class="typcn typcn-lock-open-outline"></i> User access role
                     </a>
                     <ul class="nav-second-level">
-                        <li class>
+                        <li>
                             <a class="text-capitalize" href="./role/permission.html">
                                 Permission
                             </a>
                         </li>
-                        <li class>
+                        <li>
                             <a class="text-capitalize" href="./role/role.html">
                                 Role
                             </a>
                         </li>
-                        <li class>
+                        <li>
                             <a class="text-capitalize" href="./role/user.html">
                                 User
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="@if($currentRoute == 'SetupGds' || $currentRoute == 'EditGdsInfo' || $currentRoute == 'ViewExcludedAirlines') mm-active @endif">
+
+                <li class="@if(in_array($currentRoute, ['SetupGds', 'EditGdsInfo', 'ViewExcludedAirlines'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-plane-outline"></i> Airline Setup
                     </a>
@@ -175,7 +166,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="@if($currentRoute == 'ViewSmsGateways' || $currentRoute == 'ViewEmailConfig') mm-active @endif">
+
+                <li class="@if(in_array($currentRoute, ['ViewSmsGateways', 'ViewEmailConfig'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-cog-outline"></i> Application Setting
                     </a>
