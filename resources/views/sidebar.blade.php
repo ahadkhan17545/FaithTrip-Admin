@@ -180,12 +180,6 @@
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <a class="text-capitalize" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="typcn typcn-location-arrow-outline"></i>
-                        Logout
-                    </a>
-                </li>
             </ul>
         </nav>
         <div class="mt-auto p-3">
