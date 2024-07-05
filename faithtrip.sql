@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2024 at 03:04 PM
+-- Generation Time: Jul 05, 2024 at 05:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -15234,7 +15234,7 @@ CREATE TABLE `company_profiles` (
 
 INSERT INTO `company_profiles` (`id`, `user_id`, `name`, `logo`, `address`, `phone`, `email`, `tin`, `bin`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Getup Ltd.', 'companyLogo/edAFN1717060920.svg', 'Dhaka, Bangladesh', 'getuplimited@gmail.com', 'getuplimited@gmail.com', '45874589654', 'AAFFWE-12548', '2024-05-01 15:26:17', '2024-05-30 09:22:00'),
-(2, 2, 'Getup Ltd', NULL, 'Dhaka, Bangladesh', '01969005035', NULL, '987654321', '321654987', '2024-07-04 12:58:06', NULL);
+(3, 3, 'Getup Ltd.', 'companyLogo/HhS871720192819.svg', 'Solomon and Clemons Plc', 'Dotson Case Associates', NULL, 'Adipisicing tempore', 'In sunt provident a', '2024-07-05 14:54:58', '2024-07-05 15:21:14');
 
 -- --------------------------------------------------------
 
@@ -15347,7 +15347,8 @@ CREATE TABLE `flight_bookings` (
 --
 
 INSERT INTO `flight_bookings` (`id`, `booking_no`, `booked_by`, `pnr_id`, `booking_id`, `ticket_id`, `gds`, `gds_unique_id`, `traveller_name`, `traveller_email`, `traveller_contact`, `departure_date`, `departure_location`, `arrival_location`, `governing_carriers`, `adult`, `child`, `infant`, `base_fare_amount`, `total_tax_amount`, `total_fare`, `currency`, `last_booking_cancel_datetime`, `last_ticket_datetime`, `last_ticket_cancel_datetime`, `booking_cancelled_at`, `ticket_issued_at`, `ticket_cancelled_at`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'LTN-1717958526', 1, 'QLIHZD', NULL, NULL, 'Sabre', 'SOOL', 'Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-06-14', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 11048, 1950, 12998, 'BDT', NULL, '2024-06-10 04:41:00', NULL, '2024-06-10 00:46:24', NULL, NULL, 3, '2024-06-09 18:42:06', '2024-06-09 18:46:24');
+(1, 'LTN-1717958526', 1, 'QLIHZD', NULL, NULL, 'Sabre', 'SOOL', 'Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-06-14', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 11048, 1950, 12998, 'BDT', NULL, '2024-06-10 04:41:00', NULL, '2024-06-10 00:46:24', NULL, NULL, 3, '2024-06-09 18:42:06', '2024-06-09 18:46:24'),
+(2, '8ZD-1720194419', 1, 'OQQPNE', NULL, NULL, 'Sabre', 'SOOL', 'Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-08-06', 'DAC', 'CXB', 'BS', '1', '0', '0', 5524, 975, 6499, 'BDT', NULL, '2024-07-07 23:59:00', NULL, NULL, NULL, NULL, 1, '2024-07-05 15:46:59', NULL);
 
 -- --------------------------------------------------------
 
@@ -15377,7 +15378,8 @@ CREATE TABLE `flight_passangers` (
 --
 
 INSERT INTO `flight_passangers` (`id`, `flight_booking_id`, `passanger_type`, `title`, `first_name`, `last_name`, `dob`, `document_type`, `document_no`, `document_expire_date`, `document_issue_country`, `nationality`, `created_at`, `updated_at`) VALUES
-(1, 1, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '98798654', '2029-12-10', 'BGD', 'BGD', '2024-06-09 18:42:06', NULL);
+(1, 1, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '98798654', '2029-12-10', 'BGD', 'BGD', '2024-06-09 18:42:06', NULL),
+(2, 2, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '987654321', '2029-12-10', 'BGD', 'BGD', '2024-07-05 15:46:59', NULL);
 
 -- --------------------------------------------------------
 
@@ -15418,7 +15420,8 @@ CREATE TABLE `flight_segments` (
 
 INSERT INTO `flight_segments` (`id`, `flight_booking_id`, `total_miles_flown`, `elapsed_time`, `booking_code`, `cabin_code`, `baggage_allowance`, `departure_airport_code`, `departure_city_code`, `departure_country_code`, `departure_time`, `departure_terminal`, `arrival_airport_code`, `arrival_city_code`, `arrival_country_code`, `arrival_time`, `arrival_terminal`, `carrier_marketing_code`, `carrier_marketing_flight_number`, `carrier_operating_code`, `carrier_operating_flight_number`, `carrier_equipment_code`, `created_at`, `updated_at`) VALUES
 (1, 1, '189', '65', 'T', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '13:50:00+06:00', 'D', 'CXB', 'CXB', 'BD', '14:55:00+06:00', NULL, 'BS', '151', 'BS', '151', 'AT7', '2024-06-09 18:42:06', NULL),
-(2, 1, '189', '65', 'T', 'Y', '20 kg', 'CXB', 'CXB', 'BD', '14:15:00+06:00', NULL, 'DAC', 'DAC', 'BD', '15:20:00+06:00', 'D', 'BS', '150', 'BS', '150', 'AT7', '2024-06-09 18:42:06', NULL);
+(2, 1, '189', '65', 'T', 'Y', '20 kg', 'CXB', 'CXB', 'BD', '14:15:00+06:00', NULL, 'DAC', 'DAC', 'BD', '15:20:00+06:00', 'D', 'BS', '150', 'BS', '150', 'AT7', '2024-06-09 18:42:06', NULL),
+(3, 2, '189', '65', 'T', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '07:15:00+06:00', 'D', 'CXB', 'CXB', 'BD', '08:20:00+06:00', NULL, 'BS', '141', 'BS', '141', 'AT7', '2024-07-05 15:46:59', NULL);
 
 -- --------------------------------------------------------
 
@@ -15668,8 +15671,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `image`, `name`, `email`, `phone`, `nid`, `email_verified_at`, `password`, `remember_token`, `user_type`, `balance`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'userImages/YUuex1714591027.jpg', 'Admin', 'admin@gmail.com', '01969005035', NULL, '2024-03-27 05:27:23', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 3, 0, 1, '2024-03-27 05:27:23', '2024-05-01 19:18:49'),
-(2, NULL, 'Test B2B User', 'b2b@user.com', '0154788554', '987654321', NULL, '$2y$12$GkJj7rl0WGAYOissCXzNXehNd7jgqbtJtNLvhVQ2CJJakU1gDxTFC', NULL, 2, 0, 1, '2024-07-04 12:58:06', NULL);
+(1, 'userImages/YUuex1714591027.jpg', 'Admin', 'admin@gmail.com', '01969005035', NULL, '2024-03-27 05:27:23', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 1, 0, 1, '2024-03-27 05:27:23', '2024-05-01 19:18:49'),
+(3, 'userImages/Ipz4i1720192721.svg', 'Mostaim Murad', 'vonicu@mailinator.com', '+1 (988) 353-9921', 'Laboriosam ex facil', NULL, '$2y$12$9fUdBSrfWbLdZS6Q2eJXIOH34L9pjf88iEfHZMjaRoz7gY0rz1KJe', NULL, 2, 0, 1, '2024-07-05 14:54:58', '2024-07-05 15:21:14');
 
 --
 -- Indexes for dumped tables
@@ -15825,7 +15828,7 @@ ALTER TABLE `city_airports`
 -- AUTO_INCREMENT for table `company_profiles`
 --
 ALTER TABLE `company_profiles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `email_configures`
@@ -15849,19 +15852,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `flight_bookings`
 --
 ALTER TABLE `flight_bookings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `flight_passangers`
 --
 ALTER TABLE `flight_passangers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `flight_segments`
 --
 ALTER TABLE `flight_segments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `gds`
@@ -15909,7 +15912,7 @@ ALTER TABLE `sms_gateways`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

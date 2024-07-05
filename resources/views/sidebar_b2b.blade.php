@@ -82,16 +82,6 @@
                         <i class="typcn typcn-credit-card "></i> Account Recharge
                     </a>
                     <ul class="nav-second-level">
-                        <li class="@if(in_array($currentRoute, ['ViewBankAccounts', 'AddBankAccount', 'EditBankAccount'])) mm-active @endif">
-                            <a class="text-capitalize" href="{{url('view/bank/accounts')}}">
-                                Bank Accounts
-                            </a>
-                        </li>
-                        <li class="@if(in_array($currentRoute, ['ViewMfsAccounts', 'AddMfsAccount', 'EditMfsAccount'])) mm-active @endif">
-                            <a class="text-capitalize" href="{{url('view/mfs/accounts')}}">
-                                MFS Accounts
-                            </a>
-                        </li>
                         <li class="@if(in_array($currentRoute, ['CreateTopupRequest'])) mm-active @endif">
                             <a class="text-capitalize" href="{{url('create/topup/request')}}">
                                 Submit Topup Request
@@ -104,81 +94,17 @@
                         </li>
                     </ul>
                 </li>
-                {{-- <li>
-                    <a class="has-arrow material-ripple" href="javascript:void(0);">
-                        <i class="typcn typcn-chart-bar-outline"></i> Reports
+                <li class="@if($currentRoute == 'MyProfile') mm-active @endif">
+                    <a class="text-capitalize" href="{{ url('/my/profile') }}">
+                        <i class="typcn typcn-user-outline"></i>
+                        My profile
                     </a>
-                    <ul class="nav-second-level">
-                        <li>
-                            <a class="text-capitalize" href="./report/pnr-report.html">
-                                Booking report
-                            </a>
-                        </li>
-                        <li>
-                            <a class="text-capitalize" href="./report/ticket-report.html">
-                                Ticket report
-                            </a>
-                        </li>
-                        <li>
-                            <a class="text-capitalize" href="./report/transaction-summery.html">
-                                Sales Report
-                            </a>
-                        </li>
-                    </ul>
-                </li> --}}
-
-                <li class="@if(in_array($currentRoute, ['CreateB2bUser', 'ViewB2bUser', 'EditB2bUser'])) mm-active @endif">
-                    <a class="has-arrow material-ripple" href="javascript:void(0);">
-                        <i class="typcn typcn-lock-open-outline"></i>User Management
-                    </a>
-                    <ul class="nav-second-level">
-                        <li class="@if(in_array($currentRoute, ['CreateB2bUser'])) mm-active @endif">
-                            <a class="text-capitalize" href="{{url('create/b2b/users')}}">
-                                Create B2B User
-                            </a>
-                        </li>
-                        <li class="@if(in_array($currentRoute, ['ViewB2bUser', 'EditB2bUser'])) mm-active @endif">
-                            <a class="text-capitalize" href="{{url('view/b2b/users')}}">
-                                View B2B Users
-                            </a>
-                        </li>
-                    </ul>
                 </li>
-
-                <li class="@if(in_array($currentRoute, ['SetupGds', 'EditGdsInfo', 'ViewExcludedAirlines'])) mm-active @endif">
-                    <a class="has-arrow material-ripple" href="javascript:void(0);">
-                        <i class="typcn typcn-plane-outline"></i> Airline Setup
+                <li class="@if($currentRoute == 'CompanyProfile') mm-active @endif">
+                    <a class="text-capitalize" href="{{ url('/company/profile') }}">
+                        <i class="typcn typcn-edit"></i>
+                        Company Profile
                     </a>
-                    <ul class="nav-second-level">
-                        <li class="@if($currentRoute == 'SetupGds') mm-active @endif">
-                            <a class="text-capitalize" href="{{url('setup/gds')}}">
-                                Gds Setting
-                            </a>
-                        </li>
-                        <li class="@if($currentRoute == 'ViewExcludedAirlines') mm-active @endif">
-                            <a class="text-capitalize" href="{{url('view/excluded/airlines')}}">
-                                Exclude Airlines
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="@if(in_array($currentRoute, ['ViewSmsGateways', 'ViewEmailConfig'])) mm-active @endif">
-                    <a class="has-arrow material-ripple" href="javascript:void(0);">
-                        <i class="typcn typcn-cog-outline"></i> Application Setting
-                    </a>
-                    <ul class="nav-second-level">
-                        <li class="@if($currentRoute == 'ViewEmailConfig') mm-active @endif">
-                            <a class="text-capitalize" href="{{url('view/email/config')}}">
-                                Mail Server
-                            </a>
-                        </li>
-                        <li class="@if($currentRoute == 'ViewSmsGateways') mm-active @endif">
-                            <a class="text-capitalize" href="{{url('setup/sms/gateways')}}">
-                                SMS Gateway
-                            </a>
-                        </li>
-                    </ul>
                 </li>
                 <li>
                     <a class="text-capitalize" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -188,7 +114,7 @@
                 </li>
             </ul>
         </nav>
-        <div class="mt-auto p-3">
+        {{-- <div class="mt-auto p-3">
             <a href="{{ route('logout') }}" class="btn btn-primary w-100"
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <img class="me-2" src="{{ url('assets') }}/img/logout.png" />
@@ -197,6 +123,6 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                 @csrf
             </form>
-        </div>
+        </div> --}}
     </div>
 </nav>

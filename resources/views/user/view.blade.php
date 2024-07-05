@@ -55,7 +55,8 @@
                                             <th class="text-center">Full Name</th>
                                             <th class="text-center">Email</th>
                                             <th class="text-center">Phone</th>
-                                            <th class="text-center">balance</th>
+                                            <th class="text-center">Balance</th>
+                                            <th class="text-center">Bookings</th>
                                             <th class="text-center">Company Name</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Action</th>
@@ -111,6 +112,10 @@
                     name: 'balance'
                 },
                 {
+                    data: 'bookings',
+                    name: 'bookings'
+                },
+                {
                     data: 'company_name',
                     name: 'company_name'
                 },
@@ -136,48 +141,14 @@
         });
 
         $('body').on('click', '.deleteBtn', function () {
-            var slug = $(this).data("id");
+            var id = $(this).data("id");
             if(confirm("Are You sure want to delete !")){
                 $.ajax({
                     type: "GET",
-                    url: "{{ url('delete/recharge/request') }}"+'/'+slug,
+                    url: "{{ url('delete/b2b/user') }}"+'/'+id,
                     success: function (data) {
                         table.draw(false);
                         toastr.error("Recharge Request Deleted");
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                    }
-                });
-            }
-        });
-
-        $('body').on('click', '.approveBtn', function () {
-            var slug = $(this).data("id");
-            if(confirm("Are You sure want to Approve !")){
-                $.ajax({
-                    type: "GET",
-                    url: "{{ url('approve/recharge/request') }}"+'/'+slug,
-                    success: function (data) {
-                        table.draw(false);
-                        toastr.error("Recharge Request Approved");
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                    }
-                });
-            }
-        });
-
-        $('body').on('click', '.denyBtn', function () {
-            var slug = $(this).data("id");
-            if(confirm("Are You sure want to Deny !")){
-                $.ajax({
-                    type: "GET",
-                    url: "{{ url('deny/recharge/request') }}"+'/'+slug,
-                    success: function (data) {
-                        table.draw(false);
-                        toastr.error("Recharge Request Denied");
                     },
                     error: function (data) {
                         console.log('Error:', data);

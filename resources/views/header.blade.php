@@ -13,7 +13,7 @@
                     @else
                         <img src="{{ url('assets') }}/img/user.jpg" class="img-fluid rounded-circle"/>
                     @endif
-    
+
                 </a>
                 <div class="dropdown-menu">
                     <div class="dropdown-header d-sm-none">
@@ -27,7 +27,7 @@
                             @else
                                 <img src="{{ url('assets') }}/img/user.jpg" />
                             @endif
-                            
+
                         </div>
                         <h6>{{ Auth::user()->name }}</h6>
 
@@ -44,6 +44,8 @@
                         @endif
 
                     </div>
+
+                    @if(Auth::user()->user_type == 1)
                     <a href="{{url('my/profile')}}" class="dropdown-item">
                         <i class="typcn typcn-user-outline"></i>
                         My profile
@@ -52,6 +54,8 @@
                         <i class="typcn typcn-edit"></i>
                         Edit company profile
                     </a>
+                    @endif
+
                     <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="typcn typcn-key-outline"></i>
                         Sign out

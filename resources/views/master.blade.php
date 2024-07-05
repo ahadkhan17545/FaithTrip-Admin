@@ -74,7 +74,11 @@
     <div x-data="{ m: false }">
         <div class="wrapper">
 
-            @include('sidebar')
+            @if(Auth::user()->user_type == 1)
+                @include('sidebar')
+            @else
+                @include('sidebar_b2b')
+            @endif
 
             <div class="content-wrapper">
                 <div class="main-content">

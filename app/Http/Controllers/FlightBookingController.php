@@ -21,6 +21,15 @@ class FlightBookingController extends Controller
     public function bookFlightWithPnr(Request $request){
 
         $revlidatedData = session('revlidatedData');
+
+        if(Auth::user()->user_type == 2){ //if b2b user then check balance
+            $total_fare = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
+            if(Auth::user()->balance < $total_fare){
+                Toastr::error('Not Enough Balance', 'Please Recharge');
+                return back();
+            }
+        }
+
         $onlineBookingInfo = json_decode(SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->traveller_name, $request->traveller_email), true);
 
         // echo "<pre>";
@@ -170,7 +179,13 @@ class FlightBookingController extends Controller
     public function viewAllBooking(Request $request){
 
         if ($request->ajax()) {
-            $data = FlightBooking::where('status', 1)->orWhere('status', 0)->orderBy('id', 'desc')->get();
+
+            if(Auth::user()->user_type == 1){
+                $data = FlightBooking::where('status', 1)->orWhere('status', 0)->orderBy('id', 'desc')->get();
+            } else {
+                $data = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 1)->orWhere('status', 0)->orderBy('id', 'desc')->get();
+            }
+
             return Datatables::of($data)
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d h:i a", strtotime($data->created_at));
@@ -210,7 +225,13 @@ class FlightBookingController extends Controller
     public function viewCancelBooking(Request $request){
 
         if ($request->ajax()) {
-            $data = FlightBooking::where('status', 3)->orderBy('id', 'desc')->get();
+
+            if(Auth::user()->user_type == 1){
+                $data = FlightBooking::where('status', 3)->orderBy('id', 'desc')->get();
+            } else {
+                $data = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 3)->orderBy('id', 'desc')->get();
+            }
+
             return Datatables::of($data)
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d h:i a", strtotime($data->created_at));
@@ -345,7 +366,13 @@ class FlightBookingController extends Controller
 
     public function viewIssuedTickets(Request $request){
         if ($request->ajax()) {
-            $data = FlightBooking::where('status', 2)->orderBy('id', 'desc')->get();
+
+            if(Auth::user()->user_type == 1){
+                $data = FlightBooking::where('status', 2)->orderBy('id', 'desc')->get();
+            } else {
+                $data = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 2)->orderBy('id', 'desc')->get();
+            }
+
             return Datatables::of($data)
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d h:i a", strtotime($data->created_at));
@@ -380,7 +407,13 @@ class FlightBookingController extends Controller
     }
     public function viewCancelledTickets(Request $request){
         if ($request->ajax()) {
-            $data = FlightBooking::where('status', 4)->orderBy('id', 'desc')->get();
+
+            if(Auth::user()->user_type == 1){
+                $data = FlightBooking::where('status', 4)->orderBy('id', 'desc')->get();
+            } else {
+                $data = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 4)->orderBy('id', 'desc')->get();
+            }
+
             return Datatables::of($data)
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d h:i a", strtotime($data->created_at));

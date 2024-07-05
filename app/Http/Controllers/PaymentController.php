@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BankAccount;
 use App\Models\MfsAccount;
 use App\Models\RechargeRequest;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -213,7 +214,13 @@ class PaymentController extends Controller
 
     public function viewRechargeRequests(Request $request){
         if ($request->ajax()) {
-            $data = RechargeRequest::orderBy('id', 'desc')->get();
+
+            if(Auth::user()->user_type == 1){
+                $data = RechargeRequest::orderBy('id', 'desc')->get();
+            } else{
+                $data = RechargeRequest::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
+            }
+
             return Datatables::of($data)
                     ->addColumn('receiving_channel', function($data){
                         if($data->admin_bank_account_id){
@@ -287,8 +294,10 @@ class PaymentController extends Controller
                         $btn = "";
                         if($data->status == 0){
                             $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Delete" class="btn-sm btn-danger rounded d-inline-block deleteBtn mb-1"><i class="fa fa-trash"></i></a>';
-                            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Approve" class="btn-sm btn-success rounded d-inline-block approveBtn mb-1" style="background: green; box-shadow: none;"><i class="fa fa-check"></i></a>';
-                            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Denied" class="btn-sm btn-warning rounded d-inline-block denyBtn mb-1" style="background: goldenrod; box-shadow: none;"><i class="fa fa-times"></i></a>';
+                            if(Auth::user()->user_type == 1){
+                                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Approve" class="btn-sm btn-success rounded d-inline-block approveBtn mb-1" style="background: green; box-shadow: none;"><i class="fa fa-check"></i></a>';
+                                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Denied" class="btn-sm btn-warning rounded d-inline-block denyBtn mb-1" style="background: goldenrod; box-shadow: none;"><i class="fa fa-times"></i></a>';
+                            }
                         }
                         return $btn;
                     })
@@ -304,10 +313,15 @@ class PaymentController extends Controller
     }
 
     public function approveRechargeRequest($slug){
+
+        $rechargeInfo = RechargeRequest::where('slug', $slug)->first();
+        User::where('id', $rechargeInfo->user_id)->increment('balance', $rechargeInfo->recharge_amount);
+
         RechargeRequest::where('slug', $slug)->update([
             'status' => 1,
             'updated_at' => Carbon::now(),
         ]);
+
         return response()->json(['success' => 'Approved Successfully.']);
     }
 
