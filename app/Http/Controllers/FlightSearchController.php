@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SabreFlightRevalidate;
+use App\Models\SabreGdsConfig;
 use Illuminate\Http\Request;
 use DateTime;
 use Brian2694\Toastr\Facades\Toastr;
@@ -12,8 +13,18 @@ class FlightSearchController extends Controller
 {
     public static function generateAccessToken(){
 
-        $curl = curl_init();
+        // developer account of Fahim
+        $authorizationHeader = base64_encode(base64_encode("V1:hxp6cy145bjv5hy9:DEVCENTER:EXT").':'.base64_encode("Hp8tT6iN"));
 
+        // Faithtrip account
+        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
+        if($sabreGdsInfo->is_production == 0){
+            $authorizationHeader = base64_encode(base64_encode($sabreGdsInfo->user_id).':'.base64_encode($sabreGdsInfo->password));
+        } else{
+            $authorizationHeader = base64_encode(base64_encode($sabreGdsInfo->user_id).':'.base64_encode($sabreGdsInfo->production_password));
+        }
+
+        $curl = curl_init();
         curl_setopt_array($curl, array(
         CURLOPT_URL => 'https://api.cert.platform.sabre.com/v2/auth/token',
         CURLOPT_RETURNTRANSFER => true,
@@ -26,7 +37,7 @@ class FlightSearchController extends Controller
         CURLOPT_POSTFIELDS =>'grant_type=client_credentials',
         CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/x-www-form-urlencoded',
-                'Authorization: Basic VmpFNk5EY3dPVE0yT2xNd01FdzZRVUU9OlpqVjBNM1EzYkRJPQ=='
+                'Authorization: Basic '.$authorizationHeader,
             ),
         ));
 

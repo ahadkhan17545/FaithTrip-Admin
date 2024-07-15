@@ -42,6 +42,8 @@ class GdsController extends Controller
         SabreGdsConfig::where('id', 1)->update([
             'user_id' => $request->user_id,
             'password' => $request->password,
+            'production_password' => $request->production_password,
+            'is_production' => $request->is_production == 1 ? 1 : 0,
             'description' => $request->description,
             'updated_at' => Carbon::now()
         ]);

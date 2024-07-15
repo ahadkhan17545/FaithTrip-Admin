@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SabreGdsConfig;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
