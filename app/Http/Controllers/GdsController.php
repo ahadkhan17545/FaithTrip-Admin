@@ -42,11 +42,16 @@ class GdsController extends Controller
         SabreGdsConfig::where('id', 1)->update([
             'user_id' => $request->user_id,
             'password' => $request->password,
+            'production_user_id' => $request->production_user_id,
             'production_password' => $request->production_password,
             'is_production' => $request->is_production == 1 ? 1 : 0,
             'description' => $request->description,
             'updated_at' => Carbon::now()
         ]);
+
+        session()->forget('access_token');
+        session()->forget('expires_in');
+
         return redirect()->back()->withErrors(['success_message' => 'Company Profile Updated']);
     }
 

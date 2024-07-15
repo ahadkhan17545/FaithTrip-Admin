@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('gds_id')->nullable();
             $table->string('user_id')->comment('V1:user:group:domain')->nullable();
             $table->string('password')->nullable();
+            $table->string('production_user_id')->comment('V1:user:group:domain')->nullable();
             $table->string('production_password')->nullable();
             $table->tinyInteger('is_production')->comment('0=>No; 1=>Yes');
             $table->longText('description')->nullable();

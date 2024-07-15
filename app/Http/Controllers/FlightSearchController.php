@@ -21,7 +21,7 @@ class FlightSearchController extends Controller
         if($sabreGdsInfo->is_production == 0){
             $authorizationHeader = base64_encode(base64_encode($sabreGdsInfo->user_id).':'.base64_encode($sabreGdsInfo->password));
         } else{
-            $authorizationHeader = base64_encode(base64_encode($sabreGdsInfo->user_id).':'.base64_encode($sabreGdsInfo->production_password));
+            $authorizationHeader = base64_encode(base64_encode($sabreGdsInfo->production_user_id).':'.base64_encode($sabreGdsInfo->production_password));
         }
 
         $curl = curl_init();

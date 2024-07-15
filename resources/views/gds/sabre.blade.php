@@ -29,21 +29,30 @@
                         @csrf
 
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="user_id">User ID</label>
+                                    <label for="user_id">User ID (Sandbox)</label>
                                     <input type="text" id="user_id" name="user_id" value="{{$sabreGdsInfo->user_id}}" class="form-control" placeholder="V1:user:group:domain (V1:hxp6cy145bjv3hy7:DEVCENTER:EXT)">
                                     <small>This will be converted into Base64 during API Interaction</small>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="password">Password (Sandbox)</label>
                                     <input type="text" id="password" name="password" value="{{$sabreGdsInfo->password}}" class="form-control" placeholder="Hp1tT2iM">
                                     <small>This will be converted into Base64  during API Interaction</small>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="production_user_id">User ID (Production)</label>
+                                    <input type="text" id="production_user_id" name="production_user_id" value="{{$sabreGdsInfo->production_user_id}}" class="form-control" placeholder="V1:user:group:domain (V1:hxp6cy145bjv3hy7:DEVCENTER:EXT)">
+                                    <small>This will be converted into Base64 during API Interaction</small>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="production_password">Password (Production)</label>
                                     <input type="text" id="production_password" name="production_password" value="{{$sabreGdsInfo->production_password}}" class="form-control" placeholder="Hp1tT2iM">
