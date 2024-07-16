@@ -271,7 +271,7 @@
                     @endif
 
                     {{-- pricing info start --}}
-                    <div class="card shadow border-0 mb-3 d-xl-none">
+                    {{-- <div class="card shadow border-0 mb-3 d-xl-none">
                         <div class="card-body">
                             <h3 class="fs-17 mb-0">Fare summary</h3>
                             <p class="fs-14">
@@ -315,7 +315,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- pricing info end --}}
 
                     <div class="card shadow border-0 mb-3">
