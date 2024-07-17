@@ -1,8 +1,7 @@
 <div class="list-body col-md-7">
     <div class="d-none d-md-block">
         <h6 class="list-hidden mb-1 fs-13 font-weight-bold text-primary">One Way Trip</h6>
-        <h6 class="align-items-center d-flex flex-wrap fs-18 fw-bold mb-2">
-
+        <h6 class="align-items-center d-flex flex-wrap mb-2" style="font-size: 14px; line-height: 20px; font-weight: 600">
             @php
                 $beginAirportCode = $data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['beginAirport'];
                 $beginAirportInfo = DB::table('city_airports')->where('airport_code', $beginAirportCode)->first();
@@ -44,8 +43,8 @@
         <div class="d-flex align-items-center flight-icon col">
             <div class="fli-content">
                 <i class="fas fa-plane-departure"></i>
-                <div class="fli_title fs-13 mb-1 font-weight-600">Take off </div>
-                <div class="fli-text fs-12 text-uppercase">
+                <div class="fli_title fs-14 mb-1 font-weight-600">Take off </div>
+                <div class="fli-text fs-18 text-uppercase">
                     {{$searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}} {{$flightTiming['departure']['time']}}
                 </div>
             </div>
@@ -53,8 +52,8 @@
         <div class="d-flex align-items-center flight-icon col">
             <div class="fli-content">
                 <i class="fas fa-plane-arrival"></i>
-                <div class="fli_title fs-13 mb-1 font-weight-600">Landing </div>
-                <div class="fli-text fs-12 text-uppercase">
+                <div class="fli_title fs-14 mb-1 font-weight-600">Landing </div>
+                <div class="fli-text fs-18 text-uppercase">
                     {{$searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}} {{$flightTiming['arrival']['time']}}
                 </div>
             </div>

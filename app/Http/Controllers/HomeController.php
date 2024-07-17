@@ -35,10 +35,10 @@ class HomeController extends Controller
         if($request->has('q')){
             $search = $request->q;
             $data = DB::table('city_airports')->select("id", DB::raw("CONCAT(city_name, '-', airport_name) AS search_result"))
-                            ->where('city_name', 'LIKE', "%$search%")
-                            ->orWhere('airport_name', 'LIKE', "%$search%")
-                            ->orWhere('airport_code', 'LIKE', "%$search%")
-                            // ->orWhere('city_code', 'LIKE', "%$search%")
+                            ->where('airport_code', 'LIKE', $search)
+                            ->orWhere('city_code', 'LIKE', "%".$search."%")
+                            // ->orWhere('city_name', 'LIKE', "%".$search."%")
+                            // ->orWhere('airport_name', 'LIKE', "%$search%")
                             ->skip(0)
                             ->limit(5)
                             ->get();
