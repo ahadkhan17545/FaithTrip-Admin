@@ -5,6 +5,7 @@ namespace App\Models;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SabreGdsConfig;
 
 class SabreFlightBooking extends Model
 {
@@ -226,10 +227,16 @@ class SabreFlightBooking extends Model
         // Convert the request body array to JSON format
         $request_json = json_encode($request_body);
 
-        $curl = curl_init();
+        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
+        if($sabreGdsInfo->is_production == 0){
+            $apiEndPoint = 'https://api.cert.platform.sabre.com/v2.5.0/passenger/records?mode=create';
+        } else{
+            $apiEndPoint = 'https://api.platform.sabre.com/v2.5.0/passenger/records?mode=create';
+        }
 
+        $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.cert.platform.sabre.com/v2.5.0/passenger/records?mode=create',
+            CURLOPT_URL => $apiEndPoint,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

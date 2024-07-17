@@ -15,18 +15,25 @@ class FlightSearchController extends Controller
 
         // developer account of Fahim
         $authorizationHeader = base64_encode(base64_encode("V1:hxp6cy145bjv5hy9:DEVCENTER:EXT").':'.base64_encode("Hp8tT6iN"));
+        $apiEndPoint = 'https://api.cert.platform.sabre.com/v2/auth/token';
 
         // Faithtrip account
         $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
         if($sabreGdsInfo->is_production == 0){
-            $authorizationHeader = base64_encode(base64_encode($sabreGdsInfo->user_id).':'.base64_encode($sabreGdsInfo->password));
+            $username = base64_encode($sabreGdsInfo->user_id);
+            $password = base64_encode($sabreGdsInfo->password);
+            $authorizationHeader = base64_encode($username.":".$password);
+            $apiEndPoint = 'https://api.cert.platform.sabre.com/v2/auth/token';
         } else{
-            $authorizationHeader = base64_encode(base64_encode($sabreGdsInfo->production_user_id).':'.base64_encode($sabreGdsInfo->production_password));
+            $username = base64_encode($sabreGdsInfo->production_user_id);
+            $password = base64_encode($sabreGdsInfo->production_password);
+            $authorizationHeader = base64_encode($username.":".$password);
+            $apiEndPoint = 'https://api.platform.sabre.com/v2/auth/token';
         }
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://api.cert.platform.sabre.com/v2/auth/token',
+        CURLOPT_URL => $apiEndPoint,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -86,10 +93,20 @@ class FlightSearchController extends Controller
         }
 
         // Sabre API request payload with dynamic query
+
+        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
+        if($sabreGdsInfo->is_production == 0){
+            $apiEndPoint = 'https://api.cert.platform.sabre.com/v5/offers/shop';
+            $requestTypeName = "200ITINS";
+        } else{
+            $apiEndPoint = 'https://api.platform.sabre.com/v5/offers/shop';
+            $requestTypeName = "50ITINS";
+        }
+
         $accessToken = session('access_token');
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.cert.platform.sabre.com/v5/offers/shop',
+            CURLOPT_URL => $apiEndPoint,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -133,7 +150,7 @@ class FlightSearchController extends Controller
                     "TPA_Extensions" => array(
                         "IntelliSellTransaction" => array(
                             "RequestType" => array(
-                                "Name" => "200ITINS"
+                                "Name" => $requestTypeName
                             )
                         )
                     )

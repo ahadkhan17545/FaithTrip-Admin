@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\Controllers\FlightSearchController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SabreGdsConfig;
 use DateTime;
 
 class SabreFlightRevalidate extends Model
@@ -201,11 +202,18 @@ class SabreFlightRevalidate extends Model
         // return $data;
         // exit();
 
+        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
+        if($sabreGdsInfo->is_production == 0){
+            $apiEndPoint = 'https://api.cert.platform.sabre.com/v5/shop/flights/revalidate';
+        } else{
+            $apiEndPoint = 'https://api.platform.sabre.com/v5/shop/flights/revalidate';
+        }
+
         $authorizationToken = 'Authorization: Bearer '.session('access_token');
         $jsonData = json_encode($data);
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL => 'https://api.cert.platform.sabre.com/v5/shop/flights/revalidate',
+            CURLOPT_URL => $apiEndPoint,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

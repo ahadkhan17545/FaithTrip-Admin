@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SabreGdsConfig;
 
 class SabreFlightTicketIssue extends Model
 {
@@ -13,9 +14,16 @@ class SabreFlightTicketIssue extends Model
 
         $itineraryId = $pnrId;
 
+        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
+        if($sabreGdsInfo->is_production == 0){
+            $apiEndPoint = 'https://api.cert.platform.sabre.com/v1.3.0/air/ticket';
+        } else{
+            $apiEndPoint = 'https://api.platform.sabre.com/v1.3.0/air/ticket';
+        }
+
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://api.cert.platform.sabre.com/v1.3.0/air/ticket',
+        CURLOPT_URL => $apiEndPoint,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,

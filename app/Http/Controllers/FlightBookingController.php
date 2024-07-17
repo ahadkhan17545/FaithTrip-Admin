@@ -8,6 +8,7 @@ use App\Models\FlightPassanger;
 use App\Models\FlightSegment;
 use App\Models\SabreFlightBooking;
 use App\Models\SabreFlightTicketIssue;
+use App\Models\SabreGdsConfig;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -299,9 +300,16 @@ class FlightBookingController extends Controller
         );
         $payload = json_encode($data);
 
+        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
+        if($sabreGdsInfo->is_production == 0){
+            $apiEndPoint = 'https://api.cert.platform.sabre.com/v1/trip/orders/cancelBooking';
+        } else{
+            $apiEndPoint = 'https://api.platform.sabre.com/v1/trip/orders/cancelBooking';
+        }
+
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.cert.platform.sabre.com/v1/trip/orders/cancelBooking',
+            CURLOPT_URL => $apiEndPoint,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
