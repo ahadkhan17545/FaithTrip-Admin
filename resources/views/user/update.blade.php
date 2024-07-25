@@ -16,6 +16,8 @@
                     <div class="card-body">
                         <div class="row justify-content-center">
                             <div class="col-md-6">
+                                <h5>Account Info</h5>
+                                <hr>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label for="name" class="col-form-label fw-bold justify-content-start d-flex">Full Name <i class="text-danger">*</i></label>
@@ -38,12 +40,8 @@
                                         <input type="password" name="password" id="password" class="form-control" placeholder="********">
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="image" class="col-form-label fw-bold justify-content-start d-flex">Profile Image</label>
-                                        <input type="file" name="image" id="image" class="form-control">
-
-                                        @if($user && $user->image && file_exists(public_path($user->image)))
-                                            <img class="max-h-45 mt-3 mb-2" src="{{url($user->image)}}" /><br>
-                                        @endif
+                                        <label for="comission" class="col-form-label fw-bold justify-content-start d-flex">Profit Comission (In Percentage)</label>
+                                        <input type="number" name="comission" id="comission" value="{{$user->comission}}" class="form-control" max="7" placeholder="%">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="status" class="col-form-label fw-bold justify-content-start d-flex">Status <i class="text-danger">*</i></label>
@@ -53,10 +51,21 @@
                                             <option value="0" @if($user->status == 0) selected @endif>Inactive</option>
                                         </select>
                                     </div>
+                                    <div class="col-md-12">
+                                        <label for="image" class="col-form-label fw-bold justify-content-start d-flex">Profile Image</label>
+                                        <input type="file" name="image" id="image" class="form-control">
 
-
-
-                                    <div class="col-md-12 mt-3">
+                                        @if($user && $user->image && file_exists(public_path($user->image)))
+                                            <img class="max-h-45 mt-3 mb-2" src="{{url($user->image)}}" /><br>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h5>Company Info</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <label for="company_name" class="col-form-label fw-bold justify-content-start d-flex">Company Name <i class="text-danger">*</i></label>
                                         <input type="text" name="company_name" value="{{$companyProfile->name}}" id="company_name" class="form-control" placeholder="Ltd." required>
                                     </div>

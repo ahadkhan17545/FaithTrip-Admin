@@ -15,6 +15,8 @@
                     <div class="card-body">
                         <div class="row justify-content-center">
                             <div class="col-md-6">
+                                <h5>Account Info</h5>
+                                <hr>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label for="name" class="col-form-label fw-bold justify-content-start d-flex">Full Name <i class="text-danger">*</i></label>
@@ -29,21 +31,28 @@
                                         <input type="text" name="phone" id="phone" class="form-control" placeholder="01*********" required="">
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="nid" class="col-form-label fw-bold justify-content-start d-flex">NID <i class="text-danger">*</i></label>
-                                        <input type="text" name="nid" id="nid" class="form-control" placeholder="NID" required="">
-                                    </div>
-                                    <div class="col-md-6">
                                         <label for="password" class="col-form-label fw-bold justify-content-start d-flex">Password <i class="text-danger">*</i></label>
                                         <input type="password" name="password" id="password" class="form-control" placeholder="********" required="">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="comission" class="col-form-label fw-bold justify-content-start d-flex">Profit Comission (In Percentage)</label>
+                                        <input type="number" name="comission" id="comission" class="form-control" max="7" placeholder="%">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="nid" class="col-form-label fw-bold justify-content-start d-flex">NID</label>
+                                        <input type="text" name="nid" id="nid" class="form-control" placeholder="55874589654">
                                     </div>
                                     <div class="col-md-12">
                                         <label for="image" class="col-form-label fw-bold justify-content-start d-flex">Profile Image</label>
                                         <input type="file" name="image" id="image" class="form-control">
                                     </div>
-
-
-
-                                    <div class="col-md-12 mt-3">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h5>Company Info</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <label for="company_name" class="col-form-label fw-bold justify-content-start d-flex">Company Name <i class="text-danger">*</i></label>
                                         <input type="text" name="company_name" id="company_name" class="form-control" placeholder="Ltd." required>
                                     </div>
@@ -71,7 +80,6 @@
                                         <label for="brand_logo" class="col-form-label fw-bold justify-content-start d-flex">Brand Logo</label>
                                         <input type="file" name="brand_logo" id="brand_logo" class="form-control">
                                     </div>
-
                                 </div>
                             </div>
                         </div>

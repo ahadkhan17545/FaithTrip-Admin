@@ -11,6 +11,7 @@ use App\Http\Controllers\SystemController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\FlightBookingController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -70,6 +71,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('view/recharge/requests', [PaymentController::class, 'viewRechargeRequests'])->name('ViewRechargeRequests');
     Route::get('delete/recharge/request/{slug}', [PaymentController::class, 'deleteRechargeRequest'])->name('ViewRechargeRequests');
 
+    // report
+    Route::get('flight/booking/report', [ReportController::class, 'flightBookingReport'])->name('FlightBookingReport');
+    Route::post('generate/flight/booking/report', [ReportController::class, 'generateFlightBookingReport'])->name('GenerateFlightBookingReport');
+
     Route::group(['middleware' => ['CheckUserType']], function () {
 
         // recharge
@@ -116,6 +121,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('delete/b2b/user/{id}', [UserController::class, 'deleteB2bUser'])->name('DeleteB2bUser');
         Route::get('edit/b2b/user/{id}', [UserController::class, 'editB2bUser'])->name('EditB2bUser');
         Route::post('update/b2b/user', [UserController::class, 'updateB2bUser'])->name('UpdateB2bUser');
+
+        // Report
+        Route::get('b2b/financial/report', [ReportController::class, 'b2bFinancialReport'])->name('B2bFinancialReport');
+        Route::post('generate/b2b/financial/report', [ReportController::class, 'generateB2bFinancialReport'])->name('GenerateB2bFinancialReport');
 
     });
 

@@ -12,3 +12,14 @@ Bugs:
 4. FLight Details e Undefined Array key (Segment)
 5. HNL / BWI/ FCO ow/rt kono tai hoi na
 7. DAC -> DPS Routtrip booking error
+
+
+Report Module:
+
+2. B2b Users Report
+============================
+Search Query (From, To, User, User Status)
+Search Result (Account Created, B2B User Name, Current balance, Email, Contact, Total booking, Total Issued, Total booking Request, Total Cancelled, Comission, Total Income, Profit Status, Company Name)
+Total Calculation At the bottom of Report (Print Option)
+
+

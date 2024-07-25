@@ -24,8 +24,13 @@ class FlightBookingController extends Controller
         $revlidatedData = session('revlidatedData');
 
         if(Auth::user()->user_type == 2){ //if b2b user then check balance
-            $total_fare = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
-            if(Auth::user()->balance < $total_fare){
+            if($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareCurrency'] == 'USD'){
+                $base_fare_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'] * $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['currencyConversion']['exchangeRateUsed'];
+            }
+            else{
+                $base_fare_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'];
+            }
+            if(Auth::user()->balance < ( $base_fare_amount - (($base_fare_amount*Auth::user()->comission)/100) )){
                 Toastr::error('Not Enough Balance', 'Please Recharge');
                 return back();
             }
@@ -65,6 +70,7 @@ class FlightBookingController extends Controller
             $flightBookingId = FlightBooking::insertGetId([
                 'booking_no' => str::random(3) . "-" . time(),
                 'booked_by' => Auth::user()->id,
+                'b2b_comission' => Auth::user()->comission,
                 'pnr_id' => $bookinPndID,
                 'gds' => $request->gds,
                 'gds_unique_id' => $request->gds_unique_id,

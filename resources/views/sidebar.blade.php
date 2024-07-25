@@ -104,28 +104,6 @@
                         </li>
                     </ul>
                 </li>
-                {{-- <li>
-                    <a class="has-arrow material-ripple" href="javascript:void(0);">
-                        <i class="typcn typcn-chart-bar-outline"></i> Reports
-                    </a>
-                    <ul class="nav-second-level">
-                        <li>
-                            <a class="text-capitalize" href="./report/pnr-report.html">
-                                Booking report
-                            </a>
-                        </li>
-                        <li>
-                            <a class="text-capitalize" href="./report/ticket-report.html">
-                                Ticket report
-                            </a>
-                        </li>
-                        <li>
-                            <a class="text-capitalize" href="./report/transaction-summery.html">
-                                Sales Report
-                            </a>
-                        </li>
-                    </ul>
-                </li> --}}
 
                 <li class="@if(in_array($currentRoute, ['CreateB2bUser', 'ViewB2bUser', 'EditB2bUser'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
@@ -140,6 +118,24 @@
                         <li class="@if(in_array($currentRoute, ['ViewB2bUser', 'EditB2bUser'])) mm-active @endif">
                             <a class="text-capitalize" href="{{url('view/b2b/users')}}">
                                 View B2B Users
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="has-arrow material-ripple" href="javascript:void(0);">
+                        <i class="typcn typcn-chart-bar-outline"></i> Reports
+                    </a>
+                    <ul class="nav-second-level">
+                        <li class="@if($currentRoute == 'FlightBookingReport') mm-active @endif">
+                            <a class="text-capitalize" href="{{url('flight/booking/report')}}">
+                                Flight Booking Report
+                            </a>
+                        </li>
+                        <li class="@if($currentRoute == 'B2bFinancialReport') mm-active @endif">
+                            <a class="text-capitalize" href="{{url('b2b/financial/report')}}">
+                                B2B Financial Report
                             </a>
                         </li>
                     </ul>

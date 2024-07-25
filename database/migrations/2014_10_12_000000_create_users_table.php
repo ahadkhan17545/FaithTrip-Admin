@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->nullable();
             $table->string('nid')->nullable();
+            $table->double('comission')->comment('Percentage')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->tinyInteger('user_type')->comment('1=>Admin; 2=>B2B User; 3=>Customer')->default(3);

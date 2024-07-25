@@ -57,7 +57,8 @@
                                             <th class="text-center">Phone</th>
                                             <th class="text-center">Balance</th>
                                             <th class="text-center">Bookings</th>
-                                            <th class="text-center">Company Name</th>
+                                            <th class="text-center">Comission</th>
+                                            <th class="text-center">Company</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Action</th>
                                         </tr>
@@ -114,6 +115,10 @@
                 {
                     data: 'bookings',
                     name: 'bookings'
+                },
+                {
+                    data: 'comission',
+                    name: 'comission'
                 },
                 {
                     data: 'company_name',

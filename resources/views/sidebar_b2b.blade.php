@@ -77,6 +77,18 @@
                         </li>
                     </ul>
                 </li>
+                <li>
+                    <a class="has-arrow material-ripple" href="javascript:void(0);">
+                        <i class="typcn typcn-chart-bar-outline"></i> Reports
+                    </a>
+                    <ul class="nav-second-level">
+                        <li class="@if($currentRoute == 'FlightBookingReport') mm-active @endif">
+                            <a class="text-capitalize" href="{{url('flight/booking/report')}}">
+                                Flight Booking Report
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="@if(in_array($currentRoute, ['ViewBankAccounts', 'AddBankAccount', 'EditBankAccount', 'ViewMfsAccounts', 'AddMfsAccount', 'EditMfsAccount', 'CreateTopupRequest', 'ViewRechargeRequests'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-credit-card "></i> Account Recharge
