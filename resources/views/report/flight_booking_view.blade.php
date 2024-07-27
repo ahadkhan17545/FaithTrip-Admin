@@ -21,7 +21,6 @@
                     <th class="text-center">Booking Date</th>
                     <th class="text-center">PNR ID</th>
                     <th class="text-center">Travel Date</th>
-                    <th class="text-center">Booked By</th>
                     <th class="text-center">Traveller Name</th>
                     <th class="text-center">Mobile No</th>
                     <th class="text-center">Destination</th>
@@ -29,6 +28,7 @@
                     <th class="text-center">Base Fare (৳)</th>
                     <th class="text-center">TAX (৳)</th>
                     <th class="text-center">Total Fare (৳)</th>
+                    <th class="text-center">Booked By</th>
                     <th class="text-center">B2B Comission</th>
                     <th class="text-center">Profit (৳)</th>
                     <th class="text-center">Status</th>
@@ -68,7 +68,7 @@
                     <td class="text-center">{{date("d M, Y", strtotime($item->created_at))}}</td>
                     <td class="text-center">{{$item->pnr_id}}</td>
                     <td class="text-center">{{date("d M, Y", strtotime($item->departure_date))}}</td>
-                    <td class="text-center">{{$item->b2b_user_name}}</td>
+
                     <td class="text-center">{{$item->traveller_name}}</td>
                     <td class="text-center">{{$item->traveller_contact}}</td>
                     <td class="text-center">{{$item->departure_location}}</td>
@@ -76,6 +76,7 @@
                     <td class="text-end" @if(in_array($item->status, [0,1,2])) style="color:green" @else style="color:red" @endif>{{number_format($item->base_fare_amount, 2)}}</td>
                     <td class="text-end" @if(in_array($item->status, [0,1,2])) style="color:green" @else style="color:red" @endif>{{number_format($item->total_tax_amount, 2)}}</td>
                     <td class="text-end" @if(in_array($item->status, [0,1,2])) style="color:green" @else style="color:red" @endif>{{number_format($item->total_fare, 2)}}</td>
+                    <td class="text-center">{{$item->b2b_user_name}}</td>
                     <td class="text-end">
                         @if(in_array($item->status, [0,1,2]))
                         <span style="color: green">({{$item->b2b_comission}}%) {{number_format($calculatedComission, 2)}}</span>
