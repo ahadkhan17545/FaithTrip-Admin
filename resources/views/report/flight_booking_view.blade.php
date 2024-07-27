@@ -93,7 +93,7 @@
                     <td class="text-center">
                         @php
                             if($item->status == 0)
-                                echo "<span style='font-weight:600; color:goldenrod'>Booking Request</span>";
+                                echo "<span style='font-weight:600; color:goldenrod'>Booking Req.</span>";
                             if($item->status == 1)
                                 echo "<span style='font-weight:600; color:green'>Booked</span>";
                             if($item->status == 2)
