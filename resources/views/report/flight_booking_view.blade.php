@@ -1,5 +1,5 @@
 <div class="card mt-3" id="printableArea">
-    <div class="card-body">
+    <div class="card-body" style="overflow-x: scroll">
 
         <div class="row pb-3">
             <div class="col-lg-6">
