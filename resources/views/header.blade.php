@@ -5,6 +5,16 @@
     <div class="d-none" id="typed-strings"></div>
     <div class="navbar-icon d-flex">
         <ul class="navbar-nav flex-row align-items-center">
+            <li class="nav-item notification user-header-menu">
+                @php
+                    $sabreGdsInfo = DB::table('sabre_gds_configs')->where('id', 1)->first();
+                    if($sabreGdsInfo->is_production == 0){
+                        echo "<span style='color: red; font-weight: 600; border: 2px solid red; padding: 2px 10px; border-radius: 4px; margin-right: 10px; font-size: 13px;'><i class='fa fa-circle' style='font-size: 10px;'></i> Sandbox</span>";
+                    } else {
+                        echo "<span style='color: green; font-weight: 600; border: 2px solid green; padding: 2px 10px; border-radius: 4px; margin-right: 10px; font-size: 13px;'><i class='fa fa-circle' style='font-size: 10px;'></i> Live</span>";
+                    }
+                @endphp
+            </li>
             <li class="nav-item dropdown notification user-header-menu">
                 <a class="nav-link dropdown-toggle p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
