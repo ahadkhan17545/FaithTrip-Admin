@@ -376,13 +376,25 @@
                                             <td>
                                                 @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $itemIndex => $segment)
                                                     Segment-{{ $itemIndex + 1 }}:
-                                                    {{ $segment['segment']['seatsAvailable'] }}&nbsp;
+
+                                                    @if(isset($segment['segment']['seatsAvailable']))
+                                                        {{ $segment['segment']['seatsAvailable'] }}&nbsp;
+                                                    @else
+                                                        N/A
+                                                    @endif
+
                                                 @endforeach
                                             </td>
                                             <td>
                                                 @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $itemIndex => $segment)
                                                     Segment-{{ $itemIndex + 1 }}:
+
+                                                    @if(isset($segment['segment']['bookingCode']))
                                                     {{ $segment['segment']['bookingCode'] }}&nbsp;
+                                                    @else
+                                                    N/A
+                                                    @endif
+
                                                 @endforeach
                                             </td>
                                             <td>

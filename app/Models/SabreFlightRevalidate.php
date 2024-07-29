@@ -73,7 +73,7 @@ class SabreFlightRevalidate extends Model
                 $elapsedDate = date('Y-m-d', strtotime($departureDateTime . ' +'.$segmentData['elapsedTime'].' minutes'));
                 $arrivalDateTime = $elapsedDate."T".substr($segmentData['arrival']['time'], 0, 8);
 
-            } else{
+            } else {
 
                 $time1 = substr($segmentData['departure']['time'],0,8);
                 $time2 = substr($segmentArray[$key2-1]['arrival']['time'],0,8);
@@ -91,6 +91,7 @@ class SabreFlightRevalidate extends Model
 
                 $elapsedDate = date('Y-m-d', strtotime($departureDateTime . ' +'.$segmentData['elapsedTime'].' minutes'));
                 $arrivalDateTime = $elapsedDate."T".substr($segmentData['arrival']['time'], 0, 8);
+
             }
 
             $originLocation = $segmentData['departure']['airport'];
@@ -98,8 +99,10 @@ class SabreFlightRevalidate extends Model
             $flightNumber = $segmentData['carrier']['marketingFlightNumber'];
             $operatingAirline = $segmentData['carrier']['operating'];
             $marketingAirline = $segmentData['carrier']['marketing'];
-            // $bookingCode = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$key2]['segment']['bookingCode'];
 
+            // $lastIndexOfPriceInfo = count($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'])-1;
+            // $bookingCode = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'][$lastIndexOfPriceInfo]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$key2]['segment']['bookingCode'];
+            $bookingCode = "L";
 
 
             // Create segment array
@@ -122,7 +125,7 @@ class SabreFlightRevalidate extends Model
                             "DepartureDateTime" => $departureDateTime,
                             "ArrivalDateTime" => $arrivalDateTime,
                             "Type" => "A",
-                            "ClassOfService" => "K",
+                            "ClassOfService" => (string) $bookingCode, // "K",
                             "OriginLocation" => [
                                 "LocationCode" => $originLocation
                             ],
@@ -166,7 +169,7 @@ class SabreFlightRevalidate extends Model
                 "TravelPreferences" => [
                     "TPA_Extensions" => [
                         "VerificationItinCallLogic" => [
-                            "Value" => "B"
+                            "Value" => "L"
                         ]
                     ]
                 ],

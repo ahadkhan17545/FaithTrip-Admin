@@ -5,6 +5,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
+
                     <div class="row">
                         <div class="col-lg-5">
                             <h6 class="mb-0" style="font-size: 18px"><b>Flight Booking Details</b></h6>
