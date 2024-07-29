@@ -112,10 +112,11 @@
                 @endforeach
 
                 <tr>
-                    <th class="text-end" colspan="10">Total : </th>
+                    <th class="text-end" colspan="9">Total : </th>
                     <th class="text-end" style="color: green">৳{{number_format($totalBaseFare, 2)}}</th>
                     <th class="text-end" style="color: green">৳{{number_format($totalTaxAmount, 2)}}</th>
                     <th class="text-end" style="color: green">৳{{number_format($totalFareAmount, 2)}}</th>
+                    <th></th>
                     <th class="text-end" style="color: green">৳{{number_format($totalB2bComission, 2)}}</th>
                     <th class="text-end" style="color: green">৳{{number_format($totalProfit, 2)}}</th>
                     <th colspan="2"></th>
