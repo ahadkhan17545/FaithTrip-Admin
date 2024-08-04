@@ -44,7 +44,7 @@ class FlightBookingController extends Controller
         // exit();
 
         $bookinPndID = null;
-        if($onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status'] == 'Complete'){
+        if(isset($onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status']) && $onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status'] == 'Complete'){
             $bookinPndID = $onlineBookingInfo['CreatePassengerNameRecordRS']['ItineraryRef']['ID'];
             $status = 1;
         } else{
@@ -66,6 +66,7 @@ class FlightBookingController extends Controller
             $total_tax_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalTaxAmount'];
             $total_fare = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
 
+            $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
 
             $flightBookingId = FlightBooking::insertGetId([
                 'booking_no' => str::random(3) . "-" . time(),
@@ -90,6 +91,7 @@ class FlightBookingController extends Controller
                 'currency' => $request->currency,
                 'last_ticket_datetime' => $request->last_ticket_datetime,
                 'status' => $status,
+                'is_live' => $sabreGdsInfo ? $sabreGdsInfo->is_production : 0,
                 'created_at' => Carbon::now()
             ]);
 

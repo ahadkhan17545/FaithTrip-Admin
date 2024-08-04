@@ -47,7 +47,7 @@
                     <div class="row">
                         <div class="col-lg-12">
 
-                            {{-- <div class="table-responsive"> --}}
+                            <div class="table-responsive">
                                 <table class="table table-bordered mb-0 data-table">
                                     <thead>
                                         <tr>
@@ -68,7 +68,7 @@
 
                                     </tbody>
                                 </table>
-                            {{-- </div> --}}
+                            </div>
 
                         </div>
                     </div>

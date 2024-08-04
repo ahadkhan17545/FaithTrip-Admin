@@ -2,3 +2,6 @@
 ALTER TABLE `users` ADD `comission` DOUBLE NOT NULL DEFAULT '0' COMMENT 'Percentage' AFTER `nid`;
 ALTER TABLE `flight_bookings` ADD `b2b_comission` DOUBLE NOT NULL DEFAULT '0' COMMENT 'In Percentage' AFTER `booked_by`;
 ALTER TABLE `flight_bookings` CHANGE `status` `status` TINYINT(4) NOT NULL DEFAULT '1' COMMENT '0=>Booking Request Sent; 1=>Booking Done; 2=>Ticketing Done; 3=>Booking Cancelled; 4=>Ticket Cancelled';
+
+=========04-08-2024========
+ALTER TABLE `flight_bookings` ADD `is_live` TINYINT(4) NULL DEFAULT NULL COMMENT '1=>Live Booking; 0=>Sandbox Booking' AFTER `status`;

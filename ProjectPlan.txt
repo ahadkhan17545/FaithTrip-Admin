@@ -14,12 +14,15 @@ Bugs:
 7. DAC -> DPS Routtrip booking error
 
 
-Report Module:
-
-2. B2b Users Report
-============================
-Search Query (From, To, User, User Status)
-Search Result (Account Created, B2B User Name, Current balance, Email, Contact, Total booking, Total Issued, Total booking Request, Total Cancelled, Comission, Total Income, Profit Status, Company Name)
-Total Calculation At the bottom of Report (Print Option)
-
+======04-08-2024=======
+# Flight Booking ki live e hoyeche naki sandbox e eita bujhar kono upay nai (Done)
+# Add Preferred Airlines in Flight Search
+# MultiCity Search
+# Flight Booking er somoy enough details show korche nai
+# DAC to YYZ Flight Revalidate Error
+# Avoid Showing Seconds and Timezone in Departure and Arrival in Flight Search Results and in other sections
+# Modify Search is working Properly or not check this
+# Last Ticketing Datetime
+# All Table Responsive
+# Next Day and Previous Day Search After Flight Search by one click only
 

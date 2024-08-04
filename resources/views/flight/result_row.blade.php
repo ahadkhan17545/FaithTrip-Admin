@@ -39,7 +39,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex d-md-block gap-4 ml-auto ms-3 mt-md-3 text-center">
+                <div class="d-flex d-md-block gap-4 ml-auto ms-3 mt-md-2 text-center">
                     <a href="{{url('select/flight')}}/{{$index}}" id="BookNowBtn hox" class="btn btn-primary text-uppercase font-weight-600 fs-13 btn_filters_responsive disable_book_now_cls">
                         Select Flight
                     </a>

@@ -45,6 +45,7 @@
                     $totalB2bComission = 0;
                     $totalProfit = 0;
                 @endphp
+
                 @foreach ($data as $item)
                     @php
                         if(in_array($item->status, [0,1,2])){

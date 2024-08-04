@@ -27,41 +27,63 @@
         @php
             $legRef = $data['legs'][0]['ref'];
             $schedulesRef = $searchResults['groupedItineraryResponse']['legDescs'][$legRef-1]['schedules'][0]['ref'];
-            $flightTiming = $searchResults['groupedItineraryResponse']['scheduleDescs'][$schedulesRef-1];
+            $departureFlightTiming = $searchResults['groupedItineraryResponse']['scheduleDescs'][$schedulesRef-1];
 
-            // calculating total flight time
+            $arrivalSchedulesRef = $searchResults['groupedItineraryResponse']['legDescs'][$legRef-1]['schedules'][count($searchResults['groupedItineraryResponse']['legDescs'][$legRef-1]['schedules'])-1]['ref'];
+            $arrivalFlightTiming = $searchResults['groupedItineraryResponse']['scheduleDescs'][$arrivalSchedulesRef-1];
+
+            // calculating total flight time1
             $totalFlightTiming = 0;
             $legRefArray = $data['legs'];
+
+            $firstRawDepartureDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']." ".$departureFlightTiming['departure']['time'];
+
             foreach ($legRefArray as $legRefItem) {
                 $schedulesRefArray = $searchResults['groupedItineraryResponse']['legDescs'][$legRefItem['ref']-1]['schedules'];
                 foreach ($schedulesRefArray as $schedulesRefItem) {
                     $totalFlightTiming = $totalFlightTiming + $searchResults['groupedItineraryResponse']['scheduleDescs'][$schedulesRefItem['ref']-1]['elapsedTime'];
+
+                    $date = new DateTime($firstRawDepartureDateTime);
+                    $interval = new DateInterval('PT' . $searchResults['groupedItineraryResponse']['scheduleDescs'][$schedulesRefItem['ref']-1]['elapsedTime'] . 'M');
+                    $date->add($interval);
+                    $firstRawDepartureDateTime = $date->format('Y-m-d H:i:sP');
                 }
             }
         @endphp
 
         <div class="d-flex align-items-center flight-icon col">
             <div class="fli-content">
-                <i class="fas fa-plane-departure"></i>
-                <div class="fli_title fs-14 mb-1 font-weight-600">Take off </div>
-                <div class="fli-text fs-18 text-uppercase">
-                    {{$searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}} {{$flightTiming['departure']['time']}}
+                <div class="fli_title fs-14 mb-1 font-weight-600"><i class="fas fa-plane-departure"></i> Take off</div>
+                <div class="fli-text fs-16">
+                    @php
+                        $rawDepartureDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']." ".$departureFlightTiming['departure']['time'];
+                        $stringDepartureDateTime = new DateTime($rawDepartureDateTime);
+                        $formattedDepartureDateTime = $stringDepartureDateTime->format('h:i a, jS M-Y');
+                        echo $formattedDepartureDateTime;
+                    @endphp
                 </div>
             </div>
         </div>
         <div class="d-flex align-items-center flight-icon col">
             <div class="fli-content">
-                <i class="fas fa-plane-arrival"></i>
-                <div class="fli_title fs-14 mb-1 font-weight-600">Landing </div>
-                <div class="fli-text fs-18 text-uppercase">
-                    {{$searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']}} {{$flightTiming['arrival']['time']}}
+                <div class="fli_title fs-14 mb-1 font-weight-600"><i class="fas fa-plane-arrival"></i> Landing</div>
+                <div class="fli-text fs-16">
+                    @php
+                        $stringArrivalDate = new DateTime($firstRawDepartureDateTime);
+                        $formattedArrivalDate = $stringArrivalDate->format('jS M-Y');
+
+                        $rawArrivalTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']." ".$arrivalFlightTiming['arrival']['time'];
+                        $stringArrivalTime = new DateTime($rawArrivalTime);
+                        $formattedArrivalTime = $stringArrivalTime->format('h:i a');
+                        echo $formattedArrivalTime.", ".$formattedArrivalDate;
+                    @endphp
                 </div>
             </div>
         </div>
     </div>
     <div class="d-none d-md-flex align-items-sm-center text-center text-sm-left fs-14">
         <div class="fli-duration">
-            <strong class="mr-1">{{App\Models\CustomFunction::convertMinToHrMin($totalFlightTiming)}}</strong>
+            <strong class="mr-1"><i class="far fa-clock"></i> {{App\Models\CustomFunction::convertMinToHrMin($totalFlightTiming)}}</strong>
         </div>
     </div>
 </div>

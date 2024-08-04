@@ -49,6 +49,10 @@
                                     <th>GDS ID </th>
                                     <td>: {{ $flightBookingDetails->gds_unique_id }}</td>
                                 </tr>
+                                <tr>
+                                    <th>Booking Mode </th>
+                                    <td>: @if($flightBookingDetails->is_live == 1) <span style="padding: 0px 8px; border-radius: 4px; background: green; color: white;">Live</span> @else <span style="padding: 0px 8px; border-radius: 4px; background: #db0000; color: white;">Sandbox</span> @endif</td>
+                                </tr>
                             </table>
                         </div>
                         <div class="col-lg-4 mb-2 border-end">
