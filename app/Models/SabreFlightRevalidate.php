@@ -100,10 +100,13 @@ class SabreFlightRevalidate extends Model
             $operatingAirline = $segmentData['carrier']['operating'];
             $marketingAirline = $segmentData['carrier']['marketing'];
 
-            // $lastIndexOfPriceInfo = count($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'])-1;
-            // $bookingCode = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'][$lastIndexOfPriceInfo]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$key2]['segment']['bookingCode'];
-            $bookingCode = "L";
-
+            // booking code
+            $lastIndexOfPriceInfo = count($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'])-1;
+            if(isset($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'][$lastIndexOfPriceInfo]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$key2]['segment']['bookingCode'])){
+                $bookingCode = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'][$lastIndexOfPriceInfo]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$key2]['segment']['bookingCode'];
+            } else {
+                $bookingCode = "L";
+            }
 
             // Create segment array
             $segment = [

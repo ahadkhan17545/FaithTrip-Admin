@@ -22,13 +22,11 @@
                 </div>
             </div>
 
-
             @if (count($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions']) == 1)
                 @include('flight.oneway_list_body')
             @else
                 @include('flight.round_list_body')
             @endif
-
 
             <div class="list-item_end title hotel-right clearfix grid-hidden d-flex align-items-center d-md-block mt-2 pt-2 col-md-3 justify-content-center">
                 <div class="price-area d-xl-flex align-items-xl-center justify-content-xl-center text-center">
