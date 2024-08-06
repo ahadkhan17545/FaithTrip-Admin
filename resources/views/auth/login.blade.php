@@ -20,7 +20,7 @@
             @csrf
 
             <div class="mb-3">
-                <input type="email" class="form-control input-py @error('email') is-invalid @enderror" value="{{ old('email') }}" id="email" name="email" placeholder="Enter email" required autocomplete="on" />
+                <input type="email" class="form-control input-py @error('email') is-invalid @enderror" @if(env('APP_NAME') == 'OTA') value="admin@gmail.com" @else value="{{ old('email') }}" @endif id="email" name="email" placeholder="Enter email" required autocomplete="on" />
                 @error('email')
                     <span class="invalid-feedback text-start d-block">
                         {{ $message }}
@@ -29,7 +29,7 @@
             </div>
 
             <div class="form-input mb-3 position-relative">
-                <input class="form-control input-py @error('password') is-invalid @enderror" type="password" autocomplete="on" name="password" placeholder="Password" required />
+                <input class="form-control input-py @error('password') is-invalid @enderror" @if(env('APP_NAME') == 'OTA') value="12345678" @endif type="password" autocomplete="on" name="password" placeholder="Password" required />
 
                 <div class="password-showHide">
                     <svg class="icon show-password" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
