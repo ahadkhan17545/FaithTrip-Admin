@@ -9,7 +9,7 @@
                 $endAirportInfo = DB::table('city_airports')->where('airport_code', $endAirportCode)->first();
             @endphp
 
-            <span>{{$beginAirportInfo->airport_name}}, {{$beginAirportInfo->city_name}}, {{$beginAirportInfo->country_name}} ({{$beginAirportInfo->city_code}})</span>
+            <span>{{$beginAirportInfo->airport_name}}, {{$beginAirportInfo->city_name}}, {{$beginAirportInfo->country_name}} ({{$beginAirportInfo->airport_code}})</span>
             <svg class="bi bi-arrow-right  mx-2" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M10.146 4.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 8l-2.647-2.646a.5.5 0 0 1 0-.708z"></path>
                 <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5H13a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8z"></path>
@@ -18,7 +18,7 @@
                 {{$endAirportInfo ? $endAirportInfo->airport_name : ''}},
                 {{$endAirportInfo ? $endAirportInfo->city_name : ''}},
                 {{$endAirportInfo ? $endAirportInfo->country_name : ''}}
-                ({{$endAirportInfo ? $endAirportInfo->city_code : ''}})
+                ({{$endAirportInfo ? $endAirportInfo->airport_code : ''}})
             </span>
         </h6>
     </div>
@@ -53,7 +53,7 @@
 
         <div class="d-flex align-items-center flight-icon col">
             <div class="fli-content">
-                <div class="fli_title fs-14 mb-1 font-weight-600"><i class="fas fa-plane-departure"></i> Take off</div>
+                <div class="fli_title fs-14 mb-1 font-weight-600"><i class="fas fa-plane-departure"></i> Departure</div>
                 <div class="fli-text fs-16">
                     @php
                         $rawDepartureDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']." ".$departureFlightTiming['departure']['time'];
@@ -66,7 +66,7 @@
         </div>
         <div class="d-flex align-items-center flight-icon col">
             <div class="fli-content">
-                <div class="fli_title fs-14 mb-1 font-weight-600"><i class="fas fa-plane-arrival"></i> Landing</div>
+                <div class="fli_title fs-14 mb-1 font-weight-600"><i class="fas fa-plane-arrival"></i> Arrival</div>
                 <div class="fli-text fs-16">
                     @php
                         $stringArrivalDate = new DateTime($firstRawDepartureDateTime);
