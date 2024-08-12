@@ -348,7 +348,6 @@ class SabreFlightRevalidate extends Model
         }
 
 
-
         $requestBody = [
             "OTA_AirLowFareSearchRQ" => [
                 "Version" => "5",
@@ -452,8 +451,8 @@ class SabreFlightRevalidate extends Model
 
         $response = curl_exec($curl);
         curl_close($curl);
-        // return $response;
-        return $flightInformation;
+        return $response;
+        // return $flightInformation;
 
     }
 }
