@@ -26,51 +26,37 @@ class SabreFlightBooking extends Model
 
 
         // making flight segment start
-
         $segmentArray = [];
         $legsArray = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['legs'];
         foreach ($legsArray as $key => $leg) {
             $legRef = $leg['ref'] - 1;
             $legDescription = $revlidatedData['groupedItineraryResponse']['legDescs'][$legRef];
             $schedulesArray = $legDescription['schedules'];
-            foreach ($schedulesArray as $schedule) {
+            foreach ($schedulesArray as $schedulesArrayIndex => $schedule) {
                 $scheduleRef = $schedule['ref'] - 1;
                 $segmentArray[] = $revlidatedData['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
+                if(isset($schedule['departureDateAdjustment'])){
+                    $segmentArray[$schedulesArrayIndex]['bothDateAdjustment'] = $schedule['departureDateAdjustment'];
+                }
             }
         }
 
         $flightSegment = array();
-        $arrivalDateTimeArray = array();
+        $departureDate = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'];
         foreach ($segmentArray as $segmentIndex => $segmentData){
 
-            // modify departure date if the date change
-            if($segmentIndex == 0) {
-                $departureDateTime = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate']."T".substr($segmentData['departure']['time'], 0, 8);
-                $elapsedDate = date('Y-m-d', strtotime($departureDateTime . ' +'.$segmentData['elapsedTime'].' minutes'));
-                $arrivalDateTime = $elapsedDate."T".substr($segmentData['arrival']['time'], 0, 8);
-            } else{
-                $time1 = substr($segmentData['departure']['time'],0,8);
-                $time2 = substr($segmentArray[$segmentIndex-1]['arrival']['time'],0,8);
-                $time1Obj = DateTime::createFromFormat('H:i:s', $time1);
-                $time2Obj = DateTime::createFromFormat('H:i:s', $time2);
-                $interval = $time1Obj->diff($time2Obj);
-                $totalMinutes = ($interval->h * 60) + $interval->i;
-
-                // checking its a return flight or
-                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]) && $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation'] == $segmentData['departure']['airport']){
-                    $departureDateTime = date('Y-m-d', strtotime($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureDate']))."T".substr($segmentData['departure']['time'], 0, 8);
-                } else {
-                    $departureDateTime = date('Y-m-d', strtotime($arrivalDateTimeArray[$segmentIndex-1] . ' +'.$totalMinutes.' minutes'))."T".substr($segmentData['departure']['time'], 0, 8);
+            $departureDateTime = new DateTime($departureDate . ' ' . $segmentData['departure']['time']);
+            if(isset($segmentData['bothDateAdjustment']) && $segmentData['bothDateAdjustment'] >= 1){
+                $departureDateTime->modify('+' . $segmentData['bothDateAdjustment'] . ' day');
+            } else {
+                // Adjust the departure date if there's a date adjustment only for departure
+                if (isset($segmentData['departure']['dateAdjustment']) && $segmentData['departure']['dateAdjustment'] > 0) {
+                    $departureDateTime->modify('+' . $segmentData['departure']['dateAdjustment'] . ' day');
                 }
-
-                $elapsedDate = date('Y-m-d', strtotime($departureDateTime . ' +'.$segmentData['elapsedTime'].' minutes'));
-                $arrivalDateTime = $elapsedDate."T".substr($segmentData['arrival']['time'], 0, 8);
             }
-            $arrivalDateTimeArray[] = $arrivalDateTime;
-
 
             $flightSegment[] = array(
-                "DepartureDateTime" => $departureDateTime,
+                "DepartureDateTime" => $departureDateTime->format('Y-m-d')."T".$departureDateTime->format('H:i:s'),
                 "FlightNumber" => (string) $segmentData['carrier']['operatingFlightNumber'],
                 "NumberInParty" => (string) 1,
                 "ResBookDesigCode" => "Y",
@@ -92,7 +78,7 @@ class SabreFlightBooking extends Model
             "CreatePassengerNameRecordRQ" => array(
                 "version" => "2.5.0",
                 "targetCity" => "S00L",
-                "haltOnAirPriceError" => true,
+                // "haltOnAirPriceError" => true,
                 "TravelItineraryAddInfo" => array(
                     "AgencyInfo" => array(
                         "Address" => array(
@@ -141,15 +127,15 @@ class SabreFlightBooking extends Model
                     )
                 ),
                 "AirBook" => array(
-                    "HaltOnStatus" => array(
-                        array("Code" => "HL"),
-                        array("Code" => "KK"),
-                        array("Code" => "LL"),
-                        array("Code" => "NN"),
-                        array("Code" => "NO"),
-                        array("Code" => "UC"),
-                        array("Code" => "US")
-                    ),
+                    // "HaltOnStatus" => array(
+                    //     array("Code" => "HL"),
+                    //     array("Code" => "KK"),
+                    //     array("Code" => "LL"),
+                    //     array("Code" => "NN"),
+                    //     array("Code" => "NO"),
+                    //     array("Code" => "UC"),
+                    //     array("Code" => "US")
+                    // ),
                     "OriginDestinationInformation" => array(
                         "FlightSegment" => $flightSegment
                     ),

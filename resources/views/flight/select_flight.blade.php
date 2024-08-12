@@ -241,31 +241,17 @@
 
                     <input type="hidden" name="gds" value="Sabre">
                     <input type="hidden" name="gds_unique_id" value="SOOL">
-                    <input type="hidden" name="departure_date"
-                        value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'] }}">
-                    <input type="hidden" name="departure_location"
-                        value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureLocation'] }}">
+                    <input type="hidden" name="departure_date" value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'] }}">
+                    <input type="hidden" name="departure_location" value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureLocation'] }}">
                     @php
-                        $legDescriptionsLastIndex =
-                            count(
-                                $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription'][
-                                    'legDescriptions'
-                                ],
-                            ) - 1;
+                        $legDescriptionsLastIndex = count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions']) - 1;
                     @endphp
-                    <input type="hidden" name="arrival_location"
-                        value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][$legDescriptionsLastIndex]['arrivalLocation'] }}">
-                    <input type="hidden" name="governing_carriers"
-                        value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['governingCarriers'] }}">
-                    <input type="hidden" name="currency"
-                        value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['currency'] }}">
+                    <input type="hidden" name="arrival_location" value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][$legDescriptionsLastIndex]['arrivalLocation'] }}">
+                    <input type="hidden" name="governing_carriers" value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['governingCarriers'] }}">
+                    <input type="hidden" name="currency" value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['currency'] }}">
 
-                    @if (isset(
-                            $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0][
-                                'fare'
-                            ]['lastTicketDate']))
-                        <input type="hidden" name="last_ticket_datetime"
-                            value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate'] . ' ' . $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketTime'] . ':00' }}">
+                    @if (isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate']))
+                        <input type="hidden" name="last_ticket_datetime" value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate'] . ' ' . $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketTime'] . ':00' }}">
                     @else
                         <input type="hidden" name="last_ticket_datetime" value="">
                     @endif

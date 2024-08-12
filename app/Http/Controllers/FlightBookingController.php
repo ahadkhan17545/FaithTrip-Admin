@@ -38,10 +38,10 @@ class FlightBookingController extends Controller
 
         $onlineBookingInfo = json_decode(SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->traveller_name, $request->traveller_email), true);
 
-        // echo "<pre>";
-        // print_r($onlineBookingInfo);
-        // echo "</pre>";
-        // exit();
+        echo "<pre>";
+        print_r($onlineBookingInfo);
+        echo "</pre>";
+        exit();
 
         $bookinPndID = null;
         if(isset($onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status']) && $onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status'] == 'Complete'){
@@ -49,8 +49,6 @@ class FlightBookingController extends Controller
             $status = 1;
         } else{
             $status = 0;
-            // Toastr::error('Something Went Wrong While Booking', 'Failed to Book');
-            // return back();
         }
 
         DB::transaction(function () use ($request, $bookinPndID, $status) {
@@ -221,7 +219,7 @@ class FlightBookingController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($data){
                         $btn = ' <a href="'.url('flight/booking/details')."/".$data->booking_no.'" class="btn-sm btn-info text-white rounded d-inline-block mb-1"><i class="fas fa-eye"></i></a>';
-                        // $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Cancel" class="btn-sm btn-danger rounded d-inline-block cancelBtn"><i class="fas fa-times-circle"></i></a>';
+                        // $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Delete" class="btn-sm btn-danger rounded d-inline-block deleteBtn"><i class="fas fa-trash"></i></a>';
                         return $btn;
                     })
                     ->rawColumns(['action', 'status'])
