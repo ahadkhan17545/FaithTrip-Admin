@@ -64,8 +64,12 @@
                                                             <div class="font-weight-600 fs-13">
                                                                 {{ $segmentData['departure']['airport'] }}
                                                             </div>
-                                                            <span
-                                                                class="fs-12 font-weight-600">{{ $segmentData['departure']['time'] }}</span><br>
+                                                            <span class="fs-12 font-weight-600" style="width: 75px; display: inline-block;">
+                                                                @php
+                                                                    $departureDateTime = new DateTime($segmentData['departure']['time']);
+                                                                    echo $departureDateTime->format('h:i a');
+                                                                @endphp
+                                                            </span><br>
                                                             <span class="text-muted fs-12">
                                                                 Terminal -
                                                                 {{ isset($segmentData['departure']['terminal']) ? $segmentData['departure']['terminal'] : 'N/A' }}
@@ -75,8 +79,12 @@
                                                             <div class="font-weight-600 fs-13">
                                                                 {{ $segmentData['arrival']['airport'] }}
                                                             </div>
-                                                            <span
-                                                                class="fs-12 font-weight-600">{{ $segmentData['arrival']['time'] }}</span><br>
+                                                            <span class="fs-12 font-weight-600" style="width: 75px; display: inline-block;">
+                                                                @php
+                                                                    $arrivalDateTime = new DateTime($segmentData['arrival']['time']);
+                                                                    echo $arrivalDateTime->format('h:i a');
+                                                                @endphp
+                                                            </span><br>
                                                             <span class="text-muted fs-12">
                                                                 Terminal -
                                                                 {{ isset($segmentData['arrival']['terminal']) ? $segmentData['arrival']['terminal'] : 'N/A' }}
