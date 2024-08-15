@@ -288,7 +288,7 @@ class FlightSearchController extends Controller
     }
 
     public function revalidateFlight($sessionIndex){
-        $revlidatedData = json_decode(SabreFlightRevalidate::flightRevalidate($sessionIndex), true);
+        // $revlidatedData = json_decode(SabreFlightRevalidate::flightRevalidate($sessionIndex), true);
 
         // echo "<pre>";
         // print_r(SabreFlightRevalidate::flightRevalidate($sessionIndex));
@@ -300,11 +300,11 @@ class FlightSearchController extends Controller
         // echo "</pre>";
         // exit();
 
-        // $jsonData = json_encode(SabreFlightRevalidate::flightRevalidate($sessionIndex), JSON_PRETTY_PRINT);
-        // echo "<pre>";
-        // echo $jsonData;
-        // echo "</pre>";
-        // exit();
+        $jsonData = json_encode(SabreFlightRevalidate::flightRevalidate($sessionIndex), JSON_PRETTY_PRINT);
+        echo "<pre>";
+        echo $jsonData;
+        echo "</pre>";
+        exit();
 
         if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'])){
             return view('flight.select_flight', compact('revlidatedData'));

@@ -64,13 +64,26 @@ class SabreFlightRevalidate extends Model
         // echo "</pre>";
         // exit();
 
-        $flightInformation = [];
+        $onwardFlightInformation = [];
+        $returnFlightInformation = [];
+        $isReturnFlight = 0;
         $firstDepartureDate = "";
         $firstOriginLocation = "";
         $lastArrivalLocation = "";
 
+        $returnfirstDepartureDate = "";
+        $returnfirstOriginLocation = "";
+        $returnlastArrivalLocation = "";
+
         $departureDate = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'];
         foreach ($segmentArray as $key2 => $segmentData) {
+
+            // changing departure date for return flights
+            // if(isset($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation'])){
+            //     if($segmentData['departure']['airport'] == $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation']){
+            //         $departureDate = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureDate'];
+            //     }
+            // }
 
             if($key2 == 0) {
                 $firstDepartureDate = $departureDate."T".substr($segmentData['departure']['time'], 0, 8);
@@ -90,12 +103,19 @@ class SabreFlightRevalidate extends Model
                 }
             }
 
+            if(isset($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation'])){
+                if($segmentData['departure']['airport'] == $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation']){
+                    $isReturnFlight = 1;
+                    $returnfirstDepartureDate = $departureDate."T".substr($segmentData['departure']['time'], 0, 8);
+                    $returnfirstOriginLocation = $segmentData['departure']['airport'];
+                }
+            }
+
             $originLocation = $segmentData['departure']['airport'];
             $destinationLocation = $segmentData['arrival']['airport'];
             $flightNumber = $segmentData['carrier']['marketingFlightNumber'];
             $operatingAirline = $segmentData['carrier']['operating'];
             $marketingAirline = $segmentData['carrier']['marketing'];
-            $lastArrivalLocation = $destinationLocation;
 
             // booking code
             $lastIndexOfPriceInfo = count($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'])-1;
@@ -123,10 +143,58 @@ class SabreFlightRevalidate extends Model
                 "Type" => "A",
             ];
 
-            $flightInformation[] = $flights;
-
+            if($isReturnFlight == 0){
+                $lastArrivalLocation = $destinationLocation;
+                $onwardFlightInformation[] = $flights;
+            } else {
+                $returnlastArrivalLocation = $destinationLocation;
+                $returnFlightInformation[] = $flights;
+            }
         }
 
+        $originDestinationInformationArray = [];
+        if(count($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions']) == 1){
+            $originDestinationInformationArray[0] = [
+                "RPH" => "1",
+                "DepartureDateTime" => $firstDepartureDate,
+                "OriginLocation" => [
+                    "LocationCode" => $firstOriginLocation
+                ],
+                "DestinationLocation" => [
+                    "LocationCode" => $lastArrivalLocation
+                ],
+                "TPA_Extensions" => [
+                    "Flight" => $onwardFlightInformation
+                ]
+            ];
+        } else {
+            $originDestinationInformationArray[0] = [
+                "RPH" => "1",
+                "DepartureDateTime" => $firstDepartureDate,
+                "OriginLocation" => [
+                    "LocationCode" => $firstOriginLocation
+                ],
+                "DestinationLocation" => [
+                    "LocationCode" => $lastArrivalLocation
+                ],
+                "TPA_Extensions" => [
+                    "Flight" => $onwardFlightInformation
+                ]
+            ];
+            $originDestinationInformationArray[1] = [
+                "RPH" => "2",
+                "DepartureDateTime" => $returnfirstDepartureDate,
+                "OriginLocation" => [
+                    "LocationCode" => $returnfirstOriginLocation
+                ],
+                "DestinationLocation" => [
+                    "LocationCode" => $returnlastArrivalLocation
+                ],
+                "TPA_Extensions" => [
+                    "Flight" => $returnFlightInformation
+                ]
+            ];
+        }
 
         $requestBody = [
             "OTA_AirLowFareSearchRQ" => [
@@ -162,21 +230,7 @@ class SabreFlightRevalidate extends Model
                         ]
                     ]
                 ],
-                "OriginDestinationInformation" => [
-                    [
-                        "RPH" => "1",
-                        "DepartureDateTime" => $firstDepartureDate,
-                        "OriginLocation" => [
-                            "LocationCode" => $firstOriginLocation
-                        ],
-                        "DestinationLocation" => [
-                            "LocationCode" => $lastArrivalLocation
-                        ],
-                        "TPA_Extensions" => [
-                            "Flight" => $flightInformation
-                        ]
-                    ]
-                ],
+                "OriginDestinationInformation" => $originDestinationInformationArray,
                 "TPA_Extensions" => [
                     "IntelliSellTransaction" => [
                         "RequestType" => [
@@ -236,8 +290,8 @@ class SabreFlightRevalidate extends Model
 
         $response = curl_exec($curl);
         curl_close($curl);
-        return $response;
-        // return $flightInformation;
+        // return $response;
+        return $originDestinationInformationArray;
 
     }
 }
