@@ -14,48 +14,45 @@ class SabreFlightRevalidate extends Model
 
     public static function flightRevalidate($sessionIndex){
 
-        // Define your dynamic data
-        $adult = session('adult');
-        $child = session('child');
-        $infant = session('infant');
-        $seatsRequested = $adult+$child+$infant;
+        // Fetch dynamic data from session
+        $adult = session('adult', 0);
+        $child = session('child', 0);
+        $infant = session('infant', 0);
+        $seatsRequested = $adult + $child + $infant;
 
-        // making passanger info array start
-        $passengerTypes = array();
-        if ($adult > 0) {
-            $passengerTypes[] = array("Code" => "ADT", "Quantity" => (int) $adult, "TPA_Extensions" => ["VoluntaryChanges" => ["Match" => "Info"]]);
+        // Build passenger info array
+        $passengerTypes = [];
+        $passengerData = [
+            'ADT' => $adult,
+            'CNN' => $child,
+            'INF' => $infant,
+        ];
+        foreach ($passengerData as $code => $quantity) {
+            if ($quantity > 0) {
+                $passengerTypes[] = [
+                    "Code" => $code,
+                    "Quantity" => (int)$quantity,
+                    "TPA_Extensions" => ["VoluntaryChanges" => ["Match" => "Info"]],
+                ];
+            }
         }
-        if ($child > 0) {
-            $passengerTypes[] = array("Code" => "CNN", "Quantity" => (int) $child, "TPA_Extensions" => ["VoluntaryChanges" => ["Match" => "Info"]]);
-        }
-        if ($infant > 0) {
-            $passengerTypes[] = array("Code" => "INF", "Quantity" => (int) $infant, "TPA_Extensions" => ["VoluntaryChanges" => ["Match" => "Info"]]);
-        }
-        $passengerTypeQuantity = [];
-        foreach ($passengerTypes as $passengerType) {
-            $passengerTypeQuantity[] = $passengerType;
-        }
-        $airTravelerAvail[] = array(
-            "PassengerTypeQuantity" => $passengerTypeQuantity
-        );
-        // making passanger info array end
+        $airTravelerAvail = [["PassengerTypeQuantity" => $passengerTypes]];
 
-
-        // fetching segment of flights
+        // Fetch segment of flights
         $searchResults = json_decode(session('search_results'), true);
-        $segmentArray = [];
         $legsArray = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['legs'];
-        foreach ($legsArray as $key => $leg) {
-            $legRef = $leg['ref'] - 1;
-            $legDescription = $searchResults['groupedItineraryResponse']['legDescs'][$legRef];
-            $schedulesArray = $legDescription['schedules'];
+        $segmentArray = [];
 
-            foreach ($schedulesArray as $schedulesArrayIndex => $schedule) {
+        foreach ($legsArray as $leg) {
+            $legRef = $leg['ref'] - 1;
+            $schedulesArray = $searchResults['groupedItineraryResponse']['legDescs'][$legRef]['schedules'];
+            foreach ($schedulesArray as $schedule) {
                 $scheduleRef = $schedule['ref'] - 1;
-                $segmentArray[] = $searchResults['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
-                if(isset($schedule['departureDateAdjustment'])){
-                    $segmentArray[$schedulesArrayIndex]['bothDateAdjustment'] = $schedule['departureDateAdjustment'];
+                $segment = $searchResults['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
+                if (isset($schedule['departureDateAdjustment'])) {
+                    $segment['bothDateAdjustment'] = $schedule['departureDateAdjustment'];
                 }
+                $segmentArray[] = $segment;
             }
         }
 
@@ -64,51 +61,54 @@ class SabreFlightRevalidate extends Model
         // echo "</pre>";
         // exit();
 
+        // Initialize variables for onward and return flights
         $onwardFlightInformation = [];
         $returnFlightInformation = [];
-        $isReturnFlight = 0;
-        $firstDepartureDate = "";
-        $firstOriginLocation = "";
-        $lastArrivalLocation = "";
+        $isReturnFlight = false;
+        $firstDepartureDate = $firstOriginLocation = $lastArrivalLocation = "";
+        $returnfirstDepartureDate = $returnfirstOriginLocation = $returnlastArrivalLocation = "";
 
-        $returnfirstDepartureDate = "";
-        $returnfirstOriginLocation = "";
-        $returnlastArrivalLocation = "";
+        // Get departure date for onward and return flights
+        $onwardDepartureDate = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'];
+        $returnDepartureDate = isset($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureDate']) ? $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureDate'] : null;
 
-        $departureDate = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'];
         foreach ($segmentArray as $key2 => $segmentData) {
 
-            // changing departure date for return flights
-            // if(isset($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation'])){
-            //     if($segmentData['departure']['airport'] == $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation']){
-            //         $departureDate = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureDate'];
-            //     }
-            // }
-
-            if($key2 == 0) {
-                $firstDepartureDate = $departureDate."T".substr($segmentData['departure']['time'], 0, 8);
+            // Check if this is the first segment
+            if ($key2 == 0) {
+                $firstDepartureDate = $onwardDepartureDate . "T" . substr($segmentData['departure']['time'], 0, 8);
                 $firstOriginLocation = $segmentData['departure']['airport'];
             }
+
+            // Check if this is a return flight segment
+            if ($returnDepartureDate && $segmentData['departure']['airport'] == $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation']) {
+                $isReturnFlight = true;
+            }
+
+            // Determine the departure date for each segment
+            $departureDate = $isReturnFlight ? $returnDepartureDate : $onwardDepartureDate;
 
             $departureDateTime = new DateTime($departureDate . ' ' . $segmentData['departure']['time']);
             $arrivalDateTime = new DateTime($departureDate . ' ' . $segmentData['arrival']['time']);
 
-            if(isset($segmentData['bothDateAdjustment']) && $segmentData['bothDateAdjustment'] >= 1){
+            if (isset($segmentData['bothDateAdjustment']) && $segmentData['bothDateAdjustment'] >= 1) {
                 $departureDateTime->modify('+' . $segmentData['bothDateAdjustment'] . ' day');
                 $arrivalDateTime->modify('+' . $segmentData['bothDateAdjustment'] . ' day');
+
+                if (isset($segmentData['arrival']['dateAdjustment']) && $segmentData['arrival']['dateAdjustment'] > 0) {
+                    $arrivalDateTime->modify('+' . $segmentData['arrival']['dateAdjustment'] . ' day');
+                }
+
             } else {
-                // Adjust the arrival date if there's a date adjustment only for arrival
                 if (isset($segmentData['arrival']['dateAdjustment']) && $segmentData['arrival']['dateAdjustment'] > 0) {
                     $arrivalDateTime->modify('+' . $segmentData['arrival']['dateAdjustment'] . ' day');
                 }
             }
 
-            if(isset($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation'])){
-                if($segmentData['departure']['airport'] == $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation']){
-                    $isReturnFlight = 1;
-                    $returnfirstDepartureDate = $departureDate."T".substr($segmentData['departure']['time'], 0, 8);
-                    $returnfirstOriginLocation = $segmentData['departure']['airport'];
-                }
+            // Check if this is a return flight segment
+            if ($returnDepartureDate && $segmentData['departure']['airport'] == $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation']) {
+                $returnfirstDepartureDate = $returnDepartureDate . "T" . substr($segmentData['departure']['time'], 0, 8);
+                $returnfirstOriginLocation = $segmentData['departure']['airport'];
             }
 
             $originLocation = $segmentData['departure']['airport'];
@@ -117,13 +117,9 @@ class SabreFlightRevalidate extends Model
             $operatingAirline = $segmentData['carrier']['operating'];
             $marketingAirline = $segmentData['carrier']['marketing'];
 
-            // booking code
-            $lastIndexOfPriceInfo = count($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'])-1;
-            if(isset($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'][$lastIndexOfPriceInfo]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$key2]['segment']['bookingCode'])){
-                $bookingCode = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'][$lastIndexOfPriceInfo]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$key2]['segment']['bookingCode'];
-            } else {
-                $bookingCode = "L";
-            }
+            // Booking code
+            $lastIndexOfPriceInfo = array_key_last($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation']);
+            $bookingCode = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['pricingInformation'][$lastIndexOfPriceInfo]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$key2]['segment']['bookingCode'] ?? "L";
 
             $flights = [
                 "Airline" => [
@@ -138,12 +134,12 @@ class SabreFlightRevalidate extends Model
                 "DestinationLocation" => [
                     "LocationCode" => $destinationLocation
                 ],
-                "DepartureDateTime" => $departureDateTime->format('Y-m-d')."T".$departureDateTime->format('H:i:s'),
-                "ArrivalDateTime" => $arrivalDateTime->format('Y-m-d')."T".$arrivalDateTime->format('H:i:s'),
+                "DepartureDateTime" => $departureDateTime->format('Y-m-d') . "T" . $departureDateTime->format('H:i:s'),
+                "ArrivalDateTime" => $arrivalDateTime->format('Y-m-d') . "T" . $arrivalDateTime->format('H:i:s'),
                 "Type" => "A",
             ];
 
-            if($isReturnFlight == 0){
+            if (!$isReturnFlight) {
                 $lastArrivalLocation = $destinationLocation;
                 $onwardFlightInformation[] = $flights;
             } else {
@@ -152,8 +148,11 @@ class SabreFlightRevalidate extends Model
             }
         }
 
+        // Origin-Destination Information Array
         $originDestinationInformationArray = [];
-        if(count($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions']) == 1){
+        $legDescriptions = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'];
+
+        if (count($legDescriptions) == 1) {
             $originDestinationInformationArray[0] = [
                 "RPH" => "1",
                 "DepartureDateTime" => $firstDepartureDate,
@@ -196,6 +195,7 @@ class SabreFlightRevalidate extends Model
             ];
         }
 
+        // Build request body
         $requestBody = [
             "OTA_AirLowFareSearchRQ" => [
                 "Version" => "6.8.0",
@@ -233,12 +233,8 @@ class SabreFlightRevalidate extends Model
                 "OriginDestinationInformation" => $originDestinationInformationArray,
                 "TPA_Extensions" => [
                     "IntelliSellTransaction" => [
-                        "RequestType" => [
-                            "Name" => "REVALIDATE"
-                        ],
-                        "ServiceTag" => [
-                            "Name" => "REVALIDATE"
-                        ]
+                        "RequestType" => ["Name" => "REVALIDATE"],
+                        "ServiceTag" => ["Name" => "REVALIDATE"]
                     ]
                 ]
             ]
@@ -246,30 +242,22 @@ class SabreFlightRevalidate extends Model
 
         $jsonRequestBody = json_encode($requestBody);
 
-
-        // check for access token start
-        if(session('access_token') && session('access_token') != '' && session('expires_in') != ''){
-            $seconds = session('expires_in');
-            $date = new DateTime();
-            $date->setTimestamp(time() + $seconds);
-            $tokenExpireDate = $date->format('Y-m-d');
-            $currentDate = date("Y-m-d");
-            if($currentDate >= $tokenExpireDate){
+        // Check for access token and refresh if necessary
+        $expiresIn = session('expires_in', 0);
+        if (session('access_token') && $expiresIn) {
+            $tokenExpireDate = (new DateTime())->setTimestamp(time() + $expiresIn)->format('Y-m-d');
+            if (date("Y-m-d") >= $tokenExpireDate) {
                 FlightSearchController::generateAccessToken();
             }
         } else {
             FlightSearchController::generateAccessToken();
         }
-        // check for access token end
 
-        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
-        if($sabreGdsInfo->is_production == 0){
-            $apiEndPoint = 'https://api.cert.platform.sabre.com/v5/shop/flights/revalidate';
-        } else{
-            $apiEndPoint = 'https://api.platform.sabre.com/v5/shop/flights/revalidate';
-        }
+        // Determine API endpoint
+        $sabreGdsInfo = SabreGdsConfig::find(1);
+        $apiEndPoint = $sabreGdsInfo->is_production ? 'https://api.platform.sabre.com/v5/shop/flights/revalidate' : 'https://api.cert.platform.sabre.com/v5/shop/flights/revalidate';
 
-        $authorizationToken = 'Authorization: Bearer '.session('access_token');
+        // Execute cURL request
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_URL => $apiEndPoint,
@@ -284,14 +272,15 @@ class SabreFlightRevalidate extends Model
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
                 'Conversation-ID: 2021.01.DevStudio',
-                $authorizationToken
+                'Authorization: Bearer ' . session('access_token'),
             ],
         ]);
 
         $response = curl_exec($curl);
         curl_close($curl);
-        // return $response;
-        return $originDestinationInformationArray;
+
+        return $response;
+        // return $originDestinationInformationArray;
 
     }
 }
