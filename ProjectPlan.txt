@@ -1,30 +1,20 @@
-Issue:
-1. Price Validate API Error while 3 segment with different carrier code
-2. JFK Destination diye Multiple Passanger type dile price validate api te error
-
 Task:
-2. Share PNR Option in Email
-
-Bugs:
-1. Dhaka->London->Dhaka (Check in Prod)
-2. Dhaka->Newyork->Dhaka (Air India cannot be booked)
-3. DAC->WAS errro while booking
-4. FLight Details e Undefined Array key (Segment)
-5. HNL / BWI/ FCO ow/rt kono tai hoi na
-7. DAC -> DPS Routtrip booking error
-
+1. Share PNR Option in Email
 
 ======04-08-2024=======
-1. Flight Booking ki live e hoyeche naki sandbox e eita bujhar kono upay nai (Done)
-2. Add Preferred Airlines in Flight Search
-3. MultiCity Search
-4. Flight Booking er somoy enough details show korche nai
-5. DAC to YYZ Flight Revalidate Error
-6. Avoid Showing Seconds and Timezone in Departure and Arrival in Flight Search Results and in other sections
-7. Modify Search is working Properly or not check this
-8. Last Ticketing Datetime
-9. All Table Responsive
-10. Next Day and Previous Day Search After Flight Search by one click only
-11. Remove Company profit form report of b2b user
+1. Add Preferred Airlines in Flight Search
+2. Next Day and Previous Day Search After Flight Search by one click only
+3. Show Enoguht Details at the time of Flight Booking
+4. Add option for saving passanger details
+5. Manage Passangers menu
+6. Manage System user (Admin can his own system user and b2b user can add his own system user)
+7. Save Last Ticketing Datetime
+8. Make all the tables responsive (for Mobile Screens)
+9. Remove Company profit form report of b2b user
+10. Implement SSL Commerz for Instant Payment for the B2B Users
+11. Direct Flight/Segmented Flights Filter option before Flight Search
+
+12. MultiCity Search
+13. Modify Search is working Properly or not check this
 
 
