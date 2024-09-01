@@ -104,7 +104,6 @@
                         </li>
                     </ul>
                 </li>
-
                 <li class="@if(in_array($currentRoute, ['CreateB2bUser', 'ViewB2bUser', 'EditB2bUser'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-lock-open-outline"></i>User Management
@@ -122,7 +121,6 @@
                         </li>
                     </ul>
                 </li>
-
                 <li>
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-chart-bar-outline"></i> Reports
@@ -140,7 +138,6 @@
                         </li>
                     </ul>
                 </li>
-
                 <li class="@if(in_array($currentRoute, ['SetupGds', 'EditGdsInfo', 'ViewExcludedAirlines'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-plane-outline"></i> Airline Setup
@@ -158,7 +155,6 @@
                         </li>
                     </ul>
                 </li>
-
                 <li class="@if(in_array($currentRoute, ['ViewSmsGateways', 'ViewEmailConfig'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-cog-outline"></i> Application Setting
@@ -178,7 +174,7 @@
                 </li>
             </ul>
         </nav>
-        <div class="mt-auto p-3">
+        <div class="mt-auto p-3 sidebar-nav-btn">
             <a href="{{ route('logout') }}" class="btn btn-primary w-100"
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <img class="me-2" src="{{ url('assets') }}/img/logout.png" />

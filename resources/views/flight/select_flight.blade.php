@@ -64,7 +64,7 @@
                                                             <div class="font-weight-600 fs-13">
                                                                 {{ $segmentData['departure']['airport'] }}
                                                             </div>
-                                                            <span class="fs-12 font-weight-600" style="width: 75px; display: inline-block;">
+                                                            <span class="fs-12 font-weight-600" style="width: 80px; display: inline-block;">
                                                                 @php
                                                                     $departureDateTime = new DateTime($segmentData['departure']['time']);
                                                                     echo $departureDateTime->format('h:i a');
@@ -79,7 +79,7 @@
                                                             <div class="font-weight-600 fs-13">
                                                                 {{ $segmentData['arrival']['airport'] }}
                                                             </div>
-                                                            <span class="fs-12 font-weight-600" style="width: 75px; display: inline-block;">
+                                                            <span class="fs-12 font-weight-600" style="width: 80px; display: inline-block;">
                                                                 @php
                                                                     $arrivalDateTime = new DateTime($segmentData['arrival']['time']);
                                                                     echo $arrivalDateTime->format('h:i a');

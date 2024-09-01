@@ -43,7 +43,7 @@ class SabreFlightBooking extends Model
 
         $flightSegment = array();
         $departureDate = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'];
-        foreach ($segmentArray as $segmentIndex => $segmentData){
+        foreach ($segmentArray as $segmentData){
 
             $departureDateTime = new DateTime($departureDate . ' ' . $segmentData['departure']['time']);
             if(isset($segmentData['bothDateAdjustment']) && $segmentData['bothDateAdjustment'] >= 1){
