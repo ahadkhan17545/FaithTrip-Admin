@@ -862,3 +862,48 @@ ul li.noOf .cat-info {
     border-color: #007bff;
     color: #007bff;
 }
+
+
+/* Additional CSS */
+.add-another-city-btn {
+	font-size: 14px;
+	color: #001787;
+	text-align: center;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 700;
+	border: 1px solid #084277;
+	padding: 12px 17px;
+	border-radius: 12px;
+}
+.add-another-city-btn:hover{
+    background: #001787;
+    color: #fff;
+}
+.add-another-city-btn i {
+	font-size: 16px;
+}
+
+.select2-container--default .select2-selection--multiple {
+    padding: 43px 20px 12px;
+    line-height: inherit;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+    margin: 0 !important;
+}
+
+.select2-container .select2-selection--multiple .select2-selection__rendered {
+    margin: 0;
+}
+.select2-container--default .select2-selection--multiple{
+    background-color: transparent;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-left: 0;
+}

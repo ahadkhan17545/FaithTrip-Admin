@@ -69,7 +69,9 @@
                             </div>
                         </div>
                         <div class="col-lg-5 text-end">
+                            @if(session('departure_date') > date("Y-m-d"))
                             <a href="{{url('search/prev/day')}}" onclick="showLoader()" class="d-inline-block search_prev"><i class="fas fa-arrow-left"></i> Previous Day</a>
+                            @endif
                             <a href="{{url('search/next/day')}}" onclick="showLoader()" class="d-inline-block search_next">Next Day <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>

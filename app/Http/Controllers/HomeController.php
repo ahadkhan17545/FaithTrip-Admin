@@ -26,16 +26,6 @@ class HomeController extends Controller
 
     public function index()
     {
-
-        // $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
-
-        // $username = base64_encode("V1:470936:S00L:AA");
-        // $password = base64_encode("ft7lq3nz");
-        // $authorizationHeader = base64_encode($username.":".$password);
-        // // $authorizationHeader = base64_encode(base64_encode($sabreGdsInfo->production_user_id).':'.base64_encode($sabreGdsInfo->production_password));
-        // echo $authorizationHeader;
-        // exit();
-
         return view('home');
     }
 
@@ -52,6 +42,27 @@ class HomeController extends Controller
                             ->skip(0)
                             ->limit(5)
                             ->get();
+        }
+
+        return response()->json($data);
+    }
+
+    public function liveAirlineSearch(Request $request){
+        $data = [];
+
+        if($request->has('q')){
+            $search = $request->q;
+            $data = DB::table('airlines')
+                        ->select("id", "iata as search_result")
+                        ->whereNotNull('iata')
+                        ->where('active', 'Y')
+                        ->where(function ($query) use ($search) {
+                            $query->where('name', 'LIKE', "%".$search."%")
+                                ->orWhere('iata', 'LIKE', "%".$search."%");
+                        })
+                        ->skip(0)
+                        ->limit(5)
+                        ->get();
         }
 
         return response()->json($data);

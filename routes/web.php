@@ -26,6 +26,7 @@ Auth::routes([
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/live/city/airport/search', [HomeController::class, 'liveCityAirportSearch'])->name('LiveCityAirportSearch');
+Route::get('/live/airline/search', [HomeController::class, 'liveAirlineSearch'])->name('LiveAirlineSearch');
 
 Route::get('ckeditor', [CkeditorController::class, 'index']);
 Route::post('ckeditor/upload', [CkeditorController::class, 'upload'])->name('ckeditor.upload');
