@@ -185,7 +185,6 @@ class FlightSearchController extends Controller
             $this->generateAccessToken();
         }
 
-
         $departureLocationId = $request->departure_location_id;
         $originCityInfo = DB::table('city_airports')->where('id', $departureLocationId)->first();
         $originCityCode = $originCityInfo->airport_code;
@@ -235,6 +234,150 @@ class FlightSearchController extends Controller
         $searchResults = json_decode(session('search_results'), true);
         $search_results_operating_carriers = session('search_results_operating_carriers');
         return view('flight.search_results', compact('searchResults', 'search_results_operating_carriers'));
+    }
+
+    public function searchNextDay(){
+        if(session('access_token') && session('access_token') != '' && session('expires_in') != ''){
+
+            $seconds = session('expires_in');
+            $date = new DateTime();
+            $date->setTimestamp(time() + $seconds);
+            $tokenExpireDate = $date->format('Y-m-d');
+            $currentDate = date("Y-m-d");
+
+            if($currentDate >= $tokenExpireDate){
+                $this->generateAccessToken();
+            }
+
+        } else {
+            $this->generateAccessToken();
+        }
+
+        $departureLocationId = session('departure_location_id');
+        $originCityInfo = DB::table('city_airports')->where('id', $departureLocationId)->first();
+        $originCityCode = $originCityInfo->airport_code;
+
+        $destinationLocationId = session('destination_location_id');
+        $destinationCityInfo = DB::table('city_airports')->where('id', $destinationLocationId)->first();
+        $destinationCityCode = $destinationCityInfo->airport_code;
+
+        $departureDate = session('departure_date');
+        $departureDate = date('Y-m-d', strtotime($departureDate . ' +1 day'));
+
+        $returnDate = session('return_date');
+        if($returnDate){
+            $returnDate = date('Y-m-d', strtotime($returnDate . ' +1 day'));
+        }
+
+        $adult = session('adult');
+        $child = session('child');
+        $infant = session('infant');
+        $flightType = session('flight_type');
+
+        // storing search query into session for modify search
+        session([
+            'departure_location_id' => $departureLocationId,
+            'origin_city_name' => $originCityInfo->city_name,
+            'destination_location_id' => $destinationLocationId,
+            'destination_city_name' => $destinationCityInfo->city_name,
+            'departure_date' => $departureDate,
+            'return_date' => $returnDate,
+            'adult' => $adult,
+            'child' => $child,
+            'infant' => $infant,
+            'flight_type' => $flightType,
+        ]);
+
+        $searchResults = $this->getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType);
+        session(['search_results' => $searchResults]);
+
+        // for carrier filters
+        $searchResults = json_decode($searchResults, true);
+        $operatingCodes = [];
+        if(isset($searchResults['groupedItineraryResponse'])){
+            foreach ($searchResults['groupedItineraryResponse']['scheduleDescs'] as $schedule) {
+                $operatingCodes[] = $schedule['carrier']['operating'];
+            }
+        }
+        $operatingCodes = array_values(array_unique($operatingCodes));
+        session(['search_results_operating_carriers' => $operatingCodes]);
+        session()->forget('filter_min_price');
+        session()->forget('filter_max_price');
+        session()->forget('airline_carrier_code');
+
+        return redirect('flight/search-results');
+    }
+
+    public function searchPreviousDay(){
+        if(session('access_token') && session('access_token') != '' && session('expires_in') != ''){
+
+            $seconds = session('expires_in');
+            $date = new DateTime();
+            $date->setTimestamp(time() + $seconds);
+            $tokenExpireDate = $date->format('Y-m-d');
+            $currentDate = date("Y-m-d");
+
+            if($currentDate >= $tokenExpireDate){
+                $this->generateAccessToken();
+            }
+
+        } else {
+            $this->generateAccessToken();
+        }
+
+        $departureLocationId = session('departure_location_id');
+        $originCityInfo = DB::table('city_airports')->where('id', $departureLocationId)->first();
+        $originCityCode = $originCityInfo->airport_code;
+
+        $destinationLocationId = session('destination_location_id');
+        $destinationCityInfo = DB::table('city_airports')->where('id', $destinationLocationId)->first();
+        $destinationCityCode = $destinationCityInfo->airport_code;
+
+        $departureDate = session('departure_date');
+        $departureDate = date('Y-m-d', strtotime($departureDate . ' -1 day'));
+
+        $returnDate = session('return_date');
+        if($returnDate){
+            $returnDate = date('Y-m-d', strtotime($returnDate . ' -1 day'));
+        }
+
+        $adult = session('adult');
+        $child = session('child');
+        $infant = session('infant');
+        $flightType = session('flight_type');
+
+        // storing search query into session for modify search
+        session([
+            'departure_location_id' => $departureLocationId,
+            'origin_city_name' => $originCityInfo->city_name,
+            'destination_location_id' => $destinationLocationId,
+            'destination_city_name' => $destinationCityInfo->city_name,
+            'departure_date' => $departureDate,
+            'return_date' => $returnDate,
+            'adult' => $adult,
+            'child' => $child,
+            'infant' => $infant,
+            'flight_type' => $flightType,
+        ]);
+
+        $searchResults = $this->getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType);
+        session(['search_results' => $searchResults]);
+
+        // for carrier filters
+        $searchResults = json_decode($searchResults, true);
+        $operatingCodes = [];
+        if(isset($searchResults['groupedItineraryResponse'])){
+            foreach ($searchResults['groupedItineraryResponse']['scheduleDescs'] as $schedule) {
+                $operatingCodes[] = $schedule['carrier']['operating'];
+            }
+        }
+        $operatingCodes = array_values(array_unique($operatingCodes));
+        session(['search_results_operating_carriers' => $operatingCodes]);
+        session()->forget('filter_min_price');
+        session()->forget('filter_max_price');
+        session()->forget('airline_carrier_code');
+
+        return redirect('flight/search-results');
     }
 
     public function priceRangeFilter(Request $request){

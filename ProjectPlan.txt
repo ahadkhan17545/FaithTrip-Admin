@@ -2,6 +2,7 @@ Task:
 1. Share PNR Option in Email
 
 ======04-08-2024=======
+0. Bug Fix for View Transaction Page
 1. Add Preferred Airlines in Flight Search
 2. Next Day and Previous Day Search After Flight Search by one click only
 3. Show Enoguht Details at the time of Flight Booking
@@ -16,5 +17,16 @@ Task:
 
 12. MultiCity Search
 13. Modify Search is working Properly or not check this
+14. Balance chara ticket issue hobe na, booking hobe
+15. Ticket VOID option
+
+Terminal
+16. Booking e naam er issue (passanger info and passport info jai nai)
+17. Ticket issue korle issue hochhe but ticket number asche na plus name (Mr./Miss.) and price wrong show korche (class chnage hoye jachhe "Y") and passport information ni & passanger nai
+18. Check Ticket Details/PNR details api so that i can know the update about any ticket that it has been cancelled from the terminl or not
+19. Ticket Void Option
 
 
+20. Do booking and check passanger info is stored or not (like passport no. agency name missing, name with gender, phone number er pashe b2b company name missing)
+21. Cancel korle sathe sathe client k message diben...
+22. Booking er por client obossoi mail pabe...

@@ -225,7 +225,12 @@ class PaymentController extends Controller
                     ->addColumn('receiving_channel', function($data){
                         if($data->admin_bank_account_id){
                             $bankInfo = BankAccount::where('id', $data->admin_bank_account_id)->first();
-                            return $bankInfo->bank_name."-".$bankInfo->acc_no;
+                            if($bankInfo){
+                                return $bankInfo->bank_name."-".$bankInfo->acc_no;
+                            } else {
+                                return "<span style='color: red; font-weight: 600'>Missing Info</span>";
+                            }
+
                         }
                         if($data->admin_mfs_account_id){
                             $mfsInfo = MfsAccount::where('id', $data->admin_mfs_account_id)->first();
@@ -301,7 +306,7 @@ class PaymentController extends Controller
                         }
                         return $btn;
                     })
-                    ->rawColumns(['action', 'status', 'attachment'])
+                    ->rawColumns(['action', 'status', 'attachment', 'receiving_channel'])
                     ->make(true);
         }
         return view('recharge.view');
