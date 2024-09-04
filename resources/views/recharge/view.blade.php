@@ -53,6 +53,8 @@
                                         <tr>
                                             <th class="text-center">SL</th>
                                             <th class="text-center">Receiver Channel</th>
+                                            <th class="text-center">User Name</th>
+                                            <th class="text-center">Company Name</th>
                                             <th class="text-center">Payment Method</th>
                                             <th class="text-center">Bank Name</th>
                                             <th class="text-center">Account/Cheque</th>
@@ -100,6 +102,14 @@
                 {
                     data: 'receiving_channel',
                     name: 'receiving_channel'
+                },
+                {
+                    data: 'user_name',
+                    name: 'user_name'
+                },
+                {
+                    data: 'company_name',
+                    name: 'company_name'
                 },
                 {
                     data: 'payment_method',

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class PaymentController extends Controller
@@ -216,9 +217,20 @@ class PaymentController extends Controller
         if ($request->ajax()) {
 
             if(Auth::user()->user_type == 1){
-                $data = RechargeRequest::orderBy('id', 'desc')->get();
+                $data = DB::table('recharge_requests')
+                        ->leftJoin('users', 'recharge_requests.user_id', 'users.id')
+                        ->leftJoin('company_profiles', 'users.id', 'company_profiles.user_id')
+                        ->select('recharge_requests.*', 'users.name as user_name', 'company_profiles.name as company_name')
+                        ->orderBy('id', 'desc')
+                        ->get();
             } else{
-                $data = RechargeRequest::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
+                $data = DB::table('recharge_requests')
+                    ->leftJoin('users', 'recharge_requests.user_id', 'users.id')
+                    ->leftJoin('company_profiles', 'users.id', 'company_profiles.user_id')
+                    ->select('recharge_requests.*', 'users.name as user_name', 'company_profiles.name as company_name')
+                    ->where('user_id', Auth::user()->id)
+                    ->orderBy('id', 'desc')
+                    ->get();
             }
 
             return Datatables::of($data)

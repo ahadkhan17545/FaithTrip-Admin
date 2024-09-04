@@ -23,6 +23,10 @@
             padding-left: 0px !important;
             display: contents;
         }
+        ul#select2-roundtrip_preferred_airlines-container{
+            padding-left: 0px !important;
+            display: contents;
+        }
 
         .select2-container--open .select2-dropdown {
             top: 45px !important;

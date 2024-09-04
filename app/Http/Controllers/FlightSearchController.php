@@ -60,7 +60,7 @@ class FlightSearchController extends Controller
         session(['expires_in' => $expiresIn]);
     }
 
-    public function getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType){
+    public function getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $airlinePrefs){
 
         // travellers info
         $passengerTypes = array();
@@ -86,10 +86,51 @@ class FlightSearchController extends Controller
         // oneway or return flights
         $flightTypeData = array();
         if($flightType == 1){
-            $flightTypeData[] = array("RPH" => "1", "DepartureDateTime" => "$departureDate" . "T00:00:00", "OriginLocation" => array("LocationCode" => $originCityCode),"DestinationLocation" => array("LocationCode" => $destinationCityCode));
+
+            $flightTypeData[] = array_filter([
+                "RPH" => "1",
+                "DepartureDateTime" => "$departureDate" . "T00:00:00",
+                "OriginLocation" => [
+                    "LocationCode" => $originCityCode
+                ],
+                "DestinationLocation" => [
+                    "LocationCode" => $destinationCityCode
+                ],
+                "TPA_Extensions" => $airlinePrefs !== null ? ["IncludeVendorPref" => $airlinePrefs] : null
+            ], function($value) {
+                return $value !== null;
+            });
+
         } else {
-            $flightTypeData[] = array("RPH" => "1", "DepartureDateTime" => "$departureDate" . "T00:00:00", "OriginLocation" => array("LocationCode" => $originCityCode),"DestinationLocation" => array("LocationCode" => $destinationCityCode));
-            $flightTypeData[] = array("RPH" => "1", "DepartureDateTime" => "$returnDate" . "T00:00:00", "OriginLocation" => array("LocationCode" => $destinationCityCode),"DestinationLocation" => array("LocationCode" => $originCityCode));
+
+            $flightTypeData[] = array_filter([
+                "RPH" => "1",
+                "DepartureDateTime" => "$departureDate" . "T00:00:00",
+                "OriginLocation" => [
+                    "LocationCode" => $originCityCode
+                ],
+                "DestinationLocation" => [
+                    "LocationCode" => $destinationCityCode
+                ],
+                "TPA_Extensions" => $airlinePrefs !== null ? ["IncludeVendorPref" => $airlinePrefs] : null
+            ], function($value) {
+                return $value !== null;
+            });
+
+            $flightTypeData[] = array_filter([
+                "RPH" => "2",
+                "DepartureDateTime" => "$returnDate" . "T00:00:00",
+                "OriginLocation" => [
+                    "LocationCode" => $destinationCityCode
+                ],
+                "DestinationLocation" => [
+                    "LocationCode" => $originCityCode
+                ],
+                "TPA_Extensions" => $airlinePrefs !== null ? ["IncludeVendorPref" => $airlinePrefs] : null
+            ], function($value) {
+                return $value !== null;
+            });
+
         }
 
         // Sabre API request payload with dynamic query
@@ -198,6 +239,26 @@ class FlightSearchController extends Controller
         $infant = $request->infant;
         $flightType = $request->flight_type;
 
+
+        // preferred airlines code start
+        $preferredAirlines = $request->preferred_airlines; //comma separated id of airnline like 218,1359
+        $airlinePrefs = null;
+
+        if($preferredAirlines){
+            $preferredAirlinesArray = [];
+            foreach(explode(",",$preferredAirlines) as $preferredAirlineId){
+                $airlineInfo = DB::table('airlines')->where('id', $preferredAirlineId)->first();
+                if($airlineInfo && $airlineInfo->iata){
+                    $preferredAirlinesArray[] = $airlineInfo->iata;
+                }
+            }
+            $airlinePrefs = array_map(function($code) {
+                return ["Code" => $code];
+            }, $preferredAirlinesArray);
+        }
+        // preferred airlines code end
+
+
         // storing search query into session for modify search
         session([
             'departure_location_id' => $departureLocationId,
@@ -210,15 +271,16 @@ class FlightSearchController extends Controller
             'child' => $child,
             'infant' => $infant,
             'flight_type' => $flightType,
+            'preferred_airlines' => $airlinePrefs,
         ]);
 
-        $searchResults = $this->getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType);
+        $searchResults = $this->getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $airlinePrefs);
         session(['search_results' => $searchResults]);
 
         // for carrier filters
         $searchResults = json_decode($searchResults, true);
         $operatingCodes = [];
-        if(isset($searchResults['groupedItineraryResponse'])){
+        if(isset($searchResults['groupedItineraryResponse']['scheduleDescs'])){
             foreach ($searchResults['groupedItineraryResponse']['scheduleDescs'] as $schedule) {
                 $operatingCodes[] = $schedule['carrier']['operating'];
             }
@@ -273,6 +335,7 @@ class FlightSearchController extends Controller
         $child = session('child');
         $infant = session('infant');
         $flightType = session('flight_type');
+        $airlinePrefs = session('preferred_airlines');
 
         // storing search query into session for modify search
         session([
@@ -286,9 +349,10 @@ class FlightSearchController extends Controller
             'child' => $child,
             'infant' => $infant,
             'flight_type' => $flightType,
+            'preferred_airlines' => $airlinePrefs,
         ]);
 
-        $searchResults = $this->getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType);
+        $searchResults = $this->getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $airlinePrefs);
         session(['search_results' => $searchResults]);
 
         // for carrier filters
@@ -345,6 +409,7 @@ class FlightSearchController extends Controller
         $child = session('child');
         $infant = session('infant');
         $flightType = session('flight_type');
+        $airlinePrefs = session('preferred_airlines');
 
         // storing search query into session for modify search
         session([
@@ -358,9 +423,10 @@ class FlightSearchController extends Controller
             'child' => $child,
             'infant' => $infant,
             'flight_type' => $flightType,
+            'preferred_airlines' => $airlinePrefs,
         ]);
 
-        $searchResults = $this->getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType);
+        $searchResults = $this->getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $airlinePrefs);
         session(['search_results' => $searchResults]);
 
         // for carrier filters

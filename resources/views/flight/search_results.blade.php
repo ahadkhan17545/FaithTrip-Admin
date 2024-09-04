@@ -56,7 +56,7 @@
     <div class="row">
         <div class="search-content-wrap m-auto">
 
-            @if (isset($searchResults['groupedItineraryResponse']))
+            @if (isset($searchResults['groupedItineraryResponse']['itineraryGroups']))
                 <div class="sorting my-3">
                     <div class="row">
                         <div class="col-lg-4">
@@ -225,7 +225,7 @@
             @else
                 {{-- if no flights found --}}
                 <div class="sorting my-3">
-                    <div class="badge bg-primary fs-16 mb-2 mb-lg-0 w-100 p-3 mt-4">
+                    <div class="badge bg-primary fs-16 mb-2 mb-lg-0 w-100 p-3">
                         Sorry! No Flights found &nbsp;&nbsp;
                         <a href="{{ url('/') }}" class="d-inline btn btn-sm btn-rounded"
                             style="background: #ffffffe8; font-weight: 600;">Search Again</a>

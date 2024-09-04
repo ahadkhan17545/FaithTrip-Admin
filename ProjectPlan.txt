@@ -3,7 +3,7 @@ Task:
 
 ======04-08-2024=======
 0. Send email to client after booking/ticket issue/cancel
-1. Add Preferred Airlines in Flight Search
+1. Add Preferred Airlines in Flight Search (just Design issue)
 2. Show Enoguht Details at the time of Flight Booking
 3. Add option for saving passanger details
 4. Manage Passangers menu
