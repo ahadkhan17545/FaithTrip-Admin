@@ -24,7 +24,6 @@ Terminal
 18. Check Ticket Details/PNR details api so that i can know the update about any ticket that it has been cancelled from the terminl or not
 19. Ticket Void Option
 
-
 20. Do booking and check passanger info is stored or not (like passport no. agency name missing, name with gender, phone number er pashe b2b company name missing)
 21. Cancel korle sathe sathe client k message diben...
 
