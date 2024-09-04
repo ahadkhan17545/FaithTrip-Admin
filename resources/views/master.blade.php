@@ -52,7 +52,7 @@
 
     <style>
         .body-content {
-            padding: 1.5rem;
+            padding: 0px;
         }
 
         .sidebar-nav {

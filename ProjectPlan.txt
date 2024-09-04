@@ -3,16 +3,15 @@ Task:
 
 ======04-08-2024=======
 0. Send email to client after booking/ticket issue/cancel
-1. Add Preferred Airlines in Flight Search (just Design issue)
-2. Show Enoguht Details at the time of Flight Booking
-3. Add option for saving passanger details
-4. Manage Passangers menu
-5. Manage System user (Admin can his own system user and b2b user can add his own system user)
-6. Save Last Ticketing Datetime
-7. Make all the tables responsive (for Mobile Screens)
-8. Remove Company profit form report of b2b user
-9. Implement SSL Commerz for Instant Payment for the B2B Users
-10. Direct Flight/Segmented Flights Filter option before Flight Search
+1. Show Enoguht Details at the time of Flight Booking
+2. Add option for saving passanger details
+3. Manage Passangers menu
+4. Manage System user (Admin can his own system user and b2b user can add his own system user)
+5. Save Last Ticketing Datetime
+6. Make all the tables responsive (for Mobile Screens)
+7. Remove Company profit form report of b2b user
+8. Implement SSL Commerz for Instant Payment for the B2B Users
+9. Direct Flight/Segmented Flights Filter option before Flight Search
 
 12. MultiCity Search
 13. Modify Search is working Properly or not check this
@@ -31,5 +30,4 @@ Terminal
 
 Question for Sabre
 ============================
-1. Whats NDC Search and should i use this api for flight Search
-2. Send me sample search body where i can add preferred airlines
+1. Whats NDC Search and should i use this api for flight Search (They have told to Implement that later)

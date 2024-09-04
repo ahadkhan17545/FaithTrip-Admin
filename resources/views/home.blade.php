@@ -19,11 +19,12 @@
             padding-left: 20px !important;
         }
 
-        ul#select2-oneway_preferred_airlines-container{
+        ul#select2-oneway_preferred_airlines-container {
             padding-left: 0px !important;
             display: contents;
         }
-        ul#select2-roundtrip_preferred_airlines-container{
+
+        ul#select2-roundtrip_preferred_airlines-container {
             padding-left: 0px !important;
             display: contents;
         }
@@ -44,41 +45,74 @@
             height: 76px
         }
 
-        .form-floating > label{
+        .form-floating>label {
             font-size: 16px;
         }
 
-        .select2-container--default .select2-selection--single .select2-selection__rendered{
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
             line-height: 24px !important;
         }
 
-        .select2-container .select2-selection--multiple .select2-selection__rendered{
+        .select2-container .select2-selection--multiple .select2-selection__rendered {
             display: block;
             margin: 0;
             top: 38px !important;
             left: 15px !important;
         }
 
-        .select2-container--default .select2-selection--multiple{
+        .select2-container--default .select2-selection--multiple {
             background: transparent !important;
             padding-left: 15px;
         }
 
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
             font-size: 14px;
             padding: 0 3px;
         }
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__display{
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
             padding-left: 2px;
             padding-right: 4px;
             font-size: 14px;
         }
-        .select2-container--default .select2-selection--multiple .select2-selection__choice{
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
             margin-left: 4px;
             margin-top: 0px;
         }
-        .select2-container--default .select2-search--inline .select2-search__field{
+
+        .select2-container--default .select2-search--inline .select2-search__field {
             padding-left: 5px;
+        }
+
+        /* later added by sagor vai for preffered airlines css issue */
+        /* .select2-container--open .select2-dropdown {
+            top: 2px !important;
+        }
+        .select2-container--default .select2-selection--multiple {
+            white-space: nowrap !important;
+            overflow: hidden !important;
+        }
+        .select2-container .select2-selection--multiple {
+            display: flex;
+            align-items: center;
+            grid-template-columns: repeat(5, 1fr);
+        }
+        .input-group.custom-input-group {
+            height: auto;
+        } */
+
+        .select2-container--open .select2-dropdown {
+            top: 2px !important;
+        }
+        .select2-container .select2-selection--multiple {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .input-group.custom-input-group {
+            height: auto;
         }
     </style>
 @endsection
@@ -112,7 +146,8 @@
                                         <div class="input-group rounded">
                                             <div class="form-floating flight-form">
                                                 <label for="oneway_from">From</label>
-                                                <select class="form-control border-bottom-0 border-right oneway_from" id="oneway_from" name="oneway_from"></select>
+                                                <select class="form-control border-bottom-0 border-right oneway_from"
+                                                    id="oneway_from" name="oneway_from"></select>
                                             </div>
                                             <span class="input-group-text">
                                                 <svg class="bi bi-arrow-left-right" id="oneway-swap" width="1.2em"
@@ -131,7 +166,8 @@
                                             </span>
                                             <div class="form-floating flight-to">
                                                 <label for="floatingInput">To</label>
-                                                <select class="form-control border-bottom-0 border-right oneway_to" id="oneway_to" name="oneway_to"></select>
+                                                <select class="form-control border-bottom-0 border-right oneway_to"
+                                                    id="oneway_to" name="oneway_to"></select>
                                             </div>
                                         </div>
                                     </div>
@@ -241,17 +277,21 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-3 px-0">
-                                        <div class="input-group rounded">
+                                        <div class="input-group custom-input-group rounded">
                                             <div class="form-floating flight-form">
                                                 <label for="oneway_preferred_airlines">Preferred Airlines</label>
-                                                <select class="form-control border-bottom-0 border-right oneway_preferred_airlines" id="oneway_preferred_airlines" name="oneway_preferred_airlines[]" multiple>
+                                                <select
+                                                    class="form-control border-bottom-0 border-right oneway_preferred_airlines"
+                                                    id="oneway_preferred_airlines" name="oneway_preferred_airlines[]"
+                                                    multiple>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div id="btn-hub-oneway">
-                                    <button type="button" style="padding: 0.8rem 2rem;" onclick="searchForFlights(1)" id="btn-search-oneway" class="btn btn-primary btn-search">
+                                    <button type="button" style="padding: 0.8rem 2rem;" onclick="searchForFlights(1)"
+                                        id="btn-search-oneway" class="btn btn-primary btn-search">
                                         Search flights
                                         <i class="fas fa-plane-departure"></i>
                                     </button>
@@ -398,10 +438,13 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-2 px-0">
-                                        <div class="input-group rounded">
+                                        <div class="input-group custom-input-group  rounded">
                                             <div class="form-floating flight-form">
                                                 <label for="roundtrip_preferred_airlines">Preferred Airlines</label>
-                                                <select class="form-control border-bottom-0 border-right roundtrip_preferred_airlines" id="roundtrip_preferred_airlines" name="roundtrip_preferred_airlines[]" multiple>
+                                                <select
+                                                    class="form-control border-bottom-0 border-right roundtrip_preferred_airlines"
+                                                    id="roundtrip_preferred_airlines"
+                                                    name="roundtrip_preferred_airlines[]" multiple>
                                                 </select>
                                             </div>
                                         </div>
@@ -428,7 +471,6 @@
     <script src="{{ url('assets') }}/module-assets/js/booking/search_box.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script>
-
         $('.oneway_from').select2({
             placeholder: 'Departure City/Airport',
             minimumInputLength: 2,
