@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 29, 2024 at 07:16 AM
+-- Generation Time: Sep 08, 2024 at 06:53 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -6239,8 +6239,12 @@ CREATE TABLE `bank_accounts` (
 --
 
 INSERT INTO `bank_accounts` (`id`, `bank_name`, `branch_name`, `routing_no`, `acc_holder_name`, `acc_no`, `swift_code`, `status`, `slug`, `created_at`, `updated_at`) VALUES
-(1, 'SIBL - Social Islami Bank PLC', 'New Eskaton', '225566', 'FaithTrip', '055134455877', '00214', 1, '321654987IUYI', '2024-07-04 07:11:30', '2024-07-04 07:33:43'),
-(2, 'The City Bank', 'Banani', '221144', 'FaithTrip - Habibur', '254477889901', '54052', 1, '721654987IAYI', '2024-07-04 07:11:59', '2024-07-04 07:33:34');
+(5, 'Islami Bank Bangladesh Ltd', 'Banani', '125260433', 'FAITH TRAVELS And TOURS LTD', '20503910100069217', NULL, 1, 'Cyw-1722408765', '2024-07-31 04:52:45', NULL),
+(6, 'United Commercial Bank', 'Gausul Azam Avenue', '245260450', 'FAITH TRAVELS & TOURS LTD', '1462101000008659', NULL, 1, 'J1J-1723978013', '2024-08-18 08:46:53', NULL),
+(7, 'City Bank Ltd', 'Gulshan Avenue', '225261732', 'FAITH TRAVELS & TOURS LTD', '1254079547001', NULL, 1, 'jUX-1723978063', '2024-08-18 08:47:43', NULL),
+(8, 'Dutch Bangla Bank Limited', 'Banani', '090260434', 'FAITH TRAVELS AND TOURS LTD', '1031100056392', NULL, 1, 'j14-1723978121', '2024-08-18 08:48:41', NULL),
+(9, 'Eastern Bank PLC', '100 Gulshan Avenue', '095261720', 'FAITH TRAVELS & TOURS LTD', '1041070002441', NULL, 1, '87c-1723978168', '2024-08-18 08:49:28', NULL),
+(10, 'Southeast Bank Limited', 'Banani', '205260432', 'FAITH TRAVELS & TOURS LTD', '002411100008602', NULL, 1, 'CUm-1723978251', '2024-08-18 08:50:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -15234,7 +15238,271 @@ CREATE TABLE `company_profiles` (
 
 INSERT INTO `company_profiles` (`id`, `user_id`, `name`, `logo`, `address`, `phone`, `email`, `tin`, `bin`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Getup Ltd.', 'companyLogo/edAFN1717060920.svg', 'Dhaka, Bangladesh', 'getuplimited@gmail.com', 'getuplimited@gmail.com', '45874589654', 'AAFFWE-12548', '2024-05-01 15:26:17', '2024-05-30 09:22:00'),
-(3, 3, 'Getup Ltd.', 'companyLogo/HhS871720192819.svg', 'Solomon and Clemons Plc', 'Dotson Case Associates', NULL, 'Adipisicing tempore', 'In sunt provident a', '2024-07-05 14:54:58', '2024-07-22 05:00:49');
+(3, 3, 'Getup Ltd.', 'companyLogo/HhS871720192819.svg', 'Solomon and Clemons Plc', 'Dotson Case Associates', NULL, 'Adipisicing tempore', 'In sunt provident a', '2024-07-05 14:54:58', '2024-07-05 15:21:14'),
+(4, 4, 'Faith Travels and Tours LTD', 'companyLogo/WwZnr1724837205.png', 'Abedin Tower(level 5), 35 Kamal Ataturk', '01896459495', NULL, NULL, NULL, '2024-08-28 07:26:45', NULL),
+(5, 5, 'Faith Travels and Tours LTD', 'companyLogo/eyl2u1724837309.jpg', 'Abedin Tower(level 5), 35 Kamal Ataturk', '01896459495', NULL, NULL, NULL, '2024-08-28 07:28:29', NULL),
+(6, 6, 'Faith Travels and Tours LTD', 'companyLogo/nIVRP1724906827.jpg', 'Abedin Tower(level 5), 35 Kamal Ataturk', '01717649044', NULL, NULL, NULL, '2024-08-29 02:47:07', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `country`
+--
+
+CREATE TABLE `country` (
+  `id` int(11) NOT NULL,
+  `iso` char(2) NOT NULL,
+  `name` varchar(80) NOT NULL,
+  `nicename` varchar(80) NOT NULL,
+  `iso3` char(3) DEFAULT NULL,
+  `numcode` smallint(6) DEFAULT NULL,
+  `phonecode` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `country`
+--
+
+INSERT INTO `country` (`id`, `iso`, `name`, `nicename`, `iso3`, `numcode`, `phonecode`) VALUES
+(1, 'AF', 'AFGHANISTAN', 'Afghanistan', 'AFG', 4, 93),
+(2, 'AL', 'ALBANIA', 'Albania', 'ALB', 8, 355),
+(3, 'DZ', 'ALGERIA', 'Algeria', 'DZA', 12, 213),
+(4, 'AS', 'AMERICAN SAMOA', 'American Samoa', 'ASM', 16, 1684),
+(5, 'AD', 'ANDORRA', 'Andorra', 'AND', 20, 376),
+(6, 'AO', 'ANGOLA', 'Angola', 'AGO', 24, 244),
+(7, 'AI', 'ANGUILLA', 'Anguilla', 'AIA', 660, 1264),
+(8, 'AQ', 'ANTARCTICA', 'Antarctica', NULL, NULL, 0),
+(9, 'AG', 'ANTIGUA AND BARBUDA', 'Antigua and Barbuda', 'ATG', 28, 1268),
+(10, 'AR', 'ARGENTINA', 'Argentina', 'ARG', 32, 54),
+(11, 'AM', 'ARMENIA', 'Armenia', 'ARM', 51, 374),
+(12, 'AW', 'ARUBA', 'Aruba', 'ABW', 533, 297),
+(13, 'AU', 'AUSTRALIA', 'Australia', 'AUS', 36, 61),
+(14, 'AT', 'AUSTRIA', 'Austria', 'AUT', 40, 43),
+(15, 'AZ', 'AZERBAIJAN', 'Azerbaijan', 'AZE', 31, 994),
+(16, 'BS', 'BAHAMAS', 'Bahamas', 'BHS', 44, 1242),
+(17, 'BH', 'BAHRAIN', 'Bahrain', 'BHR', 48, 973),
+(18, 'BD', 'BANGLADESH', 'Bangladesh', 'BGD', 50, 880),
+(19, 'BB', 'BARBADOS', 'Barbados', 'BRB', 52, 1246),
+(20, 'BY', 'BELARUS', 'Belarus', 'BLR', 112, 375),
+(21, 'BE', 'BELGIUM', 'Belgium', 'BEL', 56, 32),
+(22, 'BZ', 'BELIZE', 'Belize', 'BLZ', 84, 501),
+(23, 'BJ', 'BENIN', 'Benin', 'BEN', 204, 229),
+(24, 'BM', 'BERMUDA', 'Bermuda', 'BMU', 60, 1441),
+(25, 'BT', 'BHUTAN', 'Bhutan', 'BTN', 64, 975),
+(26, 'BO', 'BOLIVIA', 'Bolivia', 'BOL', 68, 591),
+(27, 'BA', 'BOSNIA AND HERZEGOVINA', 'Bosnia and Herzegovina', 'BIH', 70, 387),
+(28, 'BW', 'BOTSWANA', 'Botswana', 'BWA', 72, 267),
+(29, 'BV', 'BOUVET ISLAND', 'Bouvet Island', NULL, NULL, 0),
+(30, 'BR', 'BRAZIL', 'Brazil', 'BRA', 76, 55),
+(31, 'IO', 'BRITISH INDIAN OCEAN TERRITORY', 'British Indian Ocean Territory', NULL, NULL, 246),
+(32, 'BN', 'BRUNEI DARUSSALAM', 'Brunei Darussalam', 'BRN', 96, 673),
+(33, 'BG', 'BULGARIA', 'Bulgaria', 'BGR', 100, 359),
+(34, 'BF', 'BURKINA FASO', 'Burkina Faso', 'BFA', 854, 226),
+(35, 'BI', 'BURUNDI', 'Burundi', 'BDI', 108, 257),
+(36, 'KH', 'CAMBODIA', 'Cambodia', 'KHM', 116, 855),
+(37, 'CM', 'CAMEROON', 'Cameroon', 'CMR', 120, 237),
+(38, 'CA', 'CANADA', 'Canada', 'CAN', 124, 1),
+(39, 'CV', 'CAPE VERDE', 'Cape Verde', 'CPV', 132, 238),
+(40, 'KY', 'CAYMAN ISLANDS', 'Cayman Islands', 'CYM', 136, 1345),
+(41, 'CF', 'CENTRAL AFRICAN REPUBLIC', 'Central African Republic', 'CAF', 140, 236),
+(42, 'TD', 'CHAD', 'Chad', 'TCD', 148, 235),
+(43, 'CL', 'CHILE', 'Chile', 'CHL', 152, 56),
+(44, 'CN', 'CHINA', 'China', 'CHN', 156, 86),
+(45, 'CX', 'CHRISTMAS ISLAND', 'Christmas Island', NULL, NULL, 61),
+(46, 'CC', 'COCOS (KEELING) ISLANDS', 'Cocos (Keeling) Islands', NULL, NULL, 672),
+(47, 'CO', 'COLOMBIA', 'Colombia', 'COL', 170, 57),
+(48, 'KM', 'COMOROS', 'Comoros', 'COM', 174, 269),
+(49, 'CG', 'CONGO', 'Congo', 'COG', 178, 242),
+(50, 'CD', 'CONGO, THE DEMOCRATIC REPUBLIC OF THE', 'Congo, the Democratic Republic of the', 'COD', 180, 242),
+(51, 'CK', 'COOK ISLANDS', 'Cook Islands', 'COK', 184, 682),
+(52, 'CR', 'COSTA RICA', 'Costa Rica', 'CRI', 188, 506),
+(53, 'CI', 'COTE D\'IVOIRE', 'Cote D\'Ivoire', 'CIV', 384, 225),
+(54, 'HR', 'CROATIA', 'Croatia', 'HRV', 191, 385),
+(55, 'CU', 'CUBA', 'Cuba', 'CUB', 192, 53),
+(56, 'CY', 'CYPRUS', 'Cyprus', 'CYP', 196, 357),
+(57, 'CZ', 'CZECH REPUBLIC', 'Czech Republic', 'CZE', 203, 420),
+(58, 'DK', 'DENMARK', 'Denmark', 'DNK', 208, 45),
+(59, 'DJ', 'DJIBOUTI', 'Djibouti', 'DJI', 262, 253),
+(60, 'DM', 'DOMINICA', 'Dominica', 'DMA', 212, 1767),
+(61, 'DO', 'DOMINICAN REPUBLIC', 'Dominican Republic', 'DOM', 214, 1809),
+(62, 'EC', 'ECUADOR', 'Ecuador', 'ECU', 218, 593),
+(63, 'EG', 'EGYPT', 'Egypt', 'EGY', 818, 20),
+(64, 'SV', 'EL SALVADOR', 'El Salvador', 'SLV', 222, 503),
+(65, 'GQ', 'EQUATORIAL GUINEA', 'Equatorial Guinea', 'GNQ', 226, 240),
+(66, 'ER', 'ERITREA', 'Eritrea', 'ERI', 232, 291),
+(67, 'EE', 'ESTONIA', 'Estonia', 'EST', 233, 372),
+(68, 'ET', 'ETHIOPIA', 'Ethiopia', 'ETH', 231, 251),
+(69, 'FK', 'FALKLAND ISLANDS (MALVINAS)', 'Falkland Islands (Malvinas)', 'FLK', 238, 500),
+(70, 'FO', 'FAROE ISLANDS', 'Faroe Islands', 'FRO', 234, 298),
+(71, 'FJ', 'FIJI', 'Fiji', 'FJI', 242, 679),
+(72, 'FI', 'FINLAND', 'Finland', 'FIN', 246, 358),
+(73, 'FR', 'FRANCE', 'France', 'FRA', 250, 33),
+(74, 'GF', 'FRENCH GUIANA', 'French Guiana', 'GUF', 254, 594),
+(75, 'PF', 'FRENCH POLYNESIA', 'French Polynesia', 'PYF', 258, 689),
+(76, 'TF', 'FRENCH SOUTHERN TERRITORIES', 'French Southern Territories', NULL, NULL, 0),
+(77, 'GA', 'GABON', 'Gabon', 'GAB', 266, 241),
+(78, 'GM', 'GAMBIA', 'Gambia', 'GMB', 270, 220),
+(79, 'GE', 'GEORGIA', 'Georgia', 'GEO', 268, 995),
+(80, 'DE', 'GERMANY', 'Germany', 'DEU', 276, 49),
+(81, 'GH', 'GHANA', 'Ghana', 'GHA', 288, 233),
+(82, 'GI', 'GIBRALTAR', 'Gibraltar', 'GIB', 292, 350),
+(83, 'GR', 'GREECE', 'Greece', 'GRC', 300, 30),
+(84, 'GL', 'GREENLAND', 'Greenland', 'GRL', 304, 299),
+(85, 'GD', 'GRENADA', 'Grenada', 'GRD', 308, 1473),
+(86, 'GP', 'GUADELOUPE', 'Guadeloupe', 'GLP', 312, 590),
+(87, 'GU', 'GUAM', 'Guam', 'GUM', 316, 1671),
+(88, 'GT', 'GUATEMALA', 'Guatemala', 'GTM', 320, 502),
+(89, 'GN', 'GUINEA', 'Guinea', 'GIN', 324, 224),
+(90, 'GW', 'GUINEA-BISSAU', 'Guinea-Bissau', 'GNB', 624, 245),
+(91, 'GY', 'GUYANA', 'Guyana', 'GUY', 328, 592),
+(92, 'HT', 'HAITI', 'Haiti', 'HTI', 332, 509),
+(93, 'HM', 'HEARD ISLAND AND MCDONALD ISLANDS', 'Heard Island and Mcdonald Islands', NULL, NULL, 0),
+(94, 'VA', 'HOLY SEE (VATICAN CITY STATE)', 'Holy See (Vatican City State)', 'VAT', 336, 39),
+(95, 'HN', 'HONDURAS', 'Honduras', 'HND', 340, 504),
+(96, 'HK', 'HONG KONG', 'Hong Kong', 'HKG', 344, 852),
+(97, 'HU', 'HUNGARY', 'Hungary', 'HUN', 348, 36),
+(98, 'IS', 'ICELAND', 'Iceland', 'ISL', 352, 354),
+(99, 'IN', 'INDIA', 'India', 'IND', 356, 91),
+(100, 'ID', 'INDONESIA', 'Indonesia', 'IDN', 360, 62),
+(101, 'IR', 'IRAN, ISLAMIC REPUBLIC OF', 'Iran, Islamic Republic of', 'IRN', 364, 98),
+(102, 'IQ', 'IRAQ', 'Iraq', 'IRQ', 368, 964),
+(103, 'IE', 'IRELAND', 'Ireland', 'IRL', 372, 353),
+(104, 'IL', 'ISRAEL', 'Israel', 'ISR', 376, 972),
+(105, 'IT', 'ITALY', 'Italy', 'ITA', 380, 39),
+(106, 'JM', 'JAMAICA', 'Jamaica', 'JAM', 388, 1876),
+(107, 'JP', 'JAPAN', 'Japan', 'JPN', 392, 81),
+(108, 'JO', 'JORDAN', 'Jordan', 'JOR', 400, 962),
+(109, 'KZ', 'KAZAKHSTAN', 'Kazakhstan', 'KAZ', 398, 7),
+(110, 'KE', 'KENYA', 'Kenya', 'KEN', 404, 254),
+(111, 'KI', 'KIRIBATI', 'Kiribati', 'KIR', 296, 686),
+(112, 'KP', 'KOREA, DEMOCRATIC PEOPLE\'S REPUBLIC OF', 'Korea, Democratic People\'s Republic of', 'PRK', 408, 850),
+(113, 'KR', 'KOREA, REPUBLIC OF', 'Korea, Republic of', 'KOR', 410, 82),
+(114, 'KW', 'KUWAIT', 'Kuwait', 'KWT', 414, 965),
+(115, 'KG', 'KYRGYZSTAN', 'Kyrgyzstan', 'KGZ', 417, 996),
+(116, 'LA', 'LAO PEOPLE\'S DEMOCRATIC REPUBLIC', 'Lao People\'s Democratic Republic', 'LAO', 418, 856),
+(117, 'LV', 'LATVIA', 'Latvia', 'LVA', 428, 371),
+(118, 'LB', 'LEBANON', 'Lebanon', 'LBN', 422, 961),
+(119, 'LS', 'LESOTHO', 'Lesotho', 'LSO', 426, 266),
+(120, 'LR', 'LIBERIA', 'Liberia', 'LBR', 430, 231),
+(121, 'LY', 'LIBYAN ARAB JAMAHIRIYA', 'Libyan Arab Jamahiriya', 'LBY', 434, 218),
+(122, 'LI', 'LIECHTENSTEIN', 'Liechtenstein', 'LIE', 438, 423),
+(123, 'LT', 'LITHUANIA', 'Lithuania', 'LTU', 440, 370),
+(124, 'LU', 'LUXEMBOURG', 'Luxembourg', 'LUX', 442, 352),
+(125, 'MO', 'MACAO', 'Macao', 'MAC', 446, 853),
+(126, 'MK', 'MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF', 'Macedonia, the Former Yugoslav Republic of', 'MKD', 807, 389),
+(127, 'MG', 'MADAGASCAR', 'Madagascar', 'MDG', 450, 261),
+(128, 'MW', 'MALAWI', 'Malawi', 'MWI', 454, 265),
+(129, 'MY', 'MALAYSIA', 'Malaysia', 'MYS', 458, 60),
+(130, 'MV', 'MALDIVES', 'Maldives', 'MDV', 462, 960),
+(131, 'ML', 'MALI', 'Mali', 'MLI', 466, 223),
+(132, 'MT', 'MALTA', 'Malta', 'MLT', 470, 356),
+(133, 'MH', 'MARSHALL ISLANDS', 'Marshall Islands', 'MHL', 584, 692),
+(134, 'MQ', 'MARTINIQUE', 'Martinique', 'MTQ', 474, 596),
+(135, 'MR', 'MAURITANIA', 'Mauritania', 'MRT', 478, 222),
+(136, 'MU', 'MAURITIUS', 'Mauritius', 'MUS', 480, 230),
+(137, 'YT', 'MAYOTTE', 'Mayotte', NULL, NULL, 269),
+(138, 'MX', 'MEXICO', 'Mexico', 'MEX', 484, 52),
+(139, 'FM', 'MICRONESIA, FEDERATED STATES OF', 'Micronesia, Federated States of', 'FSM', 583, 691),
+(140, 'MD', 'MOLDOVA, REPUBLIC OF', 'Moldova, Republic of', 'MDA', 498, 373),
+(141, 'MC', 'MONACO', 'Monaco', 'MCO', 492, 377),
+(142, 'MN', 'MONGOLIA', 'Mongolia', 'MNG', 496, 976),
+(143, 'MS', 'MONTSERRAT', 'Montserrat', 'MSR', 500, 1664),
+(144, 'MA', 'MOROCCO', 'Morocco', 'MAR', 504, 212),
+(145, 'MZ', 'MOZAMBIQUE', 'Mozambique', 'MOZ', 508, 258),
+(146, 'MM', 'MYANMAR', 'Myanmar', 'MMR', 104, 95),
+(147, 'NA', 'NAMIBIA', 'Namibia', 'NAM', 516, 264),
+(148, 'NR', 'NAURU', 'Nauru', 'NRU', 520, 674),
+(149, 'NP', 'NEPAL', 'Nepal', 'NPL', 524, 977),
+(150, 'NL', 'NETHERLANDS', 'Netherlands', 'NLD', 528, 31),
+(151, 'AN', 'NETHERLANDS ANTILLES', 'Netherlands Antilles', 'ANT', 530, 599),
+(152, 'NC', 'NEW CALEDONIA', 'New Caledonia', 'NCL', 540, 687),
+(153, 'NZ', 'NEW ZEALAND', 'New Zealand', 'NZL', 554, 64),
+(154, 'NI', 'NICARAGUA', 'Nicaragua', 'NIC', 558, 505),
+(155, 'NE', 'NIGER', 'Niger', 'NER', 562, 227),
+(156, 'NG', 'NIGERIA', 'Nigeria', 'NGA', 566, 234),
+(157, 'NU', 'NIUE', 'Niue', 'NIU', 570, 683),
+(158, 'NF', 'NORFOLK ISLAND', 'Norfolk Island', 'NFK', 574, 672),
+(159, 'MP', 'NORTHERN MARIANA ISLANDS', 'Northern Mariana Islands', 'MNP', 580, 1670),
+(160, 'NO', 'NORWAY', 'Norway', 'NOR', 578, 47),
+(161, 'OM', 'OMAN', 'Oman', 'OMN', 512, 968),
+(162, 'PK', 'PAKISTAN', 'Pakistan', 'PAK', 586, 92),
+(163, 'PW', 'PALAU', 'Palau', 'PLW', 585, 680),
+(164, 'PS', 'PALESTINIAN TERRITORY, OCCUPIED', 'Palestinian Territory, Occupied', NULL, NULL, 970),
+(165, 'PA', 'PANAMA', 'Panama', 'PAN', 591, 507),
+(166, 'PG', 'PAPUA NEW GUINEA', 'Papua New Guinea', 'PNG', 598, 675),
+(167, 'PY', 'PARAGUAY', 'Paraguay', 'PRY', 600, 595),
+(168, 'PE', 'PERU', 'Peru', 'PER', 604, 51),
+(169, 'PH', 'PHILIPPINES', 'Philippines', 'PHL', 608, 63),
+(170, 'PN', 'PITCAIRN', 'Pitcairn', 'PCN', 612, 0),
+(171, 'PL', 'POLAND', 'Poland', 'POL', 616, 48),
+(172, 'PT', 'PORTUGAL', 'Portugal', 'PRT', 620, 351),
+(173, 'PR', 'PUERTO RICO', 'Puerto Rico', 'PRI', 630, 1787),
+(174, 'QA', 'QATAR', 'Qatar', 'QAT', 634, 974),
+(175, 'RE', 'REUNION', 'Reunion', 'REU', 638, 262),
+(176, 'RO', 'ROMANIA', 'Romania', 'ROM', 642, 40),
+(177, 'RU', 'RUSSIAN FEDERATION', 'Russian Federation', 'RUS', 643, 70),
+(178, 'RW', 'RWANDA', 'Rwanda', 'RWA', 646, 250),
+(179, 'SH', 'SAINT HELENA', 'Saint Helena', 'SHN', 654, 290),
+(180, 'KN', 'SAINT KITTS AND NEVIS', 'Saint Kitts and Nevis', 'KNA', 659, 1869),
+(181, 'LC', 'SAINT LUCIA', 'Saint Lucia', 'LCA', 662, 1758),
+(182, 'PM', 'SAINT PIERRE AND MIQUELON', 'Saint Pierre and Miquelon', 'SPM', 666, 508),
+(183, 'VC', 'SAINT VINCENT AND THE GRENADINES', 'Saint Vincent and the Grenadines', 'VCT', 670, 1784),
+(184, 'WS', 'SAMOA', 'Samoa', 'WSM', 882, 684),
+(185, 'SM', 'SAN MARINO', 'San Marino', 'SMR', 674, 378),
+(186, 'ST', 'SAO TOME AND PRINCIPE', 'Sao Tome and Principe', 'STP', 678, 239),
+(187, 'SA', 'SAUDI ARABIA', 'Saudi Arabia', 'SAU', 682, 966),
+(188, 'SN', 'SENEGAL', 'Senegal', 'SEN', 686, 221),
+(189, 'CS', 'SERBIA AND MONTENEGRO', 'Serbia and Montenegro', NULL, NULL, 381),
+(190, 'SC', 'SEYCHELLES', 'Seychelles', 'SYC', 690, 248),
+(191, 'SL', 'SIERRA LEONE', 'Sierra Leone', 'SLE', 694, 232),
+(192, 'SG', 'SINGAPORE', 'Singapore', 'SGP', 702, 65),
+(193, 'SK', 'SLOVAKIA', 'Slovakia', 'SVK', 703, 421),
+(194, 'SI', 'SLOVENIA', 'Slovenia', 'SVN', 705, 386),
+(195, 'SB', 'SOLOMON ISLANDS', 'Solomon Islands', 'SLB', 90, 677),
+(196, 'SO', 'SOMALIA', 'Somalia', 'SOM', 706, 252),
+(197, 'ZA', 'SOUTH AFRICA', 'South Africa', 'ZAF', 710, 27),
+(198, 'GS', 'SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS', 'South Georgia and the South Sandwich Islands', NULL, NULL, 0),
+(199, 'ES', 'SPAIN', 'Spain', 'ESP', 724, 34),
+(200, 'LK', 'SRI LANKA', 'Sri Lanka', 'LKA', 144, 94),
+(201, 'SD', 'SUDAN', 'Sudan', 'SDN', 736, 249),
+(202, 'SR', 'SURINAME', 'Suriname', 'SUR', 740, 597),
+(203, 'SJ', 'SVALBARD AND JAN MAYEN', 'Svalbard and Jan Mayen', 'SJM', 744, 47),
+(204, 'SZ', 'SWAZILAND', 'Swaziland', 'SWZ', 748, 268),
+(205, 'SE', 'SWEDEN', 'Sweden', 'SWE', 752, 46),
+(206, 'CH', 'SWITZERLAND', 'Switzerland', 'CHE', 756, 41),
+(207, 'SY', 'SYRIAN ARAB REPUBLIC', 'Syrian Arab Republic', 'SYR', 760, 963),
+(208, 'TW', 'TAIWAN, PROVINCE OF CHINA', 'Taiwan, Province of China', 'TWN', 158, 886),
+(209, 'TJ', 'TAJIKISTAN', 'Tajikistan', 'TJK', 762, 992),
+(210, 'TZ', 'TANZANIA, UNITED REPUBLIC OF', 'Tanzania, United Republic of', 'TZA', 834, 255),
+(211, 'TH', 'THAILAND', 'Thailand', 'THA', 764, 66),
+(212, 'TL', 'TIMOR-LESTE', 'Timor-Leste', NULL, NULL, 670),
+(213, 'TG', 'TOGO', 'Togo', 'TGO', 768, 228),
+(214, 'TK', 'TOKELAU', 'Tokelau', 'TKL', 772, 690),
+(215, 'TO', 'TONGA', 'Tonga', 'TON', 776, 676),
+(216, 'TT', 'TRINIDAD AND TOBAGO', 'Trinidad and Tobago', 'TTO', 780, 1868),
+(217, 'TN', 'TUNISIA', 'Tunisia', 'TUN', 788, 216),
+(218, 'TR', 'TURKEY', 'Turkey', 'TUR', 792, 90),
+(219, 'TM', 'TURKMENISTAN', 'Turkmenistan', 'TKM', 795, 7370),
+(220, 'TC', 'TURKS AND CAICOS ISLANDS', 'Turks and Caicos Islands', 'TCA', 796, 1649),
+(221, 'TV', 'TUVALU', 'Tuvalu', 'TUV', 798, 688),
+(222, 'UG', 'UGANDA', 'Uganda', 'UGA', 800, 256),
+(223, 'UA', 'UKRAINE', 'Ukraine', 'UKR', 804, 380),
+(224, 'AE', 'UAE', 'UAE', 'ARE', 784, 971),
+(225, 'GB', 'UNITED KINGDOM', 'United Kingdom', 'GBR', 826, 44),
+(226, 'US', 'UNITED STATES', 'United States', 'USA', 840, 1),
+(227, 'UM', 'UNITED STATES MINOR OUTLYING ISLANDS', 'United States Minor Outlying Islands', NULL, NULL, 1),
+(228, 'UY', 'URUGUAY', 'Uruguay', 'URY', 858, 598),
+(229, 'UZ', 'UZBEKISTAN', 'Uzbekistan', 'UZB', 860, 998),
+(230, 'VU', 'VANUATU', 'Vanuatu', 'VUT', 548, 678),
+(231, 'VE', 'VENEZUELA', 'Venezuela', 'VEN', 862, 58),
+(232, 'VN', 'VIET NAM', 'Viet Nam', 'VNM', 704, 84),
+(233, 'VG', 'VIRGIN ISLANDS, BRITISH', 'Virgin Islands, British', 'VGB', 92, 1284),
+(234, 'VI', 'VIRGIN ISLANDS, U.S.', 'Virgin Islands, U.s.', 'VIR', 850, 1340),
+(235, 'WF', 'WALLIS AND FUTUNA', 'Wallis and Futuna', 'WLF', 876, 681),
+(236, 'EH', 'WESTERN SAHARA', 'Western Sahara', 'ESH', 732, 212),
+(237, 'YE', 'YEMEN', 'Yemen', 'YEM', 887, 967),
+(238, 'ZM', 'ZAMBIA', 'Zambia', 'ZMB', 894, 260),
+(239, 'ZW', 'ZIMBABWE', 'Zimbabwe', 'ZWE', 716, 263);
 
 -- --------------------------------------------------------
 
@@ -15336,6 +15604,7 @@ CREATE TABLE `flight_bookings` (
   `ticket_issued_at` varchar(255) DEFAULT NULL,
   `ticket_cancelled_at` varchar(255) DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '0=>Booking Request Sent; 1=>Booking Done; 2=>Ticketing Done; 3=>Booking Cancelled; 4=>Ticket Cancelled',
+  `is_live` tinyint(4) DEFAULT NULL COMMENT '1=>Live Booking; 0=>Sandbox Booking',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -15344,9 +15613,19 @@ CREATE TABLE `flight_bookings` (
 -- Dumping data for table `flight_bookings`
 --
 
-INSERT INTO `flight_bookings` (`id`, `booking_no`, `booked_by`, `b2b_comission`, `pnr_id`, `booking_id`, `ticket_id`, `gds`, `gds_unique_id`, `traveller_name`, `traveller_email`, `traveller_contact`, `departure_date`, `departure_location`, `arrival_location`, `governing_carriers`, `adult`, `child`, `infant`, `base_fare_amount`, `total_tax_amount`, `total_fare`, `currency`, `last_booking_cancel_datetime`, `last_ticket_datetime`, `last_ticket_cancel_datetime`, `booking_cancelled_at`, `ticket_issued_at`, `ticket_cancelled_at`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'LTN-1717958526', 1, 0, 'QLIHZD', NULL, NULL, 'Sabre', 'SOOL', 'Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-06-14', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 11048, 1950, 12998, 'BDT', NULL, '2024-06-10 04:41:00', NULL, '2024-06-10 00:46:24', NULL, NULL, 3, '2024-06-09 18:42:06', '2024-06-09 18:46:24'),
-(2, '8ZD-1720194419', 3, 5, 'OQQPNE', NULL, NULL, 'Sabre', 'SOOL', 'Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-08-06', 'DAC', 'CXB', 'BS', '1', '0', '0', 5524, 975, 6499, 'BDT', NULL, '2024-07-07 23:59:00', NULL, NULL, NULL, NULL, 1, '2024-07-05 15:46:59', NULL);
+INSERT INTO `flight_bookings` (`id`, `booking_no`, `booked_by`, `b2b_comission`, `pnr_id`, `booking_id`, `ticket_id`, `gds`, `gds_unique_id`, `traveller_name`, `traveller_email`, `traveller_contact`, `departure_date`, `departure_location`, `arrival_location`, `governing_carriers`, `adult`, `child`, `infant`, `base_fare_amount`, `total_tax_amount`, `total_fare`, `currency`, `last_booking_cancel_datetime`, `last_ticket_datetime`, `last_ticket_cancel_datetime`, `booking_cancelled_at`, `ticket_issued_at`, `ticket_cancelled_at`, `status`, `is_live`, `created_at`, `updated_at`) VALUES
+(1, 'LTN-1717958526', 1, 0, 'QLIHZD', NULL, NULL, 'Sabre', 'SOOL', 'Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-06-14', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 11048, 1950, 12998, 'BDT', NULL, '2024-06-10 04:41:00', NULL, '2024-06-10 00:46:24', NULL, NULL, 3, NULL, '2024-06-09 18:42:06', '2024-06-09 18:46:24'),
+(2, '8ZD-1720194419', 1, 0, 'OQQPNE', NULL, NULL, 'Sabre', 'SOOL', 'Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-08-06', 'DAC', 'CXB', 'BS', '1', '0', '0', 5524, 975, 6499, 'BDT', NULL, '2024-07-07 23:59:00', NULL, NULL, NULL, NULL, 1, NULL, '2024-07-05 15:46:59', NULL),
+(3, 'GhL-1722061954', 1, 0, 'CCUGMV', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-08-01', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 10050, 1950, 12000, 'BDT', NULL, '2024-07-27 16:30:00', NULL, '2024-07-27 12:36:27', NULL, NULL, 3, NULL, '2024-07-27 04:32:34', '2024-07-27 04:36:27'),
+(4, 'ZDd-1722062743', 1, 0, 'GEXYDP', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-09-09', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 11048, 1950, 12998, 'BDT', NULL, '2024-07-29 23:59:00', NULL, '2024-07-27 12:46:02', NULL, NULL, 3, NULL, '2024-07-27 04:45:43', '2024-07-27 04:46:02'),
+(5, 'lB7-1722062883', 1, 0, 'GFWZZT', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-08-01', 'DAC', 'CXB', 'BS', '1', '0', '0', 5524, 975, 6499, 'BDT', NULL, '2024-07-27 16:46:00', NULL, '2024-07-27 12:55:33', NULL, NULL, 3, NULL, '2024-07-27 04:48:03', '2024-07-27 04:55:33'),
+(6, 'rUP-1722063267', 1, 0, 'DYMWYU', NULL, NULL, 'Sabre', 'SOOL', 'AHM HABIBUR RAHMAN', 'director@faithtrip.net', '+8801717649044', '2024-09-09', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 42465.6, 13466, 55932, 'BDT', NULL, '2024-07-29 23:59:00', NULL, '2024-07-27 12:57:48', NULL, NULL, 3, NULL, '2024-07-27 04:54:27', '2024-07-27 04:57:48'),
+(7, 'JPc-1722064138', 1, 0, NULL, NULL, NULL, 'Sabre', 'SOOL', 'AHM HABIBUR RAHMAN', 'adrito642@gmail.com', '+8801717649044', '2024-09-19', 'DAC', 'DAC', 'TK TK TK TK', '1', '0', '0', 301977.6, 116677, 418655, 'BDT', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2024-07-27 05:08:58', NULL),
+(8, 'tVv-1722064337', 1, 0, 'CAUWVH', NULL, NULL, 'Sabre', 'SOOL', 'AHM HABIBUR RAHMAN', 'adrito642@gmail.com', '01896459495', '2024-08-15', 'DAC', 'DEL', 'AI', '1', '0', '0', 22412.4, 4794, 27207, 'BDT', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2024-07-27 05:12:17', NULL),
+(9, 'i1z-1724825495', 1, 0, 'HTNLIN', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-09-05', 'DAC', 'CXB', 'BG', '1', '0', '0', 5024, 975, 5999, 'BDT', NULL, '2024-08-29 08:10:00', NULL, '2024-08-28 14:34:01', NULL, NULL, 3, 1, '2024-08-28 04:11:35', '2024-08-28 06:34:01'),
+(10, 'ond-1724834504', 1, 0, 'DXXZVJ', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-09-19', 'DAC', 'CXB', 'BG', '2', '0', '0', 10048, 1950, 11998, 'BDT', NULL, '2024-08-29 23:59:00', NULL, '2024-08-28 14:44:28', NULL, NULL, 3, 1, '2024-08-28 06:41:44', '2024-08-28 06:44:28'),
+(11, 'FuC-1725354022', 1, 0, NULL, NULL, NULL, 'Sabre', 'SOOL', 'Md Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-11-10', 'DAC', 'CXB', 'BS', '1', '0', '0', 5975, 975, 6950, 'BDT', NULL, '2024-09-05 23:59:00', NULL, NULL, NULL, NULL, 0, 1, '2024-09-03 07:00:22', NULL),
+(12, '27f-1725354263', 1, 0, 'FOUQRV', NULL, NULL, 'Sabre', 'SOOL', 'Md Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-11-10', 'DAC', 'DEL', 'AI', '1', '0', '0', 10694.7, 4807, 15502, 'BDT', NULL, '2024-11-10 15:00:00', NULL, NULL, '2024-09-03 15:11:33', NULL, 4, 1, '2024-09-03 07:04:23', '2024-09-03 07:11:33');
 
 -- --------------------------------------------------------
 
@@ -15367,6 +15646,7 @@ CREATE TABLE `flight_passangers` (
   `document_expire_date` varchar(255) DEFAULT NULL,
   `document_issue_country` varchar(255) DEFAULT NULL,
   `nationality` varchar(255) DEFAULT NULL,
+  `frequent_flyer_no` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -15375,9 +15655,20 @@ CREATE TABLE `flight_passangers` (
 -- Dumping data for table `flight_passangers`
 --
 
-INSERT INTO `flight_passangers` (`id`, `flight_booking_id`, `passanger_type`, `title`, `first_name`, `last_name`, `dob`, `document_type`, `document_no`, `document_expire_date`, `document_issue_country`, `nationality`, `created_at`, `updated_at`) VALUES
-(1, 1, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '98798654', '2029-12-10', 'BGD', 'BGD', '2024-06-09 18:42:06', NULL),
-(2, 2, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '987654321', '2029-12-10', 'BGD', 'BGD', '2024-07-05 15:46:59', NULL);
+INSERT INTO `flight_passangers` (`id`, `flight_booking_id`, `passanger_type`, `title`, `first_name`, `last_name`, `dob`, `document_type`, `document_no`, `document_expire_date`, `document_issue_country`, `nationality`, `frequent_flyer_no`, `created_at`, `updated_at`) VALUES
+(1, 1, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '98798654', '2029-12-10', 'BGD', 'BGD', NULL, '2024-06-09 18:42:06', NULL),
+(2, 2, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '987654321', '2029-12-10', 'BGD', 'BGD', NULL, '2024-07-05 15:46:59', NULL),
+(3, 3, 'ADT', NULL, 'ADRITO', 'Mustafa', '2024-07-27', '2', '7355279675', '2028-11-10', 'BGD', 'BGD', NULL, '2024-07-27 04:32:34', NULL),
+(4, 4, 'ADT', NULL, 'ADRITO', 'Mustafa', '1999-10-30', '2', '7355279675', '2024-11-30', 'BGD', 'BGD', NULL, '2024-07-27 04:45:43', NULL),
+(5, 5, 'ADT', NULL, 'ADRITO', 'Mustafa', '1999-10-30', '2', '7355279675', '2027-10-21', 'BGD', 'BGD', NULL, '2024-07-27 04:48:03', NULL),
+(6, 6, 'ADT', NULL, 'AHM HABIBUR', 'RAHMAN', '1985-12-10', '1', 'A07499632', '2033-05-16', 'BGD', 'BGD', NULL, '2024-07-27 04:54:27', NULL),
+(7, 7, 'ADT', NULL, 'AHM HABIBUR', 'RAHMAN', '1985-12-10', '1', 'A07499632', '2033-05-16', 'BGD', 'BGD', NULL, '2024-07-27 05:08:58', NULL),
+(8, 8, 'ADT', NULL, 'AHM HABIBUR', 'RAHMAN', '1985-12-10', '1', 'A07499632', '2033-05-16', 'BGD', 'BGD', NULL, '2024-07-27 05:12:17', NULL),
+(9, 9, 'ADT', NULL, 'Adrito', 'Mustafa', '1999-10-30', '2', '7355279675', '2024-08-21', 'BGD', 'BGD', NULL, '2024-08-28 04:11:35', NULL),
+(10, 10, 'ADT', NULL, 'Adrito', 'Mustafa', '1999-10-30', '2', '7355279675', '2021-08-26', 'BGD', 'BGD', NULL, '2024-08-28 06:41:44', NULL),
+(11, 10, 'ADT', NULL, 'Sabrina Hossain', 'Fariha', '2000-12-08', '2', '4213426739', '2024-08-15', 'BGD', 'BGD', NULL, '2024-08-28 06:41:44', NULL),
+(12, 11, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '321654987', '2026-12-10', 'BGD', 'BGD', NULL, '2024-09-03 07:00:22', NULL),
+(13, 12, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '123123213', '1998-12-10', 'BGD', 'BGD', NULL, '2024-09-03 07:04:23', NULL);
 
 -- --------------------------------------------------------
 
@@ -15419,7 +15710,23 @@ CREATE TABLE `flight_segments` (
 INSERT INTO `flight_segments` (`id`, `flight_booking_id`, `total_miles_flown`, `elapsed_time`, `booking_code`, `cabin_code`, `baggage_allowance`, `departure_airport_code`, `departure_city_code`, `departure_country_code`, `departure_time`, `departure_terminal`, `arrival_airport_code`, `arrival_city_code`, `arrival_country_code`, `arrival_time`, `arrival_terminal`, `carrier_marketing_code`, `carrier_marketing_flight_number`, `carrier_operating_code`, `carrier_operating_flight_number`, `carrier_equipment_code`, `created_at`, `updated_at`) VALUES
 (1, 1, '189', '65', 'T', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '13:50:00+06:00', 'D', 'CXB', 'CXB', 'BD', '14:55:00+06:00', NULL, 'BS', '151', 'BS', '151', 'AT7', '2024-06-09 18:42:06', NULL),
 (2, 1, '189', '65', 'T', 'Y', '20 kg', 'CXB', 'CXB', 'BD', '14:15:00+06:00', NULL, 'DAC', 'DAC', 'BD', '15:20:00+06:00', 'D', 'BS', '150', 'BS', '150', 'AT7', '2024-06-09 18:42:06', NULL),
-(3, 2, '189', '65', 'T', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '07:15:00+06:00', 'D', 'CXB', 'CXB', 'BD', '08:20:00+06:00', NULL, 'BS', '141', 'BS', '141', 'AT7', '2024-07-05 15:46:59', NULL);
+(3, 2, '189', '65', 'T', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '07:15:00+06:00', 'D', 'CXB', 'CXB', 'BD', '08:20:00+06:00', NULL, 'BS', '141', 'BS', '141', 'AT7', '2024-07-05 15:46:59', NULL),
+(4, 3, '139', '55', 'X', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '12:10:00+06:00', 'D', 'CGP', 'CGP', 'BD', '13:05:00+06:00', NULL, 'BS', '107', 'BS', '107', 'AT7', '2024-07-27 04:32:34', NULL),
+(5, 3, '139', '50', 'X', 'Y', '20 kg', 'CGP', 'CGP', 'BD', '20:00:00+06:00', NULL, 'DAC', 'DAC', 'BD', '20:50:00+06:00', '1', 'BS', '344', 'BS', '344', '738', '2024-07-27 04:32:34', NULL),
+(6, 4, '189', '65', 'T', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '11:30:00+06:00', 'D', 'CXB', 'CXB', 'BD', '12:35:00+06:00', NULL, 'BS', '147', 'BS', '147', 'AT7', '2024-07-27 04:45:43', NULL),
+(7, 4, '189', '65', 'T', 'Y', '20 kg', 'CXB', 'CXB', 'BD', '10:35:00+06:00', NULL, 'DAC', 'DAC', 'BD', '11:40:00+06:00', 'D', 'BS', '144', 'BS', '144', 'AT7', '2024-07-27 04:45:43', NULL),
+(8, 5, '189', '65', 'T', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '07:15:00+06:00', 'D', 'CXB', 'CXB', 'BD', '08:20:00+06:00', NULL, 'BS', '141', 'BS', '141', 'AT7', '2024-07-27 04:48:03', NULL),
+(9, 6, '2202', '295', 'K', 'Y', '30 kg', 'DAC', 'DAC', 'BD', '22:30:00+06:00', '1', 'DXB', 'DXB', 'AE', '01:25:00+04:00', '1', 'BS', '341', 'BS', '341', '333', '2024-07-27 04:54:27', NULL),
+(10, 6, '2451', '380', 'K', 'Y', '30 kg', 'DXB', 'DXB', 'AE', '12:30:00+04:00', '1', 'DAC', 'DAC', 'BD', '20:50:00+06:00', '1', 'BS', '344', 'BS', '344', '738', '2024-07-27 04:54:27', NULL),
+(11, 7, '3713', '535', 'K', 'C', '50 kg', 'DAC', 'DAC', 'BD', '06:20:00+06:00', NULL, 'IST', 'IST', 'TR', '12:15:00+03:00', NULL, 'TK', '713', 'TK', '713', '333', '2024-07-27 05:08:58', NULL),
+(12, 7, '1550', '235', 'K', 'C', '50 kg', 'IST', 'IST', 'TR', '14:55:00+03:00', NULL, 'LHR', 'LON', 'GB', '16:50:00+01:00', '2', 'TK', '1971', 'TK', '1971', '77W', '2024-07-27 05:08:58', NULL),
+(13, 7, '1550', '240', 'K', 'C', '50 kg', 'LHR', 'LON', 'GB', '06:35:00+01:00', '2', 'IST', 'IST', 'TR', '12:35:00+03:00', NULL, 'TK', '1988', 'TK', '1988', '32Q', '2024-07-27 05:08:58', NULL),
+(14, 7, '3713', '455', 'K', 'C', '50 kg', 'IST', 'IST', 'TR', '18:15:00+03:00', NULL, 'DAC', 'DAC', 'BD', '04:50:00+06:00', NULL, 'TK', '712', 'TK', '712', '333', '2024-07-27 05:08:58', NULL),
+(15, 8, '887', '145', 'K', 'Y', '30 kg', 'DAC', 'DAC', 'BD', '15:00:00+06:00', '2', 'DEL', 'DEL', 'IN', '16:55:00+05:30', '3', 'AI', '228', 'AI', '228', '320', '2024-07-27 05:12:17', NULL),
+(16, 9, '189', '75', 'G', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '11:30:00+06:00', 'D', 'CXB', 'CXB', 'BD', '12:45:00+06:00', NULL, 'BG', '435', 'BG', '435', 'DH8', '2024-08-28 04:11:35', NULL),
+(17, 10, '189', '75', 'G', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '10:15:00+06:00', 'D', 'CXB', 'CXB', 'BD', '11:30:00+06:00', NULL, 'BG', '433', 'BG', '433', 'DH8', '2024-08-28 06:41:44', NULL),
+(18, 11, '189', '65', 'X', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '07:45:00+06:00', 'D', 'CXB', 'CXB', 'BD', '08:50:00+06:00', NULL, 'BS', '141', 'BS', '141', 'AT7', '2024-09-03 07:00:22', NULL),
+(19, 12, '887', '150', 'U', 'Y', '30 kg', 'DAC', 'DAC', 'BD', '15:00:00+06:00', '2', 'DEL', 'DEL', 'IN', '17:00:00+05:30', '3', 'AI', '228', 'AI', '228', '320', '2024-09-03 07:04:23', NULL);
 
 -- --------------------------------------------------------
 
@@ -15586,9 +15893,10 @@ CREATE TABLE `recharge_requests` (
 --
 
 INSERT INTO `recharge_requests` (`id`, `user_id`, `admin_bank_account_id`, `admin_mfs_account_id`, `payment_method`, `acc_holder_name`, `acc_no`, `cheque_no`, `cheque_bank_name`, `deposite_date`, `bank_name`, `branch_name`, `routing_no`, `swift_code`, `mobile_no`, `recharge_amount`, `transaction_id`, `attachment`, `remarks`, `status`, `slug`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, NULL, 1, 'Md Fahim Hossain', '22558877401', NULL, NULL, NULL, 'Midland Bank Ltd.', 'Banani', '5874', NULL, NULL, 25000, '23423424', 'recharge_attachments/gRpYu1720090659.docx', 'Testing', 0, 'UYTTRE987654', '2024-07-04 10:57:39', NULL),
 (2, 1, NULL, NULL, 2, NULL, NULL, '11887458020', 'The City Bank', '2024-07-18', NULL, NULL, NULL, NULL, NULL, 50000, '987654321', 'recharge_attachments/VQFAt1720090722.docx', 'Testing', 2, 'UYTTRE987602', '2024-07-04 10:58:42', '2024-07-04 11:30:31'),
-(3, 1, NULL, 3, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '01969005035', 6000, '7854789658', NULL, 'Testing BKash', 1, 'UYTTRE987603', '2024-07-04 10:59:57', '2024-07-04 11:28:35');
+(3, 1, NULL, 3, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '01969005035', 6000, '7854789658', NULL, 'Testing BKash', 1, 'UYTTRE987603', '2024-07-04 10:59:57', '2024-07-04 11:28:35'),
+(4, 1, 5, NULL, 1, 'FAITH TRAVELS And TOURS LTD', '20503910100069217', NULL, NULL, NULL, 'Islami Bank Bangladesh Ltd', 'Banani', '125260433', NULL, NULL, 50000, '234', NULL, NULL, 0, 'EXIib1724906914', '2024-08-29 02:48:34', NULL),
+(5, 6, 5, NULL, 1, 'FAITH TRAVELS And TOURS LTD', '20503910100069217', NULL, NULL, NULL, 'Islami Bank Bangladesh Ltd', 'Banani', '125260433', NULL, NULL, 50000, '234', NULL, NULL, 0, 'Ljkeh1724907022', '2024-08-29 02:50:22', NULL);
 
 -- --------------------------------------------------------
 
@@ -15614,7 +15922,7 @@ CREATE TABLE `sabre_gds_configs` (
 --
 
 INSERT INTO `sabre_gds_configs` (`id`, `gds_id`, `user_id`, `password`, `production_user_id`, `production_password`, `is_production`, `description`, `created_at`, `updated_at`) VALUES
-(1, 2, 'V1:470936:S00L:AA', 'f5t3t7l2', 'V1:470936:S00L:AA', 'ft7lq3nz', 1, '<p>Contact Email: webservices.support@sabre.com</p>\r\n\r\n<p>https://accounts.cert.havail.sabre.com/login/sc<br />\r\nAgent ID/EPRs: 470936<br />\r\nPassword:&nbsp;BC5C0VG1<br />\r\nPCC: S00L</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>1. For Auth Token (Authentication Traditional - Rest OAuth Token Create /v2)<br />\r\n=========================================================================<br />\r\nhttps://api-crt.cert.havail.sabre.com/v2/auth/token<br />\r\nhttps://api.cert.platform.sabre.com/v2/auth/token (recommended)<br />\r\nhttps://api.platform.sabre.com/v2/auth/token</p>\r\n\r\n<p>To Convert into Base64: https://www.base64encode.org</p>\r\n\r\n<p>To get this Info: https://developer.sabre.com/user/alifhossain174gmailcom/applications<br />\r\nAuthorization Header Format: base64(base64(V1:user:group:domain):base64(password))<br />\r\nUsing My Dev Credentials: base64(base64(V1:hxp6cy145bjv5hy9:DEVCENTER:EXT):base64(Hp8tT6iN))<br />\r\nAfter Converting into Base64: Basic VjE6aHhwNmN5MTQ1Ymp2NWh5OTpERVZDRU5URVI6RVhU:SHA4dFQ2aU4</p>\r\n\r\n<p>sample Response<br />\r\n{<br />\r\n&nbsp;&nbsp;&nbsp; &quot;access_token&quot;: &quot;T1RLAQJgnnhf+y99xCxdXrEl6WovKnVfML9A5IcqobADhomEgBDNw4Btd1WLbn9rP99NxPfoAADgZl9agoTmznRiqHKD9Vwol6EayaPWbeJqwLqjgqg5isGVSorsWJBAIVsjXNxpD47ys8xv3sx3/ExNqza8UNBcwA4GGHgPzu0cXOeWWo07Ih8t8ZY0mwGwM10lO5qVW/yJZoaBA/20J02ZU5ztNsjSUt7ooYJ4yvXPc7X1zBkJEUawD7RDywzLQv3V8APMD814ziSkNktinPuvT64glmZcA9Rhmy9jZ8DiE0tYhn4V6ubKn/8gzifojjibwNY/NJPn6qvdmAmGpOmPDI5fTV13I5+CHA0rv73xM+cRdzNVn0o*&quot;,<br />\r\n&nbsp;&nbsp;&nbsp; &quot;token_type&quot;: &quot;bearer&quot;,<br />\r\n&nbsp;&nbsp;&nbsp; &quot;expires_in&quot;: 604800<br />\r\n}</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>2. For Air Search (Air Shopping - Standard Shopping - Bargain Finder Max /v2 General Search)<br />\r\n============================================================================================</p>\r\n\r\n<p>https://api.cert.platform.sabre.com/v5/offers/shop</p>\r\n\r\n<p>*Under Authorization select Bearer Token and use access_token from response of auth token api<br />\r\n*Keep Blank in Conversation-ID under Header</p>\r\n\r\n<p>Here is the sample PHP Code</p>\r\n\r\n<p><!--?php</p--></p>\r\n\r\n<p>$curl = curl_init();</p>\r\n\r\n<p>curl_setopt_array($curl, array(<br />\r\n&nbsp; CURLOPT_URL =&gt; &#39;https://api.cert.platform.sabre.com/v5/offers/shop&#39;,<br />\r\n&nbsp; CURLOPT_RETURNTRANSFER =&gt; true,<br />\r\n&nbsp; CURLOPT_ENCODING =&gt; &#39;&#39;,<br />\r\n&nbsp; CURLOPT_MAXREDIRS =&gt; 10,<br />\r\n&nbsp; CURLOPT_TIMEOUT =&gt; 0,<br />\r\n&nbsp; CURLOPT_FOLLOWLOCATION =&gt; true,<br />\r\n&nbsp; CURLOPT_HTTP_VERSION =&gt; CURL_HTTP_VERSION_1_1,<br />\r\n&nbsp; CURLOPT_CUSTOMREQUEST =&gt; &#39;POST&#39;,<br />\r\n&nbsp; CURLOPT_POSTFIELDS =&gt;&#39;{<br />\r\n&nbsp;&nbsp; &nbsp;&quot;OTA_AirLowFareSearchRQ&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Version&quot;: &quot;2&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;POS&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Source&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;PseudoCityCode&quot;: &quot;S00L&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RequestorID&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Type&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;ID&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;CompanyName&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Code&quot;: &quot;TN&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginDestinationInformation&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RPH&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DepartureDateTime&quot;: &quot;2024-09-11T20:00:00&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;ORD&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DestinationLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;DFW&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}, {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RPH&quot;: &quot;2&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DepartureDateTime&quot;: &quot;2024-09-18T20:00:00&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;DFW&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DestinationLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;ORD&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;],<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TravelPreferences&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TPA_Extensions&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DataSources&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;NDC&quot;: &quot;Disable&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;ATPCO&quot;: &quot;Enable&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LCC&quot;: &quot;Disable&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;PreferNDCSourceOnTie&quot;: {<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Value&quot;: true<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>\r\n\r\n<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TravelerInfoSummary&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;AirTravelerAvail&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;PassengerTypeQuantity&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Code&quot;: &quot;ADT&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Quantity&quot;: 1<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TPA_Extensions&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;IntelliSellTransaction&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RequestType&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Name&quot;: &quot;200ITINS&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;}<br />\r\n}&#39;,<br />\r\n&nbsp; CURLOPT_HTTPHEADER =&gt; array(<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Content-Type: application/json&#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Conversation-ID: &#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Authorization: Bearer T1RLAQJgnnhf+y99xCxdXrEl6WovKnVfML9A5IcqobADhomEgBDNw4Btd1WLbn9rP99NxPfoAADgZl9agoTmznRiqHKD9Vwol6EayaPWbeJqwLqjgqg5isGVSorsWJBAIVsjXNxpD47ys8xv3sx3/ExNqza8UNBcwA4GGHgPzu0cXOeWWo07Ih8t8ZY0mwGwM10lO5qVW/yJZoaBA/20J02ZU5ztNsjSUt7ooYJ4yvXPc7X1zBkJEUawD7RDywzLQv3V8APMD814ziSkNktinPuvT64glmZcA9Rhmy9jZ8DiE0tYhn4V6ubKn/8gzifojjibwNY/NJPn6qvdmAmGpOmPDI5fTV13I5+CHA0rv73xM+cRdzNVn0o*&#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Cookie: incap_ses_1561_2768617=6jSGe8SMHyY7eUzG1smpFSe7/2UAAAAAv3cC2R4xW2f8pbh4+o6uOw==; visid_incap_2768617=CMmrEjpiT2uqtybd16i4/Ce7/2UAAAAAQUIPAAAAAAAvMTvmjB9uF7//pSsvuNc0; incap_ses_1561_2768614=RmTiGgp5kyRGuE/G1smpFZC9/2UAAAAA2tK8GEkNHOEoEAgn93NucA==; nlbi_2768614=a9xQArhWwj/Frr/rRh9LCAAAAACCZdybTjDfKKIP461PxX2o; visid_incap_2768614=oagYgS2rSheFlLqzITzLq5S6/2UAAAAAQUIPAAAAAADHLck2jT6mHfxrtvT5HVcc&#39;<br />\r\n&nbsp; ),<br />\r\n));</p>\r\n\r\n<p>$response = curl_exec($curl);</p>\r\n\r\n<p>curl_close($curl);<br />\r\necho $response;</p>', '2024-05-07 10:53:58', '2024-07-28 07:02:34');
+(1, 2, 'V1:470936:S00L:AA', 'f5t3t7l2', 'V1:470936:S00L:AA', 'ft7lq3nz', 1, '<p>Contact Email: webservices.support@sabre.com</p>\r\n\r\n<p>https://accounts.cert.havail.sabre.com/login/sc<br />\r\nAgent ID/EPRs: 470936<br />\r\nPassword:&nbsp;BC5C0VG1<br />\r\nPCC: S00L</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>1. For Auth Token (Authentication Traditional - Rest OAuth Token Create /v2)<br />\r\n=========================================================================<br />\r\nhttps://api-crt.cert.havail.sabre.com/v2/auth/token<br />\r\nhttps://api.cert.platform.sabre.com/v2/auth/token (recommended)<br />\r\nhttps://api.platform.sabre.com/v2/auth/token</p>\r\n\r\n<p>To Convert into Base64: https://www.base64encode.org</p>\r\n\r\n<p>To get this Info: https://developer.sabre.com/user/alifhossain174gmailcom/applications<br />\r\nAuthorization Header Format: base64(base64(V1:user:group:domain):base64(password))<br />\r\nUsing My Dev Credentials: base64(base64(V1:hxp6cy145bjv5hy9:DEVCENTER:EXT):base64(Hp8tT6iN))<br />\r\nAfter Converting into Base64: Basic VjE6aHhwNmN5MTQ1Ymp2NWh5OTpERVZDRU5URVI6RVhU:SHA4dFQ2aU4</p>\r\n\r\n<p>sample Response<br />\r\n{<br />\r\n&nbsp;&nbsp;&nbsp; &quot;access_token&quot;: &quot;T1RLAQJgnnhf+y99xCxdXrEl6WovKnVfML9A5IcqobADhomEgBDNw4Btd1WLbn9rP99NxPfoAADgZl9agoTmznRiqHKD9Vwol6EayaPWbeJqwLqjgqg5isGVSorsWJBAIVsjXNxpD47ys8xv3sx3/ExNqza8UNBcwA4GGHgPzu0cXOeWWo07Ih8t8ZY0mwGwM10lO5qVW/yJZoaBA/20J02ZU5ztNsjSUt7ooYJ4yvXPc7X1zBkJEUawD7RDywzLQv3V8APMD814ziSkNktinPuvT64glmZcA9Rhmy9jZ8DiE0tYhn4V6ubKn/8gzifojjibwNY/NJPn6qvdmAmGpOmPDI5fTV13I5+CHA0rv73xM+cRdzNVn0o*&quot;,<br />\r\n&nbsp;&nbsp;&nbsp; &quot;token_type&quot;: &quot;bearer&quot;,<br />\r\n&nbsp;&nbsp;&nbsp; &quot;expires_in&quot;: 604800<br />\r\n}</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>2. For Air Search (Air Shopping - Standard Shopping - Bargain Finder Max /v2 General Search)<br />\r\n============================================================================================</p>\r\n\r\n<p>https://api.cert.platform.sabre.com/v5/offers/shop</p>\r\n\r\n<p>*Under Authorization select Bearer Token and use access_token from response of auth token api<br />\r\n*Keep Blank in Conversation-ID under Header</p>\r\n\r\n<p>Here is the sample PHP Code</p>\r\n\r\n<p><!--?php</p--></p>\r\n\r\n<p>$curl = curl_init();</p>\r\n\r\n<p>curl_setopt_array($curl, array(<br />\r\n&nbsp; CURLOPT_URL =&gt; &#39;https://api.cert.platform.sabre.com/v5/offers/shop&#39;,<br />\r\n&nbsp; CURLOPT_RETURNTRANSFER =&gt; true,<br />\r\n&nbsp; CURLOPT_ENCODING =&gt; &#39;&#39;,<br />\r\n&nbsp; CURLOPT_MAXREDIRS =&gt; 10,<br />\r\n&nbsp; CURLOPT_TIMEOUT =&gt; 0,<br />\r\n&nbsp; CURLOPT_FOLLOWLOCATION =&gt; true,<br />\r\n&nbsp; CURLOPT_HTTP_VERSION =&gt; CURL_HTTP_VERSION_1_1,<br />\r\n&nbsp; CURLOPT_CUSTOMREQUEST =&gt; &#39;POST&#39;,<br />\r\n&nbsp; CURLOPT_POSTFIELDS =&gt;&#39;{<br />\r\n&nbsp;&nbsp; &nbsp;&quot;OTA_AirLowFareSearchRQ&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Version&quot;: &quot;2&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;POS&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Source&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;PseudoCityCode&quot;: &quot;S00L&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RequestorID&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Type&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;ID&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;CompanyName&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Code&quot;: &quot;TN&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginDestinationInformation&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RPH&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DepartureDateTime&quot;: &quot;2024-09-11T20:00:00&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;ORD&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DestinationLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;DFW&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}, {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RPH&quot;: &quot;2&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DepartureDateTime&quot;: &quot;2024-09-18T20:00:00&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;DFW&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DestinationLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;ORD&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;],<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TravelPreferences&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TPA_Extensions&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DataSources&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;NDC&quot;: &quot;Disable&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;ATPCO&quot;: &quot;Enable&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LCC&quot;: &quot;Disable&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;PreferNDCSourceOnTie&quot;: {<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Value&quot;: true<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>\r\n\r\n<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TravelerInfoSummary&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;AirTravelerAvail&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;PassengerTypeQuantity&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Code&quot;: &quot;ADT&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Quantity&quot;: 1<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TPA_Extensions&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;IntelliSellTransaction&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RequestType&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Name&quot;: &quot;200ITINS&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;}<br />\r\n}&#39;,<br />\r\n&nbsp; CURLOPT_HTTPHEADER =&gt; array(<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Content-Type: application/json&#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Conversation-ID: &#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Authorization: Bearer T1RLAQJgnnhf+y99xCxdXrEl6WovKnVfML9A5IcqobADhomEgBDNw4Btd1WLbn9rP99NxPfoAADgZl9agoTmznRiqHKD9Vwol6EayaPWbeJqwLqjgqg5isGVSorsWJBAIVsjXNxpD47ys8xv3sx3/ExNqza8UNBcwA4GGHgPzu0cXOeWWo07Ih8t8ZY0mwGwM10lO5qVW/yJZoaBA/20J02ZU5ztNsjSUt7ooYJ4yvXPc7X1zBkJEUawD7RDywzLQv3V8APMD814ziSkNktinPuvT64glmZcA9Rhmy9jZ8DiE0tYhn4V6ubKn/8gzifojjibwNY/NJPn6qvdmAmGpOmPDI5fTV13I5+CHA0rv73xM+cRdzNVn0o*&#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Cookie: incap_ses_1561_2768617=6jSGe8SMHyY7eUzG1smpFSe7/2UAAAAAv3cC2R4xW2f8pbh4+o6uOw==; visid_incap_2768617=CMmrEjpiT2uqtybd16i4/Ce7/2UAAAAAQUIPAAAAAAAvMTvmjB9uF7//pSsvuNc0; incap_ses_1561_2768614=RmTiGgp5kyRGuE/G1smpFZC9/2UAAAAA2tK8GEkNHOEoEAgn93NucA==; nlbi_2768614=a9xQArhWwj/Frr/rRh9LCAAAAACCZdybTjDfKKIP461PxX2o; visid_incap_2768614=oagYgS2rSheFlLqzITzLq5S6/2UAAAAAQUIPAAAAAADHLck2jT6mHfxrtvT5HVcc&#39;<br />\r\n&nbsp; ),<br />\r\n));</p>\r\n\r\n<p>$response = curl_exec($curl);</p>\r\n\r\n<p>curl_close($curl);<br />\r\necho $response;</p>', '2024-05-07 10:53:58', '2024-07-29 03:12:29');
 
 -- --------------------------------------------------------
 
@@ -15674,7 +15982,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `image`, `name`, `email`, `phone`, `nid`, `comission`, `email_verified_at`, `password`, `remember_token`, `user_type`, `balance`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'userImages/YUuex1714591027.jpg', 'Admin', 'admin@gmail.com', '01969005035', NULL, 0, '2024-03-27 05:27:23', '$2y$12$oHWN0HLlomKGtI9bp503POf.uujhNJmq6bS3M8f3u0PAcrHZYLzEq', NULL, 1, 0, 1, '2024-03-27 05:27:23', '2024-05-01 19:18:49'),
-(3, 'userImages/Ipz4i1720192721.svg', 'Mostaim Murad', 'vonicu@mailinator.com', '+1 (988) 353-9921', 'Laboriosam ex facil', 5, NULL, '$2y$12$9fUdBSrfWbLdZS6Q2eJXIOH34L9pjf88iEfHZMjaRoz7gY0rz1KJe', NULL, 2, 0, 1, '2024-07-05 14:54:58', '2024-07-22 05:00:49');
+(3, 'userImages/Ipz4i1720192721.svg', 'Mostaim Murad', 'vonicu@mailinator.com', '+1 (988) 353-9921', 'Laboriosam ex facil', 0, NULL, '$2y$12$9fUdBSrfWbLdZS6Q2eJXIOH34L9pjf88iEfHZMjaRoz7gY0rz1KJe', NULL, 2, 0, 1, '2024-07-05 14:54:58', '2024-07-05 15:21:14'),
+(4, 'userImages/DJg1U1724837205.jpg', 'Badhan Basak', 'marketing1@faithtrip.net', '01896459484', '4615591056', 3, NULL, '$2y$12$hbH48Ks5EzF9Fn8mEzgRyefqznBUBVMthZgUprjPiBXz8n7Me6lwK', NULL, 2, 0, 1, '2024-08-28 07:26:45', NULL),
+(5, 'userImages/L0HuR1724837309.jpg', 'AHM HABIBUR RAHMAN', 'hossain.ptl15@gmail.com', '01717649044', '1917483941', 3, NULL, '$2y$12$o2V1JFluMv8wPXnmrdgtfuCITI/b.smRwULUUPWKYgkdADZkGr1g.', NULL, 2, 0, 1, '2024-08-28 07:28:29', NULL),
+(6, 'userImages/h6xm41724906827.jpg', 'Mir Sultanul Alam (Dipon)', 'director@faithtrip.net', '01715750300', '3269893164', 3, NULL, '$2y$12$gZGdpHXqFP4UhQF7htpAfeJ1dr/9vuqI9RmE4TJMFFu61GzMsJUwS', NULL, 2, 0, 1, '2024-08-29 02:47:07', NULL);
 
 --
 -- Indexes for dumped tables
@@ -15702,6 +16013,12 @@ ALTER TABLE `city_airports`
 -- Indexes for table `company_profiles`
 --
 ALTER TABLE `company_profiles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `country`
+--
+ALTER TABLE `country`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -15818,7 +16135,7 @@ ALTER TABLE `airlines`
 -- AUTO_INCREMENT for table `bank_accounts`
 --
 ALTER TABLE `bank_accounts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `city_airports`
@@ -15830,7 +16147,13 @@ ALTER TABLE `city_airports`
 -- AUTO_INCREMENT for table `company_profiles`
 --
 ALTER TABLE `company_profiles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `country`
+--
+ALTER TABLE `country`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=240;
 
 --
 -- AUTO_INCREMENT for table `email_configures`
@@ -15854,19 +16177,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `flight_bookings`
 --
 ALTER TABLE `flight_bookings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `flight_passangers`
 --
 ALTER TABLE `flight_passangers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `flight_segments`
 --
 ALTER TABLE `flight_segments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `gds`
@@ -15896,7 +16219,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `recharge_requests`
 --
 ALTER TABLE `recharge_requests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `sabre_gds_configs`
@@ -15914,7 +16237,7 @@ ALTER TABLE `sms_gateways`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

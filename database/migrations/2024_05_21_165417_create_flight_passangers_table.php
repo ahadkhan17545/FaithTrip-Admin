@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('document_expire_date')->nullable();
             $table->string('document_issue_country')->nullable();
             $table->string('nationality')->nullable();
+            $table->string('frequent_flyer_no')->nullable();
             $table->timestamps();
         });
     }

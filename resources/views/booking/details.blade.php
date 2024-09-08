@@ -211,8 +211,7 @@
                                         <tr>
                                             <th scope="row">{{ $passangerIndex + 1 }}</th>
                                             <td class="text-center">{{ $flightPassanger->passanger_type }}</td>
-                                            <td class="text-center">{{ $flightPassanger->first_name }}
-                                                {{ $flightPassanger->last_name }}</td>
+                                            <td class="text-center">{{ $flightPassanger->title }} {{ $flightPassanger->first_name }} {{ $flightPassanger->last_name }}</td>
                                             <td class="text-center">{{ $flightPassanger->dob }}</td>
                                             <td class="text-center">
                                                 @if ($flightPassanger->document_type == 1)
@@ -223,8 +222,7 @@
                                             </td>
                                             <td class="text-center">{{ $flightPassanger->document_no }}</td>
                                             <td class="text-center">{{ $flightPassanger->document_expire_date }}</td>
-                                            <td class="text-center">{{ $flightPassanger->document_issue_country }}
-                                            </td>
+                                            <td class="text-center">{{ $flightPassanger->document_issue_country }}</td>
                                             <td class="text-center">{{ $flightPassanger->nationality }}</td>
                                         </tr>
                                     @endforeach

@@ -150,13 +150,14 @@ class FlightBookingController extends Controller
                     'carrier_equipment_code' => $segmentData['carrier']['equipment']['code'],
                     'created_at' => Carbon::now()
                 ]);
+
             }
 
             foreach($request->first_name as $passangerIndex => $firstName){
                 FlightPassanger::insert([
                     'flight_booking_id' => $flightBookingId,
                     'passanger_type' => $request->passanger_type[$passangerIndex],
-                    'title' => null,
+                    'title' => $request->titles[$passangerIndex],
                     'first_name' => $firstName,
                     'last_name' => $request->last_name[$passangerIndex],
                     'dob' => $request->dob[$passangerIndex],
@@ -165,6 +166,7 @@ class FlightBookingController extends Controller
                     'document_expire_date' => $request->document_expire_date[$passangerIndex],
                     'document_issue_country' => $request->document_issue_country[$passangerIndex],
                     'nationality' => $request->nationality[$passangerIndex],
+                    'frequent_flyer_no' => $request->frequent_flyer_no[$passangerIndex],
                     'created_at' => Carbon::now()
                 ]);
             }
