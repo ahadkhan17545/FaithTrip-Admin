@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FlightBooking;
+use App\Models\SavedPassanger;
 use Yajra\DataTables\DataTables;
 use App\Models\FlightPassanger;
 use App\Models\FlightSegment;
@@ -154,6 +155,32 @@ class FlightBookingController extends Controller
             }
 
             foreach($request->first_name as $passangerIndex => $firstName){
+
+                if($passangerIndex == 0 && $request->save_passanger){
+
+                    $savedPassanger = SavedPassanger::where('contact', $request->traveller_contact)->first();
+                    if(!$savedPassanger){
+                        $savedPassanger = new SavedPassanger();
+                    }
+
+                    $savedPassanger->saved_by = Auth::user()->id;
+                    $savedPassanger->email = $request->traveller_email;
+                    $savedPassanger->contact = $request->traveller_contact;
+                    $savedPassanger->type = $request->passanger_type[$passangerIndex];
+                    $savedPassanger->title = $request->titles[$passangerIndex];
+                    $savedPassanger->first_name = $firstName;
+                    $savedPassanger->last_name = $request->last_name[$passangerIndex];
+                    $savedPassanger->dob = $request->dob[$passangerIndex];
+                    $savedPassanger->document_type = $request->document_type[$passangerIndex];
+                    $savedPassanger->document_no = $request->document_no[$passangerIndex];
+                    $savedPassanger->document_expire_date = $request->document_expire_date[$passangerIndex];
+                    $savedPassanger->document_issue_country = $request->document_issue_country[$passangerIndex];
+                    $savedPassanger->nationality = $request->nationality[$passangerIndex];
+                    $savedPassanger->frequent_flyer_no = $request->frequent_flyer_no[$passangerIndex];
+                    $savedPassanger->created_at = Carbon::now();
+                    $savedPassanger->save();
+                }
+
                 FlightPassanger::insert([
                     'flight_booking_id' => $flightBookingId,
                     'passanger_type' => $request->passanger_type[$passangerIndex],

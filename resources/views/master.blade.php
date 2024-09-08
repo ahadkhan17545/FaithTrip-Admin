@@ -27,13 +27,19 @@
     <link href="{{ url('assets') }}/nanopkg-assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/admin-assets/vendor/typicons/src/typicons.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/admin-assets/vendor/themify-icons/themify-icons.min.css" rel="stylesheet" />
-    <link href="{{ url('assets') }}/admin-assets/vendor/select2/dist/css/select2.css" rel="stylesheet" type="text/css" />
-    <link href="{{ url('assets') }}/nanopkg-assets/vendor/t-datepicker-master/public/theme/css/t-datepicker.min.css" rel="stylesheet" />
-    <link href="{{ url('assets') }}/nanopkg-assets/vendor/t-datepicker-master/public/theme/css/themes/t-datepicker-main.css" rel="stylesheet" />
+    <link href="{{ url('assets') }}/admin-assets/vendor/select2/dist/css/select2.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ url('assets') }}/nanopkg-assets/vendor/t-datepicker-master/public/theme/css/t-datepicker.min.css"
+        rel="stylesheet" />
+    <link
+        href="{{ url('assets') }}/nanopkg-assets/vendor/t-datepicker-master/public/theme/css/themes/t-datepicker-main.css"
+        rel="stylesheet" />
     <link href="{{ url('assets') }}/admin-assets//css/search.css?v=1" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets') }}/nanopkg-assets/vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
-    <link href="{{ url('assets') }}/nanopkg-assets/vendor/fontawesome-free-6.3.0-web/css/all.min.css" rel="stylesheet" />
-    <link href="{{ url('assets') }}/nanopkg-assets/vendor/bootstrap-icons/css/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="{{ url('assets') }}/nanopkg-assets/vendor/fontawesome-free-6.3.0-web/css/all.min.css"
+        rel="stylesheet" />
+    <link href="{{ url('assets') }}/nanopkg-assets/vendor/bootstrap-icons/css/bootstrap-icons.min.css"
+        rel="stylesheet" />
     <link href="{{ url('assets') }}/nanopkg-assets/vendor/toastr/build/toastr.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/nanopkg-assets/css/arrow-hidden.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/nanopkg-assets/css/custom.min.css" rel="stylesheet" />
@@ -41,7 +47,8 @@
     <link href="{{ url('assets') }}/admin-assets/css/custom.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/admin-assets/css/extra.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/module-assets//css/booking/search_box.css?v=8" rel="stylesheet" type="text/css" />
-    <link href="{{ url('assets') }}/module-assets//css/booking/search_box_custom.min.css?v=8" rel="stylesheet" type="text/css" />
+    <link href="{{ url('assets') }}/module-assets//css/booking/search_box_custom.min.css?v=8" rel="stylesheet"
+        type="text/css" />
 
     <style>
         .body-content {
@@ -64,6 +71,30 @@
             left: 0;
             width: 100%;
             background: #fff;
+        }
+
+        /* ScrollBar CSS */
+        ::-webkit-scrollbar {
+            width: 6px !important;
+            height: 6px !important;
+            display: block;
+        }
+
+        ::-moz-scrollbar {
+            width: 6px !important;
+            height: 6px !important;
+            display: block;
+        }
+
+        ::-ms-scrollbar {
+            width: 6px !important;
+            height: 6px !important;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            cursor: pointer !important;
+            background: #084277 !important;
+            border-radius: 4px;
         }
     </style>
 
@@ -153,7 +184,8 @@
     <script src="{{ url('assets') }}/admin-assets/vendor/jQuery/jquery.min.js"></script>
     <script src="{{ url('assets') }}/admin-assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url('assets') }}/admin-assets/vendor/select2/dist/js/select2.js"></script>
-    <script src="{{ url('assets') }}/nanopkg-assets/vendor/t-datepicker-master/public/theme/js/t-datepicker.min.js"></script>
+    <script src="{{ url('assets') }}/nanopkg-assets/vendor/t-datepicker-master/public/theme/js/t-datepicker.min.js">
+    </script>
     <script src="{{ url('assets') }}/admin-assets/vendor/metisMenu/metisMenu.min.js"></script>
     <script src="{{ url('assets') }}/admin-assets/vendor/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
     <script src="{{ url('assets') }}/nanopkg-assets/vendor/sweetalert2/sweetalert2.min.js"></script>

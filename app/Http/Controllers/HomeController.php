@@ -69,4 +69,16 @@ class HomeController extends Controller
         return response()->json($data);
     }
 
+    public function passangerLiveSearch(Request $request){
+        $searchPassangers = DB::table('saved_passangers')
+                        ->where('contact', 'LIKE', '%'.$request->search_keyword.'%')
+                        ->orderBy('first_name', 'asc')
+                        ->skip(0)
+                        ->limit(5)
+                        ->get();
+
+        $searchResults = view('flight.live_search_passangers', compact('searchPassangers'))->render();
+        return response()->json(['searchResults' => $searchResults]);
+    }
+
 }
