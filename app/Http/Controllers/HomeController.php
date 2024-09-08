@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SabreGdsConfig;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -72,6 +73,7 @@ class HomeController extends Controller
     public function passangerLiveSearch(Request $request){
         $searchPassangers = DB::table('saved_passangers')
                         ->where('contact', 'LIKE', '%'.$request->search_keyword.'%')
+                        ->where('saved_by', Auth::user()->id)
                         ->orderBy('first_name', 'asc')
                         ->skip(0)
                         ->limit(5)

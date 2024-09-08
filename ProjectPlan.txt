@@ -2,28 +2,26 @@ Task:
 1. Share PNR Option in Email
 
 ======04-08-2024=======
-1. Add Passanger Title like (Mr/Mrs/Ms) & Frequent Flyer No. in booking form
-2. Add option for saving passanger details and auto fill up the form (also update each time) (show a checkbox save passanger)
-3. Manage Passangers menu
-4. Check topup request for direct cash submit in faithtrip bank account
-5. check last ticketing time from api response and cancel the booking with that time
-6. Improve Ticket Design (check some new desing from online)
-7. Net Price and Gross prices for b2b
+1. Manage Passangers menu (Ongoing)
+2. Check topup request for direct cash submit in faithtrip bank account
+3. check last ticketing time from api response and cancel the booking with that time
+4. Improve Ticket Design (check some new desing from online)
+5. Net Price and Gross prices for b2b
 
-7. Send email to client after booking/ticket issue/cancel
-8. Show Enoguht Details at the time of Flight Booking
+6. Send email to client after booking/ticket issue/cancel
+7. Show Enoguht Details at the time of Flight Booking
 
-9. Manage System user (Admin can his own system user and b2b user can add his own system user)
-10. Save Last Ticketing Datetime
-11. Make all the tables responsive (for Mobile Screens)
-12. Remove Company profit form report of b2b user
-13. Implement SSL Commerz for Instant Payment for the B2B Users
-14. Direct Flight/Segmented Flights Filter option before Flight Search
+8. Manage System user (Admin can his own system user and b2b user can add his own system user)
+9. Save Last Ticketing Datetime
+10. Make all the tables responsive (for Mobile Screens)
+11. Remove Company profit form report of b2b user
+12. Implement SSL Commerz for Instant Payment for the B2B Users
+13. Direct Flight/Segmented Flights Filter option before Flight Search
 
-15. MultiCity Search
-16. Modify Search is working Properly or not check this
-17. Balance chara ticket issue hobe na, booking hobe
-18. Ticket VOID option
+14. MultiCity Search
+15. Modify Search is working Properly or not check this
+16. Balance chara ticket issue hobe na, booking hobe
+17. Ticket VOID option
 
 Terminal
 19. Booking e naam er issue (passanger info and passport info jai nai)

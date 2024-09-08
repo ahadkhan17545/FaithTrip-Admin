@@ -457,7 +457,7 @@
                                 </div>
                                 <div class="col-12 col-md-8 mb-2 mb-sm-3" style="position: relative">
                                     <input name="traveller_contact" id="search_keyword" onkeyup="liveSearchPassanger()" autocomplete="off" type="text" class="form-control" placeholder="+8801*********" required="">
-                                    <label class="d-block mt-2"><input type="checkbox" name="save_passanger" value="1"> Save Passanger Information</label>
+                                    <label class="d-block mt-2"><input type="checkbox" name="save_passanger" value="1"> Save Passenger Information</label>
                                     <ul class="live_search_box d-none"></ul>
                                 </div>
                             </div>

@@ -221,15 +221,15 @@ class PaymentController extends Controller
                         ->leftJoin('users', 'recharge_requests.user_id', 'users.id')
                         ->leftJoin('company_profiles', 'users.id', 'company_profiles.user_id')
                         ->select('recharge_requests.*', 'users.name as user_name', 'company_profiles.name as company_name')
-                        ->orderBy('id', 'desc')
+                        ->orderBy('recharge_requests.id', 'desc')
                         ->get();
             } else{
                 $data = DB::table('recharge_requests')
                     ->leftJoin('users', 'recharge_requests.user_id', 'users.id')
                     ->leftJoin('company_profiles', 'users.id', 'company_profiles.user_id')
                     ->select('recharge_requests.*', 'users.name as user_name', 'company_profiles.name as company_name')
-                    ->where('user_id', Auth::user()->id)
-                    ->orderBy('id', 'desc')
+                    ->where('recharge_requests.user_id', Auth::user()->id)
+                    ->orderBy('recharge_requests.id', 'desc')
                     ->get();
             }
 
