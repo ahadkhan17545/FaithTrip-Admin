@@ -37,12 +37,14 @@
         @endphp
         <nav class="sidebar-nav">
             <ul class="metismenu">
+
                 <li class="@if($currentRoute == 'home') mm-active @endif">
                     <a class="text-capitalize" href="{{ url('/home') }}">
                         <i class="typcn typcn-zoom-outline"></i>
                         Search pad
                     </a>
                 </li>
+
                 <li class="@if(in_array($currentRoute, ['ViewAllBooking', 'ViewCancelBooking'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-info-outline"></i> Booking Information
@@ -121,6 +123,14 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="@if($currentRoute == 'view/saved/passangers') mm-active @endif">
+                    <a class="text-capitalize" href="{{ url('/view/saved/passangers') }}">
+                        <i class="typcn typcn-user-outline"></i>
+                        Saved Passangers
+                    </a>
+                </li>
+
                 <li>
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-chart-bar-outline"></i> Reports

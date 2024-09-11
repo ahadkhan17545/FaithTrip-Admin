@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -186,4 +187,51 @@ class UserController extends Controller
         Toastr::success('B2B User Account Info Updated');
         return back();
     }
+
+    public function savedPassangers(Request $request){
+        if ($request->ajax()) {
+
+            if(Auth::user()->user_type == 1){
+                $data = DB::table('saved_passangers')
+                        ->orderBy('id', 'desc')
+                        ->get();
+            } else {
+                $data = DB::table('saved_passangers')
+                        ->orderBy('id', 'desc')
+                        ->where('saved_by', Auth::user()->id)
+                        ->get();
+            }
+
+            return Datatables::of($data)
+                    ->editColumn('first_name', function($data) {
+                        return $data->title." ".$data->first_name." ".$data->last_name;
+                    })
+                    ->editColumn('document_no', function($data) {
+                        if($data->document_no){
+                            if($data->document_type == 1){
+                                return "Passport: ".$data->document_no;
+                            } else{
+                                return "NID: ".$data->document_no;
+                            }
+                        }
+                    })
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        // $btn = ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Edit" class="btn-sm btn-warning rounded d-inline-block mb-1 editButton"><i class="fa fa-edit"></i></a>';
+                        $btn = ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Delete" class="btn-sm btn-danger rounded d-inline-block deleteBtn"><i class="fa fa-trash"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        return view('user.saved_passsangers');
+
+    }
+
+    public function deleteSavedPassanger($id){
+        DB::table('saved_passangers')->where('id', $id)->delete();
+        return response()->json(['success' => 'Deleted Successfully.']);
+    }
+
+
 }

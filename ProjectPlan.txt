@@ -2,7 +2,6 @@ Task:
 1. Share PNR Option in Email
 
 ======04-08-2024=======
-1. Manage Passangers menu (Ongoing)
 2. Check topup request for direct cash submit in faithtrip bank account
 3. check last ticketing time from api response and cancel the booking with that time
 4. Improve Ticket Design (check some new desing from online)

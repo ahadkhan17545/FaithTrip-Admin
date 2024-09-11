@@ -40,9 +40,7 @@ return new class extends Migration
             $table->double('total_fare')->nullable();
             $table->string('currency')->nullable();
 
-            $table->string('last_booking_cancel_datetime')->nullable();
             $table->string('last_ticket_datetime')->nullable();
-            $table->string('last_ticket_cancel_datetime')->nullable();
             $table->string('booking_cancelled_at')->nullable();
             $table->string('ticket_issued_at')->nullable();
             $table->string('ticket_cancelled_at')->nullable();

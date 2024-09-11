@@ -128,6 +128,14 @@
                                         @endif
                                     </td>
                                 </tr>
+                                <tr>
+                                    <th>Last Ticket Datetime </th>
+                                    <td>
+                                        @if($flightBookingDetails->last_ticket_datetime)
+                                        : {{ date("jS M-y, h:i:s a", strtotime($flightBookingDetails->last_ticket_datetime)) }}
+                                        @endif
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                     </div>

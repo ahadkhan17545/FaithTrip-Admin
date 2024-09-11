@@ -412,12 +412,8 @@
                     <input type="hidden" name="currency"
                         value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['currency'] }}">
 
-                    @if (isset(
-                            $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0][
-                                'fare'
-                            ]['lastTicketDate']))
-                        <input type="hidden" name="last_ticket_datetime"
-                            value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate'] . ' ' . $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketTime'] . ':00' }}">
+                    @if (isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate']))
+                        <input type="hidden" name="last_ticket_datetime" value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate'] . ' ' . $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketTime'] . ':00' }}">
                     @else
                         <input type="hidden" name="last_ticket_datetime" value="">
                     @endif
@@ -477,29 +473,35 @@
                                             <label>Passenger Title </label>
                                             <span class="text-danger">*</span>
                                         </div>
+
+                                        @if($passengerInfoList['passengerInfo']['passengerType'] == 'ADT')
                                         <div class="col-sm-6 col-md-6">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="titles[{{ $passangerTitleIndex }}]"
-                                                    id="passanger_title_{{ $passangerTitleIndex }}_mr" value="Mr.">
-                                                <label class="form-check-label"
-                                                    for="passanger_title_{{ $passangerTitleIndex }}_mr">Mr.</label>
+                                                <input class="form-check-input" type="radio" name="titles[{{ $passangerTitleIndex }}]" id="passanger_title_{{ $passangerTitleIndex }}_mr" value="Mr.">
+                                                <label class="form-check-label" for="passanger_title_{{ $passangerTitleIndex }}_mr">Mr.</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="titles[{{ $passangerTitleIndex }}]"
-                                                    id="passanger_title_{{ $passangerTitleIndex }}_mrs" value="Mrs.">
-                                                <label class="form-check-label"
-                                                    for="passanger_title_{{ $passangerTitleIndex }}_mrs">Mrs.</label>
+                                                <input class="form-check-input" type="radio" name="titles[{{ $passangerTitleIndex }}]" id="passanger_title_{{ $passangerTitleIndex }}_mrs" value="Mrs.">
+                                                <label class="form-check-label" for="passanger_title_{{ $passangerTitleIndex }}_mrs">Mrs.</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio"
-                                                    name="titles[{{ $passangerTitleIndex }}]"
-                                                    id="passanger_title_{{ $passangerTitleIndex }}_ms" value="Ms.">
-                                                <label class="form-check-label"
-                                                    for="passanger_title_{{ $passangerTitleIndex }}_ms">Ms.</label>
+                                                <input class="form-check-input" type="radio" name="titles[{{ $passangerTitleIndex }}]" id="passanger_title_{{ $passangerTitleIndex }}_ms" value="Ms.">
+                                                <label class="form-check-label" for="passanger_title_{{ $passangerTitleIndex }}_ms">Ms.</label>
                                             </div>
                                         </div>
+                                        @else
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="titles[{{ $passangerTitleIndex }}]" id="passanger_title_{{ $passangerTitleIndex }}_mstr" value="Mr.">
+                                                <label class="form-check-label" for="passanger_title_{{ $passangerTitleIndex }}_mstr">Mstr.</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="titles[{{ $passangerTitleIndex }}]" id="passanger_title_{{ $passangerTitleIndex }}_miss" value="Mrs.">
+                                                <label class="form-check-label" for="passanger_title_{{ $passangerTitleIndex }}_miss">Miss.</label>
+                                            </div>
+                                        </div>
+                                        @endif
+
                                     </div>
                                     <div class="form-row mt-3">
                                         <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
@@ -709,6 +711,12 @@
             }
             if(title == 'Ms.'){
                 $("#passanger_title_0_ms").prop('checked', true);
+            }
+            if(title == 'Mstr.'){
+                $("#passanger_title_0_mstr").prop('checked', true);
+            }
+            if(title == 'Miss.'){
+                $("#passanger_title_0_miss").prop('checked', true);
             }
 
             $("#traveller_name").val(title+" "+firstName+" "+lastName);

@@ -127,6 +127,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('delete/b2b/user/{id}', [UserController::class, 'deleteB2bUser'])->name('DeleteB2bUser');
         Route::get('edit/b2b/user/{id}', [UserController::class, 'editB2bUser'])->name('EditB2bUser');
         Route::post('update/b2b/user', [UserController::class, 'updateB2bUser'])->name('UpdateB2bUser');
+        Route::get('view/saved/passangers', [UserController::class, 'savedPassangers'])->name('SavedPassangers');
+        Route::get('delete/saved/passanger/{id}', [UserController::class, 'deleteSavedPassanger'])->name('DeleteSavedPassanger');
 
         // Report
         Route::get('b2b/financial/report', [ReportController::class, 'b2bFinancialReport'])->name('B2bFinancialReport');
