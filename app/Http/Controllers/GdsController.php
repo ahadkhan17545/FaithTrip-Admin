@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExcludedAirlines;
+use App\Models\FlyhubGdsConfig;
 use App\Models\Gds;
 use App\Models\SabreGdsConfig;
 use Carbon\Carbon;
@@ -29,11 +30,20 @@ class GdsController extends Controller
 
         if($code == 'sabre'){
             $sabreGdsInfo = DB::table('sabre_gds_configs')
-                            ->select('sabre_gds_configs.*', 'gds.name', 'gds.code', 'gds.logo')
                             ->leftJoin('gds', 'sabre_gds_configs.gds_id', '=', 'gds.id')
+                            ->select('sabre_gds_configs.*', 'gds.name', 'gds.code', 'gds.logo')
                             ->where('sabre_gds_configs.id', 1)
                             ->first();
             return view('gds.sabre', compact('sabreGdsInfo'));
+        }
+
+        if($code == 'flyhub'){
+            $flyhubGdsInfo = DB::table('flyhub_gds_configs')
+                            ->leftJoin('gds', 'flyhub_gds_configs.gds_id', '=', 'gds.id')
+                            ->select('flyhub_gds_configs.*', 'gds.name', 'gds.code', 'gds.logo')
+                            ->where('flyhub_gds_configs.id', 1)
+                            ->first();
+            return view('gds.flyhub', compact('flyhubGdsInfo'));
         }
 
     }
@@ -44,6 +54,22 @@ class GdsController extends Controller
             'password' => $request->password,
             'production_user_id' => $request->production_user_id,
             'production_password' => $request->production_password,
+            'is_production' => $request->is_production == 1 ? 1 : 0,
+            'description' => $request->description,
+            'updated_at' => Carbon::now()
+        ]);
+
+        session()->forget('access_token');
+        session()->forget('expires_in');
+
+        return redirect()->back()->withErrors(['success_message' => 'Company Profile Updated']);
+    }
+
+    public function updateFlyhubGdsInfo(Request $request){
+
+        FlyhubGdsConfig::where('id', 1)->update([
+            'api_key' => $request->api_key,
+            'secret_code' => $request->secret_code,
             'is_production' => $request->is_production == 1 ? 1 : 0,
             'description' => $request->description,
             'updated_at' => Carbon::now()

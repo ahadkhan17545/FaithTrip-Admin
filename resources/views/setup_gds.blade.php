@@ -78,10 +78,14 @@
                                         @if($item->code == 'sabre')
                                         <a href="{{url('edit/gds')}}/{{$item->code}}" class="settings_btn"><i class="fas fa-cog"></i> Settings</a>
                                         @endif
-                                
+
+                                        @if($item->code == 'flyhub')
+                                        <a href="{{url('edit/gds')}}/{{$item->code}}" class="settings_btn"><i class="fas fa-cog"></i> Settings</a>
+                                        @endif
+
                                     </div>
                                     <div class="col-lg-6 text-end">
-                                        <label for="{{$item->code}}"><b>Status:</b></label> 
+                                        <label for="{{$item->code}}"><b>Status:</b></label>
                                         <input type="checkbox" id="{{$item->code}}" class="switchery_checkbox" @if($item->status == 1) checked="" @endif value="{{$item->code}}" onchange="changeGdsStatus(this.value)" data-size="small" data-toggle="switchery" data-color="#53c024" data-secondary-color="#df3554">
                                     </div>
                                 </div>
@@ -133,7 +137,7 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                    
+
                     if ($('#'+gds_code).prop('checked')) {
                         toastr.success("Gds is Activated");
                     } else {

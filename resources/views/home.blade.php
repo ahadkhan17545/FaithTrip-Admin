@@ -243,28 +243,20 @@
                                                     </ul>
                                                     <div class="class-type mt-2">
                                                         <div class="custom-control custom-radio pl-0">
-                                                            <input type="radio" id="economy1" name="classType1"
-                                                                class="custom-control-input economy1" checked />
-                                                            <label class="custom-control-label fs-16 font-weight-500"
-                                                                for="economy1">Economy</label>
+                                                            <input type="radio" id="economy1" name="cabin_class_oneway" value="Economy" class="cabin_class_oneway custom-control-input economy1" checked />
+                                                            <label class="custom-control-label fs-16 font-weight-500" for="economy1">Economy</label>
                                                         </div>
                                                         <div class="custom-control custom-radio pl-0">
-                                                            <input type="radio" id="premiumEconomy1" name="classType1"
-                                                                class="custom-control-input premiumEconomy1" />
-                                                            <label class="custom-control-label fs-16 font-weight-500"
-                                                                for="premiumEconomy1">Premium economy</label>
+                                                            <input type="radio" id="premiumEconomy1" name="cabin_class_oneway" value="Premium-Economy" class="cabin_class_oneway custom-control-input premiumEconomy1" />
+                                                            <label class="custom-control-label fs-16 font-weight-500" for="premiumEconomy1">Premium economy</label>
                                                         </div>
                                                         <div class="custom-control custom-radio pl-0">
-                                                            <input type="radio" id="first1" name="classType1"
-                                                                class="custom-control-input first1" />
-                                                            <label class="custom-control-label fs-16 font-weight-500"
-                                                                for="first1">First</label>
+                                                            <input type="radio" id="business1" name="cabin_class_oneway" value="Business" class="cabin_class_oneway custom-control-input business1" />
+                                                            <label class="custom-control-label fs-16 font-weight-500" for="business1">Business</label>
                                                         </div>
                                                         <div class="custom-control custom-radio pl-0">
-                                                            <input type="radio" id="business1" name="classType1"
-                                                                class="custom-control-input business1" />
-                                                            <label class="custom-control-label fs-16 font-weight-500"
-                                                                for="business1">Business</label>
+                                                            <input type="radio" id="first1" name="cabin_class_oneway" value="First-Class" class="cabin_class_oneway custom-control-input first1" />
+                                                            <label class="custom-control-label fs-16 font-weight-500" for="first1">First-Class</label>
                                                         </div>
                                                     </div>
                                                     <input hidden name="classType" id="class_type_one" value="Y" />
@@ -404,30 +396,23 @@
                                                     </ul>
                                                     <div class="class-type mt-2">
                                                         <div class="custom-control custom-radio pl-0">
-                                                            <input type="radio" id="economy2" name="classType1"
-                                                                class="custom-control-input economy1" checked />
-                                                            <label class="custom-control-label fs-16 font-weight-500"
-                                                                for="economy1">Economy</label>
+                                                            <input type="radio" id="economy2" value="Economy" class="cabin_class_roundtrip custom-control-input economy1" checked />
+                                                            <label class="custom-control-label fs-16 font-weight-500" for="economy1">Economy</label>
                                                         </div>
                                                         <div class="custom-control custom-radio pl-0">
-                                                            <input type="radio" id="premiumEconomy2" name="classType1"
-                                                                class="custom-control-input premiumEconomy1" />
-                                                            <label class="custom-control-label fs-16 font-weight-500"
-                                                                for="premiumEconomy1">Premium economy</label>
+                                                            <input type="radio" id="premiumEconomy2" value="Premium-Economy" class="cabin_class_roundtrip custom-control-input premiumEconomy1" />
+                                                            <label class="custom-control-label fs-16 font-weight-500" for="premiumEconomy1">Premium economy</label>
                                                         </div>
                                                         <div class="custom-control custom-radio pl-0">
-                                                            <input type="radio" id="first2" name="classType1"
-                                                                class="custom-control-input first1" />
-                                                            <label class="custom-control-label fs-16 font-weight-500"
-                                                                for="first1">First</label>
+                                                            <input type="radio" id="business2" value="Business" class="cabin_class_roundtrip custom-control-input business1" />
+                                                            <label class="custom-control-label fs-16 font-weight-500" for="business1">Business</label>
                                                         </div>
                                                         <div class="custom-control custom-radio pl-0">
-                                                            <input type="radio" id="business2" name="classType1"
-                                                                class="custom-control-input business1" />
-                                                            <label class="custom-control-label fs-16 font-weight-500"
-                                                                for="business1">Business</label>
+                                                            <input type="radio" id="first2" value="First-Class" class="cabin_class_roundtrip custom-control-input first1" />
+                                                            <label class="custom-control-label fs-16 font-weight-500" for="first1">First-Class</label>
                                                         </div>
                                                     </div>
+
                                                     <input hidden name="classType" id="class_type" value="Y" />
                                                     <div class="cat-sel mt-3 text-right">
                                                         <input type="button" class="btn btn-danger w-100"
@@ -616,6 +601,7 @@
                 var child = Number($("#oneway-child-input").val());
                 var infant = Number($("#oneway-infant-input").val());
                 var preferred_airlines = $("#oneway_preferred_airlines").val();
+                var cabinClass = $('input.cabin_class_oneway:checked').val();
             } else {
                 var departureLocationId = $("#round_trip_from").val();
                 var destinationLocationId = $("#round_trip_to").val();
@@ -625,6 +611,7 @@
                 var child = Number($("#round-child-input").val());
                 var infant = Number($("#round-infant-input").val());
                 var preferred_airlines = $("#roundtrip_preferred_airlines").val();
+                var cabinClass = $('input.cabin_class_roundtrip:checked').val();
             }
 
 
@@ -667,6 +654,7 @@
             formData.append("child", child);
             formData.append("infant", infant);
             formData.append("preferred_airlines", preferred_airlines);
+            formData.append("cabin_class", cabinClass);
 
             $.ajax({
                 data: formData,
