@@ -93,33 +93,19 @@
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center">
                                         <span class="d-inline-flex align-items-center w-max-content">
-                                            {{-- @php
-                                                $passangerWisebaggage = $data['pricingInformation'][0]['fare']['passengerInfoList'];
-
-                                                foreach ($passangerWisebaggage as $passangerWisebaggageInfo) {
-                                                    if (isset($passangerWisebaggageInfo['passengerInfo']['baggageInformation'][0]['allowance']['ref'])) {
-
-                                                        $baggageRef = $passangerWisebaggageInfo['passengerInfo']['baggageInformation'][0]['allowance']['ref'];
-                                                        if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1])) {
-                                                            echo $passangerWisebaggageInfo['passengerInfo']['passengerType'] . '(' . $passangerWisebaggageInfo['passengerInfo']['passengerNumber'] . '): ';
-
-                                                            if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['pieceCount'])) {
-                                                                echo 'Piece Count: ' . $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['pieceCount'] * $passangerWisebaggageInfo['passengerInfo']['passengerNumber'];
-                                                            }
-                                                            if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['weight'])) {
-                                                                echo $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['weight'] * $passangerWisebaggageInfo['passengerInfo']['passengerNumber'];
-                                                            }
-                                                            if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['unit'])) {
-                                                                echo ' ' . $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['unit'];
-                                                            }
-
-                                                            echo '&nbsp;&nbsp;';
+                                            @php
+                                                if(isset($segmentData['baggage_allowance']['checked'])){
+                                                    foreach ($segmentData['baggage_allowance']['checked'] as $baggageDataIndex => $baggageData) {
+                                                        echo $baggageData['passenger_type'].': '.$baggageData['title']."&nbsp;&nbsp;";
+                                                    }
+                                                } else {
+                                                    if(isset($segmentData['baggage_allowance']['carry_on'])){
+                                                        foreach ($segmentData['baggage_allowance']['carry_on'] as $baggageDataIndex => $baggageData) {
+                                                            echo $baggageData['passenger_type'].': '.$baggageData['title']."&nbsp;&nbsp;";
                                                         }
                                                     }
                                                 }
-
-                                            @endphp --}}
-                                            &nbsp;
+                                            @endphp
                                         </span>
                                     </div>
                                 </div>
@@ -127,25 +113,21 @@
                         </div>
                     </div>
 
-                    {{-- @if(isset($segmentArray[$segmentIndex+1]) && isset($segmentData['arrival']['time']) && $segmentArray[$segmentIndex+1]['departure']['time'])
+                    @if(isset($data['segments'][$segmentIndex+1]))
                     <div class="d-flex justify-center px-3">
                         <span class="fs-12 layover text-center">
                             @php
-                                $time1 = substr($segmentData['arrival']['time'],0,8);
-                                $time2 = substr($segmentArray[$segmentIndex+1]['departure']['time'],0,8);
-                                $time1Obj = DateTime::createFromFormat('H:i:s', $time1);
-                                $time2Obj = DateTime::createFromFormat('H:i:s', $time2);
-                                $interval = $time1Obj->diff($time2Obj);
-                                $formattedDifference = sprintf(
-                                    "%dhr %dmin",
-                                    $interval->h + ($interval->days * 24), // Total hours, including days if any
-                                    $interval->i // Minutes
-                                );
-                                echo $formattedDifference." Layover";
+                                $datetime1 = new DateTime($segmentData['arrival_datetime']);
+                                $datetime2 = new DateTime($data['segments'][$segmentIndex+1]['departure_datetime']);
+                                $interval = $datetime1->diff($datetime2);
+                                $hours = $interval->h;
+                                $minutes = $interval->i;
+
+                                echo "{$hours}hr {$minutes}min";
                             @endphp
                         </span>
                     </div>
-                    @endif --}}
+                    @endif
                 @endforeach
 
             </div>
