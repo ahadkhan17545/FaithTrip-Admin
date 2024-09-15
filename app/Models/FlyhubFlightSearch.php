@@ -109,14 +109,14 @@ class FlyhubFlightSearch extends Model
                 $searchResults[$index]['departure_country_name'] = $item['flight_group'][0]['routes'][0]['origin_airport']['country'];
 
                 // arrival
-                $searchResults[$index]['arrival_datetime'] = $item['flight_group'][0]['routes'][0]['arrival_time']; //"2024-06-30T18:45:00.000+06:00"
+                $searchResults[$index]['arrival_datetime'] = end($item['flight_group'][0]['routes'])['arrival_time']; //"2024-06-30T18:45:00.000+06:00"
                 $searchResults[$index]['arrival_city_code'] = null;
-                $searchResults[$index]['arrival_city_name'] = $item['flight_group'][0]['routes'][0]['destination_airport']['city'];
-                $searchResults[$index]['arrival_airport_code'] = $item['flight_group'][0]['routes'][0]['destination'];
-                $searchResults[$index]['arrival_airport_name'] = $item['flight_group'][0]['routes'][0]['destination_airport']['name'];
-                $searchResults[$index]['arrival_terminal'] = $item['flight_group'][0]['routes'][0]['destination_terminal'];
+                $searchResults[$index]['arrival_city_name'] = end($item['flight_group'][0]['routes'])['destination_airport']['city'];
+                $searchResults[$index]['arrival_airport_code'] = end($item['flight_group'][0]['routes'])['destination'];
+                $searchResults[$index]['arrival_airport_name'] = end($item['flight_group'][0]['routes'])['destination_airport']['name'];
+                $searchResults[$index]['arrival_terminal'] = end($item['flight_group'][0]['routes'])['destination_terminal'];
                 $searchResults[$index]['arrival_country_code'] = null;
-                $searchResults[$index]['arrival_country_name'] = $item['flight_group'][0]['routes'][0]['destination_airport']['country'];
+                $searchResults[$index]['arrival_country_name'] = end($item['flight_group'][0]['routes'])['destination_airport']['country'];
 
                 // carrier info (for segment-1 only if mutiple segments are there)
                 $searchResults[$index]['operating_carrier_code'] = $item['flight_group'][0]['routes'][0]['operating']['carrier'];
@@ -130,7 +130,12 @@ class FlyhubFlightSearch extends Model
                 $searchResults[$index]['total_elapsed_time'] = $item['flight_group'][0]['flight_time'];
                 $searchResults[$index]['total_miles_flown'] = null;
                 $searchResults[$index]['last_ticket_datetime'] = $item['last_ticket_time']; //"2024-06-30T23:59:00.000+05:30" or null
+
+                // refund info
                 $searchResults[$index]['refundable'] = $item['fare_rules']['refundable'];
+                $searchResults[$index]['change_before_departure'] = $item['fare_rules']['change_before_departure'];
+                $searchResults[$index]['penalty'] = isset($item['fare_rules']['refundable_data']) && isset($item['fare_rules']['refundable_data'][0]['Amount'][0]) ? $item['fare_rules']['refundable_data'][0]['Amount'][0] : null; //BDT5703
+                $searchResults[$index]['penalty_applicable'] = isset($item['fare_rules']['refundable_data']) && isset($item['fare_rules']['refundable_data'][0]['PenaltyApplies']) ? $item['fare_rules']['refundable_data'][0]['PenaltyApplies'] : null;
 
                 // pricing
                 $searchResults[$index]['base_fare_amount'] = $item['price']['base_fare']['amount'];

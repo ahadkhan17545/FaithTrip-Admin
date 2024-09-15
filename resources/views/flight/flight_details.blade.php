@@ -172,7 +172,7 @@
                             class="table table-bordered table-sm mb-0 text-center">
                             <tbody>
                                 <tr>
-                                    <td><b>Passenger type</b></td>
+                                    <td><b>Passenger Type</b></td>
                                     <td><b>Base fare</b></td>
                                     <td><b>Tax fare</b></td>
                                     <td><b>Total fare</b></td>

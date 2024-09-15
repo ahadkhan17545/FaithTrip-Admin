@@ -34,7 +34,7 @@
                                     </div>
                                     <div class="airline-box">
                                         <div class="font-weight-600 fs-13">
-                                            {{ $segmentData['operating_carrier_name'] }}
+                                            {{ $segmentData['operating_carrier_code'] }}
                                         </div>
                                         <div class="font-weight-600 fs-13 text-muted w-max-content">
                                             {{ $segmentData['operating_flight_number'] }}
@@ -122,7 +122,6 @@
                                 $interval = $datetime1->diff($datetime2);
                                 $hours = $interval->h;
                                 $minutes = $interval->i;
-
                                 echo "{$hours}hr {$minutes}min";
                             @endphp
                         </span>
@@ -134,185 +133,79 @@
             <div class="tab-pane fade" id="fare-getails_{{ $index }}" role="tabpanel" aria-labelledby="fare-getails-tab">
                 <div class="row">
                     <div class="col-md-12">
-                        {{-- <table
-                            class="table table-bordered table-sm mb-0 text-center">
+                        <table class="table table-bordered table-sm mb-0 text-center">
                             <tbody>
                                 <tr>
-                                    <td><b>Passenger type</b></td>
+                                    <td><b>Passenger Type</b></td>
                                     <td><b>Base fare</b></td>
                                     <td><b>Tax fare</b></td>
                                     <td><b>Total fare</b></td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        @foreach ($data['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerData)
-                                            <b>{{ $passengerData['passengerInfo']['passengerNumber'] }}
-                                                {{ $passengerData['passengerInfo']['passengerType'] }}</b>&nbsp;
-                                        @endforeach
+                                        @if(session('adult') > 0)
+                                            <strong>Adult: {{session('adult')}} &nbsp;</strong>
+                                        @endif
+                                        @if(session('child') > 0)
+                                            <strong>Child: {{session('child')}} &nbsp;</strong>
+                                        @endif
+                                        @if(session('infant') > 0)
+                                            <strong>Infant: {{session('infant')}}</strong>
+                                        @endif
                                     </td>
                                     <td>
-                                        {{ $data['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'] }}
-                                        ({{ $data['pricingInformation'][0]['fare']['totalFare']['baseFareCurrency'] }})
+                                        {{ number_format($data['base_fare_amount'], 2) }}
+                                        ({{ $data['currency'] }})
                                     </td>
                                     <td>
-                                        {{ $data['pricingInformation'][0]['fare']['totalFare']['totalTaxAmount'] }}
-                                        ({{ $data['pricingInformation'][0]['fare']['totalFare']['currency'] }})
+                                        {{ number_format($data['total_tax_amount'], 2) }}
+                                        ({{ $data['currency'] }})
                                     </td>
                                     <td>
-                                        {{ $data['pricingInformation'][0]['fare']['totalFare']['totalPrice'] }}
-                                        ({{ $data['pricingInformation'][0]['fare']['totalFare']['currency'] }})
+                                        {{ number_format($data['total_fare'], 2) }}
+                                        ({{ $data['currency'] }})
                                     </td>
                                 </tr>
                             </tbody>
-                        </table> --}}
+                        </table>
                     </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="baggage_{{ $index }}" role="tabpanel" aria-labelledby="baggage-tab">
                 <div class="row">
                     <div class="col-md-6 pr-md-2">
-                        {{-- <table
-                            class="table table-bordered table-sm mb-0 text-center">
+
+                        <table class="table table-bordered table-sm mb-0 text-center">
                             <tbody>
                                 <tr>
-                                    <td>Passenger type</td>
+                                    <td>Passenger Type</td>
                                     <td>Weight</td>
                                     <td>Provision Type</td>
                                 </tr>
-                                @foreach ($data['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerData)
-                                    <tr>
-                                        <td>{{ $passengerData['passengerInfo']['passengerNumber'] }}
-                                            {{ $passengerData['passengerInfo']['passengerType'] }}
-                                        </td>
-                                        <td>
-                                            @php
-                                                if (
-                                                    isset(
-                                                        $passengerData[
-                                                            'passengerInfo'
-                                                        ][
-                                                            'baggageInformation'
-                                                        ][0]['allowance'][
-                                                            'ref'
-                                                        ],
-                                                    )
-                                                ) {
-                                                    $baggageRef =
-                                                        $passengerData[
-                                                            'passengerInfo'
-                                                        ][
-                                                            'baggageInformation'
-                                                        ][0]['allowance'][
-                                                            'ref'
-                                                        ];
-                                                    if (
-                                                        isset(
-                                                            $searchResults[
-                                                                'groupedItineraryResponse'
-                                                            ][
-                                                                'baggageAllowanceDescs'
-                                                            ][
-                                                                $baggageRef -
-                                                                    1
-                                                            ],
-                                                        )
-                                                    ) {
-                                                        if (
-                                                            isset(
-                                                                $searchResults[
-                                                                    'groupedItineraryResponse'
-                                                                ][
-                                                                    'baggageAllowanceDescs'
-                                                                ][
-                                                                    $baggageRef -
-                                                                        1
-                                                                ][
-                                                                    'pieceCount'
-                                                                ],
-                                                            )
-                                                        ) {
-                                                            echo 'Piece Count: ' .
-                                                                $searchResults[
-                                                                    'groupedItineraryResponse'
-                                                                ][
-                                                                    'baggageAllowanceDescs'
-                                                                ][
-                                                                    $baggageRef -
-                                                                        1
-                                                                ][
-                                                                    'pieceCount'
-                                                                ] *
-                                                                    $passengerData[
-                                                                        'passengerInfo'
-                                                                    ][
-                                                                        'passengerNumber'
-                                                                    ];
-                                                        }
-                                                        if (
-                                                            isset(
-                                                                $searchResults[
-                                                                    'groupedItineraryResponse'
-                                                                ][
-                                                                    'baggageAllowanceDescs'
-                                                                ][
-                                                                    $baggageRef -
-                                                                        1
-                                                                ]['weight'],
-                                                            )
-                                                        ) {
-                                                            echo $searchResults[
-                                                                'groupedItineraryResponse'
-                                                            ][
-                                                                'baggageAllowanceDescs'
-                                                            ][
-                                                                $baggageRef -
-                                                                    1
-                                                            ]['weight'] *
-                                                                $passengerData[
-                                                                    'passengerInfo'
-                                                                ][
-                                                                    'passengerNumber'
-                                                                ];
-                                                        }
-                                                        if (
-                                                            isset(
-                                                                $searchResults[
-                                                                    'groupedItineraryResponse'
-                                                                ][
-                                                                    'baggageAllowanceDescs'
-                                                                ][
-                                                                    $baggageRef -
-                                                                        1
-                                                                ]['unit'],
-                                                            )
-                                                        ) {
-                                                            echo $searchResults[
-                                                                'groupedItineraryResponse'
-                                                            ][
-                                                                'baggageAllowanceDescs'
-                                                            ][
-                                                                $baggageRef -
-                                                                    1
-                                                            ]['unit'];
-                                                        }
 
-                                                        echo '&nbsp;';
-                                                    }
-                                                }
-                                            @endphp
-                                        </td>
-                                        <td>
-                                            @if (isset($passengerData['passengerInfo']['baggageInformation'][0]['provisionType']))
-                                                {{ $passengerData['passengerInfo']['baggageInformation'][0]['provisionType'] }}
-                                            @endif
-                                            @if (isset($passengerData['passengerInfo']['baggageInformation'][0]['airlineCode']))
-                                                -&nbsp;{{ $passengerData['passengerInfo']['baggageInformation'][0]['airlineCode'] }}
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                @if(isset($segmentData['baggage_allowance']['checked']))
+                                    @foreach ($segmentData['baggage_allowance']['checked'] as $baggageDataIndex => $baggageData)
+                                        <tr>
+                                            <td>{{ $baggageData['passenger_type'] }}</td>
+                                            <td>{{ $baggageData['title'] }}</td>
+                                            <td style="text-transform: capitalize;">{{ str_replace("_"," ",$baggageData['baggage_type']) }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
+                                @if(isset($segmentData['baggage_allowance']['carry_on']))
+                                    @foreach ($segmentData['baggage_allowance']['carry_on'] as $baggageDataIndex => $baggageData)
+                                        <tr>
+                                            <td>{{ $baggageData['passenger_type'] }}</td>
+                                            <td>{{ $baggageData['title'] }}</td>
+                                            <td style="text-transform: capitalize;">{{ str_replace("_"," ",$baggageData['baggage_type']) }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
                             </tbody>
-                        </table> --}}
+                        </table>
+
                     </div>
                     <div class="col-md-6  pl-md-2">
                         <p class="mb-0">The baggage information is just for
@@ -324,102 +217,26 @@
             <div class="tab-pane fade" id="cancellation_{{ $index }}" role="tabpanel" aria-labelledby="cancellation-tab">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="table-responsive">
-                            {{-- <table
-                                class="table table-bordered table-sm text-center">
-                                <tbody>
-                                    <tr>
-                                        <td>Passenger Type</td>
-                                        <td>Non Refundable</td>
-                                        <td>Class</td>
-                                        <td>Available Seats</td>
-                                        <td>Booking Code</td>
-                                        <td>Meal Code</td>
-                                    </tr>
-                                    @foreach ($data['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerData)
-                                        <tr>
-                                            <td>{{ $passengerData['passengerInfo']['passengerNumber'] }}
-                                                {{ $passengerData['passengerInfo']['passengerType'] }}
-                                            </td>
-                                            <td
-                                                style="text-transform: capitalize;">
-                                                @php
-                                                    echo json_encode(
-                                                        $passengerData[
-                                                            'passengerInfo'
-                                                        ]['nonRefundable'],
-                                                    );
-                                                @endphp
-                                            </td>
-                                            <td>Economy</td>
-                                            <td>
-                                                @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $itemIndex => $segment)
-                                                    Segment-{{ $itemIndex + 1 }}:
-
-                                                    @if(isset($segment['segment']['seatsAvailable']))
-                                                        {{ $segment['segment']['seatsAvailable'] }}&nbsp;
-                                                    @else
-                                                        N/A
-                                                    @endif
-
-                                                @endforeach
-                                            </td>
-                                            <td>
-                                                @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $itemIndex => $segment)
-                                                    Segment-{{ $itemIndex + 1 }}:
-
-                                                    @if(isset($segment['segment']['bookingCode']))
-                                                    {{ $segment['segment']['bookingCode'] }}&nbsp;
-                                                    @else
-                                                    N/A
-                                                    @endif
-
-                                                @endforeach
-                                            </td>
-                                            <td>
-                                                @foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $itemIndex => $segment)
-                                                    @if (isset($segment['segment']['mealCode']))
-                                                        Segment-{{ $itemIndex + 1 }}:
-                                                        {{ $segment['segment']['mealCode'] }}&nbsp;
-                                                    @else
-                                                        N/A
-                                                    @endif
-                                                @endforeach
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table> --}}
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="col-md-12">
-                        <h6 class="my-3">Return and refund policy </h6>
-                        <table
-                            class="table table-bordered table-sm text-center">
-                            <tbody>
+                        <table class="table table-bordered table-sm text-center">
+                            <thead>
                                 <tr class="font-weight-bold">
-                                    <td>Type</td>
+                                    <td>Refundable</td>
                                     <td>Changeable before departure</td>
                                     <td>Penalty</td>
-                                    <td>Changeable after departure</td>
-                                    <td>Penalty</td>
+                                    <td>Penalty Applicable</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-transform: capitalize;">{{str_replace("-"," ",$data['refundable'])}}</td>
+                                    <td style="text-transform: capitalize;">{{$data['change_before_departure']}}</td>
+                                    <td>{{$data['penalty']}}</td>
+                                    <td style="text-transform: capitalize;">{{$data['penalty_applicable']}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <h6>Terms &amp; Conditions</h6>
-                <ul>
-                    <li>The charges are per passenger per sector and applicable
-                        only on refundable type tickets.</li>
-                    <li>Rescheduling Charges = Rescheduling/Change Penalty +
-                        Fare Difference (if applicable)</li>
-                    <li>Partial cancellation is not allowed on tickets booked
-                        under special discounted fares.</li>
-                </ul>
             </div>
         </div>
     </div>

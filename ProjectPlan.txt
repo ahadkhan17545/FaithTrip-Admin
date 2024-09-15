@@ -31,6 +31,8 @@ Terminal
 23. Do booking and check passanger info is stored or not (like passport no. agency name missing, name with gender, phone number er pashe b2b company name missing)
 24. Cancel korle sathe sathe client k message diben...
 
+25. Some time base fare shows in USD in search result accrodian fare details
+
 Question for Sabre
 ============================
 1. Whats NDC Search and should i use this api for flight Search (They have told to Implement that later)

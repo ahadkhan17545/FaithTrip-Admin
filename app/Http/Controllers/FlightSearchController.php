@@ -62,7 +62,8 @@ class FlightSearchController extends Controller
             'child' => $child,
             'infant' => $infant,
             'flight_type' => $flightType,
-            'preferred_airlines' => $airlinePrefs,
+            'preferred_airlines' => $preferredAirlinesArray,
+            'cabin_class' => $cabinClass,
         ]);
 
         // sabre
@@ -147,7 +148,8 @@ class FlightSearchController extends Controller
         $child = session('child');
         $infant = session('infant');
         $flightType = session('flight_type');
-        $airlinePrefs = session('preferred_airlines');
+        $preferredAirlinesArray = session('preferred_airlines');
+        $cabinClass = session('cabin_class');
 
         // storing search query into session for modify search
         session([
@@ -161,22 +163,54 @@ class FlightSearchController extends Controller
             'child' => $child,
             'infant' => $infant,
             'flight_type' => $flightType,
-            'preferred_airlines' => $airlinePrefs,
+            'preferred_airlines' => $preferredAirlinesArray,
+            'cabin_class' => $cabinClass,
         ]);
 
-        $searchResults = SabreFlightSearch::getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $airlinePrefs);
-        session(['search_results' => $searchResults]);
 
-        // for carrier filters
-        $searchResults = json_decode($searchResults, true);
-        $operatingCodes = [];
-        if(isset($searchResults['groupedItineraryResponse'])){
-            foreach ($searchResults['groupedItineraryResponse']['scheduleDescs'] as $schedule) {
-                $operatingCodes[] = $schedule['carrier']['operating'];
+        // sabre
+        $sabreGds = Gds::where('code', 'sabre')->first();
+        if($sabreGds->status == 1){
+
+            $airlinePrefs = null;
+            if(count($preferredAirlinesArray) > 0){
+                $airlinePrefs = array_map(function($code) {
+                    return ["Code" => $code];
+                }, $preferredAirlinesArray);
             }
+
+            $searchResults = SabreFlightSearch::getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $airlinePrefs);
+            session(['search_results' => $searchResults]);
+
+            // for carrier filters
+            $searchResults = json_decode($searchResults, true);
+            $operatingCodes = [];
+            if(isset($searchResults['groupedItineraryResponse'])){
+                foreach ($searchResults['groupedItineraryResponse']['scheduleDescs'] as $schedule) {
+                    $operatingCodes[] = $schedule['carrier']['operating'];
+                }
+            }
+            $operatingCodes = array_values(array_unique($operatingCodes));
+            session(['search_results_operating_carriers' => $operatingCodes]);
         }
-        $operatingCodes = array_values(array_unique($operatingCodes));
-        session(['search_results_operating_carriers' => $operatingCodes]);
+
+        // flyhub
+        $flyhubGds = Gds::where('code', 'flyhub')->first();
+        if($flyhubGds->status == 1){
+            $searchResults = FlyhubFlightSearch::getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $cabinClass, $preferredAirlinesArray);
+            session(['search_results' => $searchResults]);
+
+            // for carrier filters
+            $operatingCodes = [];
+            if(count($searchResults)){
+                foreach ($searchResults as $searchResult) {
+                    $operatingCodes[] = $searchResult['operating_carrier_code'];
+                }
+            }
+            $operatingCodes = array_values(array_unique($operatingCodes));
+            session(['search_results_operating_carriers' => $operatingCodes]);
+        }
+
         session()->forget('filter_min_price');
         session()->forget('filter_max_price');
         session()->forget('airline_carrier_code');
@@ -206,7 +240,8 @@ class FlightSearchController extends Controller
         $child = session('child');
         $infant = session('infant');
         $flightType = session('flight_type');
-        $airlinePrefs = session('preferred_airlines');
+        $preferredAirlinesArray = session('preferred_airlines');
+        $cabinClass = session('cabin_class');
 
         // storing search query into session for modify search
         session([
@@ -220,22 +255,54 @@ class FlightSearchController extends Controller
             'child' => $child,
             'infant' => $infant,
             'flight_type' => $flightType,
-            'preferred_airlines' => $airlinePrefs,
+            'preferred_airlines' => $preferredAirlinesArray,
+            'cabin_class' => $cabinClass,
         ]);
 
-        $searchResults = SabreFlightSearch::getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $airlinePrefs);
-        session(['search_results' => $searchResults]);
+        // sabre
+        $sabreGds = Gds::where('code', 'sabre')->first();
+        if($sabreGds->status == 1){
 
-        // for carrier filters
-        $searchResults = json_decode($searchResults, true);
-        $operatingCodes = [];
-        if(isset($searchResults['groupedItineraryResponse'])){
-            foreach ($searchResults['groupedItineraryResponse']['scheduleDescs'] as $schedule) {
-                $operatingCodes[] = $schedule['carrier']['operating'];
+            $airlinePrefs = null;
+            if(count($preferredAirlinesArray) > 0){
+                $airlinePrefs = array_map(function($code) {
+                    return ["Code" => $code];
+                }, $preferredAirlinesArray);
             }
+
+            $searchResults = SabreFlightSearch::getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $airlinePrefs);
+            session(['search_results' => $searchResults]);
+
+            // for carrier filters
+            $searchResults = json_decode($searchResults, true);
+            $operatingCodes = [];
+            if(isset($searchResults['groupedItineraryResponse'])){
+                foreach ($searchResults['groupedItineraryResponse']['scheduleDescs'] as $schedule) {
+                    $operatingCodes[] = $schedule['carrier']['operating'];
+                }
+            }
+            $operatingCodes = array_values(array_unique($operatingCodes));
+            session(['search_results_operating_carriers' => $operatingCodes]);
+
         }
-        $operatingCodes = array_values(array_unique($operatingCodes));
-        session(['search_results_operating_carriers' => $operatingCodes]);
+
+        // flyhub
+        $flyhubGds = Gds::where('code', 'flyhub')->first();
+        if($flyhubGds->status == 1){
+            $searchResults = FlyhubFlightSearch::getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $cabinClass, $preferredAirlinesArray);
+            session(['search_results' => $searchResults]);
+
+            // for carrier filters
+            $operatingCodes = [];
+            if(count($searchResults)){
+                foreach ($searchResults as $searchResult) {
+                    $operatingCodes[] = $searchResult['operating_carrier_code'];
+                }
+            }
+            $operatingCodes = array_values(array_unique($operatingCodes));
+            session(['search_results_operating_carriers' => $operatingCodes]);
+        }
+
         session()->forget('filter_min_price');
         session()->forget('filter_max_price');
         session()->forget('airline_carrier_code');
