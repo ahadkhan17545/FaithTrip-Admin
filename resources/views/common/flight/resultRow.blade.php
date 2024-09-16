@@ -25,7 +25,7 @@
             @if ($data['journey_type'] == 1)
                 @include('common.flight.onewayListBody')
             @else
-                @include('flight.round_list_body')
+                @include('common.flight.roundListBody')
             @endif
 
             <div class="list-item_end title hotel-right clearfix grid-hidden d-flex align-items-center d-md-block mt-2 pt-2 col-md-3 justify-content-center">

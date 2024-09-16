@@ -45,7 +45,7 @@
         <div class="fli-duration">
             <strong class="mr-1"><i class="far fa-clock"></i>
                 @php
-                    $time = App\Models\CustomFunction::convertIsoDurationToHoursAndMinutes($data['total_elapsed_time']);
+                    $time = App\Models\CustomFunction::convertIsoDurationToHoursAndMinutes($data['onward_total_elapsed_time']);
                     echo $time['hours'] . " Hour " . $time['minutes'] . " mins";
                 @endphp
             </strong>

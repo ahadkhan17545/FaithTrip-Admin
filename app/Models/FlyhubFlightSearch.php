@@ -140,8 +140,44 @@ class FlyhubFlightSearch extends Model
                 $searchResults[$index]['marketing_carrier_name'] = $item['flight_group'][0]['routes'][0]['marketing']['carrier_name'];
                 $searchResults[$index]['marketing_flight_number'] = $item['flight_group'][0]['routes'][0]['marketing']['flight_number'];
 
+                // for return flights
+                if(isset($item['flight_group'][1])){
+
+                    // return departure
+                    $searchResults[$index]['return_departure_datetime'] = $item['flight_group'][1]['routes'][0]['departure_time']; //"2024-06-30T18:45:00.000+06:00"
+                    $searchResults[$index]['return_departure_city_code'] = null;
+                    $searchResults[$index]['return_departure_city_name'] = $item['flight_group'][1]['routes'][0]['origin_airport']['city'];
+                    $searchResults[$index]['return_departure_airport_code'] = $item['flight_group'][1]['routes'][0]['origin'];
+                    $searchResults[$index]['return_departure_airport_name'] = $item['flight_group'][1]['routes'][0]['origin_airport']['name'];
+                    $searchResults[$index]['return_departure_terminal'] = $item['flight_group'][1]['routes'][0]['origin_terminal'];
+                    $searchResults[$index]['return_departure_country_code'] = null;
+                    $searchResults[$index]['return_departure_country_name'] = $item['flight_group'][1]['routes'][0]['origin_airport']['country'];
+
+                    // arrival
+                    $searchResults[$index]['return_arrival_datetime'] = end($item['flight_group'][1]['routes'])['arrival_time']; //"2024-06-30T18:45:00.000+06:00"
+                    $searchResults[$index]['return_arrival_city_code'] = null;
+                    $searchResults[$index]['return_arrival_city_name'] = end($item['flight_group'][1]['routes'])['destination_airport']['city'];
+                    $searchResults[$index]['return_arrival_airport_code'] = end($item['flight_group'][1]['routes'])['destination'];
+                    $searchResults[$index]['return_arrival_airport_name'] = end($item['flight_group'][1]['routes'])['destination_airport']['name'];
+                    $searchResults[$index]['return_arrival_terminal'] = end($item['flight_group'][1]['routes'])['destination_terminal'];
+                    $searchResults[$index]['return_arrival_country_code'] = null;
+                    $searchResults[$index]['return_arrival_country_name'] = end($item['flight_group'][1]['routes'])['destination_airport']['country'];
+
+                    // carrier info (for segment-1 only if mutiple segments are there)
+                    $searchResults[$index]['return_operating_carrier_code'] = $item['flight_group'][1]['routes'][0]['operating']['carrier'];
+                    $searchResults[$index]['return_operating_carrier_name'] = $item['flight_group'][1]['routes'][0]['operating']['carrier_name'];
+                    $searchResults[$index]['return_operating_flight_number'] = $item['flight_group'][1]['routes'][0]['operating']['flight_number'];
+                    $searchResults[$index]['return_marketing_carrier_code'] = $item['flight_group'][1]['routes'][0]['marketing']['carrier'];
+                    $searchResults[$index]['return_marketing_carrier_name'] = $item['flight_group'][1]['routes'][0]['marketing']['carrier_name'];
+                    $searchResults[$index]['return_marketing_flight_number'] = $item['flight_group'][1]['routes'][0]['marketing']['flight_number'];
+
+                }
+
                 // others info
-                $searchResults[$index]['total_elapsed_time'] = $item['flight_group'][0]['flight_time'];
+                $searchResults[$index]['onward_total_elapsed_time'] = $item['flight_group'][0]['flight_time'];
+                $searchResults[$index]['onward_stops'] = $item['flight_group'][0]['no_of_stops'];
+                $searchResults[$index]['return_total_elapsed_time'] = isset($item['flight_group'][1]) ? $item['flight_group'][1]['flight_time'] : null;
+                $searchResults[$index]['return_stops'] = isset($item['flight_group'][1]) ? $item['flight_group'][1]['no_of_stops'] : null;
                 $searchResults[$index]['total_miles_flown'] = null;
                 $searchResults[$index]['last_ticket_datetime'] = $item['last_ticket_time']; //"2024-06-30T23:59:00.000+05:30" or null
 
@@ -157,7 +193,7 @@ class FlyhubFlightSearch extends Model
                 $searchResults[$index]['total_fare'] = $item['price']['total']['amount'];
                 $searchResults[$index]['currency'] = $item['price']['total']['currency'];
 
-                // segments start
+                // onward segments start
                 $segmentsArray = array();
                 foreach($item['flight_group'][0]['routes'] as $segmentIndex => $route){
 
@@ -196,9 +232,55 @@ class FlyhubFlightSearch extends Model
                     $segmentsArray[$segmentIndex]['baggage_allowance'] = $route['baggages']; //includes adult child infant dynamically based on search
 
                 }
-                // segments end
-
                 $searchResults[$index]['segments'] = $segmentsArray;
+                // onward segments end
+
+
+                // return segments start
+                $segmentsArray = array();
+                if(isset($item['flight_group'][1]['routes'])){
+                    foreach($item['flight_group'][0]['routes'] as $segmentIndex => $route){
+
+                        $segmentsArray[$segmentIndex]['departure_datetime'] = $route['departure_time'];
+                        $segmentsArray[$segmentIndex]['departure_city_code'] = null;
+                        $segmentsArray[$segmentIndex]['departure_city_name'] = $route['origin_airport']['city'];
+                        $segmentsArray[$segmentIndex]['departure_airport_code'] = $route['origin'];
+                        $segmentsArray[$segmentIndex]['departure_airport_name'] = $route['origin_airport']['name'];
+                        $segmentsArray[$segmentIndex]['departure_terminal'] = $route['origin_terminal'];
+                        $segmentsArray[$segmentIndex]['departure_country_code'] = null;
+                        $segmentsArray[$segmentIndex]['arrival_country_name'] = $route['origin_airport']['country'];
+
+                        $segmentsArray[$segmentIndex]['arrival_datetime'] = $route['arrival_time'];
+                        $segmentsArray[$segmentIndex]['arrival_city_code'] = null;
+                        $segmentsArray[$segmentIndex]['arrival_city_name'] = $route['destination_airport']['city'];
+                        $segmentsArray[$segmentIndex]['arrival_airport_code'] = $route['destination'];
+                        $segmentsArray[$segmentIndex]['arrival_airport_name'] = $route['destination_airport']['name'];
+                        $segmentsArray[$segmentIndex]['arrival_terminal'] = $route['destination_terminal'];
+                        $segmentsArray[$segmentIndex]['arrival_country_code'] = null;
+                        $segmentsArray[$segmentIndex]['arrival_country_name'] = $route['destination_airport']['country'];
+
+                        $segmentsArray[$segmentIndex]['operating_carrier_code'] = $route['operating']['carrier'];
+                        $segmentsArray[$segmentIndex]['operating_carrier_name'] = $route['operating']['carrier_name'];
+                        $segmentsArray[$segmentIndex]['operating_flight_number'] = $route['operating']['flight_number'];
+                        $segmentsArray[$segmentIndex]['marketing_carrier_code'] = $route['marketing']['carrier'];
+                        $segmentsArray[$segmentIndex]['marketing_carrier_name'] = $route['marketing']['carrier_name'];
+                        $segmentsArray[$segmentIndex]['marketing_flight_number'] = $route['marketing']['flight_number'];
+
+                        $segmentsArray[$segmentIndex]['available_seats'] = $route['booking_class']['seat_available'];
+                        $segmentsArray[$segmentIndex]['miles_flown'] = $route['distance'];
+                        $segmentsArray[$segmentIndex]['elapsed_time'] = $route['flight_time'];
+                        $segmentsArray[$segmentIndex]['cabin_class'] = $route['booking_class']['cabin_class'];
+                        $segmentsArray[$segmentIndex]['cabin_code'] = $route['booking_class']['cabin_code'];
+                        $segmentsArray[$segmentIndex]['booking_code'] = $route['booking_class']['booking_code'];
+                        $segmentsArray[$segmentIndex]['meal_code'] = $route['booking_class']['meal_code'];
+                        $segmentsArray[$segmentIndex]['baggage_allowance'] = $route['baggages']; //includes adult child infant dynamically based on search
+
+                    }
+                    $searchResults[$index]['return_segments'] = $segmentsArray;
+                }
+
+                // return segments end
+
             }
         }
         // custom data set
