@@ -2,33 +2,30 @@ Task:
 1. Share PNR Option in Email
 
 ======04-08-2024=======
-3. check last ticketing time from api response and cancel the booking with that time
-4. Improve Ticket Design (check some new desing from online)
-5. Net Price and Gross prices for b2b
+1. check last ticketing time from api response and cancel the booking with that time
+2. Improve Ticket Design (check some new desing from online)
+3. Net Price and Gross prices for b2b
+4. Send email to client after booking/ticket issue/cancel
+5. Show Enoguht Details at the time of Flight Booking
+6. Manage System user (Admin can his own system user and b2b user can add his own system user)
+7. Make all the tables responsive (for Mobile Screens)
+8. Remove Company profit form report of b2b user
+9. Direct Flight/Segmented Flights Filter option before Flight Search
 
-6. Send email to client after booking/ticket issue/cancel
-7. Show Enoguht Details at the time of Flight Booking
-
-8. Manage System user (Admin can his own system user and b2b user can add his own system user)
-10. Make all the tables responsive (for Mobile Screens)
-11. Remove Company profit form report of b2b user
-13. Direct Flight/Segmented Flights Filter option before Flight Search
-
-14. MultiCity Search
-15. Modify Search is working Properly or not check this
-17. Ticket VOID option
+10. MultiCity Search
+11. Modify Search is working Properly or not check this
+12. Ticket VOID option
 
 Terminal
-19. Booking e naam er issue (passanger info and passport info jai nai)
-20. Ticket issue korle issue hochhe but ticket number asche na plus name (Mr./Miss.) and price wrong show korche (class chnage hoye jachhe "Y") and passport information ni & passanger nai
-21. Check Ticket Details/PNR details api so that i can know the update about any ticket that it has been cancelled from the terminl or not
-22. Ticket Void Option
-
-23. Do booking and check passanger info is stored or not (like passport no. agency name missing, name with gender, phone number er pashe b2b company name missing)
-24. Cancel korle sathe sathe client k message diben...
-
-25. Some time base fare shows in USD in search result accrodian fare details
+13. Booking e naam er issue (passanger info and passport info jai nai)
+14. Ticket issue korle issue hochhe but ticket number asche na plus name (Mr./Miss.) and price wrong show korche (class chnage hoye jachhe "Y") and passport information ni & passanger nai
+15. Check Ticket Details/PNR details api so that i can know the update about any ticket that it has been cancelled from the terminl or not
+16. Ticket Void Option
+17. Do booking and check passanger info is stored or not (like passport no. agency name missing, name with gender, phone number er pashe b2b company name missing)
+18. Cancel korle sathe sathe client k message diben...
+19. Some time base fare shows in USD in search result accrodian fare details
 
 Question for Sabre
 ============================
 1. Whats NDC Search and should i use this api for flight Search (They have told to Implement that later)
+

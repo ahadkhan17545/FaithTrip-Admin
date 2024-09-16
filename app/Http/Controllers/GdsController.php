@@ -68,6 +68,7 @@ class GdsController extends Controller
     public function updateFlyhubGdsInfo(Request $request){
 
         FlyhubGdsConfig::where('id', 1)->update([
+            'api_endpoint' => $request->api_endpoint,
             'api_key' => $request->api_key,
             'secret_code' => $request->secret_code,
             'is_production' => $request->is_production == 1 ? 1 : 0,

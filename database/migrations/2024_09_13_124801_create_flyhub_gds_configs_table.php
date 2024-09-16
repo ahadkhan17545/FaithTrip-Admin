@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('flyhub_gds_configs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('gds_id')->nullable();
+            $table->string('api_endpoint')->nullable();
             $table->string('api_key')->nullable();
             $table->string('secret_code')->nullable();
             $table->tinyInteger('is_production')->comment('0=>No; 1=>Yes');

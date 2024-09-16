@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 16, 2024 at 08:10 AM
+-- Generation Time: Sep 16, 2024 at 03:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -15738,6 +15738,7 @@ INSERT INTO `flight_segments` (`id`, `flight_booking_id`, `total_miles_flown`, `
 CREATE TABLE `flyhub_gds_configs` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `gds_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `api_endpoint` varchar(255) DEFAULT NULL,
   `api_key` varchar(255) DEFAULT NULL,
   `secret_code` varchar(255) DEFAULT NULL,
   `is_production` tinyint(4) NOT NULL COMMENT '0=>No; 1=>Yes',
@@ -15750,8 +15751,8 @@ CREATE TABLE `flyhub_gds_configs` (
 -- Dumping data for table `flyhub_gds_configs`
 --
 
-INSERT INTO `flyhub_gds_configs` (`id`, `gds_id`, `api_key`, `secret_code`, `is_production`, `description`, `created_at`, `updated_at`) VALUES
-(1, 3, 'S22841592486461569276', 'F5ZxtnzhOKkvK7Ugs9FnTUloL1YV8kc8nT2ahh3PBfV2R', 1, '<p>Testing Mode</p>', NULL, '2024-09-15 15:17:20');
+INSERT INTO `flyhub_gds_configs` (`id`, `gds_id`, `api_endpoint`, `api_key`, `secret_code`, `is_production`, `description`, `created_at`, `updated_at`) VALUES
+(1, 3, NULL, 'S22841592486461569276', 'F5ZxtnzhOKkvK7Ugs9FnTUloL1YV8kc8nT2ahh3PBfV2R', 1, '<p>Testing Mode</p>', NULL, '2024-09-15 15:17:20');
 
 -- --------------------------------------------------------
 
@@ -15777,7 +15778,7 @@ CREATE TABLE `gds` (
 
 INSERT INTO `gds` (`id`, `name`, `code`, `logo`, `description`, `serial`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Amadeus GDS API', 'amadeus', 'gds_logo/amadeus.png', 'To configure or setup credentials click on settings', 2, 0, '2024-05-07 10:18:38', '2024-05-07 12:23:32'),
-(2, 'Sabre GDS API', 'sabre', 'gds_logo/sabre.jpg', 'To configure or setup credentials click on settings', 1, 0, '2024-05-07 10:19:18', '2024-09-15 15:17:14'),
+(2, 'Sabre GDS API', 'sabre', 'gds_logo/sabre.jpg', 'To configure or setup credentials click on settings', 1, 0, '2024-05-07 10:19:18', '2024-09-16 13:19:14'),
 (3, 'Flyhub GDS API', 'flyhub', 'gds_logo/flyhub.jpg', 'Amadeus + Sabre + Expedia + Travelport', 1, 1, '2024-09-13 10:19:18', '2024-09-15 15:17:15');
 
 -- --------------------------------------------------------
@@ -15926,7 +15927,9 @@ INSERT INTO `recharge_requests` (`id`, `user_id`, `admin_bank_account_id`, `admi
 (3, 1, NULL, 3, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '01969005035', 6000, '7854789658', NULL, 'Testing BKash', 1, 'UYTTRE987603', '2024-07-04 10:59:57', '2024-07-04 11:28:35'),
 (4, 1, 5, NULL, 1, 'FAITH TRAVELS And TOURS LTD', '20503910100069217', NULL, NULL, NULL, 'Islami Bank Bangladesh Ltd', 'Banani', '125260433', NULL, NULL, 50000, '234', NULL, NULL, 0, 'EXIib1724906914', '2024-08-29 02:48:34', NULL),
 (5, 6, 5, NULL, 1, 'FAITH TRAVELS And TOURS LTD', '20503910100069217', NULL, NULL, NULL, 'Islami Bank Bangladesh Ltd', 'Banani', '125260433', NULL, NULL, 50000, '234', NULL, NULL, 0, 'Ljkeh1724907022', '2024-08-29 02:50:22', NULL),
-(6, 3, NULL, NULL, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 25000, NULL, NULL, 'Direct cash payment in faithtrp office', 0, '4DQv11726464509', '2024-09-16 05:28:29', NULL);
+(6, 3, NULL, NULL, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 25000, NULL, NULL, 'Direct cash payment in faithtrp office', 0, '4DQv11726464509', '2024-09-16 05:28:29', NULL),
+(7, 3, NULL, NULL, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10, '1726470797mHoCy', NULL, NULL, 0, '5NPb31726470797', '2024-09-16 07:13:17', '2024-09-16 07:13:17'),
+(8, 3, NULL, NULL, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10, '1726470827aAAXy', NULL, NULL, 0, 'AiQ8o1726470827', '2024-09-16 07:13:47', '2024-09-16 07:13:47');
 
 -- --------------------------------------------------------
 
@@ -16334,7 +16337,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `recharge_requests`
 --
 ALTER TABLE `recharge_requests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `sabre_gds_configs`

@@ -36,18 +36,31 @@ class FlyhubFlightSearch extends Model
         $partner_id = "1";
         $language = "en";
 
+
+        $segmentArray = [];
+        if($flightType == 1){ //oneway
+            $segmentArray[] = [
+                "departure_airport_type" => "AIRPORT", // CITY or AIRPORT
+                "departure_airport" => $departure_airport,
+                "arrival_airport_type" => "AIRPORT", // CITY or AIRPORT
+                "arrival_airport" => $arrival_airport,
+                "departure_date" => $departure_date
+            ];
+        } else { //roundtrip
+            $segmentArray[] = [
+                "departure_airport_type" => "AIRPORT", // CITY or AIRPORT
+                "departure_airport" => $departure_airport,
+                "arrival_airport_type" => "AIRPORT", // CITY or AIRPORT
+                "arrival_airport" => $arrival_airport,
+                "departure_date" => $departure_date,
+                "arrival_date" => $returnDate
+            ];
+        }
+
         // Create the data array
         $data = [
             "journey_type" => $journey_type,
-            "segment" => [
-                [
-                    "departure_airport_type" => "AIRPORT", // CITY or AIRPORT
-                    "departure_airport" => $departure_airport,
-                    "arrival_airport_type" => "AIRPORT", // CITY or AIRPORT
-                    "arrival_airport" => $arrival_airport,
-                    "departure_date" => $departure_date,
-                ]
-            ],
+            "segment" => $segmentArray,
             "travelers_adult" => $travelers_adult,
             "travelers_child" => $travelers_child,
             "travelers_child_age" => $travelers_child_age,
@@ -65,12 +78,13 @@ class FlyhubFlightSearch extends Model
         // Convert the data array to JSON
         $json_data = json_encode($data);
 
+        // Getting credentials from GDS Config
+        $flyhubGds = FlyhubGdsConfig::where('id', 1)->first();
 
-       // Initialize cURL
+        // Initialize cURL
         $curl = curl_init();
-
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.nakamura-tour.com/flight/search',
+            CURLOPT_URL => $flyhubGds->api_endpoint."/flight/search",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -82,8 +96,8 @@ class FlyhubFlightSearch extends Model
             CURLOPT_HTTPHEADER => array(
                 'Accept: application/json',
                 'Content-Type: application/json',
-                'apikey: S22841592486461569276',
-                'secretecode: F5ZxtnzhOKkvK7Ugs9FnTUloL1YV8kc8nT2ahh3PBfV2R'
+                'apikey: '.$flyhubGds->api_key,
+                'secretecode: '.$flyhubGds->secret_code,
             ),
         ));
 

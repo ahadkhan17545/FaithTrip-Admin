@@ -1,6 +1,8 @@
 @extends('master')
 
 @section('header_css')
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     <style>
         .sabre_gds_info label{
             font-weight: 600;
@@ -39,6 +41,15 @@
                                 <div class="form-group">
                                     <label for="password">Secret Code</label>
                                     <input type="text" id="secret_code" name="secret_code" value="{{$flyhubGdsInfo->secret_code}}" class="form-control" placeholder="F5ZxtnzhOKkvK7Ukc8nT2ahh3PBfV2R">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3 mb-2">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="api_endpoint">API Endpoint</label>
+                                    <input type="text" id="api_endpoint" name="api_endpoint" value="{{$flyhubGdsInfo->api_endpoint}}" class="form-control" placeholder="https://">
                                 </div>
                             </div>
                         </div>
@@ -87,12 +98,21 @@
         </script>
     @endif
 
-    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <script>
-        CKEDITOR.replace('description', {
-            filebrowserUploadUrl: "{{route('ckeditor.upload', ['_token' => csrf_token() ])}}",
-            filebrowserUploadMethod: 'form',
+        $('#description').summernote({
+            placeholder: 'Type here',
+            tabsize: 2,
             height: 300,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
         });
     </script>
 @endsection
