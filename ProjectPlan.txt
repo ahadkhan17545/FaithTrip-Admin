@@ -2,7 +2,6 @@ Task:
 1. Share PNR Option in Email
 
 ======04-08-2024=======
-2. Check topup request for direct cash submit in faithtrip bank account
 3. check last ticketing time from api response and cancel the booking with that time
 4. Improve Ticket Design (check some new desing from online)
 5. Net Price and Gross prices for b2b
@@ -11,15 +10,12 @@ Task:
 7. Show Enoguht Details at the time of Flight Booking
 
 8. Manage System user (Admin can his own system user and b2b user can add his own system user)
-9. Save Last Ticketing Datetime
 10. Make all the tables responsive (for Mobile Screens)
 11. Remove Company profit form report of b2b user
-12. Implement SSL Commerz for Instant Payment for the B2B Users
 13. Direct Flight/Segmented Flights Filter option before Flight Search
 
 14. MultiCity Search
 15. Modify Search is working Properly or not check this
-16. Balance chara ticket issue hobe na, booking hobe
 17. Ticket VOID option
 
 Terminal

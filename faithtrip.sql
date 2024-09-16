@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 08, 2024 at 07:48 AM
+-- Generation Time: Sep 16, 2024 at 08:10 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -15597,9 +15597,7 @@ CREATE TABLE `flight_bookings` (
   `total_tax_amount` double DEFAULT NULL,
   `total_fare` double DEFAULT NULL,
   `currency` varchar(255) DEFAULT NULL,
-  `last_booking_cancel_datetime` varchar(255) DEFAULT NULL,
   `last_ticket_datetime` varchar(255) DEFAULT NULL,
-  `last_ticket_cancel_datetime` varchar(255) DEFAULT NULL,
   `booking_cancelled_at` varchar(255) DEFAULT NULL,
   `ticket_issued_at` varchar(255) DEFAULT NULL,
   `ticket_cancelled_at` varchar(255) DEFAULT NULL,
@@ -15613,19 +15611,20 @@ CREATE TABLE `flight_bookings` (
 -- Dumping data for table `flight_bookings`
 --
 
-INSERT INTO `flight_bookings` (`id`, `booking_no`, `booked_by`, `b2b_comission`, `pnr_id`, `booking_id`, `ticket_id`, `gds`, `gds_unique_id`, `traveller_name`, `traveller_email`, `traveller_contact`, `departure_date`, `departure_location`, `arrival_location`, `governing_carriers`, `adult`, `child`, `infant`, `base_fare_amount`, `total_tax_amount`, `total_fare`, `currency`, `last_booking_cancel_datetime`, `last_ticket_datetime`, `last_ticket_cancel_datetime`, `booking_cancelled_at`, `ticket_issued_at`, `ticket_cancelled_at`, `status`, `is_live`, `created_at`, `updated_at`) VALUES
-(1, 'LTN-1717958526', 1, 0, 'QLIHZD', NULL, NULL, 'Sabre', 'SOOL', 'Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-06-14', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 11048, 1950, 12998, 'BDT', NULL, '2024-06-10 04:41:00', NULL, '2024-06-10 00:46:24', NULL, NULL, 3, NULL, '2024-06-09 18:42:06', '2024-06-09 18:46:24'),
-(2, '8ZD-1720194419', 1, 0, 'OQQPNE', NULL, NULL, 'Sabre', 'SOOL', 'Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-08-06', 'DAC', 'CXB', 'BS', '1', '0', '0', 5524, 975, 6499, 'BDT', NULL, '2024-07-07 23:59:00', NULL, NULL, NULL, NULL, 1, NULL, '2024-07-05 15:46:59', NULL),
-(3, 'GhL-1722061954', 1, 0, 'CCUGMV', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-08-01', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 10050, 1950, 12000, 'BDT', NULL, '2024-07-27 16:30:00', NULL, '2024-07-27 12:36:27', NULL, NULL, 3, NULL, '2024-07-27 04:32:34', '2024-07-27 04:36:27'),
-(4, 'ZDd-1722062743', 1, 0, 'GEXYDP', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-09-09', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 11048, 1950, 12998, 'BDT', NULL, '2024-07-29 23:59:00', NULL, '2024-07-27 12:46:02', NULL, NULL, 3, NULL, '2024-07-27 04:45:43', '2024-07-27 04:46:02'),
-(5, 'lB7-1722062883', 1, 0, 'GFWZZT', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-08-01', 'DAC', 'CXB', 'BS', '1', '0', '0', 5524, 975, 6499, 'BDT', NULL, '2024-07-27 16:46:00', NULL, '2024-07-27 12:55:33', NULL, NULL, 3, NULL, '2024-07-27 04:48:03', '2024-07-27 04:55:33'),
-(6, 'rUP-1722063267', 1, 0, 'DYMWYU', NULL, NULL, 'Sabre', 'SOOL', 'AHM HABIBUR RAHMAN', 'director@faithtrip.net', '+8801717649044', '2024-09-09', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 42465.6, 13466, 55932, 'BDT', NULL, '2024-07-29 23:59:00', NULL, '2024-07-27 12:57:48', NULL, NULL, 3, NULL, '2024-07-27 04:54:27', '2024-07-27 04:57:48'),
-(7, 'JPc-1722064138', 1, 0, NULL, NULL, NULL, 'Sabre', 'SOOL', 'AHM HABIBUR RAHMAN', 'adrito642@gmail.com', '+8801717649044', '2024-09-19', 'DAC', 'DAC', 'TK TK TK TK', '1', '0', '0', 301977.6, 116677, 418655, 'BDT', NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2024-07-27 05:08:58', NULL),
-(8, 'tVv-1722064337', 1, 0, 'CAUWVH', NULL, NULL, 'Sabre', 'SOOL', 'AHM HABIBUR RAHMAN', 'adrito642@gmail.com', '01896459495', '2024-08-15', 'DAC', 'DEL', 'AI', '1', '0', '0', 22412.4, 4794, 27207, 'BDT', NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2024-07-27 05:12:17', NULL),
-(9, 'i1z-1724825495', 1, 0, 'HTNLIN', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-09-05', 'DAC', 'CXB', 'BG', '1', '0', '0', 5024, 975, 5999, 'BDT', NULL, '2024-08-29 08:10:00', NULL, '2024-08-28 14:34:01', NULL, NULL, 3, 1, '2024-08-28 04:11:35', '2024-08-28 06:34:01'),
-(10, 'ond-1724834504', 1, 0, 'DXXZVJ', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-09-19', 'DAC', 'CXB', 'BG', '2', '0', '0', 10048, 1950, 11998, 'BDT', NULL, '2024-08-29 23:59:00', NULL, '2024-08-28 14:44:28', NULL, NULL, 3, 1, '2024-08-28 06:41:44', '2024-08-28 06:44:28'),
-(11, 'FuC-1725354022', 1, 0, NULL, NULL, NULL, 'Sabre', 'SOOL', 'Md Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-11-10', 'DAC', 'CXB', 'BS', '1', '0', '0', 5975, 975, 6950, 'BDT', NULL, '2024-09-05 23:59:00', NULL, NULL, NULL, NULL, 0, 1, '2024-09-03 07:00:22', NULL),
-(12, '27f-1725354263', 1, 0, 'FOUQRV', NULL, NULL, 'Sabre', 'SOOL', 'Md Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-11-10', 'DAC', 'DEL', 'AI', '1', '0', '0', 10694.7, 4807, 15502, 'BDT', NULL, '2024-11-10 15:00:00', NULL, NULL, '2024-09-03 15:11:33', NULL, 4, 1, '2024-09-03 07:04:23', '2024-09-03 07:11:33');
+INSERT INTO `flight_bookings` (`id`, `booking_no`, `booked_by`, `b2b_comission`, `pnr_id`, `booking_id`, `ticket_id`, `gds`, `gds_unique_id`, `traveller_name`, `traveller_email`, `traveller_contact`, `departure_date`, `departure_location`, `arrival_location`, `governing_carriers`, `adult`, `child`, `infant`, `base_fare_amount`, `total_tax_amount`, `total_fare`, `currency`, `last_ticket_datetime`, `booking_cancelled_at`, `ticket_issued_at`, `ticket_cancelled_at`, `status`, `is_live`, `created_at`, `updated_at`) VALUES
+(1, 'LTN-1717958526', 1, 0, 'QLIHZD', NULL, NULL, 'Sabre', 'SOOL', 'Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-06-14', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 11048, 1950, 12998, 'BDT', '2024-06-10 04:41:00', '2024-06-10 00:46:24', NULL, NULL, 3, NULL, '2024-06-09 18:42:06', '2024-06-09 18:46:24'),
+(2, '8ZD-1720194419', 1, 0, 'OQQPNE', NULL, NULL, 'Sabre', 'SOOL', 'Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-08-06', 'DAC', 'CXB', 'BS', '1', '0', '0', 5524, 975, 6499, 'BDT', '2024-07-07 23:59:00', NULL, NULL, NULL, 1, NULL, '2024-07-05 15:46:59', NULL),
+(3, 'GhL-1722061954', 1, 0, 'CCUGMV', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-08-01', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 10050, 1950, 12000, 'BDT', '2024-07-27 16:30:00', '2024-07-27 12:36:27', NULL, NULL, 3, NULL, '2024-07-27 04:32:34', '2024-07-27 04:36:27'),
+(4, 'ZDd-1722062743', 1, 0, 'GEXYDP', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-09-09', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 11048, 1950, 12998, 'BDT', '2024-07-29 23:59:00', '2024-07-27 12:46:02', NULL, NULL, 3, NULL, '2024-07-27 04:45:43', '2024-07-27 04:46:02'),
+(5, 'lB7-1722062883', 1, 0, 'GFWZZT', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-08-01', 'DAC', 'CXB', 'BS', '1', '0', '0', 5524, 975, 6499, 'BDT', '2024-07-27 16:46:00', '2024-07-27 12:55:33', NULL, NULL, 3, NULL, '2024-07-27 04:48:03', '2024-07-27 04:55:33'),
+(6, 'rUP-1722063267', 1, 0, 'DYMWYU', NULL, NULL, 'Sabre', 'SOOL', 'AHM HABIBUR RAHMAN', 'director@faithtrip.net', '+8801717649044', '2024-09-09', 'DAC', 'DAC', 'BS BS', '1', '0', '0', 42465.6, 13466, 55932, 'BDT', '2024-07-29 23:59:00', '2024-07-27 12:57:48', NULL, NULL, 3, NULL, '2024-07-27 04:54:27', '2024-07-27 04:57:48'),
+(7, 'JPc-1722064138', 1, 0, NULL, NULL, NULL, 'Sabre', 'SOOL', 'AHM HABIBUR RAHMAN', 'adrito642@gmail.com', '+8801717649044', '2024-09-19', 'DAC', 'DAC', 'TK TK TK TK', '1', '0', '0', 301977.6, 116677, 418655, 'BDT', NULL, NULL, NULL, NULL, 0, NULL, '2024-07-27 05:08:58', NULL),
+(8, 'tVv-1722064337', 1, 0, 'CAUWVH', NULL, NULL, 'Sabre', 'SOOL', 'AHM HABIBUR RAHMAN', 'adrito642@gmail.com', '01896459495', '2024-08-15', 'DAC', 'DEL', 'AI', '1', '0', '0', 22412.4, 4794, 27207, 'BDT', NULL, NULL, NULL, NULL, 1, NULL, '2024-07-27 05:12:17', NULL),
+(9, 'i1z-1724825495', 1, 0, 'HTNLIN', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-09-05', 'DAC', 'CXB', 'BG', '1', '0', '0', 5024, 975, 5999, 'BDT', '2024-08-29 08:10:00', '2024-08-28 14:34:01', NULL, NULL, 3, 1, '2024-08-28 04:11:35', '2024-08-28 06:34:01'),
+(10, 'ond-1724834504', 1, 0, 'DXXZVJ', NULL, NULL, 'Sabre', 'SOOL', 'Adrito Mustafa', 'adrito642@gmail.com', '01896459495', '2024-09-19', 'DAC', 'CXB', 'BG', '2', '0', '0', 10048, 1950, 11998, 'BDT', '2024-08-29 23:59:00', '2024-08-28 14:44:28', NULL, NULL, 3, 1, '2024-08-28 06:41:44', '2024-08-28 06:44:28'),
+(11, 'FuC-1725354022', 1, 0, NULL, NULL, NULL, 'Sabre', 'SOOL', 'Md Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-11-10', 'DAC', 'CXB', 'BS', '1', '0', '0', 5975, 975, 6950, 'BDT', '2024-09-05 23:59:00', NULL, NULL, NULL, 0, 1, '2024-09-03 07:00:22', NULL),
+(12, '27f-1725354263', 1, 0, 'FOUQRV', NULL, NULL, 'Sabre', 'SOOL', 'Md Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-11-10', 'DAC', 'DEL', 'AI', '1', '0', '0', 10694.7, 4807, 15502, 'BDT', '2024-11-10 15:00:00', NULL, '2024-09-03 15:11:33', NULL, 4, 1, '2024-09-03 07:04:23', '2024-09-03 07:11:33'),
+(14, 'uQN-1725774516', 1, 0, 'PDSFBC', NULL, NULL, 'Sabre', 'SOOL', 'Md Fahim Hossain', 'alifhossain174@gmail.com', '01969005035', '2024-10-10', 'DAC', 'DEL', 'UK', '1', '0', '0', 10694.7, 4694, 15389, 'BDT', '2024-10-10 10:10:00', NULL, NULL, NULL, 1, 0, '2024-09-08 05:48:36', NULL);
 
 -- --------------------------------------------------------
 
@@ -15668,7 +15667,8 @@ INSERT INTO `flight_passangers` (`id`, `flight_booking_id`, `passanger_type`, `t
 (10, 10, 'ADT', NULL, 'Adrito', 'Mustafa', '1999-10-30', '2', '7355279675', '2021-08-26', 'BGD', 'BGD', NULL, '2024-08-28 06:41:44', NULL),
 (11, 10, 'ADT', NULL, 'Sabrina Hossain', 'Fariha', '2000-12-08', '2', '4213426739', '2024-08-15', 'BGD', 'BGD', NULL, '2024-08-28 06:41:44', NULL),
 (12, 11, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '321654987', '2026-12-10', 'BGD', 'BGD', NULL, '2024-09-03 07:00:22', NULL),
-(13, 12, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '123123213', '1998-12-10', 'BGD', 'BGD', NULL, '2024-09-03 07:04:23', NULL);
+(13, 12, 'ADT', NULL, 'Fahim', 'Hossain', '1998-12-10', '1', '123123213', '1998-12-10', 'BGD', 'BGD', NULL, '2024-09-03 07:04:23', NULL),
+(14, 14, 'ADT', 'Mr.', 'Fahim', 'Hossain', '1998-12-10', '1', '987654321', '2026-12-10', 'BGD', 'BGD', '9876541235', '2024-09-08 05:48:36', NULL);
 
 -- --------------------------------------------------------
 
@@ -15726,7 +15726,32 @@ INSERT INTO `flight_segments` (`id`, `flight_booking_id`, `total_miles_flown`, `
 (16, 9, '189', '75', 'G', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '11:30:00+06:00', 'D', 'CXB', 'CXB', 'BD', '12:45:00+06:00', NULL, 'BG', '435', 'BG', '435', 'DH8', '2024-08-28 04:11:35', NULL),
 (17, 10, '189', '75', 'G', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '10:15:00+06:00', 'D', 'CXB', 'CXB', 'BD', '11:30:00+06:00', NULL, 'BG', '433', 'BG', '433', 'DH8', '2024-08-28 06:41:44', NULL),
 (18, 11, '189', '65', 'X', 'Y', '20 kg', 'DAC', 'DAC', 'BD', '07:45:00+06:00', 'D', 'CXB', 'CXB', 'BD', '08:50:00+06:00', NULL, 'BS', '141', 'BS', '141', 'AT7', '2024-09-03 07:00:22', NULL),
-(19, 12, '887', '150', 'U', 'Y', '30 kg', 'DAC', 'DAC', 'BD', '15:00:00+06:00', '2', 'DEL', 'DEL', 'IN', '17:00:00+05:30', '3', 'AI', '228', 'AI', '228', '320', '2024-09-03 07:04:23', NULL);
+(19, 12, '887', '150', 'U', 'Y', '30 kg', 'DAC', 'DAC', 'BD', '15:00:00+06:00', '2', 'DEL', 'DEL', 'IN', '17:00:00+05:30', '3', 'AI', '228', 'AI', '228', '320', '2024-09-03 07:04:23', NULL),
+(21, 14, '887', '170', 'V', 'Y', '30 kg', 'DAC', 'DAC', 'BD', '10:10:00+06:00', '1', 'DEL', 'DEL', 'IN', '12:30:00+05:30', '3', 'UK', '182', 'UK', '182', '320', '2024-09-08 05:48:36', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `flyhub_gds_configs`
+--
+
+CREATE TABLE `flyhub_gds_configs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `gds_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `api_key` varchar(255) DEFAULT NULL,
+  `secret_code` varchar(255) DEFAULT NULL,
+  `is_production` tinyint(4) NOT NULL COMMENT '0=>No; 1=>Yes',
+  `description` longtext DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `flyhub_gds_configs`
+--
+
+INSERT INTO `flyhub_gds_configs` (`id`, `gds_id`, `api_key`, `secret_code`, `is_production`, `description`, `created_at`, `updated_at`) VALUES
+(1, 3, 'S22841592486461569276', 'F5ZxtnzhOKkvK7Ugs9FnTUloL1YV8kc8nT2ahh3PBfV2R', 1, '<p>Testing Mode</p>', NULL, '2024-09-15 15:17:20');
 
 -- --------------------------------------------------------
 
@@ -15752,7 +15777,8 @@ CREATE TABLE `gds` (
 
 INSERT INTO `gds` (`id`, `name`, `code`, `logo`, `description`, `serial`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Amadeus GDS API', 'amadeus', 'gds_logo/amadeus.png', 'To configure or setup credentials click on settings', 2, 0, '2024-05-07 10:18:38', '2024-05-07 12:23:32'),
-(2, 'Sabre GDS API', 'sabre', 'gds_logo/sabre.jpg', 'To configure or setup credentials click on settings', 1, 1, '2024-05-07 10:19:18', '2024-05-07 19:51:12');
+(2, 'Sabre GDS API', 'sabre', 'gds_logo/sabre.jpg', 'To configure or setup credentials click on settings', 1, 0, '2024-05-07 10:19:18', '2024-09-15 15:17:14'),
+(3, 'Flyhub GDS API', 'flyhub', 'gds_logo/flyhub.jpg', 'Amadeus + Sabre + Expedia + Travelport', 1, 1, '2024-09-13 10:19:18', '2024-09-15 15:17:15');
 
 -- --------------------------------------------------------
 
@@ -15812,7 +15838,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (17, '2024_07_04_113602_create_recharge_requests_table', 11),
 (18, '2024_07_04_114441_create_bank_accounts_table', 12),
 (20, '2024_07_04_135448_create_mfs_accounts_table', 13),
-(21, '2024_09_08_112141_create_saved_passangers_table', 14);
+(21, '2024_09_08_112141_create_saved_passangers_table', 14),
+(22, '2024_09_13_124801_create_flyhub_gds_configs_table', 15),
+(23, '2024_09_16_120636_create_ssl_commerz_payment_histories_table', 16);
 
 -- --------------------------------------------------------
 
@@ -15897,7 +15925,8 @@ INSERT INTO `recharge_requests` (`id`, `user_id`, `admin_bank_account_id`, `admi
 (2, 1, NULL, NULL, 2, NULL, NULL, '11887458020', 'The City Bank', '2024-07-18', NULL, NULL, NULL, NULL, NULL, 50000, '987654321', 'recharge_attachments/VQFAt1720090722.docx', 'Testing', 2, 'UYTTRE987602', '2024-07-04 10:58:42', '2024-07-04 11:30:31'),
 (3, 1, NULL, 3, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '01969005035', 6000, '7854789658', NULL, 'Testing BKash', 1, 'UYTTRE987603', '2024-07-04 10:59:57', '2024-07-04 11:28:35'),
 (4, 1, 5, NULL, 1, 'FAITH TRAVELS And TOURS LTD', '20503910100069217', NULL, NULL, NULL, 'Islami Bank Bangladesh Ltd', 'Banani', '125260433', NULL, NULL, 50000, '234', NULL, NULL, 0, 'EXIib1724906914', '2024-08-29 02:48:34', NULL),
-(5, 6, 5, NULL, 1, 'FAITH TRAVELS And TOURS LTD', '20503910100069217', NULL, NULL, NULL, 'Islami Bank Bangladesh Ltd', 'Banani', '125260433', NULL, NULL, 50000, '234', NULL, NULL, 0, 'Ljkeh1724907022', '2024-08-29 02:50:22', NULL);
+(5, 6, 5, NULL, 1, 'FAITH TRAVELS And TOURS LTD', '20503910100069217', NULL, NULL, NULL, 'Islami Bank Bangladesh Ltd', 'Banani', '125260433', NULL, NULL, 50000, '234', NULL, NULL, 0, 'Ljkeh1724907022', '2024-08-29 02:50:22', NULL),
+(6, 3, NULL, NULL, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 25000, NULL, NULL, 'Direct cash payment in faithtrp office', 0, '4DQv11726464509', '2024-09-16 05:28:29', NULL);
 
 -- --------------------------------------------------------
 
@@ -15923,7 +15952,7 @@ CREATE TABLE `sabre_gds_configs` (
 --
 
 INSERT INTO `sabre_gds_configs` (`id`, `gds_id`, `user_id`, `password`, `production_user_id`, `production_password`, `is_production`, `description`, `created_at`, `updated_at`) VALUES
-(1, 2, 'V1:470936:S00L:AA', 'f5t3t7l2', 'V1:470936:S00L:AA', 'ft7lq3nz', 0, '<p>Contact Email: webservices.support@sabre.com</p>\r\n\r\n<p>https://accounts.cert.havail.sabre.com/login/sc<br />\r\nAgent ID/EPRs: 470936<br />\r\nPassword:&nbsp;BC5C0VG1<br />\r\nPCC: S00L</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>1. For Auth Token (Authentication Traditional - Rest OAuth Token Create /v2)<br />\r\n=========================================================================<br />\r\nhttps://api-crt.cert.havail.sabre.com/v2/auth/token<br />\r\nhttps://api.cert.platform.sabre.com/v2/auth/token (recommended)<br />\r\nhttps://api.platform.sabre.com/v2/auth/token</p>\r\n\r\n<p>To Convert into Base64: https://www.base64encode.org</p>\r\n\r\n<p>To get this Info: https://developer.sabre.com/user/alifhossain174gmailcom/applications<br />\r\nAuthorization Header Format: base64(base64(V1:user:group:domain):base64(password))<br />\r\nUsing My Dev Credentials: base64(base64(V1:hxp6cy145bjv5hy9:DEVCENTER:EXT):base64(Hp8tT6iN))<br />\r\nAfter Converting into Base64: Basic VjE6aHhwNmN5MTQ1Ymp2NWh5OTpERVZDRU5URVI6RVhU:SHA4dFQ2aU4</p>\r\n\r\n<p>sample Response<br />\r\n{<br />\r\n&nbsp;&nbsp;&nbsp; &quot;access_token&quot;: &quot;T1RLAQJgnnhf+y99xCxdXrEl6WovKnVfML9A5IcqobADhomEgBDNw4Btd1WLbn9rP99NxPfoAADgZl9agoTmznRiqHKD9Vwol6EayaPWbeJqwLqjgqg5isGVSorsWJBAIVsjXNxpD47ys8xv3sx3/ExNqza8UNBcwA4GGHgPzu0cXOeWWo07Ih8t8ZY0mwGwM10lO5qVW/yJZoaBA/20J02ZU5ztNsjSUt7ooYJ4yvXPc7X1zBkJEUawD7RDywzLQv3V8APMD814ziSkNktinPuvT64glmZcA9Rhmy9jZ8DiE0tYhn4V6ubKn/8gzifojjibwNY/NJPn6qvdmAmGpOmPDI5fTV13I5+CHA0rv73xM+cRdzNVn0o*&quot;,<br />\r\n&nbsp;&nbsp;&nbsp; &quot;token_type&quot;: &quot;bearer&quot;,<br />\r\n&nbsp;&nbsp;&nbsp; &quot;expires_in&quot;: 604800<br />\r\n}</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>2. For Air Search (Air Shopping - Standard Shopping - Bargain Finder Max /v2 General Search)<br />\r\n============================================================================================</p>\r\n\r\n<p>https://api.cert.platform.sabre.com/v5/offers/shop</p>\r\n\r\n<p>*Under Authorization select Bearer Token and use access_token from response of auth token api<br />\r\n*Keep Blank in Conversation-ID under Header</p>\r\n\r\n<p>Here is the sample PHP Code</p>\r\n\r\n<p><!--?php</p--></p>\r\n\r\n<p>$curl = curl_init();</p>\r\n\r\n<p>curl_setopt_array($curl, array(<br />\r\n&nbsp; CURLOPT_URL =&gt; &#39;https://api.cert.platform.sabre.com/v5/offers/shop&#39;,<br />\r\n&nbsp; CURLOPT_RETURNTRANSFER =&gt; true,<br />\r\n&nbsp; CURLOPT_ENCODING =&gt; &#39;&#39;,<br />\r\n&nbsp; CURLOPT_MAXREDIRS =&gt; 10,<br />\r\n&nbsp; CURLOPT_TIMEOUT =&gt; 0,<br />\r\n&nbsp; CURLOPT_FOLLOWLOCATION =&gt; true,<br />\r\n&nbsp; CURLOPT_HTTP_VERSION =&gt; CURL_HTTP_VERSION_1_1,<br />\r\n&nbsp; CURLOPT_CUSTOMREQUEST =&gt; &#39;POST&#39;,<br />\r\n&nbsp; CURLOPT_POSTFIELDS =&gt;&#39;{<br />\r\n&nbsp;&nbsp; &nbsp;&quot;OTA_AirLowFareSearchRQ&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Version&quot;: &quot;2&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;POS&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Source&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;PseudoCityCode&quot;: &quot;S00L&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RequestorID&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Type&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;ID&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;CompanyName&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Code&quot;: &quot;TN&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginDestinationInformation&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RPH&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DepartureDateTime&quot;: &quot;2024-09-11T20:00:00&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;ORD&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DestinationLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;DFW&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}, {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RPH&quot;: &quot;2&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DepartureDateTime&quot;: &quot;2024-09-18T20:00:00&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;DFW&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DestinationLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;ORD&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;],<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TravelPreferences&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TPA_Extensions&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DataSources&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;NDC&quot;: &quot;Disable&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;ATPCO&quot;: &quot;Enable&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LCC&quot;: &quot;Disable&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;PreferNDCSourceOnTie&quot;: {<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Value&quot;: true<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>\r\n\r\n<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TravelerInfoSummary&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;AirTravelerAvail&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;PassengerTypeQuantity&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Code&quot;: &quot;ADT&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Quantity&quot;: 1<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TPA_Extensions&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;IntelliSellTransaction&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RequestType&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Name&quot;: &quot;200ITINS&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;}<br />\r\n}&#39;,<br />\r\n&nbsp; CURLOPT_HTTPHEADER =&gt; array(<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Content-Type: application/json&#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Conversation-ID: &#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Authorization: Bearer T1RLAQJgnnhf+y99xCxdXrEl6WovKnVfML9A5IcqobADhomEgBDNw4Btd1WLbn9rP99NxPfoAADgZl9agoTmznRiqHKD9Vwol6EayaPWbeJqwLqjgqg5isGVSorsWJBAIVsjXNxpD47ys8xv3sx3/ExNqza8UNBcwA4GGHgPzu0cXOeWWo07Ih8t8ZY0mwGwM10lO5qVW/yJZoaBA/20J02ZU5ztNsjSUt7ooYJ4yvXPc7X1zBkJEUawD7RDywzLQv3V8APMD814ziSkNktinPuvT64glmZcA9Rhmy9jZ8DiE0tYhn4V6ubKn/8gzifojjibwNY/NJPn6qvdmAmGpOmPDI5fTV13I5+CHA0rv73xM+cRdzNVn0o*&#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Cookie: incap_ses_1561_2768617=6jSGe8SMHyY7eUzG1smpFSe7/2UAAAAAv3cC2R4xW2f8pbh4+o6uOw==; visid_incap_2768617=CMmrEjpiT2uqtybd16i4/Ce7/2UAAAAAQUIPAAAAAAAvMTvmjB9uF7//pSsvuNc0; incap_ses_1561_2768614=RmTiGgp5kyRGuE/G1smpFZC9/2UAAAAA2tK8GEkNHOEoEAgn93NucA==; nlbi_2768614=a9xQArhWwj/Frr/rRh9LCAAAAACCZdybTjDfKKIP461PxX2o; visid_incap_2768614=oagYgS2rSheFlLqzITzLq5S6/2UAAAAAQUIPAAAAAADHLck2jT6mHfxrtvT5HVcc&#39;<br />\r\n&nbsp; ),<br />\r\n));</p>\r\n\r\n<p>$response = curl_exec($curl);</p>\r\n\r\n<p>curl_close($curl);<br />\r\necho $response;</p>', '2024-05-07 10:53:58', '2024-09-08 05:05:55');
+(1, 2, 'V1:470936:S00L:AA', 'f5t3t7l2', 'V1:470936:S00L:AA', 'ft7lq3nz', 1, '<p>Contact Email: webservices.support@sabre.com</p>\r\n\r\n<p>https://accounts.cert.havail.sabre.com/login/sc<br />\r\nAgent ID/EPRs: 470936<br />\r\nPassword:&nbsp;BC5C0VG1<br />\r\nPCC: S00L</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>1. For Auth Token (Authentication Traditional - Rest OAuth Token Create /v2)<br />\r\n=========================================================================<br />\r\nhttps://api-crt.cert.havail.sabre.com/v2/auth/token<br />\r\nhttps://api.cert.platform.sabre.com/v2/auth/token (recommended)<br />\r\nhttps://api.platform.sabre.com/v2/auth/token</p>\r\n\r\n<p>To Convert into Base64: https://www.base64encode.org</p>\r\n\r\n<p>To get this Info: https://developer.sabre.com/user/alifhossain174gmailcom/applications<br />\r\nAuthorization Header Format: base64(base64(V1:user:group:domain):base64(password))<br />\r\nUsing My Dev Credentials: base64(base64(V1:hxp6cy145bjv5hy9:DEVCENTER:EXT):base64(Hp8tT6iN))<br />\r\nAfter Converting into Base64: Basic VjE6aHhwNmN5MTQ1Ymp2NWh5OTpERVZDRU5URVI6RVhU:SHA4dFQ2aU4</p>\r\n\r\n<p>sample Response<br />\r\n{<br />\r\n&nbsp;&nbsp;&nbsp; &quot;access_token&quot;: &quot;T1RLAQJgnnhf+y99xCxdXrEl6WovKnVfML9A5IcqobADhomEgBDNw4Btd1WLbn9rP99NxPfoAADgZl9agoTmznRiqHKD9Vwol6EayaPWbeJqwLqjgqg5isGVSorsWJBAIVsjXNxpD47ys8xv3sx3/ExNqza8UNBcwA4GGHgPzu0cXOeWWo07Ih8t8ZY0mwGwM10lO5qVW/yJZoaBA/20J02ZU5ztNsjSUt7ooYJ4yvXPc7X1zBkJEUawD7RDywzLQv3V8APMD814ziSkNktinPuvT64glmZcA9Rhmy9jZ8DiE0tYhn4V6ubKn/8gzifojjibwNY/NJPn6qvdmAmGpOmPDI5fTV13I5+CHA0rv73xM+cRdzNVn0o*&quot;,<br />\r\n&nbsp;&nbsp;&nbsp; &quot;token_type&quot;: &quot;bearer&quot;,<br />\r\n&nbsp;&nbsp;&nbsp; &quot;expires_in&quot;: 604800<br />\r\n}</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>2. For Air Search (Air Shopping - Standard Shopping - Bargain Finder Max /v2 General Search)<br />\r\n============================================================================================</p>\r\n\r\n<p>https://api.cert.platform.sabre.com/v5/offers/shop</p>\r\n\r\n<p>*Under Authorization select Bearer Token and use access_token from response of auth token api<br />\r\n*Keep Blank in Conversation-ID under Header</p>\r\n\r\n<p>Here is the sample PHP Code</p>\r\n\r\n<p><!--?php</p--></p>\r\n\r\n<p>$curl = curl_init();</p>\r\n\r\n<p>curl_setopt_array($curl, array(<br />\r\n&nbsp; CURLOPT_URL =&gt; &#39;https://api.cert.platform.sabre.com/v5/offers/shop&#39;,<br />\r\n&nbsp; CURLOPT_RETURNTRANSFER =&gt; true,<br />\r\n&nbsp; CURLOPT_ENCODING =&gt; &#39;&#39;,<br />\r\n&nbsp; CURLOPT_MAXREDIRS =&gt; 10,<br />\r\n&nbsp; CURLOPT_TIMEOUT =&gt; 0,<br />\r\n&nbsp; CURLOPT_FOLLOWLOCATION =&gt; true,<br />\r\n&nbsp; CURLOPT_HTTP_VERSION =&gt; CURL_HTTP_VERSION_1_1,<br />\r\n&nbsp; CURLOPT_CUSTOMREQUEST =&gt; &#39;POST&#39;,<br />\r\n&nbsp; CURLOPT_POSTFIELDS =&gt;&#39;{<br />\r\n&nbsp;&nbsp; &nbsp;&quot;OTA_AirLowFareSearchRQ&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Version&quot;: &quot;2&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;POS&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Source&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;PseudoCityCode&quot;: &quot;S00L&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RequestorID&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Type&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;ID&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;CompanyName&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Code&quot;: &quot;TN&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginDestinationInformation&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RPH&quot;: &quot;1&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DepartureDateTime&quot;: &quot;2024-09-11T20:00:00&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;ORD&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DestinationLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;DFW&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}, {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RPH&quot;: &quot;2&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DepartureDateTime&quot;: &quot;2024-09-18T20:00:00&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;OriginLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;DFW&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DestinationLocation&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LocationCode&quot;: &quot;ORD&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;],<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TravelPreferences&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TPA_Extensions&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;DataSources&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;NDC&quot;: &quot;Disable&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;ATPCO&quot;: &quot;Enable&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;LCC&quot;: &quot;Disable&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;PreferNDCSourceOnTie&quot;: {<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Value&quot;: true<br />\r\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>\r\n\r\n<p>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TravelerInfoSummary&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;AirTravelerAvail&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;PassengerTypeQuantity&quot;: [{<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Code&quot;: &quot;ADT&quot;,<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Quantity&quot;: 1<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;]<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;TPA_Extensions&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;IntelliSellTransaction&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;RequestType&quot;: {<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&quot;Name&quot;: &quot;200ITINS&quot;<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />\r\n&nbsp;&nbsp; &nbsp;}<br />\r\n}&#39;,<br />\r\n&nbsp; CURLOPT_HTTPHEADER =&gt; array(<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Content-Type: application/json&#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Conversation-ID: &#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Authorization: Bearer T1RLAQJgnnhf+y99xCxdXrEl6WovKnVfML9A5IcqobADhomEgBDNw4Btd1WLbn9rP99NxPfoAADgZl9agoTmznRiqHKD9Vwol6EayaPWbeJqwLqjgqg5isGVSorsWJBAIVsjXNxpD47ys8xv3sx3/ExNqza8UNBcwA4GGHgPzu0cXOeWWo07Ih8t8ZY0mwGwM10lO5qVW/yJZoaBA/20J02ZU5ztNsjSUt7ooYJ4yvXPc7X1zBkJEUawD7RDywzLQv3V8APMD814ziSkNktinPuvT64glmZcA9Rhmy9jZ8DiE0tYhn4V6ubKn/8gzifojjibwNY/NJPn6qvdmAmGpOmPDI5fTV13I5+CHA0rv73xM+cRdzNVn0o*&#39;,<br />\r\n&nbsp;&nbsp;&nbsp; &#39;Cookie: incap_ses_1561_2768617=6jSGe8SMHyY7eUzG1smpFSe7/2UAAAAAv3cC2R4xW2f8pbh4+o6uOw==; visid_incap_2768617=CMmrEjpiT2uqtybd16i4/Ce7/2UAAAAAQUIPAAAAAAAvMTvmjB9uF7//pSsvuNc0; incap_ses_1561_2768614=RmTiGgp5kyRGuE/G1smpFZC9/2UAAAAA2tK8GEkNHOEoEAgn93NucA==; nlbi_2768614=a9xQArhWwj/Frr/rRh9LCAAAAACCZdybTjDfKKIP461PxX2o; visid_incap_2768614=oagYgS2rSheFlLqzITzLq5S6/2UAAAAAQUIPAAAAAADHLck2jT6mHfxrtvT5HVcc&#39;<br />\r\n&nbsp; ),<br />\r\n));</p>\r\n\r\n<p>$response = curl_exec($curl);</p>\r\n\r\n<p>curl_close($curl);<br />\r\necho $response;</p>', '2024-05-07 10:53:58', '2024-09-15 15:15:31');
 
 -- --------------------------------------------------------
 
@@ -15950,6 +15979,14 @@ CREATE TABLE `saved_passangers` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `saved_passangers`
+--
+
+INSERT INTO `saved_passangers` (`id`, `saved_by`, `email`, `contact`, `title`, `first_name`, `last_name`, `type`, `dob`, `document_type`, `document_no`, `document_expire_date`, `document_issue_country`, `nationality`, `frequent_flyer_no`, `created_at`, `updated_at`) VALUES
+(2, 1, 'alifhossain175@gmail.com', '01969005048', 'Mr.', 'Arafat', 'Hossain', 'ADT', '1998-12-10', 1, '987654321', '2026-12-10', 'BGD', 'BGD', '9876541235', '2024-09-08 05:48:36', '2024-09-08 05:48:36'),
+(3, 1, 'alifhossain175@gmail.com', '01969005048', 'Mr.', 'Arafat', 'Hossain', 'ADT', '1998-12-10', 1, '987654321', '2026-12-10', 'BGD', 'BGD', '9876541235', '2024-09-08 05:48:36', '2024-09-08 05:48:36');
 
 -- --------------------------------------------------------
 
@@ -15978,6 +16015,33 @@ INSERT INTO `sms_gateways` (`id`, `image`, `provider_name`, `api_endpoint`, `api
 (1, NULL, 'ElitBuzz', 'https://880sms.com/smsapi', 'C20095786bf436075.858353215', NULL, 'GenericCommerceV1', 0, '2023-06-13 03:43:26', '2024-05-08 17:04:22'),
 (2, NULL, 'Reve', 'https://smpp.revesms.com:7790/sendtext', '2f18546bcfb66ebe', '7927fa55', 'Getup', 0, '2023-06-13 03:43:26', '2024-05-08 17:04:22'),
 (3, NULL, 'KhudeBarta', 'http://192.168.18.119:8585/send', '5d2a', '465', '8801847', 1, '2024-02-29 06:10:13', '2024-05-08 17:04:22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ssl_commerz_payment_histories`
+--
+
+CREATE TABLE `ssl_commerz_payment_histories` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `recharge_history_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `tran_id` varchar(255) DEFAULT NULL,
+  `bank_tran_id` varchar(255) DEFAULT NULL,
+  `val_id` varchar(255) DEFAULT NULL,
+  `amount` varchar(255) DEFAULT NULL,
+  `card_type` varchar(255) DEFAULT NULL,
+  `store_amount` varchar(255) DEFAULT NULL,
+  `card_no` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `tran_date` varchar(255) DEFAULT NULL,
+  `currency` varchar(255) DEFAULT NULL,
+  `card_issuer` varchar(255) DEFAULT NULL,
+  `card_brand` varchar(255) DEFAULT NULL,
+  `card_sub_brand` varchar(255) DEFAULT NULL,
+  `card_issuer_country` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -16086,6 +16150,12 @@ ALTER TABLE `flight_segments`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `flyhub_gds_configs`
+--
+ALTER TABLE `flyhub_gds_configs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `gds`
 --
 ALTER TABLE `gds`
@@ -16145,6 +16215,12 @@ ALTER TABLE `saved_passangers`
 -- Indexes for table `sms_gateways`
 --
 ALTER TABLE `sms_gateways`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ssl_commerz_payment_histories`
+--
+ALTER TABLE `ssl_commerz_payment_histories`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -16210,25 +16286,31 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `flight_bookings`
 --
 ALTER TABLE `flight_bookings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `flight_passangers`
 --
 ALTER TABLE `flight_passangers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `flight_segments`
 --
 ALTER TABLE `flight_segments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `flyhub_gds_configs`
+--
+ALTER TABLE `flyhub_gds_configs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `gds`
 --
 ALTER TABLE `gds`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `mfs_accounts`
@@ -16240,7 +16322,7 @@ ALTER TABLE `mfs_accounts`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -16252,7 +16334,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `recharge_requests`
 --
 ALTER TABLE `recharge_requests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `sabre_gds_configs`
@@ -16264,13 +16346,19 @@ ALTER TABLE `sabre_gds_configs`
 -- AUTO_INCREMENT for table `saved_passangers`
 --
 ALTER TABLE `saved_passangers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sms_gateways`
 --
 ALTER TABLE `sms_gateways`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `ssl_commerz_payment_histories`
+--
+ALTER TABLE `ssl_commerz_payment_histories`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`

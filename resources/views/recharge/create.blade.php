@@ -22,9 +22,7 @@
                 @csrf
                 <div class="card">
                     <div class="card-header">
-                        <div class="alert alert-success mb-0" role="alert">
-                            <h5 class="alert-heading mb-0">Submit Topup Request</h5>
-                        </div>
+                        <h5 class="mb-0">Submit Topup Request</h5>
                     </div>
                     <div class="card-body">
                         <div class="row justify-content-center">
@@ -43,6 +41,8 @@
                                                 <option value="5">Rocket</option>
                                                 <option value="6">Upay</option>
                                                 <option value="7">Sure Cash</option>
+                                                <option value="8">Cash Payment</option>
+                                                <option value="9">SSLCommerz - Instant Recharge</option>
                                             </select>
                                         </div>
                                     </div>
@@ -131,27 +131,27 @@
                                 </div>
 
                                 <div class="row pt-3">
-                                    <div class="col-lg-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <label for="recharge_amount" class="col-form-label">Recharge Amount</label>
-                                            <input type="text" id="recharge_amount" name="recharge_amount" placeholder="BDT" class="form-control" required/>
+                                            <input type="number" id="recharge_amount" name="recharge_amount" placeholder="BDT" class="form-control" required/>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col" id="transaction_id">
                                         <div class="form-group">
-                                            <label for="transaction_id" class="col-form-label">Transaction ID</label>
-                                            <input type="text" id="transaction_id" value="{{ old('transaction_id') }}" placeholder="Transaction ID" name="transaction_id" class="form-control" required/>
+                                            <label for="tran_id" class="col-form-label">Transaction ID</label>
+                                            <input type="text" id="tran_id" value="{{ old('transaction_id') }}" placeholder="Transaction ID" name="transaction_id" class="form-control"/>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="remarks" class="col-form-label">Remarks</label>
+                                    <label for="remarks" class="col-form-label">Remarks (Optional)</label>
                                     <textarea id="remarks" name="remarks" class="form-control" placeholder="Comments"></textarea>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="attachment" class="col-form-label">Attachment</label>
+                                    <label for="attachment" class="col-form-label">Attachment (Optional)</label>
                                     <input type="file" name="attachment" class="form-control">
                                 </div>
 
@@ -186,6 +186,10 @@
 
                     $("#mobile_account").removeClass("d-block");
                     $("#mobile_account").addClass("d-none");
+
+                    $("#transaction_id").removeClass("d-none");
+                    $("#transaction_id").addClass("d-block");
+
                 } else if(paymentMethod == 2){
                     $("#bank_cheque").removeClass("d-none");
                     $("#bank_cheque").addClass("d-block");
@@ -195,6 +199,38 @@
 
                     $("#bank_account").removeClass("d-block");
                     $("#bank_account").addClass("d-none");
+
+                    $("#transaction_id").removeClass("d-none");
+                    $("#transaction_id").addClass("d-block");
+
+                } else if(paymentMethod == 8){ //cash payment
+
+                    $("#bank_cheque").removeClass("d-block");
+                    $("#bank_cheque").addClass("d-none");
+
+                    $("#mobile_account").removeClass("d-block");
+                    $("#mobile_account").addClass("d-none");
+
+                    $("#bank_account").removeClass("d-block");
+                    $("#bank_account").addClass("d-none");
+
+                    $("#transaction_id").removeClass("d-block");
+                    $("#transaction_id").addClass("d-none");
+
+                } else if(paymentMethod == 9){ //cash payment
+
+                    $("#bank_cheque").removeClass("d-block");
+                    $("#bank_cheque").addClass("d-none");
+
+                    $("#mobile_account").removeClass("d-block");
+                    $("#mobile_account").addClass("d-none");
+
+                    $("#bank_account").removeClass("d-block");
+                    $("#bank_account").addClass("d-none");
+
+                    $("#transaction_id").removeClass("d-block");
+                    $("#transaction_id").addClass("d-none");
+
                 } else {
 
                     $("option.bKash").css("display", "none")
@@ -227,6 +263,9 @@
 
                     $("#bank_account").removeClass("d-block");
                     $("#bank_account").addClass("d-none");
+
+                    $("#transaction_id").removeClass("d-none");
+                    $("#transaction_id").addClass("d-block");
                 }
             } else {
                 $("#mobile_account").removeClass("d-block");

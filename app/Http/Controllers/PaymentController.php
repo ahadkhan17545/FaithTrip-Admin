@@ -12,6 +12,7 @@ use Yajra\DataTables\DataTables;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use DGvai\SSLCommerz\SSLCommerz;
 use Illuminate\Support\Str;
 
 class PaymentController extends Controller
@@ -183,7 +184,7 @@ class PaymentController extends Controller
             $attachment = "recharge_attachments/" . $file_name;
         }
 
-        RechargeRequest::insert([
+        $rechargeHistoryId = RechargeRequest::insertGetId([
             'user_id' => Auth::user()->id,
             'admin_bank_account_id' => $request->payment_method == 1 ? $request->admin_bank_account_id : null,
             'admin_mfs_account_id' => in_array($request->payment_method, [3,4,5,6,7]) ? $request->admin_mfs_account_id : null,
@@ -208,6 +209,18 @@ class PaymentController extends Controller
             'slug' => str::random(5) . time(),
             'created_at' => Carbon::now()
         ]);
+
+        if($request->payment_method == 9){ //sslcommerz
+            $transactionId = time().str::random(5);
+            $rechargeRequestInfo = RechargeRequest::where('id', $rechargeHistoryId)->first();
+            $rechargeRequestInfo->transaction_id = $transactionId;
+            $rechargeRequestInfo->save();
+
+            session(['ssl_tran_id' => $transactionId]);
+            session(['ssl_total_amount' => $rechargeRequestInfo->recharge_amount]);
+
+            return redirect('sslcommerz/order');
+        }
 
         Toastr::success('Recharge Request Submitted');
         return back();
@@ -302,6 +315,10 @@ class PaymentController extends Controller
                             return "Upay";
                         if($data->payment_method  == 7)
                             return "SureCash";
+                        if($data->payment_method  == 8)
+                            return "Cash Payment";
+                        if($data->payment_method  == 9)
+                            return "SSLCommerz";
                     })
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d", strtotime($data->created_at));
@@ -348,6 +365,175 @@ class PaymentController extends Controller
             'updated_at' => Carbon::now(),
         ]);
         return response()->json(['success' => 'Denied Successfully.']);
+    }
+
+
+
+    public function order()
+    {
+        date_default_timezone_set("Asia/Dhaka");
+
+        $totalAmount = session('ssl_total_amount');
+        $transactionId = session('ssl_tran_id');
+
+        $sslc = new SSLCommerz();
+        $sslc->amount($totalAmount)
+            ->trxid($transactionId)
+            ->product('B2B Account Recharge')
+            ->customer(Auth::user()->name, Auth::user()->email);
+        return $sslc->make_payment();
+    }
+
+    public function success(Request $request)
+    {
+        $validate = SSLCommerz::validate_payment($request);
+        if ($validate) {
+
+            $transactionId = session('ssl_tran_id');
+            date_default_timezone_set("Asia/Dhaka");
+
+            $rechargeRequestInfo = RechargeRequest::where('transaction_id', $transactionId)->first();
+            $rechargeRequestInfo->status = 1;
+            $rechargeRequestInfo->updated_at = Carbon::now();
+            $rechargeRequestInfo->sve();
+
+            User::where('id', $rechargeRequestInfo->user_id)->increment('balance', $rechargeRequestInfo->recharge_amount);
+
+            DB::table('ssl_commerz_payment_histories')->insert([
+                'recharge_history_id' => $rechargeRequestInfo->id,
+                'tran_id' => $rechargeRequestInfo->transaction_id,
+                'bank_tran_id' => $request->bank_tran_id,
+                'val_id' => $request->val_id,
+                'amount' => $rechargeRequestInfo->total,
+                'card_type' => $request->card_type,
+                'store_amount' => $rechargeRequestInfo->total,
+                'card_no' => $request->card_no,
+                'status' => "VALID",
+                'tran_date' => date("Y-m-d H:i:s"),
+                'currency' => "BDT",
+                'card_issuer' => $request->card_issuer,
+                'card_brand' => $request->card_brand,
+                'card_sub_brand' => $request->card_sub_brand,
+                'card_issuer_country' => $request->card_issuer_country,
+                'created_at' => Carbon::now()
+            ]);
+
+            session()->forget('ssl_tran_id');
+            session()->forget('ssl_total_amount');
+
+            Toastr::success('Account is recharged successfully');
+            return redirect('/view/recharge/requests');
+
+        }
+    }
+
+    public function failure(Request $request)
+    {
+        //  do the database works
+        //  also same goes for cancel()
+        //  for IPN() you can leave it untouched or can follow
+        //  official documentation about IPN from SSLCommerz Panel
+
+        $transactionId = session('ssl_tran_id');
+        RechargeRequest::where('transaction_id', $transactionId)->delete();
+
+        session()->forget('ssl_tran_id');
+        session()->forget('ssl_total_amount');
+
+        Toastr::error('Something went wrong', 'Try Again');
+        return redirect('/create/topup/request');
+    }
+
+    public function cancel(Request $request)
+    {
+        //  do the database works
+        //  also same goes for cancel()
+        //  for IPN() you can leave it untouched or can follow
+        //  official documentation about IPN from SSLCommerz Panel
+
+        $transactionId = session('ssl_tran_id');
+        RechargeRequest::where('transaction_id', $transactionId)->delete();
+
+        session()->forget('ssl_tran_id');
+        session()->forget('ssl_total_amount');
+
+        Toastr::error('Something went wrong', 'Try Again');
+        return redirect('/create/topup/request');
+    }
+
+    public function refund($bankID)
+    {
+        /**
+         * SSLCommerz::refund($bank_trans_id, $amount [,$reason])
+         */
+
+        $refund = SSLCommerz::refund($bankID, 1500); // 1500 => refund amount
+
+        if ($refund->status) {
+            /**
+             * States:
+             * success : Refund request is initiated successfully
+             * failed : Refund request is failed to initiate
+             * processing : The refund has been initiated already
+             */
+
+            $state  = $refund->refund_state;
+
+            /**
+             * RefID will be used for post-refund status checking
+             */
+
+            $refID  = $refund->ref_id;
+
+            /**
+             *  To get all the outputs
+             */
+
+            dd($refund->output);
+        } else {
+            return $refund->message;
+        }
+    }
+
+    public function check_refund_status($refID)
+    {
+        $refund = SSLCommerz::query_refund($refID);
+
+        if ($refund->status) {
+            /**
+             * States:
+             * refunded : Refund request has been proceeded successfully
+             * processing : Refund request is under processing
+             * cancelled : Refund request has been proceeded successfully
+             */
+
+            $state  = $refund->refund_state;
+
+            /**
+             * RefID will be used for post-refund status checking
+             */
+
+            $refID  = $refund->ref_id;
+
+            /**
+             *  To get all the outputs
+             */
+
+            dd($refund->output);
+        } else {
+            return $refund->message;
+        }
+    }
+
+    public function get_transaction_status($trxID)
+    {
+        $query = SSLCommerz::query_transaction($trxID);
+
+        if ($query->status) {
+            dd($query->output);
+        } else {
+            $query->message;
+        }
     }
 
 }

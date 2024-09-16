@@ -124,15 +124,9 @@
                         Company Profile
                     </a>
                 </li>
-                <li>
-                    <a class="text-capitalize" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="typcn typcn-location-arrow-outline"></i>
-                        Logout
-                    </a>
-                </li>
             </ul>
         </nav>
-        {{-- <div class="mt-auto p-3">
+        <div class="mt-auto p-3 sidebar-nav-btn">
             <a href="{{ route('logout') }}" class="btn btn-primary w-100"
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <img class="me-2" src="{{ url('assets') }}/img/logout.png" />
@@ -141,6 +135,6 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                 @csrf
             </form>
-        </div> --}}
+        </div>
     </div>
 </nav>

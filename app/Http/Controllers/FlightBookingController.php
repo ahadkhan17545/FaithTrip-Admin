@@ -23,20 +23,6 @@ class FlightBookingController extends Controller
     public function bookFlightWithPnr(Request $request){
 
         $revlidatedData = session('revlidatedData');
-
-        if(Auth::user()->user_type == 2){ //if b2b user then check balance
-            if($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareCurrency'] == 'USD'){
-                $base_fare_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'] * $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['currencyConversion']['exchangeRateUsed'];
-            }
-            else{
-                $base_fare_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'];
-            }
-            if(Auth::user()->balance < ( $base_fare_amount - (($base_fare_amount*Auth::user()->comission)/100) )){
-                Toastr::error('Not Enough Balance', 'Please Recharge');
-                return back();
-            }
-        }
-
         $onlineBookingInfo = json_decode(SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->traveller_name, $request->traveller_email), true);
 
         // echo "<pre>";
@@ -387,6 +373,17 @@ class FlightBookingController extends Controller
     }
 
     public function issueFlightTicket($pnrId){
+
+        $flightBookingInfo = FlightBooking::where('pnr_id', $pnrId)->first();
+
+        if(Auth::user()->user_type == 2){ //if b2b user then check balance
+            $base_fare_amount = $flightBookingInfo->base_fare_amount;
+            if(Auth::user()->balance < ( $base_fare_amount - (($base_fare_amount*Auth::user()->comission)/100) )){
+                Toastr::error('Not Enough Balance', 'Please Recharge');
+                return back();
+            }
+        }
+
         $ticketIssueResponse = json_decode(SabreFlightTicketIssue::issueTicket($pnrId), true);
 
         // echo "<pre>";
@@ -395,11 +392,12 @@ class FlightBookingController extends Controller
         // exit();
 
         if(isset($ticketIssueResponse['AirTicketRS']['ApplicationResults']['status']) && $ticketIssueResponse['AirTicketRS']['ApplicationResults']['status'] == 'Complete'){
-            FlightBooking::where('pnr_id', $pnrId)->update([
-                'status' => 2,
-                'ticket_issued_at' => Carbon::now()
-            ]);
+
+            $flightBookingInfo->status = 2;
+            $flightBookingInfo->ticket_issued_at = Carbon::now();
+            $flightBookingInfo->save();
             return redirect('view/issued/tickets');
+
         } else {
             Toastr::success('Ticket Issued Successfully', 'Successful');
             return back();
