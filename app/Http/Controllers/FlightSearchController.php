@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FlyhubFlightSearch;
 use App\Models\Gds;
 use App\Models\SabreFlightRevalidate;
+use App\Models\FlyhubFlightRevalidate;
 use App\Models\SabreFlightSearch;
 use App\Models\SabreGdsConfig;
 use Illuminate\Http\Request;
@@ -361,29 +362,53 @@ class FlightSearchController extends Controller
     }
 
     public function revalidateFlight($sessionIndex){
-        $revlidatedData = json_decode(SabreFlightRevalidate::flightRevalidate($sessionIndex), true);
 
-        // echo "<pre>";
-        // print_r(SabreFlightRevalidate::flightRevalidate($sessionIndex));
-        // echo "</pre>";
-        // exit();
+        // sabre
+        $sabreGds = Gds::where('code', 'sabre')->first();
+        if($sabreGds->status == 1){
+            $revlidatedData = json_decode(SabreFlightRevalidate::flightRevalidate($sessionIndex), true);
 
-        // echo "<pre>";
-        // print_r($revlidatedData);
-        // echo "</pre>";
-        // exit();
+            // echo "<pre>";
+            // print_r(SabreFlightRevalidate::flightRevalidate($sessionIndex));
+            // echo "</pre>";
+            // exit();
 
-        // $jsonData = json_encode(SabreFlightRevalidate::flightRevalidate($sessionIndex), JSON_PRETTY_PRINT);
-        // echo "<pre>";
-        // echo $jsonData;
-        // echo "</pre>";
-        // exit();
+            // echo "<pre>";
+            // print_r($revlidatedData);
+            // echo "</pre>";
+            // exit();
 
-        if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'])){
-            return view('flight.select_flight', compact('revlidatedData'));
-        } else {
-            Toastr::error('Flight is not available for Booking', 'Sorry! Please Search Again');
-            return redirect('/home');
+            // $jsonData = json_encode(SabreFlightRevalidate::flightRevalidate($sessionIndex), JSON_PRETTY_PRINT);
+            // echo "<pre>";
+            // echo $jsonData;
+            // echo "</pre>";
+            // exit();
+
+            if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'])){
+                return view('flight.select_flight', compact('revlidatedData'));
+            } else {
+                Toastr::error('Flight is not available for Booking', 'Sorry! Please Search Again');
+                return redirect('/home');
+            }
         }
+
+        // flyhub
+        $flyhubGds = Gds::where('code', 'flyhub')->first();
+        if($flyhubGds->status == 1){
+            $revalidatedData = FlyhubFlightRevalidate::flightRevalidate($sessionIndex);
+
+            // echo "<pre>";
+            // print_r($revalidatedData);
+            // echo "</pre>";
+
+            if(isset($revalidatedData['departure_datetime'])){
+                return view('common.flight.selectFlight', compact('revalidatedData'));
+            } else {
+                Toastr::error('Flight is not available for Booking', 'Sorry! Please Search Again');
+                return redirect('/home');
+            }
+
+        }
+
     }
 }

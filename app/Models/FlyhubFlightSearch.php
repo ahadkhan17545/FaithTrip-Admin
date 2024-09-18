@@ -111,6 +111,10 @@ class FlyhubFlightSearch extends Model
             foreach($rawSearchResults['data'] as $index => $item){
 
                 $searchResults[$index]['journey_type'] = $flightType; //1=>oneway; 2=>Roundtrip
+                $searchResults[$index]['flyhub_booking_tracking_id'] = null; //only for flyhub
+                $searchResults[$index]['flyhub_tracking_id'] = $item['tracking_id']; //only for flyhub
+                $searchResults[$index]['flyhub_flight_key'] = $item['flight_key']; //only for flyhub
+                $searchResults[$index]['session_expired_at'] = null;
 
                 // departure
                 $searchResults[$index]['departure_datetime'] = $item['flight_group'][0]['routes'][0]['departure_time']; //"2024-06-30T18:45:00.000+06:00"
@@ -188,10 +192,10 @@ class FlyhubFlightSearch extends Model
                 $searchResults[$index]['penalty_applicable'] = isset($item['fare_rules']['refundable_data']) && isset($item['fare_rules']['refundable_data'][0]['PenaltyApplies']) ? $item['fare_rules']['refundable_data'][0]['PenaltyApplies'] : null;
 
                 // pricing
-                $searchResults[$index]['base_fare_amount'] = $item['price']['base_fare']['amount'];
-                $searchResults[$index]['total_tax_amount'] = $item['price']['tax']['amount'];
-                $searchResults[$index]['total_fare'] = $item['price']['total']['amount'];
-                $searchResults[$index]['currency'] = $item['price']['total']['currency'];
+                $searchResults[$index]['base_fare_amount'] = $item['margin']['supplier']['base_fare']['amount'];
+                $searchResults[$index]['total_tax_amount'] = $item['margin']['supplier']['tax']['amount'];
+                $searchResults[$index]['total_fare'] = $item['margin']['supplier']['total']['amount'];
+                $searchResults[$index]['currency'] = $item['margin']['supplier']['total']['currency'];
 
                 // onward segments start
                 $segmentsArray = array();

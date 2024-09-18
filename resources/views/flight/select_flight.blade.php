@@ -627,16 +627,9 @@
                         <div class="fs-14 mb-0 ">
                             <h5 class="fw-bold">Mandatory check list for passengers</h5>
                             <ul class="list-style ps-3">
-                                <li>Certify your health status through the aarogya setu app or the self declaration form
-                                </li>
-                                <li>Remember to do web check in before arriving at the airport please do carry an e boarding
-                                    pass on your mobile alternatively you can carry the printout of the boarding pass</li>
                                 <li>Please reach at least 2 hours prior to flight departure</li>
-                                <li>No meal service will be available on board</li>
                                 <li>Face masks are compulsory we urge you to carry your own</li>
-                                <li>You are requested to print and paste the baggage tag attached to your booking
-                                    confirmation alternatively you can write your name pnr and flight number on an a4 sheet
-                                    and affix on your bag</li>
+                                <li>You are requested to print and paste the baggage tag attached to your booking confirmation alternatively you can write your name pnr and flight number on an a4 sheet and affix on your bag</li>
                             </ul>
                         </div>
                     </div>

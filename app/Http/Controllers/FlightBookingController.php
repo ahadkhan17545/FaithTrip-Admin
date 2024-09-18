@@ -30,15 +30,15 @@ class FlightBookingController extends Controller
         // echo "</pre>";
         // exit();
 
-        $bookinPndID = null;
+        $bookinPnrID = null;
         if(isset($onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status']) && $onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status'] == 'Complete'){
-            $bookinPndID = $onlineBookingInfo['CreatePassengerNameRecordRS']['ItineraryRef']['ID'];
+            $bookinPnrID = $onlineBookingInfo['CreatePassengerNameRecordRS']['ItineraryRef']['ID'];
             $status = 1;
         } else{
             $status = 0;
         }
 
-        DB::transaction(function () use ($request, $bookinPndID, $status) {
+        DB::transaction(function () use ($request, $bookinPnrID, $status) {
 
             // fetching price using session for security (not from hidden field)
             $revlidatedData = session('revlidatedData');
@@ -57,7 +57,7 @@ class FlightBookingController extends Controller
                 'booking_no' => str::random(3) . "-" . time(),
                 'booked_by' => Auth::user()->id,
                 'b2b_comission' => Auth::user()->comission,
-                'pnr_id' => $bookinPndID,
+                'pnr_id' => $bookinPnrID,
                 'gds' => $request->gds,
                 'gds_unique_id' => $request->gds_unique_id,
                 'traveller_name' => $request->traveller_name,
