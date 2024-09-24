@@ -23,7 +23,13 @@ class FlightBookingController extends Controller
     public function bookFlightWithPnr(Request $request){
 
         $revlidatedData = session('revlidatedData');
-        $onlineBookingInfo = json_decode(SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->traveller_name, $request->traveller_email), true);
+
+        if(isset($request->first_name[0]) && $request->first_name[0] && isset($request->last_name[0]) && $request->last_name[0] && $request->traveller_contact && $request->traveller_email){
+            $onlineBookingInfo = json_decode(SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->first_name[0], $request->last_name[0], $request->traveller_email), true);
+        } else {
+            Toastr::error('Passanger Information Missing', 'Failed');
+            return redirect('/home');
+        }
 
         // echo "<pre>";
         // print_r($onlineBookingInfo);

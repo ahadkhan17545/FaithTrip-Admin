@@ -11,7 +11,7 @@ class SabreFlightBooking extends Model
 {
     use HasFactory;
 
-    public static function flightBooking($revlidatedData, $travellerContact, $travellerName, $travellerEmail){
+    public static function flightBooking($revlidatedData, $travellerContact, $firstName, $lastName, $travellerEmail){
 
         $passengerTypes = array();
         if (session('adult') > 0) {
@@ -70,9 +70,8 @@ class SabreFlightBooking extends Model
         // making flight segment end
 
 
-        $givenName = explode(" ",$travellerName)[0];
-        $surName = explode(" ",$travellerName);
-        $surName = end($surName);
+        $givenName = $firstName;
+        $surName = $lastName;
 
         $request_body = array(
             "CreatePassengerNameRecordRQ" => array(
@@ -101,7 +100,7 @@ class SabreFlightBooking extends Model
                                 array(
                                     "NameNumber" => "1.1",
                                     "Phone" => $travellerContact,
-                                    "PhoneUseType" => "H"
+                                    "PhoneUseType" => "M"
                                 )
                             )
                         ),
@@ -127,21 +126,21 @@ class SabreFlightBooking extends Model
                     )
                 ),
                 "AirBook" => array(
-                    // "HaltOnStatus" => array(
-                    //     array("Code" => "HL"),
-                    //     array("Code" => "KK"),
-                    //     array("Code" => "LL"),
-                    //     array("Code" => "NN"),
-                    //     array("Code" => "NO"),
-                    //     array("Code" => "UC"),
-                    //     array("Code" => "US")
-                    // ),
+                    "HaltOnStatus" => array(
+                        array("Code" => "HL"),
+                        array("Code" => "KK"),
+                        array("Code" => "LL"),
+                        array("Code" => "NN"),
+                        array("Code" => "NO"),
+                        array("Code" => "UC"),
+                        array("Code" => "US")
+                    ),
                     "OriginDestinationInformation" => array(
                         "FlightSegment" => $flightSegment
                     ),
                     "RedisplayReservation" => array(
                         "NumAttempts" => 3,
-                        "WaitInterval" => 1000
+                        "WaitInterval" => 3000
                     )
                 ),
                 "AirPrice" => array(
@@ -159,51 +158,51 @@ class SabreFlightBooking extends Model
                         )
                     )
                 ),
-                // "SpecialReqDetails" => array(
-                //     "AddRemark" => array(
-                //         "RemarkInfo" => array(
-                //             "Remark" => array(
-                //                 array("Type" => "General", "Text" => "WDF100433"),
-                //                 array("Type" => "Historical", "Text" => "TEST01"),
-                //                 array("Type" => "Client Address", "Text" => "3399 CURE AVE 76554 GALLUP TX"),
-                //                 array("Type" => "Invoice", "Text" => "S*UD18 PROMO515")
-                //             )
-                //         )
-                //     ),
-                //     "SpecialService" => array(
-                //         "SpecialServiceInfo" => array(
-                //             "SecureFlight" => array(
-                //                 array(
-                //                     "SegmentNumber" => "A",
-                //                     "PersonName" => array(
-                //                         "DateOfBirth" => "1989-01-01",
-                //                         "Gender" => "M",
-                //                         "NameNumber" => "1.1",
-                //                         "GivenName" => "JOE",
-                //                         "Surname" => "DOE"
-                //                     )
-                //                 )
-                //             ),
-                //             "Service" => array(
-                //                 array(
-                //                     "SSR_Code" => "CTCE",
-                //                     "SegmentNumber" => "A",
-                //                     "Text" => "ADMIN//CURE.NET",
-                //                     "PersonName" => array("NameNumber" => "1.1")
-                //                 ),
-                //                 array(
-                //                     "SSR_Code" => "CTCM",
-                //                     "Text" => "5551231234",
-                //                     "PersonName" => array("NameNumber" => "1.1")
-                //                 )
-                //             )
-                //         )
-                //     )
-                // ),
+                "SpecialReqDetails" => array(
+                    "AddRemark" => array(
+                        "RemarkInfo" => array(
+                            "Remark" => array(
+                                array("Type" => "General", "Text" => "Booking Created from FaithTrip Portal"),
+                                // array("Type" => "Historical", "Text" => "TEST01"),
+                                // array("Type" => "Client Address", "Text" => "3399 CURE AVE 76554 GALLUP TX"),
+                                // array("Type" => "Invoice", "Text" => "S*UD18 PROMO515")
+                            )
+                        )
+                    ),
+                    // "SpecialService" => array(
+                    //     "SpecialServiceInfo" => array(
+                    //         "SecureFlight" => array(
+                    //             array(
+                    //                 "SegmentNumber" => "A",
+                    //                 "PersonName" => array(
+                    //                     "DateOfBirth" => "1989-01-01",
+                    //                     "Gender" => "M",
+                    //                     "NameNumber" => "1.1",
+                    //                     "GivenName" => "JOE",
+                    //                     "Surname" => "DOE"
+                    //                 )
+                    //             )
+                    //         ),
+                    //         "Service" => array(
+                    //             array(
+                    //                 "SSR_Code" => "CTCE",
+                    //                 "SegmentNumber" => "A",
+                    //                 "Text" => "ADMIN//CURE.NET",
+                    //                 "PersonName" => array("NameNumber" => "1.1")
+                    //             ),
+                    //             array(
+                    //                 "SSR_Code" => "CTCM",
+                    //                 "Text" => "5551231234",
+                    //                 "PersonName" => array("NameNumber" => "1.1")
+                    //             )
+                    //         )
+                    //     )
+                    // )
+                ),
                 "PostProcessing" => array(
                     "RedisplayReservation" => array("waitInterval" => 100),
                     "EndTransaction" => array(
-                        "Source" => array("ReceivedFrom" => "API TEST")
+                        "Source" => array("ReceivedFrom" => "FaithTrip B2B Portal")
                     )
                 )
             )
