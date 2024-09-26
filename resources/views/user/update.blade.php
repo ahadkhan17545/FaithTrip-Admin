@@ -40,18 +40,6 @@
                                         <input type="password" name="password" id="password" class="form-control" placeholder="********">
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="comission" class="col-form-label fw-bold justify-content-start d-flex">Profit Comission (In Percentage)</label>
-                                        <input type="number" name="comission" id="comission" value="{{$user->comission}}" class="form-control" max="7" placeholder="%">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="status" class="col-form-label fw-bold justify-content-start d-flex">Status <i class="text-danger">*</i></label>
-                                        <select class="form-select" name="status" id="status" required>
-                                            <option value="">Select One</option>
-                                            <option value="1" @if($user->status == 1) selected @endif>Active</option>
-                                            <option value="0" @if($user->status == 0) selected @endif>Inactive</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-12">
                                         <label for="image" class="col-form-label fw-bold justify-content-start d-flex">Profile Image</label>
                                         <input type="file" name="image" id="image" class="form-control">
 
@@ -59,6 +47,11 @@
                                             <img class="max-h-45 mt-3 mb-2" src="{{url($user->image)}}" /><br>
                                         @endif
                                     </div>
+                                    <div class="col-md-6">
+                                        <label for="comission" class="col-form-label fw-bold justify-content-start d-flex">Profit Comission (In Percentage)</label>
+                                        <input type="number" name="comission" id="comission" value="{{$user->comission}}" class="form-control" max="7" placeholder="%">
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -98,6 +91,38 @@
                                         @endif
                                     </div>
 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h5>User Access</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label for="status" class="col-form-label fw-bold" style="padding-left: 5px; cursor: pointer;">
+                                            <input type="checkbox" name="status" @if($user->status == 1) checked @endif value="1" id="status" style="margin-right: 5px">
+                                            Account Access
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="search_status" class="col-form-label fw-bold" style="padding-left: 5px; cursor: pointer;">
+                                            <input type="checkbox" name="search_status" @if($user->search_status == 1) checked @endif value="1" id="search_status" style="margin-right: 5px">
+                                            Flight Search
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="booking_status" class="col-form-label fw-bold" style="padding-left: 5px; cursor: pointer;">
+                                            <input type="checkbox" name="booking_status" @if($user->booking_status == 1) checked @endif value="1" id="booking_status" style="margin-right: 5px">
+                                            Flight Booking
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="ticket_status" class="col-form-label fw-bold" style="padding-left: 5px; cursor: pointer;">
+                                            <input type="checkbox" name="ticket_status" @if($user->ticket_status == 1) checked @endif value="1" id="ticket_status" style="margin-right: 5px">
+                                            Ticket Issue
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>

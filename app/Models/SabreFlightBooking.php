@@ -11,7 +11,7 @@ class SabreFlightBooking extends Model
 {
     use HasFactory;
 
-    public static function flightBooking($revlidatedData, $travellerContact, $firstName, $lastName, $travellerEmail){
+    public static function flightBooking($revlidatedData, $travellerContact, $firstNames, $lastNames, $passangerTitles, $dob, $passangerTypes, $travellerEmail){
 
         $passengerTypes = array();
         if (session('adult') > 0) {
@@ -70,8 +70,24 @@ class SabreFlightBooking extends Model
         // making flight segment end
 
 
-        $givenName = $firstName;
-        $surName = $lastName;
+        $givenName = $firstNames[0]." ".str_replace(".", "", $passangerTitles[0]);
+        $surName = $lastNames[0];
+
+        $personName = [];
+        $nameSelect = [];
+        foreach($firstNames as $passangerIndex => $firstName){
+            $personName[] = [
+                "GivenName" => $firstName,
+                "Surname" => $lastNames[$passangerIndex],
+                "NameNumber" => (string) $passangerIndex+1 .".1",
+                "Infant" => $passangerTypes[$passangerIndex] == 'INF' ? true : false,
+                "NameReference" => "",
+                "PassengerType" => $passangerTypes[$passangerIndex],
+            ];
+            $nameSelect[] = [
+                "NameNumber" => (string) $passangerIndex+1 .".1",
+            ];
+        }
 
         $request_body = array(
             "CreatePassengerNameRecordRQ" => array(
@@ -81,14 +97,14 @@ class SabreFlightBooking extends Model
                 "TravelItineraryAddInfo" => array(
                     "AgencyInfo" => array(
                         "Address" => array(
-                            "AddressLine" => "SABRE TRAVEL",
-                            "CityName" => "SOUTHLAKE",
-                            "CountryCode" => "US",
-                            "PostalCode" => "76092",
+                            "AddressLine" => "Faith Travels & Tours Ltd",
+                            "CityName" => "Dhaka",
+                            "CountryCode" => "BD",
+                            "PostalCode" => "1213",
                             "StateCountyProv" => array(
-                                "StateCode" => "TX"
+                                "StateCode" => "BD"
                             ),
-                            "StreetNmbr" => "3150 SABRE DRIVE"
+                            "StreetNmbr" => "DHAKA"
                         ),
                         "Ticketing" => array(
                             "TicketType" => "7TAW"
@@ -99,30 +115,23 @@ class SabreFlightBooking extends Model
                             "ContactNumber" => array(
                                 array(
                                     "NameNumber" => "1.1",
-                                    "Phone" => $travellerContact,
-                                    "PhoneUseType" => "M"
+                                    "PhoneUseType" => "M",
+                                    "Phone" => $travellerContact
                                 )
                             )
                         ),
-                        "CreditCardData" => array(
-                            "PreferredCustomer" => array(
-                                "ind" => true
-                            )
-                        ),
-                        "PersonName" => array(
-                            array(
-                                "NameNumber" => "1.1",
-                                "PassengerType" => "ADT",
-                                "GivenName" => $givenName,
-                                "Surname" => $surName
-                            )
-                        ),
+                        // "CreditCardData" => array(
+                        //     "PreferredCustomer" => array(
+                        //         "ind" => true
+                        //     )
+                        // ),
                         "Email" => array(
                             array(
                                 "Address" => $travellerEmail,
                                 "Type" => "BC"
                             )
-                        )
+                        ),
+                        "PersonName" => $personName,
                     )
                 ),
                 "AirBook" => array(
@@ -149,9 +158,7 @@ class SabreFlightBooking extends Model
                             "Retain" => true,
                             "OptionalQualifiers" => array(
                                 "PricingQualifiers" => array(
-                                    "NameSelect" => array(
-                                        array("NameNumber" => "1.1")
-                                    ),
+                                    "NameSelect" => $nameSelect,
                                     "PassengerType" => $passengerTypes
                                 )
                             )
@@ -169,35 +176,35 @@ class SabreFlightBooking extends Model
                             )
                         )
                     ),
-                    // "SpecialService" => array(
-                    //     "SpecialServiceInfo" => array(
-                    //         "SecureFlight" => array(
-                    //             array(
-                    //                 "SegmentNumber" => "A",
-                    //                 "PersonName" => array(
-                    //                     "DateOfBirth" => "1989-01-01",
-                    //                     "Gender" => "M",
-                    //                     "NameNumber" => "1.1",
-                    //                     "GivenName" => "JOE",
-                    //                     "Surname" => "DOE"
-                    //                 )
-                    //             )
-                    //         ),
-                    //         "Service" => array(
-                    //             array(
-                    //                 "SSR_Code" => "CTCE",
-                    //                 "SegmentNumber" => "A",
-                    //                 "Text" => "ADMIN//CURE.NET",
-                    //                 "PersonName" => array("NameNumber" => "1.1")
-                    //             ),
-                    //             array(
-                    //                 "SSR_Code" => "CTCM",
-                    //                 "Text" => "5551231234",
-                    //                 "PersonName" => array("NameNumber" => "1.1")
-                    //             )
-                    //         )
-                    //     )
-                    // )
+                    "SpecialService" => array(
+                        "SpecialServiceInfo" => array(
+                            "SecureFlight" => array(
+                                array(
+                                    "SegmentNumber" => "A",
+                                    "PersonName" => array(
+                                        "DateOfBirth" => $dob,
+                                        "Gender" => $passangerTitles[0] == 'Mr.' ? 'M' : 'F',
+                                        "NameNumber" => "1.1",
+                                        "GivenName" => $givenName,
+                                        "Surname" => $surName
+                                    )
+                                )
+                            ),
+                            "Service" => array(
+                                array(
+                                    "SSR_Code" => "CTCE",
+                                    "SegmentNumber" => "A",
+                                    "Text" => "ADMIN//CURE.NET", //b2b agent er email address/ or traveller email address
+                                    "PersonName" => array("NameNumber" => "1.1")
+                                ),
+                                array(
+                                    "SSR_Code" => "CTCM",
+                                    "Text" => "5551231234", // b2b agent er email address/ or traveller email address
+                                    "PersonName" => array("NameNumber" => "1.1")
+                                )
+                            )
+                        )
+                    )
                 ),
                 "PostProcessing" => array(
                     "RedisplayReservation" => array("waitInterval" => 100),

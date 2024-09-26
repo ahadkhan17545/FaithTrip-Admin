@@ -24,11 +24,6 @@ Auth::routes([
     'verify' => false, // Email Verification Routes...
 ]);
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/live/city/airport/search', [HomeController::class, 'liveCityAirportSearch'])->name('LiveCityAirportSearch');
-Route::get('/live/airline/search', [HomeController::class, 'liveAirlineSearch'])->name('LiveAirlineSearch');
-Route::post('/passanger/live/search', [HomeController::class, 'passangerLiveSearch'])->name('PassangerLiveSearch');
-
 Route::get('ckeditor', [CkeditorController::class, 'index']);
 Route::post('ckeditor/upload', [CkeditorController::class, 'upload'])->name('ckeditor.upload');
 
@@ -40,8 +35,14 @@ Route::post('sslcommerz/cancel', [PaymentController::class, 'cancel'])->name('ss
 Route::post('sslcommerz/ipn', [PaymentController::class, 'ipn'])->name('payment.ipn');
 
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
 
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/live/city/airport/search', [HomeController::class, 'liveCityAirportSearch'])->name('LiveCityAirportSearch');
+    Route::get('/live/airline/search', [HomeController::class, 'liveAirlineSearch'])->name('LiveAirlineSearch');
+    Route::post('/passanger/live/search', [HomeController::class, 'passangerLiveSearch'])->name('PassangerLiveSearch');
+
+    // search flights
     Route::post('/search/flights', [FlightSearchController::class, 'searchFlights'])->name('SearchFlights');
     Route::get('/flight/search-results', [FlightSearchController::class, 'showFlightSearchResults'])->name('ShowFlightSearchResults');
     Route::get('select/flight/{session_index}', [FlightSearchController::class, 'revalidateFlight'])->name('RevalidateFlight');

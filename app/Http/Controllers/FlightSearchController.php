@@ -11,6 +11,7 @@ use App\Models\SabreGdsConfig;
 use Illuminate\Http\Request;
 use DateTime;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FlightSearchController extends Controller
@@ -110,6 +111,11 @@ class FlightSearchController extends Controller
     }
 
     public function showFlightSearchResults(){
+
+        if(Auth::user()->search_status == 0){
+            Toastr::error('Flight Search Permission Denied');
+            return back();
+        }
 
         $sabreGds = Gds::where('code', 'sabre')->first();
         if($sabreGds->status == 1){
@@ -362,6 +368,11 @@ class FlightSearchController extends Controller
     }
 
     public function revalidateFlight($sessionIndex){
+
+        if(Auth::user()->booking_status == 0){
+            Toastr::error('Flight Booking Permission Denied');
+            return back();
+        }
 
         // sabre
         $sabreGds = Gds::where('code', 'sabre')->first();

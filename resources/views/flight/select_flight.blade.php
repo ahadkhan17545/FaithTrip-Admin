@@ -56,6 +56,92 @@
     <div class="row">
         <div class="col-xl-8 mainContent">
             <div class="theiaStickySidebar">
+
+                @php
+
+                    // echo "<pre>";
+                    // print_r($revlidatedData);
+                    // echo "</pre>";
+
+                    $segmentArray = [];
+                    $legsArray = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['legs'];
+
+                    foreach ($legsArray as $key => $leg) {
+                        $legRef = $leg['ref'] - 1;
+                        $legDescription = $revlidatedData['groupedItineraryResponse']['legDescs'][$legRef];
+                        $schedulesArray = $legDescription['schedules'];
+                        foreach ($schedulesArray as $schedule) {
+                            $scheduleRef = $schedule['ref'] - 1;
+                            $segmentArray[] = $revlidatedData['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
+                        }
+                    }
+                @endphp
+
+                <div class="card shadow border-0 mb-3">
+                    <div class="content-header media">
+                        <div class="media-body">
+                            <h3 class="content-header_title fs-23 mb-0">Flight Details</h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+
+                            <tr>
+                                <th colspan="2" style="text-align:center">
+                                    @if (count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions']) == 1)
+                                        One-Way
+                                    @else
+                                        Round-Trip
+                                    @endif
+                                </th>
+                            </tr>
+
+                            <tr>
+                                <th style="width: 25%">Departure Datetime</th>
+                                <td>
+                                    @php
+                                        $dateString = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'].' '.$segmentArray[0]['departure']['time'];
+                                        $date = new DateTime($dateString);
+                                        $formattedDate = $date->format('jS F, Y g:i a');
+                                        echo $formattedDate;
+                                    @endphp
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th style="width: 25%">Departure Airport</th>
+                                <td>
+                                    @php
+                                        $beginAirportCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['beginAirport'];
+                                        $beginAirportInfo = DB::table('city_airports')
+                                                            ->where('airport_code', $beginAirportCode)
+                                                            ->first();
+                                        if ($beginAirportInfo) {
+                                            echo $beginAirportInfo->airport_name . ', ' . $beginAirportInfo->city_name . ', ' . $beginAirportInfo->country_name .' ('.$beginAirportInfo->airport_code.')';
+                                        }
+                                    @endphp
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th style="width: 25%">Arrival Airport</th>
+                                <td>
+                                    @php
+                                        $endAirportCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['endAirport'];
+                                        $endAirportInfo = DB::table('city_airports')
+                                                                ->where('airport_code', $endAirportCode)
+                                                                ->first();
+                                        if ($endAirportInfo) {
+                                            echo $endAirportInfo->airport_name . ', ' . $endAirportInfo->city_name . ', ' . $endAirportInfo->country_name .' ('.$endAirportInfo->airport_code.')';
+                                        }
+                                    @endphp
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+
                 <div class="card shadow border-0 mb-3">
                     <div class="card-body">
                         <div class="accordion" id="accordionExample">
@@ -69,32 +155,6 @@
                                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
                                     data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-
-                                        @php
-
-                                            // echo "<pre>";
-                                            // print_r($revlidatedData);
-                                            // echo "</pre>";
-
-                                            $segmentArray = [];
-                                            $legsArray =
-                                                $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0][
-                                                    'itineraries'
-                                                ][0]['legs'];
-                                            foreach ($legsArray as $key => $leg) {
-                                                $legRef = $leg['ref'] - 1;
-                                                $legDescription =
-                                                    $revlidatedData['groupedItineraryResponse']['legDescs'][$legRef];
-                                                $schedulesArray = $legDescription['schedules'];
-                                                foreach ($schedulesArray as $schedule) {
-                                                    $scheduleRef = $schedule['ref'] - 1;
-                                                    $segmentArray[] =
-                                                        $revlidatedData['groupedItineraryResponse']['scheduleDescs'][
-                                                            $scheduleRef
-                                                        ];
-                                                }
-                                            }
-                                        @endphp
 
                                         @foreach ($segmentArray as $segmentIndex => $segmentData)
                                             <div class="flight-info border rounded mb-2">
@@ -328,59 +388,13 @@
                     </div>
                 </div>
 
-
                 {{-- pricing info start --}}
                 <div class="card shadow border-0 mb-3 d-xl-none">
                     @include('flight.pricing_info')
                 </div>
                 {{-- pricing info end --}}
 
-                <div class="card shadow border-0 mb-3">
-                    <div class="content-header media">
-                        <div class="media-body">
-                            <h3 class="content-header_title fs-23 mb-0">Flight Details</h3>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered">
-                            <tr>
-                                <th style="width: 25%">Departure Datetime</th>
-                                <td>
-                                    @php
-                                        $dateString =
-                                            $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0][
-                                                'groupDescription'
-                                            ]['legDescriptions'][0]['departureDate'] .
-                                            ' ' .
-                                            $segmentArray[0]['departure']['time'];
-                                        $date = new DateTime($dateString);
-                                        $formattedDate = $date->format('jS F, Y g:i a');
-                                        echo $formattedDate;
-                                    @endphp
-                                </td>
-                            </tr>
-                            <tr>
-                                <th style="width: 25%">Departure Airport</th>
-                                <td>
-                                    @php
-                                        $beginAirportCode =
-                                            $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0][
-                                                'itineraries'
-                                            ][0]['pricingInformation'][0]['fare']['passengerInfoList'][0][
-                                                'passengerInfo'
-                                            ]['fareComponents'][0]['beginAirport'];
-                                        $beginAirportInfo = DB::table('city_airports')
-                                            ->where('airport_code', $beginAirportCode)
-                                            ->first();
-                                        if ($beginAirportInfo) {
-                                            echo $beginAirportInfo->airport_name . ', ' . $beginAirportInfo->city_name;
-                                        }
-                                    @endphp
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+
 
 
                 <form id="submit_ticket_reservation_info" action="{{ url('create/pnr/with/booking') }}" method="POST"

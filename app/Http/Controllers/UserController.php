@@ -156,7 +156,13 @@ class UserController extends Controller
             'phone' => $request->phone,
             'nid' => $request->nid,
             'comission' => $request->comission,
-            'status' => $request->status,
+
+            // b2b user access control
+            'status' => $request->status == 1 ? 1 : 0,
+            'search_status' => $request->search_status == 1 ? 1 : 0,
+            'booking_status' => $request->booking_status == 1 ? 1 : 0,
+            'ticket_status' => $request->ticket_status == 1 ? 1 : 0,
+
             'updated_at' => Carbon::now(),
         ]);
 

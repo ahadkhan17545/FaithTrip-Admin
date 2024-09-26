@@ -5,3 +5,7 @@ ALTER TABLE `flight_bookings` CHANGE `status` `status` TINYINT(4) NOT NULL DEFAU
 
 =========04-08-2024========
 ALTER TABLE `flight_bookings` ADD `is_live` TINYINT(4) NULL DEFAULT NULL COMMENT '1=>Live Booking; 0=>Sandbox Booking' AFTER `status`;
+
+=========26-09-2024========
+ALTER TABLE `users` ADD `search_status` TINYINT(4) NOT NULL DEFAULT '1' COMMENT '0=>Disable; 1=>Enable' AFTER `status`, ADD `booking_status` TINYINT(4) NOT NULL DEFAULT '1' COMMENT '0=>Disable; 1=>Enable' AFTER `search_status`, ADD `ticket_status` TINYINT(4) NOT NULL DEFAULT '1' COMMENT '0=>Disable; 1=>Enable' AFTER `booking_status`;
+

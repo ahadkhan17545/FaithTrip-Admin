@@ -1,0 +1,484 @@
+{
+    "CreatePassengerNameRecordRQ": {
+        "version": "2.5.0",
+        "targetCity": "{{pcc}}",
+        "haltOnAirPriceError": true,
+        "TravelItineraryAddInfo": {
+            "AgencyInfo": {
+                "Address": {
+                    "AddressLine": "Travel Agent",
+                    "CityName": "Dhaka",
+                    "CountryCode": "BD",
+                    "PostalCode": "1212",
+                    "StateCountyProv": {
+                        "StateCode": "BD"
+                    },
+                    "StreetNmbr": "DHAKA"
+                },
+                "Ticketing": {
+                    "TicketType": "7TAW"
+                }
+            },
+            "CustomerInfo": {
+                "ContactNumbers": {
+                    "ContactNumber": [
+                        {
+                            "NameNumber": "1.1",
+                            "PhoneUseType": "M",
+                            "Phone": "0110085888"
+                        }
+                    ]
+                },
+                "Email": [
+                    {
+                        "NameNumber": "1.1",
+                        "Address": "test@gmail.com",
+                        "Type": "CC"
+                    },
+                    {
+                        "NameNumber": "2.1",
+                        "Address": "test@gmail.com",
+                        "Type": "CC"
+                    },
+                    {
+                        "NameNumber": "3.1",
+                        "Address": "test@gmail.com",
+                        "Type": "CC"
+                    },
+                    {
+                        "NameNumber": "4.1",
+                        "Address": "test@gmail.com",
+                        "Type": "CC"
+                    }
+                ],
+                "PersonName": [
+                    {
+                        "GivenName": "Emdadul",
+                        "Surname": "Haque",
+                        "NameNumber": "1.1",
+                        "Infant": false,
+                        "NameReference": "",
+                        "PassengerType": "ADT"
+                    },
+                    {
+                        "GivenName": "Abul",
+                        "Surname": "Bashar",
+                        "NameNumber": "2.1",
+                        "Infant": false,
+                        "NameReference": "",
+                        "PassengerType": "ADT"
+                    },
+                    {
+                        "GivenName": "Jahidul",
+                        "Surname": "Islam",
+                        "NameNumber": "3.1",
+                        "Infant": false,
+                        "NameReference": "C03",
+                        "PassengerType": "C03"
+                    },
+                    {
+                        "GivenName": "Johirul",
+                        "Surname": "Islam",
+                        "NameNumber": "4.1",
+                        "Infant": false,
+                        "NameReference": "C07",
+                        "PassengerType": "C07"
+                    },
+                    {
+                        "GivenName": "Al",
+                        "Surname": "Mamun",
+                        "PassengerType": "INF",
+                        "NameNumber": "5.1",
+                        "Infant": true,
+                        "NameReference": "I15"
+                    }
+                ]
+            }
+        },
+        "AirBook": {
+            "HaltOnStatus": [
+                {
+                    "Code": "HL"
+                },
+                {
+                    "Code": "KK"
+                },
+                {
+                    "Code": "LL"
+                },
+                {
+                    "Code": "NN"
+                },
+                {
+                    "Code": "NO"
+                },
+                {
+                    "Code": "UC"
+                },
+                {
+                    "Code": "US"
+                }
+            ],
+            "OriginDestinationInformation": {
+                "FlightSegment": [
+                    {
+                        "DepartureDateTime": "2023-09-20T09:40:00",
+                        "ArrivalDateTime": "2023-09-20T12:35:00",
+                        "FlightNumber": "316",
+                        "NumberInParty": "4",
+                        "ResBookDesigCode": "L",
+                        "Status": "NN",
+                        "OriginLocation": {
+                            "LocationCode": "DAC"
+                        },
+                        "DestinationLocation": {
+                            "LocationCode": "MCT"
+                        },
+                        "MarketingAirline": {
+                            "Code": "WY",
+                            "FlightNumber": "316"
+                        }
+                    },
+                    {
+                        "DepartureDateTime": "2023-09-20T14:20:00",
+                        "ArrivalDateTime": "2023-09-20T19:10:00",
+                        "FlightNumber": "101",
+                        "NumberInParty": "4",
+                        "ResBookDesigCode": "L",
+                        "Status": "NN",
+                        "OriginLocation": {
+                            "LocationCode": "MCT"
+                        },
+                        "DestinationLocation": {
+                            "LocationCode": "LHR"
+                        },
+                        "MarketingAirline": {
+                            "Code": "WY",
+                            "FlightNumber": "101"
+                        }
+                    }
+                ]
+            },
+            "RedisplayReservation": {
+                "NumAttempts": 5,
+                "WaitInterval": 1000
+            }
+        },
+        "AirPrice": [
+            {
+                "PriceRequestInformation": {
+                    "Retain": true,
+                    "OptionalQualifiers": {
+                        "MiscQualifiers": {
+                            "BaggageAllowance": [
+                                {
+                                    "Segment": {
+                                        "Number": "1",
+                                        "EndNumber": "1"
+                                    },
+                                    "Number": "3",
+                                    "Weight": "60"
+                                }
+                            ]
+                        },
+                        "FOP_Qualifiers": {
+                            "BasicFOP": {
+                                "Type": "CASH"
+                            }
+                        },
+                        "PricingQualifiers": {
+                            "PassengerType": [
+                                {
+                                    "Code": "ADT",
+                                    "Quantity": "2"
+                                },
+                                {
+                                    "Code": "C03",
+                                    "Quantity": "1"
+                                },
+                                {
+                                    "Code": "C07",
+                                    "Quantity": "1"
+                                },
+                                {
+                                    "Code": "INF",
+                                    "Quantity": "1"
+                                }
+                            ],
+                            "ItineraryOptions": {
+                                "SegmentSelect": [
+                                    {
+                                        "Number": "1",
+                                        "RPH": "1"
+                                    },
+                                    {
+                                        "Number": "2",
+                                        "RPH": "1"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "SpecialReqDetails": {
+            "SpecialService": {
+                "SpecialServiceInfo": {
+                    "AdvancePassenger": [
+                        {
+                            "Document": {
+                                "IssueCountry": "BGD",
+                                "NationalityCountry": "BGD",
+                                "ExpirationDate": "2025-01-01",
+                                "Number": "12345678",
+                                "Type": "P"
+                            },
+                            "PersonName": {
+                                "Gender": "M",
+                                "GivenName": "Emdadul",
+                                "Surname": "Haque",
+                                "DateOfBirth": "1992-01-01",
+                                "NameNumber": "1.1"
+                            },
+                            "SegmentNumber": "A"
+                        },
+                        {
+                            "Document": {
+                                "IssueCountry": "BGD",
+                                "NationalityCountry": "BGD",
+                                "ExpirationDate": "2025-01-01",
+                                "Number": "12345678",
+                                "Type": "P"
+                            },
+                            "PersonName": {
+                                "Gender": "M",
+                                "GivenName": "Abul",
+                                "Surname": "Bashar",
+                                "DateOfBirth": "1995-01-01",
+                                "NameNumber": "2.1"
+                            },
+                            "SegmentNumber": "A"
+                        },
+                        {
+                            "Document": {
+                                "IssueCountry": "BGD",
+                                "NationalityCountry": "BGD",
+                                "ExpirationDate": "2025-01-01",
+                                "Number": "12345678",
+                                "Type": "P"
+                            },
+                            "PersonName": {
+                                "Gender": "M",
+                                "GivenName": "Jahidul",
+                                "Surname": "Islam",
+                                "DateOfBirth": "2020-06-01",
+                                "NameNumber": "3.1"
+                            },
+                            "SegmentNumber": "A"
+                        },
+                        {
+                            "Document": {
+                                "IssueCountry": "BGD",
+                                "NationalityCountry": "BGD",
+                                "ExpirationDate": "2025-01-01",
+                                "Number": "12345698",
+                                "Type": "P"
+                            },
+                            "PersonName": {
+                                "Gender": "M",
+                                "GivenName": "Johirul",
+                                "Surname": "Islam",
+                                "DateOfBirth": "2016-06-01",
+                                "NameNumber": "4.1"
+                            },
+                            "SegmentNumber": "A"
+                        },
+                        {
+                            "Document": {
+                                "IssueCountry": "BGD",
+                                "NationalityCountry": "BGD",
+                                "ExpirationDate": "2025-01-01",
+                                "Number": "12345678",
+                                "Type": "P"
+                            },
+                            "PersonName": {
+                                "Gender": "MI",
+                                "GivenName": "Al",
+                                "Surname": "Mamun",
+                                "DateOfBirth": "2022-01-01",
+                                "NameNumber": "1.1"
+                            },
+                            "SegmentNumber": "A"
+                        }
+                    ],
+                    "SecureFlight": [
+                        {
+                            "PersonName": {
+                                "Gender": "M",
+                                "GivenName": "Emdadul",
+                                "Surname": "Haque",
+                                "DateOfBirth": "1992-01-01",
+                                "NameNumber": "1.1"
+                            },
+                            "SegmentNumber": "A",
+                            "VendorPrefs": {
+                                "Airline": {
+                                    "Hosted": false
+                                }
+                            }
+                        },
+                        {
+                            "PersonName": {
+                                "Gender": "M",
+                                "GivenName": "Abul",
+                                "Surname": "Bashar",
+                                "DateOfBirth": "1995-01-01",
+                                "NameNumber": "2.1"
+                            },
+                            "SegmentNumber": "A",
+                            "VendorPrefs": {
+                                "Airline": {
+                                    "Hosted": false
+                                }
+                            }
+                        },
+                        {
+                            "PersonName": {
+                                "Gender": "M",
+                                "GivenName": "Jahidul",
+                                "Surname": "Islam",
+                                "DateOfBirth": "2020-06-01",
+                                "NameNumber": "3.1"
+                            },
+                            "SegmentNumber": "A",
+                            "VendorPrefs": {
+                                "Airline": {
+                                    "Hosted": false
+                                }
+                            }
+                        },
+                        {
+                            "PersonName": {
+                                "Gender": "M",
+                                "GivenName": "Jahidul",
+                                "Surname": "Islam",
+                                "DateOfBirth": "2016-06-01",
+                                "NameNumber": "4.1"
+                            },
+                            "SegmentNumber": "A",
+                            "VendorPrefs": {
+                                "Airline": {
+                                    "Hosted": false
+                                }
+                            }
+                        },
+                        {
+                            "PersonName": {
+                                "Gender": "MI",
+                                "GivenName": "Al",
+                                "Surname": "Mamun",
+                                "DateOfBirth": "2022-01-01",
+                                "NameNumber": "1.1"
+                            },
+                            "SegmentNumber": "A",
+                            "VendorPrefs": {
+                                "Airline": {
+                                    "Hosted": false
+                                }
+                            }
+                        }
+                    ],
+                    "Service": [
+                        {
+                            "SSR_Code": "OTHS",
+                            "Text": "CC Haque Emdadul",
+                            "PersonName": {
+                                "NameNumber": "1.1"
+                            },
+                            "SegmentNumber": "A"
+                        },
+                        {
+                            "SSR_Code": "CTCM",
+                            "Text": "0110085888",
+                            "PersonName": {
+                                "NameNumber": "1.1"
+                            },
+                            "SegmentNumber": "A"
+                        },
+                        {
+                            "SSR_Code": "CTCE",
+                            "Text": "test1//gmail.com",
+                            "PersonName": {
+                                "NameNumber": "1.1"
+                            },
+                            "SegmentNumber": "A"
+                        },
+                        {
+                            "SSR_Code": "CHLD",
+                            "Text": "01JUN20",
+                            "PersonName": {
+                                "NameNumber": "3.1"
+                            },
+                            "SegmentNumber": "A"
+                        },
+                        {
+                            "SSR_Code": "CHLD",
+                            "Text": "01JUN16",
+                            "PersonName": {
+                                "NameNumber": "4.1"
+                            },
+                            "SegmentNumber": "A"
+                        },
+                        {
+                            "SSR_Code": "INFT",
+                            "Text": "AL/MAMUN /01JAN22",
+                            "PersonName": {
+                                "NameNumber": "1.1"
+                            },
+                            "SegmentNumber": "A"
+                        }
+                    ]
+                }
+            },
+            "AddRemark": {
+                "RemarkInfo": {
+                    "Remark": [
+                        {
+                            "Text": "THE FARE IS NOT GUARANTEED UNTIL THE TICKET HAS BEEN ISSUED.",
+                            "Code": "H",
+                            "Type": "Itinerary"
+                        },
+                    ]
+                }
+            }
+        },
+        "PostProcessing": {
+            "ARUNK": {
+                "keepSegments": true,
+                "priorPricing": true
+            },
+            "EndTransaction": {
+                "Source": {
+                    "ReceivedFrom": "web"
+                },
+                "Email": {
+                    "Ind": true,
+                    "Itinerary": {
+                        "PDF": {
+                            "Ind": true
+                        },
+                        "Ind": true
+                    }
+                }
+            },
+            "RedisplayReservation": {
+                "waitInterval": 8000
+            },
+            "WaitForAirlineRecLoc": {
+                "waitInterval": 8000,
+                "numAttempts": 6
+            }
+        }
+    }
+}

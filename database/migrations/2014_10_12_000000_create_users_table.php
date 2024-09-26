@@ -24,6 +24,11 @@ return new class extends Migration
             $table->tinyInteger('user_type')->comment('1=>Admin; 2=>B2B User; 3=>Customer')->default(3);
             $table->double('balance')->default(0);
             $table->tinyInteger('status')->default(1)->comment("0=>Inactive; 1=>Active");
+
+            $table->tinyInteger('search_status')->default(1)->comment("0=>Disable; 1=>Enable");
+            $table->tinyInteger('booking_status')->default(1)->comment("0=>Disable; 1=>Enable");
+            $table->tinyInteger('ticket_status')->default(1)->comment("0=>Disable; 1=>Enable");
+
             $table->rememberToken();
             $table->timestamps();
         });

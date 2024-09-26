@@ -24,17 +24,21 @@ class FlightBookingController extends Controller
 
         $revlidatedData = session('revlidatedData');
 
-        if(isset($request->first_name[0]) && $request->first_name[0] && isset($request->last_name[0]) && $request->last_name[0] && $request->traveller_contact && $request->traveller_email){
-            $onlineBookingInfo = json_decode(SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->first_name[0], $request->last_name[0], $request->traveller_email), true);
+        if(isset($request->first_name[0]) && $request->first_name[0] && isset($request->last_name[0]) && $request->last_name[0] && $request->traveller_contact && $request->traveller_email && isset($request->titles[0]) && $request->titles[0] && isset($request->dob[0]) && $request->dob[0]){
+
+            $onlineBookingInfo = json_decode(SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->first_name, $request->last_name, $request->titles, $request->dob[0], $request->passanger_type, $request->traveller_email), true);
+
         } else {
+
             Toastr::error('Passanger Information Missing', 'Failed');
             return redirect('/home');
+
         }
 
-        // echo "<pre>";
-        // print_r($onlineBookingInfo);
-        // echo "</pre>";
-        // exit();
+        echo "<pre>";
+        echo SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->first_name, $request->last_name, $request->titles, $request->dob[0], $request->passanger_type, $request->traveller_email);
+        echo "</pre>";
+        exit();
 
         $bookinPnrID = null;
         if(isset($onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status']) && $onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status'] == 'Complete'){
@@ -379,6 +383,11 @@ class FlightBookingController extends Controller
     }
 
     public function issueFlightTicket($pnrId){
+
+        if(Auth::user()->ticket_status == 0){
+            Toastr::error('Ticket Issue Permission Denied');
+            return back();
+        }
 
         $flightBookingInfo = FlightBooking::where('pnr_id', $pnrId)->first();
 
