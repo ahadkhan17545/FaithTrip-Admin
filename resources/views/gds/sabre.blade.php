@@ -64,8 +64,15 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-lg-12 mt-3 mb-2">
+                            <div class="col-lg-6 mt-3 mb-2">
                                 <div class="form-group">
+                                    <label for="pcc">PCC (TargetCity)</label>
+                                    <input type="text" id="pcc" name="pcc" value="{{$sabreGdsInfo->pcc}}" class="form-control" placeholder="ex. X87C" required>
+                                    <small>Remain same in Sandbox & Procution environment</small>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mt-3 mb-2">
+                                <div class="form-group" style="padding-top: 25px;">
                                     <label for="is_production" style="font-size: 16px; color: #d00000; cursor: pointer;">
                                         <input type="checkbox" name="is_production" @if($sabreGdsInfo->is_production == 1) checked @endif value="1" id="is_production">
                                         Enable Production Mode

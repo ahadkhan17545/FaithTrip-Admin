@@ -21,6 +21,11 @@ class UserController extends Controller
 
     public function saveB2bUser(Request $request){
 
+        if(User::where('email', $request->email)->exists()){
+            Toastr::error('This Email is already Used', 'Try with another email');
+            return back();
+        }
+
         $image = null;
         if ($request->hasFile('image')){
             $file = $request->file('image');
@@ -38,7 +43,13 @@ class UserController extends Controller
             'nid' => $request->nid,
             'comission' => $request->comission,
             'password' => Hash::make($request->password),
-            'status' => 1,
+
+            // b2b user access control
+            'status' => $request->status == 1 ? 1 : 0,
+            'search_status' => $request->search_status == 1 ? 1 : 0,
+            'booking_status' => $request->booking_status == 1 ? 1 : 0,
+            'ticket_status' => $request->ticket_status == 1 ? 1 : 0,
+
             'user_type' => 2,
             'created_at' => Carbon::now(),
         ]);

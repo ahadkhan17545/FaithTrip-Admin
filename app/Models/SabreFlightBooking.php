@@ -89,11 +89,18 @@ class SabreFlightBooking extends Model
             ];
         }
 
+        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
+        if($sabreGdsInfo->is_production == 0){
+            $apiEndPoint = 'https://api.cert.platform.sabre.com/v2.5.0/passenger/records?mode=create';
+        } else{
+            $apiEndPoint = 'https://api.platform.sabre.com/v2.5.0/passenger/records?mode=create';
+        }
+
         $request_body = array(
             "CreatePassengerNameRecordRQ" => array(
                 "version" => "2.5.0",
-                "targetCity" => "S00L",
-                // "haltOnAirPriceError" => true,
+                "targetCity" => $sabreGdsInfo->pcc,
+                "haltOnAirPriceError" => true,
                 "TravelItineraryAddInfo" => array(
                     "AgencyInfo" => array(
                         "Address" => array(
@@ -120,15 +127,10 @@ class SabreFlightBooking extends Model
                                 )
                             )
                         ),
-                        // "CreditCardData" => array(
-                        //     "PreferredCustomer" => array(
-                        //         "ind" => true
-                        //     )
-                        // ),
                         "Email" => array(
                             array(
                                 "Address" => $travellerEmail,
-                                "Type" => "BC"
+                                "Type" => "CC"
                             )
                         ),
                         "PersonName" => $personName,
@@ -218,13 +220,6 @@ class SabreFlightBooking extends Model
 
         // Convert the request body array to JSON format
         $request_json = json_encode($request_body);
-
-        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
-        if($sabreGdsInfo->is_production == 0){
-            $apiEndPoint = 'https://api.cert.platform.sabre.com/v2.5.0/passenger/records?mode=create';
-        } else{
-            $apiEndPoint = 'https://api.platform.sabre.com/v2.5.0/passenger/records?mode=create';
-        }
 
         $curl = curl_init();
         curl_setopt_array($curl, array(

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('sabre_gds_configs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('gds_id')->nullable();
+            $table->string('pcc')->comment('TargetCity')->nullable();
             $table->string('user_id')->comment('V1:user:group:domain')->nullable();
             $table->string('password')->nullable();
             $table->string('production_user_id')->comment('V1:user:group:domain')->nullable();

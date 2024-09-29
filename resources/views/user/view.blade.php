@@ -153,7 +153,7 @@
                     url: "{{ url('delete/b2b/user') }}"+'/'+id,
                     success: function (data) {
                         table.draw(false);
-                        toastr.error("Recharge Request Deleted");
+                        toastr.error("B2B User has been Deleted");
                     },
                     error: function (data) {
                         console.log('Error:', data);

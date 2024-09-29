@@ -8,4 +8,4 @@ ALTER TABLE `flight_bookings` ADD `is_live` TINYINT(4) NULL DEFAULT NULL COMMENT
 
 =========26-09-2024========
 ALTER TABLE `users` ADD `search_status` TINYINT(4) NOT NULL DEFAULT '1' COMMENT '0=>Disable; 1=>Enable' AFTER `status`, ADD `booking_status` TINYINT(4) NOT NULL DEFAULT '1' COMMENT '0=>Disable; 1=>Enable' AFTER `search_status`, ADD `ticket_status` TINYINT(4) NOT NULL DEFAULT '1' COMMENT '0=>Disable; 1=>Enable' AFTER `booking_status`;
-
+ALTER TABLE `sabre_gds_configs` ADD `pcc` VARCHAR(255) NULL DEFAULT NULL COMMENT 'TargetCity' AFTER `gds_id`;

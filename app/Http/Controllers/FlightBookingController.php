@@ -29,16 +29,14 @@ class FlightBookingController extends Controller
             $onlineBookingInfo = json_decode(SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->first_name, $request->last_name, $request->titles, $request->dob[0], $request->passanger_type, $request->traveller_email), true);
 
         } else {
-
             Toastr::error('Passanger Information Missing', 'Failed');
             return redirect('/home');
-
         }
 
-        echo "<pre>";
-        echo SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->first_name, $request->last_name, $request->titles, $request->dob[0], $request->passanger_type, $request->traveller_email);
-        echo "</pre>";
-        exit();
+        // echo "<pre>";
+        // echo SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->first_name, $request->last_name, $request->titles, $request->dob[0], $request->passanger_type, $request->traveller_email);
+        // echo "</pre>";
+        // exit();
 
         $bookinPnrID = null;
         if(isset($onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status']) && $onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status'] == 'Complete'){

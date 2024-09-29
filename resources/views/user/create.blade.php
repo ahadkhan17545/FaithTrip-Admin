@@ -83,6 +83,40 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row pt-5">
+                            <div class="col-lg-12">
+                                <h5>User Access</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label for="status" class="col-form-label fw-bold" style="padding-left: 5px; cursor: pointer;">
+                                            <input type="checkbox" name="status" value="1" id="status" style="margin-right: 5px" checked>
+                                            Account Access
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="search_status" class="col-form-label fw-bold" style="padding-left: 5px; cursor: pointer;">
+                                            <input type="checkbox" name="search_status" value="1" id="search_status" style="margin-right: 5px" checked>
+                                            Flight Search
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="booking_status" class="col-form-label fw-bold" style="padding-left: 5px; cursor: pointer;">
+                                            <input type="checkbox" name="booking_status" value="1" id="booking_status" style="margin-right: 5px" checked>
+                                            Flight Booking
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="ticket_status" class="col-form-label fw-bold" style="padding-left: 5px; cursor: pointer;">
+                                            <input type="checkbox" name="ticket_status" value="1" id="ticket_status" style="margin-right: 5px" checked>
+                                            Ticket Issue
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="card-footer text-center">
                         <button type="submit" class="btn btn-success">Create Account</button>

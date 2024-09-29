@@ -50,6 +50,7 @@ class GdsController extends Controller
 
     public function updateSabreGdsInfo(Request $request){
         SabreGdsConfig::where('id', 1)->update([
+            'pcc' => $request->pcc,
             'user_id' => $request->user_id,
             'password' => $request->password,
             'production_user_id' => $request->production_user_id,
