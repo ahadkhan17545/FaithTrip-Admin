@@ -42,9 +42,22 @@ class SabreFlightBooking extends Model
 
         $flightSegment = array();
         $departureDate = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'];
+        $returnDepartureDate = isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureDate']) ? $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureDate'] : null;
+        $isReturnFlight = false;
+
         foreach ($segmentArray as $segmentIndex => $segmentData){
 
-            $departureDateTime = new DateTime($departureDate . ' ' . $segmentData['departure']['time']);
+            // Check if this is a return flight segment
+            if ($isReturnFlight == false && $returnDepartureDate && $segmentData['departure']['airport'] == $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureLocation']) {
+                $isReturnFlight = true;
+            }
+
+            if($isReturnFlight == false){
+                $departureDateTime = new DateTime($departureDate . ' ' . $segmentData['departure']['time']);
+            } else {
+                $departureDateTime = new DateTime($returnDepartureDate . ' ' . $segmentData['departure']['time']);
+            }
+
             if(isset($segmentData['bothDateAdjustment']) && $segmentData['bothDateAdjustment'] >= 1){
                 $departureDateTime->modify('+' . $segmentData['bothDateAdjustment'] . ' day');
             } else {
@@ -53,6 +66,7 @@ class SabreFlightBooking extends Model
                     $departureDateTime->modify('+' . $segmentData['departure']['dateAdjustment'] . ' day');
                 }
             }
+
 
             $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'] ?? "L";
 
@@ -309,26 +323,15 @@ class SabreFlightBooking extends Model
                     )
                 ),
                 "PostProcessing" => array(
-                    // "ARUNK" => array(
-                    //     "keepSegments" => true,
-                    //     "priorPricing" => true
-                    // ),
                     "EndTransaction" => array(
                         "Source" => array(
                             "ReceivedFrom" => "FaithTrip B2B Portal"
                         ),
                         "Email" => array(
                             "Ind" => true,
-                            // "Itinerary" => array(
-                            //     "PDF" => array(
-                            //         "Ind" => true,
-                            //     ),
-                            //     "Ind" => true,
-                            // )
                         )
                     ),
                     "RedisplayReservation" => array("waitInterval" => 8000),
-                    // "WaitForAirlineRecLoc" => array("waitInterval" => 8000, "numAttempts" => 6)
                 )
             )
         );
