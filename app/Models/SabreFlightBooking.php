@@ -138,7 +138,7 @@ class SabreFlightBooking extends Model
 
                     $specialServices[] = [
                         "SSR_Code" => "INFT",
-                        "Text" => str_replace(" ","/",trim($firstName))."/".str_replace(" ","/",trim($lastNames[$passangerIndex]))." /".date("dMy", strtotime($dob[$passangerIndex])),
+                        "Text" => str_replace(" ","/",str_replace(".","",$passangerTitles[$passangerIndex])."/".trim($firstName))."/".str_replace(" ","/",trim($lastNames[$passangerIndex]))." /".date("dMy", strtotime($dob[$passangerIndex])),
                         "PersonName" => [
                             "NameNumber" => (string) $passangerIndex+1 .".1"
                         ],
@@ -160,7 +160,7 @@ class SabreFlightBooking extends Model
             }
 
             $personName[] = [
-                "GivenName" => $firstName,
+                "GivenName" => str_replace(".","",$passangerTitles[$passangerIndex])." ".$firstName,
                 "Surname" => $lastNames[$passangerIndex],
                 "NameNumber" => (string) $passangerIndex+1 .".1",
                 "Infant" => $passangerTypes[$passangerIndex] == 'INF' ? true : false,
@@ -178,7 +178,7 @@ class SabreFlightBooking extends Model
                 ],
                 "PersonName" => [
                     'Gender' => ($passangerTitles[$passangerIndex] == 'Mr.' || $passangerTitles[$passangerIndex] == 'Mstr.') ? "M" : "F",
-                    'GivenName' => $firstName,
+                    'GivenName' => str_replace(".","",$passangerTitles[$passangerIndex])." ".$firstName,
                     'Surname' => $lastNames[$passangerIndex],
                     'DateOfBirth' => (string) $dob[$passangerIndex],
                     'NameNumber' => (string) $passangerIndex+1 .".1",
@@ -189,7 +189,7 @@ class SabreFlightBooking extends Model
             $secureFlights[] = [
                 "PersonName" => [
                     'Gender' => ($passangerTitles[$passangerIndex] == 'Mr.' || $passangerTitles[$passangerIndex] == 'Mstr.') ? "M" : "F",
-                    'GivenName' => $firstName,
+                    'GivenName' => str_replace(".","",$passangerTitles[$passangerIndex])." ".$firstName,
                     'Surname' => $lastNames[$passangerIndex],
                     'DateOfBirth' => (string) $dob[$passangerIndex],
                     'NameNumber' => (string) $passangerIndex+1 .".1",
@@ -296,6 +296,11 @@ class SabreFlightBooking extends Model
                         "PriceRequestInformation" => array(
                             "Retain" => true,
                             "OptionalQualifiers" => array(
+                                "FOP_Qualifiers" => array(
+                                    "BasicFOP" => array(
+                                        "Type" => "CASH"
+                                    )
+                                ),
                                 "PricingQualifiers" => array(
                                     "PassengerType" => $pricingQualifiersPassengerTypes
                                 )
