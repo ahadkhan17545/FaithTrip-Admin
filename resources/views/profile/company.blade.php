@@ -26,7 +26,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label for="phone" class="col-form-label fw-bold justify-content-start d-flex">Company Phone <i class="text-danger">*</i></label>
-                                        <input type="text" name="phone" @if($companyProfile) value="{{$companyProfile->email}}" @endif id="phone" class="form-control" placeholder="Phone Number" required="">
+                                        <input type="text" name="phone" @if($companyProfile) value="{{$companyProfile->phone}}" @endif id="phone" class="form-control" placeholder="Phone Number" required="">
                                     </div>
                                     <div class="col-md-12">
                                         <label for="logo" class="col-form-label fw-bold justify-content-start d-flex">Brand Logo</label>
@@ -36,7 +36,7 @@
                                             <img class="max-h-45 mt-3 mb-2" src="{{url($companyProfile->logo)}}" /><br>
                                             <a href="{{url('remove/company/logo')}}">❌ Remove Logo</a>
                                         @endif
-                                        
+
                                     </div>
                                 </div>
                             </div>

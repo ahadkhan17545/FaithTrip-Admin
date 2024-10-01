@@ -10,19 +10,18 @@ use App\Models\SabreGdsConfig;
 class SabreFlightBooking extends Model
 {
     use HasFactory;
+    public static function flightBooking($revlidatedData, $travellerContact, $travellerEmail, $firstNames, $lastNames, $passangerTitles, $dob, $passangerTypes, $ages, $documentIssueCountry, $nationality, $documentNo, $documentExpireDate){
 
-    public static function flightBooking($revlidatedData, $travellerContact, $firstNames, $lastNames, $passangerTitles, $dob, $passangerTypes, $travellerEmail){
-
-        $passengerTypes = array();
-        if (session('adult') > 0) {
-            $passengerTypes[] = array("Code" => "ADT", "Quantity" => (string) session('adult'));
-        }
-        if (session('child') > 0) {
-            $passengerTypes[] = array("Code" => "CNN", "Quantity" => (string) session('child'));
-        }
-        if (session('infant') > 0) {
-            $passengerTypes[] = array("Code" => "INF", "Quantity" => (string) session('infant'));
-        }
+        // $passengerTypes = array();
+        // if (session('adult') > 0) {
+        //     $passengerTypes[] = array("Code" => "ADT", "Quantity" => (string) session('adult'));
+        // }
+        // if (session('child') > 0) {
+        //     $passengerTypes[] = array("Code" => "CNN", "Quantity" => (string) session('child'));
+        // }
+        // if (session('infant') > 0) {
+        //     $passengerTypes[] = array("Code" => "INF", "Quantity" => (string) session('infant'));
+        // }
 
 
         // making flight segment start
@@ -43,7 +42,7 @@ class SabreFlightBooking extends Model
 
         $flightSegment = array();
         $departureDate = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'];
-        foreach ($segmentArray as $segmentData){
+        foreach ($segmentArray as $segmentIndex => $segmentData){
 
             $departureDateTime = new DateTime($departureDate . ' ' . $segmentData['departure']['time']);
             if(isset($segmentData['bothDateAdjustment']) && $segmentData['bothDateAdjustment'] >= 1){
@@ -55,38 +54,158 @@ class SabreFlightBooking extends Model
                 }
             }
 
+            $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'] ?? "L";
+
+            $marriageGrp = "O";
+            if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['availabilityBreak'])){
+                $marriageGrp = "I";
+            }
+
             $flightSegment[] = array(
                 "DepartureDateTime" => $departureDateTime->format('Y-m-d')."T".$departureDateTime->format('H:i:s'),
                 "FlightNumber" => (string) $segmentData['carrier']['operatingFlightNumber'],
-                "NumberInParty" => (string) 1,
-                "ResBookDesigCode" => "Y",
+                "NumberInParty" => (string) (session('adult')+session('child')+session('infant')),
+                "ResBookDesigCode" => (string) $bookingCode,
                 "Status" => "NN",
-                "DestinationLocation" => array("LocationCode" => $segmentData['arrival']['airport']),
-                "MarketingAirline" => array("Code" => $segmentData['carrier']['marketing'], "FlightNumber" => (string) $segmentData['carrier']['marketingFlightNumber']),
-                "MarriageGrp" => "O",
-                "OriginLocation" => array("LocationCode" => $segmentData['departure']['airport'])
+                "OriginLocation" => array(
+                    "LocationCode" => $segmentData['departure']['airport']
+                ),
+                "DestinationLocation" => array(
+                    "LocationCode" => $segmentData['arrival']['airport']
+                ),
+                "MarketingAirline" => array(
+                    "Code" => $segmentData['carrier']['marketing'],
+                    "FlightNumber" => (string) $segmentData['carrier']['marketingFlightNumber']
+                ),
+                "MarriageGrp" => $marriageGrp
             );
         }
         // making flight segment end
 
 
-        $givenName = $firstNames[0]." ".str_replace(".", "", $passangerTitles[0]);
-        $surName = $lastNames[0];
-
         $personName = [];
-        $nameSelect = [];
+        $pricingQualifiersPassengerTypes = [];
+        $advancePassengers = [];
+        $secureFlights = [];
+
+        $specialServices = [];
+        $specialServices[] = [
+            "SSR_Code" => "CTCM",
+            "Text" => (string) $travellerContact,
+            "PersonName" => [
+                "NameNumber" => "1.1"
+            ],
+            "SegmentNumber" => "A"
+        ];
+        $specialServices[] = [
+            "SSR_Code" => "CTCE",
+            "Text" => (string) str_replace("@","//",$travellerEmail),
+            "PersonName" => [
+                "NameNumber" => "1.1"
+            ],
+            "SegmentNumber" => "A"
+        ];
+
         foreach($firstNames as $passangerIndex => $firstName){
+
+            $nameReference = "";
+            if($passangerTypes[$passangerIndex] != "ADT"){
+                if($passangerTypes[$passangerIndex] == 'INF'){
+                    $nameReference = 'I'.str_pad($ages[$passangerIndex],2,"0",STR_PAD_LEFT);
+                } else {
+                    $nameReference = 'C'.str_pad($ages[$passangerIndex],2,"0",STR_PAD_LEFT);
+                }
+            }
+
+            $passengerTypeForPersonName = "ADT";
+            if($passangerTypes[$passangerIndex] != "ADT"){
+                if($passangerTypes[$passangerIndex] == 'INF'){
+                    $passengerTypeForPersonName = "INF";
+
+                    $specialServices[] = [
+                        "SSR_Code" => "INFT",
+                        "Text" => str_replace(" ","/",trim($firstName))."/".str_replace(" ","/",trim($lastNames[$passangerIndex]))." /".date("dMy", strtotime($dob[$passangerIndex])),
+                        "PersonName" => [
+                            "NameNumber" => (string) $passangerIndex+1 .".1"
+                        ],
+                        "SegmentNumber" => "A"
+                    ];
+
+                } else{
+                    $passengerTypeForPersonName = 'C'.str_pad($ages[$passangerIndex],2,"0",STR_PAD_LEFT);
+
+                    $specialServices[] = [
+                        "SSR_Code" => "CHLD",
+                        "Text" => (string) date("dMy", strtotime($dob[$passangerIndex])),
+                        "PersonName" => [
+                            "NameNumber" => (string) $passangerIndex+1 .".1"
+                        ],
+                        "SegmentNumber" => "A"
+                    ];
+                }
+            }
+
             $personName[] = [
                 "GivenName" => $firstName,
                 "Surname" => $lastNames[$passangerIndex],
                 "NameNumber" => (string) $passangerIndex+1 .".1",
                 "Infant" => $passangerTypes[$passangerIndex] == 'INF' ? true : false,
-                "NameReference" => "",
-                "PassengerType" => $passangerTypes[$passangerIndex],
+                "NameReference" => $nameReference,
+                "PassengerType" => $passengerTypeForPersonName,
             ];
-            $nameSelect[] = [
-                "NameNumber" => (string) $passangerIndex+1 .".1",
+
+            $advancePassengers[] = [
+                "Document" => [
+                    'IssueCountry' => $documentIssueCountry[$passangerIndex],
+                    'NationalityCountry' => $nationality[$passangerIndex],
+                    'ExpirationDate' => (string) $documentExpireDate[$passangerIndex],
+                    'Number' => (string) $documentNo[$passangerIndex],
+                    'Type' => "P",
+                ],
+                "PersonName" => [
+                    'Gender' => ($passangerTitles[$passangerIndex] == 'Mr.' || $passangerTitles[$passangerIndex] == 'Mstr.') ? "M" : "F",
+                    'GivenName' => $firstName,
+                    'Surname' => $lastNames[$passangerIndex],
+                    'DateOfBirth' => (string) $dob[$passangerIndex],
+                    'NameNumber' => (string) $passangerIndex+1 .".1",
+                ],
+                "SegmentNumber" => "A"
             ];
+
+            $secureFlights[] = [
+                "PersonName" => [
+                    'Gender' => ($passangerTitles[$passangerIndex] == 'Mr.' || $passangerTitles[$passangerIndex] == 'Mstr.') ? "M" : "F",
+                    'GivenName' => $firstName,
+                    'Surname' => $lastNames[$passangerIndex],
+                    'DateOfBirth' => (string) $dob[$passangerIndex],
+                    'NameNumber' => (string) $passangerIndex+1 .".1",
+                ],
+                "SegmentNumber" => "A",
+                "VendorPrefs" => [
+                    "Airline" => [
+                        'Hosted' => false
+                    ]
+                ]
+            ];
+
+            $found = false;
+            foreach($pricingQualifiersPassengerTypes as $pricingQualifiersPassengerIndex => $pricingQualifiersPassengerType){
+                if($pricingQualifiersPassengerType['Code'] == $passengerTypeForPersonName){
+                    $pricingQualifiersPassengerTypes[$pricingQualifiersPassengerIndex] = [
+                        "Code" => $passengerTypeForPersonName,
+                        "Quantity" => (string) 2
+                    ];
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $pricingQualifiersPassengerTypes[] = [
+                    "Code" => $passengerTypeForPersonName,
+                    "Quantity" => (string) 1
+                ];
+            }
+
         }
 
         $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
@@ -99,7 +218,7 @@ class SabreFlightBooking extends Model
         $request_body = array(
             "CreatePassengerNameRecordRQ" => array(
                 "version" => "2.5.0",
-                "targetCity" => $sabreGdsInfo->pcc,
+                "targetCity" => (string) $sabreGdsInfo->pcc,
                 "haltOnAirPriceError" => true,
                 "TravelItineraryAddInfo" => array(
                     "AgencyInfo" => array(
@@ -121,6 +240,7 @@ class SabreFlightBooking extends Model
                         "ContactNumbers" => array(
                             "ContactNumber" => array(
                                 array(
+                                    "LocationCode" => "DAC",
                                     "NameNumber" => "1.1",
                                     "PhoneUseType" => "M",
                                     "Phone" => $travellerContact
@@ -144,7 +264,10 @@ class SabreFlightBooking extends Model
                         array("Code" => "NN"),
                         array("Code" => "NO"),
                         array("Code" => "UC"),
-                        array("Code" => "US")
+                        array("Code" => "US"),
+                        array("Code" => "UN"),
+                        array("Code" => "HX"),
+                        array("Code" => "WL")
                     ),
                     "OriginDestinationInformation" => array(
                         "FlightSegment" => $flightSegment
@@ -160,59 +283,52 @@ class SabreFlightBooking extends Model
                             "Retain" => true,
                             "OptionalQualifiers" => array(
                                 "PricingQualifiers" => array(
-                                    "NameSelect" => $nameSelect,
-                                    "PassengerType" => $passengerTypes
+                                    "PassengerType" => $pricingQualifiersPassengerTypes
                                 )
                             )
                         )
                     )
                 ),
                 "SpecialReqDetails" => array(
+                    "SpecialService" => array(
+                        "SpecialServiceInfo" => array(
+                            "AdvancePassenger" => $advancePassengers,
+                            "SecureFlight" => $secureFlights,
+                            "Service" => $specialServices
+                        )
+                    ),
                     "AddRemark" => array(
                         "RemarkInfo" => array(
                             "Remark" => array(
-                                array("Type" => "General", "Text" => "Booking Created from FaithTrip Portal"),
-                                // array("Type" => "Historical", "Text" => "TEST01"),
-                                // array("Type" => "Client Address", "Text" => "3399 CURE AVE 76554 GALLUP TX"),
-                                // array("Type" => "Invoice", "Text" => "S*UD18 PROMO515")
-                            )
-                        )
-                    ),
-                    "SpecialService" => array(
-                        "SpecialServiceInfo" => array(
-                            "SecureFlight" => array(
                                 array(
-                                    "SegmentNumber" => "A",
-                                    "PersonName" => array(
-                                        "DateOfBirth" => $dob,
-                                        "Gender" => $passangerTitles[0] == 'Mr.' ? 'M' : 'F',
-                                        "NameNumber" => "1.1",
-                                        "GivenName" => $givenName,
-                                        "Surname" => $surName
-                                    )
-                                )
-                            ),
-                            "Service" => array(
-                                array(
-                                    "SSR_Code" => "CTCE",
-                                    "SegmentNumber" => "A",
-                                    "Text" => "ADMIN//CURE.NET", //b2b agent er email address/ or traveller email address
-                                    "PersonName" => array("NameNumber" => "1.1")
+                                    "Type" => "General",
+                                    "Text" => "Booking Created from FaithTrip Portal"
                                 ),
-                                array(
-                                    "SSR_Code" => "CTCM",
-                                    "Text" => "5551231234", // b2b agent er email address/ or traveller email address
-                                    "PersonName" => array("NameNumber" => "1.1")
-                                )
                             )
                         )
                     )
                 ),
                 "PostProcessing" => array(
-                    "RedisplayReservation" => array("waitInterval" => 100),
+                    // "ARUNK" => array(
+                    //     "keepSegments" => true,
+                    //     "priorPricing" => true
+                    // ),
                     "EndTransaction" => array(
-                        "Source" => array("ReceivedFrom" => "FaithTrip B2B Portal")
-                    )
+                        "Source" => array(
+                            "ReceivedFrom" => "FaithTrip B2B Portal"
+                        ),
+                        "Email" => array(
+                            "Ind" => true,
+                            // "Itinerary" => array(
+                            //     "PDF" => array(
+                            //         "Ind" => true,
+                            //     ),
+                            //     "Ind" => true,
+                            // )
+                        )
+                    ),
+                    "RedisplayReservation" => array("waitInterval" => 8000),
+                    // "WaitForAirlineRecLoc" => array("waitInterval" => 8000, "numAttempts" => 6)
                 )
             )
         );

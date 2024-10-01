@@ -26,7 +26,7 @@ class FlightBookingController extends Controller
 
         if(isset($request->first_name[0]) && $request->first_name[0] && isset($request->last_name[0]) && $request->last_name[0] && $request->traveller_contact && $request->traveller_email && isset($request->titles[0]) && $request->titles[0] && isset($request->dob[0]) && $request->dob[0]){
 
-            $onlineBookingInfo = json_decode(SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->first_name, $request->last_name, $request->titles, $request->dob[0], $request->passanger_type, $request->traveller_email), true);
+            $onlineBookingInfo = json_decode(SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->traveller_email,  $request->first_name, $request->last_name, $request->titles, $request->dob, $request->passanger_type, $request->age, $request->document_issue_country, $request->nationality, $request->document_no, $request->document_expire_date), true);
 
         } else {
             Toastr::error('Passanger Information Missing', 'Failed');
@@ -34,19 +34,21 @@ class FlightBookingController extends Controller
         }
 
         // echo "<pre>";
-        // echo SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->first_name, $request->last_name, $request->titles, $request->dob[0], $request->passanger_type, $request->traveller_email);
+        // echo SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->traveller_email, $request->first_name, $request->last_name, $request->titles, $request->dob, $request->passanger_type, $request->age, $request->document_issue_country, $request->nationality, $request->document_no, $request->document_expire_date);
         // echo "</pre>";
         // exit();
 
         $bookinPnrID = null;
+        $bookingResponse = null;
         if(isset($onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status']) && $onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status'] == 'Complete'){
             $bookinPnrID = $onlineBookingInfo['CreatePassengerNameRecordRS']['ItineraryRef']['ID'];
+            $bookingResponse = json_encode($onlineBookingInfo, true);
             $status = 1;
         } else{
             $status = 0;
         }
 
-        DB::transaction(function () use ($request, $bookinPnrID, $status) {
+        DB::transaction(function () use ($request, $bookinPnrID, $status, $bookingResponse) {
 
             // fetching price using session for security (not from hidden field)
             $revlidatedData = session('revlidatedData');
@@ -83,6 +85,7 @@ class FlightBookingController extends Controller
                 'total_fare' => $total_fare,
                 'currency' => $request->currency,
                 'last_ticket_datetime' => $request->last_ticket_datetime,
+                'booking_response' => $bookingResponse,
                 'status' => $status,
                 'is_live' => $sabreGdsInfo ? $sabreGdsInfo->is_production : 0,
                 'created_at' => Carbon::now()
@@ -182,6 +185,7 @@ class FlightBookingController extends Controller
                     'first_name' => $firstName,
                     'last_name' => $request->last_name[$passangerIndex],
                     'dob' => $request->dob[$passangerIndex],
+                    'age' => str_pad($request->age[$passangerIndex],2,"0",STR_PAD_LEFT),
                     'document_type' => $request->document_type[$passangerIndex],
                     'document_no' => $request->document_no[$passangerIndex],
                     'document_expire_date' => $request->document_expire_date[$passangerIndex],

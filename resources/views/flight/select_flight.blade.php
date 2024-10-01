@@ -506,11 +506,11 @@
                                         @else
                                         <div class="col-sm-6 col-md-6">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="titles[{{ $passangerTitleIndex }}]" id="passanger_title_{{ $passangerTitleIndex }}_mstr" value="Mr.">
+                                                <input class="form-check-input" type="radio" name="titles[{{ $passangerTitleIndex }}]" id="passanger_title_{{ $passangerTitleIndex }}_mstr" value="Mstr.">
                                                 <label class="form-check-label" for="passanger_title_{{ $passangerTitleIndex }}_mstr">Mstr.</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="titles[{{ $passangerTitleIndex }}]" id="passanger_title_{{ $passangerTitleIndex }}_miss" value="Mrs.">
+                                                <input class="form-check-input" type="radio" name="titles[{{ $passangerTitleIndex }}]" id="passanger_title_{{ $passangerTitleIndex }}_miss" value="Miss.">
                                                 <label class="form-check-label" for="passanger_title_{{ $passangerTitleIndex }}_miss">Miss.</label>
                                             </div>
                                         </div>
@@ -539,20 +539,32 @@
                                         </div>
                                     </div>
                                     <div class="form-row">
-                                        <div
-                                            class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                        <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
                                             <label style="line-height: 35px">Date of birth</label>
                                             <span class="text-danger">*</span>
                                         </div>
                                         <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                            <input required="" id="dob_{{$passangerTitleIndex}}" class="form-control" type="date"
-                                                placeholder="dd-mm-yyyy" name="dob[]" min="1900-01-01"
-                                                max="{{ date('Y-m-d') }}">
+                                            <div class="row g-3">
+                                                <div class="col">
+                                                    <input required="" id="dob_{{$passangerTitleIndex}}" class="form-control" type="date"
+                                                    placeholder="dd-mm-yyyy" name="dob[]" min="1900-01-01"
+                                                    max="{{ date('Y-m-d') }}">
+                                                </div>
+
+                                                @if($passengerInfoList['passengerInfo']['passengerType'] != 'ADT')
+                                                <div class="col">
+                                                    <input id="age_{{$passangerTitleIndex}}" class="form-control" type="number" name="age[]" required=""
+                                                    @if($passengerInfoList['passengerInfo']['passengerType'] == 'CNN') placeholder="ex. 07 (in years)" max="11" min="2" @else  placeholder="ex. 15 (in months)" max="24" min="0" @endif>
+                                                </div>
+                                                @else
+                                                    <input id="age_{{$passangerTitleIndex}}" class="form-control" type="hidden" value="18" name="age[]">
+                                                @endif
+
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-row">
-                                        <div
-                                            class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                        <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
                                             <label style="line-height: 35px">Document Type</label>
                                             <span class="text-danger">*</span>
                                         </div>

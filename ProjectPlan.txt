@@ -30,11 +30,12 @@ Question for Sabre
 ============================
 1. Whats NDC Search and should i use this api for flight Search (They have told to Implement that later)
 
-
 # Proper Booking Request Response Update
 # There should be an another Airline PNR (Save this)
 # Booling er por class change hoye jachhe and price o change hoye jachhe
 # Child Tax properly kaaj korche na karon child er age use kora hochhe na
 # Auto Sync for cancellation while visitng flight details from b2b portal
 # Booking korle multiple booking hochhe kintu passanger ekjon e dekhachhe
+
+# Account Ledger (also export as excel for this and view transaction history)
 

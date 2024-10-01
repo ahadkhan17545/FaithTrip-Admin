@@ -45,6 +45,8 @@ return new class extends Migration
             $table->string('ticket_issued_at')->nullable();
             $table->string('ticket_cancelled_at')->nullable();
 
+            $table->longText('booking_response')->comment("Directly From API (Unfiltered)")->nullable();
+
             $table->tinyInteger('status')->default(1)->comment('1=>Booking Done; 2=>Ticketing Done; 3=>Booking Cancelled; 4=>Ticket Cancelled');
             $table->tinyInteger('is_live')->comment('1=>Live Booking; 0=>Sandbox Booking')->nullable();
 

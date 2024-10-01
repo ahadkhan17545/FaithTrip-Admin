@@ -1,0 +1,265 @@
+{
+    "CreatePassengerNameRecordRQ": {
+        "version": "2.5.0",
+        "haltOnAirPriceError": true,
+        "TravelItineraryAddInfo": {
+            "AgencyInfo": {
+                "Ticketing": {
+                    "TicketType": "7TAW"
+                }
+            },
+            "CustomerInfo": {
+                "ContactNumbers": {
+                    "ContactNumber": [
+                        {
+                            "LocationCode": "SIN",
+                            "NameNumber": "1.1",
+                            "Phone": "55588220",
+                            "PhoneUseType": "M"
+                        }
+                    ]
+                },
+                "Email": [
+                    {
+                        "NameNumber": "1.1",
+                        "Address": "youremail@yourdomain.com"
+                    }
+                ],
+                "PersonName": [
+                    {
+                        "NameNumber": "1.1",
+                        "PassengerType": "ADT",
+                        "GivenName": "Wendy",
+                        "Surname": "Jones",
+                        "NameReference": ""
+                    },
+                    {
+                        "NameNumber": "2.1",
+                        "PassengerType": "ADT",
+                        "GivenName": "Anthony",
+                        "Surname": "Jones",
+                        "NameReference": ""
+                    },
+                    {
+                        "NameNumber": "3.1",
+                        "PassengerType": "C09",
+                        "GivenName": "Alex",
+                        "Surname": "Jones",
+                        "NameReference": "C09"
+                    }
+                ]
+            }
+        },
+        "AirBook": {
+            "HaltOnStatus": [
+                {
+                    "Code": "NO"
+                },
+                {
+                    "Code": "NN"
+                },
+                {
+                    "Code": "UC"
+                },
+                {
+                    "Code": "US"
+                },
+                {
+                    "Code": "UN"
+                },
+                {
+                    "Code": "LL"
+                },
+                {
+                    "Code": "HL"
+                },
+                {
+                    "Code": "HX"
+                },
+                {
+                    "Code": "WL"
+                }
+            ],
+            "OriginDestinationInformation": {
+                "FlightSegment": [
+                    {
+                        "DepartureDateTime": "2024-12-01T13:00:00",
+                        "FlightNumber": "190",
+                        "Status": "NN",
+                        "ResBookDesigCode": "N",
+                        "NumberInParty": "3",
+                        "DestinationLocation": {
+                            "LocationCode": "CMB"
+                        },
+                        "MarketingAirline": {
+                            "FlightNumber": "190",
+                            "Code": "UL"
+                        },
+                        "MarriageGrp": "O",
+                        "OriginLocation": {
+                            "LocationCode": "DAC"
+                        }
+                    },
+                    {
+                        "DepartureDateTime": "2024-12-02T00:35:00",
+                        "FlightNumber": "191",
+                        "Status": "NN",
+                        "ResBookDesigCode": "N",
+                        "NumberInParty": "3",
+                        "DestinationLocation": {
+                            "LocationCode": "DEL"
+                        },
+                        "MarketingAirline": {
+                            "FlightNumber": "191",
+                            "Code": "UL"
+                        },
+                        "MarriageGrp": "I",
+                        "OriginLocation": {
+                            "LocationCode": "CMB"
+                        }
+                    }
+                ]
+            },
+            "RedisplayReservation": {
+                "NumAttempts": 3,
+                "WaitInterval": 3000
+            }
+        },
+        "AirPrice": [
+            {
+                "PriceRequestInformation": {
+                    "Retain": true,
+                    "OptionalQualifiers": {
+                        "PricingQualifiers": {
+                            "PassengerType": [
+                                {
+                                    "Quantity": "2",
+                                    "Code": "ADT"
+                                },
+                                {
+                                    "Quantity": "1",
+                                    "Code": "C09"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "SpecialReqDetails": {
+            "AddRemark": {
+                "RemarkInfo": {
+                    "Remark": [
+                        {
+                            "SegmentNumber": "A",
+                            "Type": "General",
+                            "Text": "CREATED WITH SABRE APIS"
+                        },
+                        {
+                            "SegmentNumber": "A",
+                            "Type": "Historical",
+                            "Text": "TEST HISTORICAL REMARK"
+                        }
+                    ]
+                }
+            },
+            "SpecialService": {
+                "SpecialServiceInfo": {
+                    "AdvancePassenger": [
+                        {
+                            "SegmentNumber": "A",
+                            "Document": {
+                                "Number": "IG71922687",
+                                "ExpirationDate": "2027-05-26",
+                                "Type": "P",
+                                "IssueCountry": "SG",
+                                "NationalityCountry": "SG"
+                            },
+                            "PersonName": {
+                                "NameNumber": "1.1",
+                                "GivenName": "Wendy",
+                                "Surname": "Jones",
+                                "Gender": "F",
+                                "DateOfBirth": "1960-10-11"
+                            }
+                        },
+                        {
+                            "SegmentNumber": "A",
+                            "Document": {
+                                "Number": "TV28824317",
+                                "ExpirationDate": "2027-09-26",
+                                "Type": "P",
+                                "IssueCountry": "SG",
+                                "NationalityCountry": "SG"
+                            },
+                            "PersonName": {
+                                "NameNumber": "2.1",
+                                "GivenName": "Anthony",
+                                "Surname": "Jones",
+                                "Gender": "M",
+                                "DateOfBirth": "1988-02-22"
+                            }
+                        },
+                        {
+                            "SegmentNumber": "A",
+                            "Document": {
+                                "Number": "BV95549679",
+                                "ExpirationDate": "2027-08-29",
+                                "Type": "P",
+                                "IssueCountry": "SG",
+                                "NationalityCountry": "SG"
+                            },
+                            "PersonName": {
+                                "NameNumber": "3.1",
+                                "GivenName": "Alex",
+                                "Surname": "Jones",
+                                "Gender": "M",
+                                "DateOfBirth": "2015-10-01"
+                            }
+                        }
+                    ],
+                    "Service": [
+                        {
+                            "SegmentNumber": "A",
+                            "SSR_Code": "CTCM",
+                            "PersonName": {
+                                "NameNumber": "1.1"
+                            },
+                            "Text": "6555588220"
+                        },
+                        {
+                            "SegmentNumber": "A",
+                            "SSR_Code": "CTCE",
+                            "PersonName": {
+                                "NameNumber": "1.1"
+                            },
+                            "Text": "youremail//yourdomain.com"
+                        },
+                        {
+                            "SSR_Code": "CHLD",
+                            "Text": "01OCT15",
+                            "PersonName": {
+                                "NameNumber": "3.1"
+                            },
+                            "SegmentNumber": "A"
+                        }
+                    ]
+                }
+            }
+        },
+        "PostProcessing": {
+            "RedisplayReservation": {
+                "waitInterval": 100,
+                "returnExtendedPriceQuote": true
+            },
+            "EndTransaction": {
+                "Source": {
+                    "ReceivedFrom": "SabreAPI"
+                },
+                "Email": {
+                    "Ind": true
+                }
+            }
+        }
+    }
+}
