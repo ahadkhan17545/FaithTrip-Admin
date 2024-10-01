@@ -8,17 +8,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>FaithTrip</title>
-    <meta name="description" content="FaithTrip is an OTA" />
+    @php
+        $companyProfile = DB::table('company_profiles')->where('user_id', Auth::user()->id)->first()
+    @endphp
+
+    <title>{{env('APP_NAME')}}</title>
+    <meta name="description" content="{{env('APP_NAME')}} is an OTA" />
     <meta name="robots" content="all" />
-    <meta property="og:title" content="FaithTrip" />
-    <meta property="og:description" content="FaithTrip is an OTA" />
-    <meta property="og:url" content="FaithTrip is an OTA" />
+    <meta property="og:title" content="{{env('APP_NAME')}}" />
+    <meta property="og:description" content="{{env('APP_NAME')}} is an OTA" />
+    <meta property="og:url" content="{{env('APP_NAME')}} is an OTA" />
     <meta property="og:type" content="WebPage" />
-    <meta property="og:site_name" content="FaithTrip" />
+    <meta property="og:site_name" content="{{env('APP_NAME')}}" />
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ url('assets') }}/img/favicon.svg" />
+    @if($companyProfile)
+    <link rel="shortcut icon" href="{{ url($companyProfile->logo) }}" />
+    @endif
 
     <!-- Theme CSS -->
     <link href="{{ url('assets') }}/admin-assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -27,19 +33,13 @@
     <link href="{{ url('assets') }}/nanopkg-assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/admin-assets/vendor/typicons/src/typicons.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/admin-assets/vendor/themify-icons/themify-icons.min.css" rel="stylesheet" />
-    <link href="{{ url('assets') }}/admin-assets/vendor/select2/dist/css/select2.css" rel="stylesheet"
-        type="text/css" />
-    <link href="{{ url('assets') }}/nanopkg-assets/vendor/t-datepicker-master/public/theme/css/t-datepicker.min.css"
-        rel="stylesheet" />
-    <link
-        href="{{ url('assets') }}/nanopkg-assets/vendor/t-datepicker-master/public/theme/css/themes/t-datepicker-main.css"
-        rel="stylesheet" />
+    <link href="{{ url('assets') }}/admin-assets/vendor/select2/dist/css/select2.css" rel="stylesheet" type="text/css" />
+    <link href="{{ url('assets') }}/nanopkg-assets/vendor/t-datepicker-master/public/theme/css/t-datepicker.min.css" rel="stylesheet" />
+    <link href="{{ url('assets') }}/nanopkg-assets/vendor/t-datepicker-master/public/theme/css/themes/t-datepicker-main.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/admin-assets//css/search.css?v=1" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets') }}/nanopkg-assets/vendor/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
-    <link href="{{ url('assets') }}/nanopkg-assets/vendor/fontawesome-free-6.3.0-web/css/all.min.css"
-        rel="stylesheet" />
-    <link href="{{ url('assets') }}/nanopkg-assets/vendor/bootstrap-icons/css/bootstrap-icons.min.css"
-        rel="stylesheet" />
+    <link href="{{ url('assets') }}/nanopkg-assets/vendor/fontawesome-free-6.3.0-web/css/all.min.css" rel="stylesheet" />
+    <link href="{{ url('assets') }}/nanopkg-assets/vendor/bootstrap-icons/css/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/nanopkg-assets/vendor/toastr/build/toastr.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/nanopkg-assets/css/arrow-hidden.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/nanopkg-assets/css/custom.min.css" rel="stylesheet" />
@@ -47,8 +47,7 @@
     <link href="{{ url('assets') }}/admin-assets/css/custom.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/admin-assets/css/extra.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/module-assets//css/booking/search_box.css?v=8" rel="stylesheet" type="text/css" />
-    <link href="{{ url('assets') }}/module-assets//css/booking/search_box_custom.min.css?v=8" rel="stylesheet"
-        type="text/css" />
+    <link href="{{ url('assets') }}/module-assets//css/booking/search_box_custom.min.css?v=8" rel="stylesheet" type="text/css" />
 
     <style>
         .body-content {

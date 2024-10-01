@@ -44,6 +44,11 @@ class FlyhubFlightRevalidate extends Model
         $response = curl_exec($curl);
         curl_close($curl);
 
+
+        // echo $response;
+        // exit();
+
+
         $rawValidatedResult = json_decode($response, true);
         // custom data set
         $revalidatedResult = array();
@@ -131,10 +136,18 @@ class FlyhubFlightRevalidate extends Model
             $revalidatedResult['penalty_applicable'] = isset($rawValidatedResult['data']['fare_rules']['refundable_data']) && isset($rawValidatedResult['data']['fare_rules']['refundable_data'][0]['PenaltyApplies']) ? $rawValidatedResult['data']['fare_rules']['refundable_data'][0]['PenaltyApplies'] : null;
 
             // pricing
-            $revalidatedResult['base_fare_amount'] = $rawValidatedResult['data']['margin']['supplier']['base_fare']['amount'];
-            $revalidatedResult['total_tax_amount'] = $rawValidatedResult['data']['margin']['supplier']['tax']['amount'];
-            $revalidatedResult['total_fare'] = $rawValidatedResult['data']['margin']['supplier']['total']['amount'];
-            $revalidatedResult['currency'] = $rawValidatedResult['data']['margin']['supplier']['total']['currency'];
+            if(isset($rawValidatedResult['data']['margin'])){
+                $revalidatedResult['base_fare_amount'] = $rawValidatedResult['data']['margin']['supplier']['base_fare']['amount'];
+                $revalidatedResult['total_tax_amount'] = $rawValidatedResult['data']['margin']['supplier']['tax']['amount'];
+                $revalidatedResult['total_fare'] = $rawValidatedResult['data']['margin']['supplier']['total']['amount'];
+                $revalidatedResult['currency'] = $rawValidatedResult['data']['margin']['supplier']['total']['currency'];
+            } else {
+                $revalidatedResult['base_fare_amount'] = $rawValidatedResult['data']['price']['supplier']['base_fare'];
+                $revalidatedResult['total_tax_amount'] = $rawValidatedResult['data']['price']['supplier']['tax'];
+                $revalidatedResult['total_fare'] = $rawValidatedResult['data']['price']['supplier']['total'];
+                $revalidatedResult['currency'] = $rawValidatedResult['data']['price']['supplier']['currency'];
+            }
+
 
             // onward segments start
             $segmentsArray = array();
