@@ -39,10 +39,9 @@ class FlightBookingController extends Controller
         // exit();
 
         $bookinPnrID = null;
-        $bookingResponse = null;
+        $bookingResponse = json_encode($onlineBookingInfo, true);
         if(isset($onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status']) && $onlineBookingInfo['CreatePassengerNameRecordRS']['ApplicationResults']['status'] == 'Complete'){
             $bookinPnrID = $onlineBookingInfo['CreatePassengerNameRecordRS']['ItineraryRef']['ID'];
-            $bookingResponse = json_encode($onlineBookingInfo, true);
             $status = 1;
         } else{
             $status = 0;
@@ -153,16 +152,22 @@ class FlightBookingController extends Controller
 
             foreach($request->first_name as $passangerIndex => $firstName){
 
-                if($passangerIndex == 0 && $request->save_passanger){
+                if($request->save_passanger[$passangerIndex]){
 
-                    $savedPassanger = SavedPassanger::where('contact', $request->traveller_contact)->first();
+                    $savedPassanger = DB::table('saved_passangers')
+                                        ->where([
+                                            ['first_name', $firstName],
+                                            ['last_name', $request->last_name[$passangerIndex]],
+                                            ['dob', '=', $request->dob[$passangerIndex]]
+                                        ])->first();
+
                     if(!$savedPassanger){
                         $savedPassanger = new SavedPassanger();
                     }
 
                     $savedPassanger->saved_by = Auth::user()->id;
-                    $savedPassanger->email = $request->traveller_email;
-                    $savedPassanger->contact = $request->traveller_contact;
+                    $savedPassanger->email = $request->email[$passangerIndex];
+                    $savedPassanger->contact = $request->phone[$passangerIndex];
                     $savedPassanger->type = $request->passanger_type[$passangerIndex];
                     $savedPassanger->title = $request->titles[$passangerIndex];
                     $savedPassanger->first_name = $firstName;
@@ -184,6 +189,8 @@ class FlightBookingController extends Controller
                     'title' => $request->titles[$passangerIndex],
                     'first_name' => $firstName,
                     'last_name' => $request->last_name[$passangerIndex],
+                    'email' => $request->email[$passangerIndex],
+                    'phone' => $request->phone[$passangerIndex],
                     'dob' => $request->dob[$passangerIndex],
                     'age' => str_pad($request->age[$passangerIndex],2,"0",STR_PAD_LEFT),
                     'document_type' => $request->document_type[$passangerIndex],

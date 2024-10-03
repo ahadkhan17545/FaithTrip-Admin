@@ -1,11 +1,26 @@
 @extends('master')
 
 @section('header_css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
+        .select2-container--default .select2-selection--single .select2-selection__arrow b::before{
+            content: "" !important;
+        }
+        .select2{
+            border: 1px solid lightgray !important;
+            border-radius: 4px !important;
+            padding: 4px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow{
+            top: 4px !important;
+            right: 4px !important;
+        }
+
         /* live search css start */
         ul.live_search_box {
             position: absolute;
-            top: 55%;
+            top: 98%;
             left: 0px;
             z-index: 999;
             background: white;
@@ -163,8 +178,7 @@
                                                         class="align-items-center d-flex custom-gap justify-content-between w-100">
                                                         <div class="align-items-center d-flex gap-4 text-center">
                                                             <div class="brand-img">
-                                                                <img
-                                                                    src="{{ url('airlines_logo') }}/{{ strtolower($segmentData['carrier']['operating']) }}.png">
+                                                                <img src="{{ url('airlines_logo') }}/{{ strtolower($segmentData['carrier']['operating']) }}.png">
                                                             </div>
                                                             <div class="airline-box">
                                                                 <div class="font-weight-600 fs-13">
@@ -436,13 +450,12 @@
                         <div class="content-header media">
                             <div class="media-body">
                                 <h3 class="content-header_title fs-23 mb-0">Traveler Details</h3>
-                                <p class="mb-0">Please provide real information otherwise ticket will not issue</p>
+                                <p class="mb-0 text-danger">Traveler Details will be used as primary contact</p>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="form-row">
-                                <div
-                                    class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-2 mb-md-0 pr-3 px-3">
+                                <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-2 mb-md-0 pr-3 px-3">
                                     <label for="Email" style="line-height: 35px">Traveler Name</label>
                                     <span class="text-danger">*</span>
                                 </div>
@@ -453,7 +466,7 @@
                             <div class="form-row">
                                 <div
                                     class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-2 mb-md-0 pr-3 px-3">
-                                    <label for="Email" style="line-height: 35px">Traveler Email</label>
+                                    <label for="traveller_email" style="line-height: 35px">Traveler Email</label>
                                     <span class="text-danger">*</span>
                                 </div>
                                 <div class="col-12 col-md-8 mb-2 mb-sm-3">
@@ -467,7 +480,6 @@
                                 </div>
                                 <div class="col-12 col-md-8 mb-2 mb-sm-3" style="position: relative">
                                     <input name="traveller_contact" id="search_keyword" onkeyup="liveSearchPassanger()" autocomplete="off" type="text" class="form-control" placeholder="+8801*********" required="">
-                                    <label class="d-block mt-2"><input type="checkbox" name="save_passanger" value="1"> Save Passenger Information</label>
                                     <ul class="live_search_box d-none"></ul>
                                 </div>
                             </div>
@@ -480,8 +492,48 @@
                                         {{ $passengerInfoList['passengerInfo']['passengerType'] }} - {{ $i }}
                                     </h6>
 
-                                    <input type="hidden" name="passanger_type[]" value="{{ $passengerInfoList['passengerInfo']['passengerType'] }}">
+                                    @php
+                                        $savedPassangers = DB::table('saved_passangers')
+                                                            ->where('type', $passengerInfoList['passengerInfo']['passengerType'])
+                                                            ->where('saved_by', Auth::user()->id)
+                                                            ->orderBy('first_name', 'asc')
+                                                            ->get();
+                                    @endphp
 
+                                    <div class="form-row mt-3">
+                                        <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                            <label style="line-height: 35px; font-weight: 600">Select From List</label>
+                                            <span class="text-danger"></span>
+                                        </div>
+                                        <div class="col-12 col-md-8 mb-3 mb-sm-3">
+                                            <div class="input-select position-relative">
+                                                <select id="select_passenger_{{$passangerTitleIndex}}" class="mySelect2" onchange="fillUpCustomerDetails(this, {{$passangerTitleIndex}})">
+                                                    <option value="">Select Customer</option>
+                                                    @foreach($savedPassangers as $savedPassanger)
+                                                    <option
+
+                                                        value="{{$savedPassanger->id}}"
+                                                        data_title="{{$savedPassanger->title}}"
+                                                        data_first_name="{{$savedPassanger->first_name}}"
+                                                        data_last_name="{{$savedPassanger->last_name}}"
+                                                        data_email="{{$savedPassanger->email}}"
+                                                        data_contact="{{$savedPassanger->contact}}"
+                                                        data_dob="{{$savedPassanger->dob}}"
+                                                        data_document_type="{{$savedPassanger->document_type}}"
+                                                        data_document_no="{{$savedPassanger->document_no}}"
+                                                        data_document_expire_date="{{$savedPassanger->document_expire_date}}"
+                                                        data_document_issue_country="{{$savedPassanger->document_issue_country}}"
+                                                        data_nationality="{{$savedPassanger->nationality}}"
+                                                        data_frequent_flyer_no="{{$savedPassanger->frequent_flyer_no}}"
+
+                                                    >{{$savedPassanger->title}} {{$savedPassanger->first_name}} {{$savedPassanger->last_name}} ({{$savedPassanger->dob}})</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" name="passanger_type[]" value="{{ $passengerInfoList['passengerInfo']['passengerType'] }}">
                                     <div class="form-row mt-3">
                                         <div class="col-sm-12 col-md-3 font-weight-500 text-left text-md-right pr-3 px-3">
                                             <label>Passenger Title </label>
@@ -519,23 +571,40 @@
                                     </div>
                                     <div class="form-row mt-3">
                                         <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                            <label style="line-height: 35px">First Name</label>
+                                            <label style="line-height: 35px">Passenger Name</label>
                                             <span class="text-danger">*</span>
                                         </div>
                                         <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                            <div class="input-select position-relative">
-                                                <input name="first_name[]" id="first_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="First name" required="">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <div class="input-select position-relative">
+                                                        <input name="first_name[]" id="first_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="First name" required="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input name="last_name[]" id="last_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="Last name" required="">
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="form-row">
                                         <div
                                             class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                            <label style="line-height: 35px">Last Name</label>
-                                            <span class="text-danger">*</span>
+                                            <label style="line-height: 35px">Contact Info</label>
+                                            <span class="text-danger"></span>
                                         </div>
                                         <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                            <input name="last_name[]" id="last_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="Last name" required="">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <div class="input-select position-relative">
+                                                        <input name="email[]" id="email_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="example@email.com">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <input name="phone[]" id="phone_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="Phone No.">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -634,6 +703,14 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-row">
+                                        <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                        </div>
+                                        <div class="col-12 col-md-8 mb-3 mb-sm-3">
+                                            <label class="d-block mt-2"><input type="checkbox" name="save_passanger[]" value="1"> Save Passenger Information</label>
+                                        </div>
+                                    </div>
+
                                     @php $passangerTitleIndex++; @endphp
                                 @endfor
                             @endforeach
@@ -676,6 +753,58 @@
 
 @section('footer_js')
     <script>
+
+        $(document).ready(function() {
+            $('.mySelect2').select2();
+        });
+
+        function fillUpCustomerDetails(selectElement, id){
+
+            var selectedValue = selectElement.value;
+            var savetitle = selectElement.options[selectElement.selectedIndex].getAttribute('data_title');
+            var saveFirstName = selectElement.options[selectElement.selectedIndex].getAttribute('data_first_name');
+            var savedLastName = selectElement.options[selectElement.selectedIndex].getAttribute('data_last_name');
+            var savedEmail = selectElement.options[selectElement.selectedIndex].getAttribute('data_email');
+            var savedContact = selectElement.options[selectElement.selectedIndex].getAttribute('data_contact');
+            var savedDob = selectElement.options[selectElement.selectedIndex].getAttribute('data_dob');
+            var savedDocumentType = selectElement.options[selectElement.selectedIndex].getAttribute('data_document_type');
+            var savedDocumentNo = selectElement.options[selectElement.selectedIndex].getAttribute('data_document_no');
+            var savedDocumentIssueCountry = selectElement.options[selectElement.selectedIndex].getAttribute('data_document_issue_country');
+            var savedDocumentExpireDate = selectElement.options[selectElement.selectedIndex].getAttribute('data_document_expire_date');
+            var savedNationality = selectElement.options[selectElement.selectedIndex].getAttribute('data_nationality');
+            var savedFrequentFlyerNo = selectElement.options[selectElement.selectedIndex].getAttribute('data_frequent_flyer_no');
+
+            if(savetitle == 'Mr.'){
+                $("#passanger_title_"+id+"_mr").prop('checked', true);
+            }
+            if(savetitle == 'Mrs.'){
+                $("#passanger_title_"+id+"_mrs").prop('checked', true);
+            }
+            if(savetitle == 'Ms.'){
+                $("#passanger_title_"+id+"_ms").prop('checked', true);
+            }
+            if(savetitle == 'Mstr.'){
+                $("#passanger_title_"+id+"_mstr").prop('checked', true);
+            }
+            if(savetitle == 'Miss.'){
+                $("#passanger_title_"+id+"_miss").prop('checked', true);
+            }
+
+            $("#first_name_"+id).val(saveFirstName);
+            $("#last_name_"+id).val(savedLastName);
+            $("#email_"+id).val(savedEmail);
+            $("#phone_"+id).val(savedContact);
+            $("#dob_"+id).val(savedDob);
+            $("#document_type_"+id).val(savedDocumentType);
+            $("#document_no_"+id).val(savedDocumentNo);
+            $("#document_expire_date_"+id).val(savedDocumentExpireDate);
+            $("#document_issue_country_"+id).val(savedDocumentIssueCountry);
+            $("#nationality_"+id).val(savedNationality);
+            $("#frequent_flyer_no_"+id).val(savedFrequentFlyerNo);
+
+            // alert(id);
+        }
+
         function liveSearchPassanger(){
             var searchKeyword = $("#search_keyword").val();
 
@@ -713,43 +842,43 @@
             var lastName = $("#passanger_last_name__"+index).val();
             var email = $("#passanger_email_"+index).val();
             var contact = $("#passanger_contact_"+index).val();
-            var type = $("#passanger_type_"+index).val();
-            var dob = $("#passanger_dob_"+index).val();
-            var documentType = $("#passanger_document_type_"+index).val();
-            var documentNo = $("#passanger_document_no_"+index).val();
-            var documentExpireDate = $("#passanger_document_expire_date_"+index).val();
-            var documentIssueCountry = $("#passanger_document_issue_country_"+index).val();
-            var nationality = $("#passanger_nationality_"+index).val();
-            var frequentFlyerNo = $("#passanger_frequent_flyer_no_"+index).val();
+            // var type = $("#passanger_type_"+index).val();
+            // var dob = $("#passanger_dob_"+index).val();
+            // var documentType = $("#passanger_document_type_"+index).val();
+            // var documentNo = $("#passanger_document_no_"+index).val();
+            // var documentExpireDate = $("#passanger_document_expire_date_"+index).val();
+            // var documentIssueCountry = $("#passanger_document_issue_country_"+index).val();
+            // var nationality = $("#passanger_nationality_"+index).val();
+            // var frequentFlyerNo = $("#passanger_frequent_flyer_no_"+index).val();
 
-            if(title == 'Mr.'){
-                $("#passanger_title_0_mr").prop('checked', true);
-            }
-            if(title == 'Mrs.'){
-                $("#passanger_title_0_mrs").prop('checked', true);
-            }
-            if(title == 'Ms.'){
-                $("#passanger_title_0_ms").prop('checked', true);
-            }
-            if(title == 'Mstr.'){
-                $("#passanger_title_0_mstr").prop('checked', true);
-            }
-            if(title == 'Miss.'){
-                $("#passanger_title_0_miss").prop('checked', true);
-            }
+            // if(title == 'Mr.'){
+            //     $("#passanger_title_0_mr").prop('checked', true);
+            // }
+            // if(title == 'Mrs.'){
+            //     $("#passanger_title_0_mrs").prop('checked', true);
+            // }
+            // if(title == 'Ms.'){
+            //     $("#passanger_title_0_ms").prop('checked', true);
+            // }
+            // if(title == 'Mstr.'){
+            //     $("#passanger_title_0_mstr").prop('checked', true);
+            // }
+            // if(title == 'Miss.'){
+            //     $("#passanger_title_0_miss").prop('checked', true);
+            // }
 
             $("#traveller_name").val(title+" "+firstName+" "+lastName);
             $("#traveller_email").val(email);
             $("#search_keyword").val(contact);
-            $("#first_name_0").val(firstName);
-            $("#last_name_0").val(lastName);
-            $("#dob_0").val(dob);
-            $("#document_type_0").val(documentType);
-            $("#document_no_0").val(documentNo);
-            $("#document_expire_date_0").val(documentExpireDate);
-            $("#document_issue_country_0").val(documentIssueCountry);
-            $("#nationality_0").val(nationality);
-            $("#frequent_flyer_no_0").val(frequentFlyerNo);
+            // $("#first_name_0").val(firstName);
+            // $("#last_name_0").val(lastName);
+            // $("#dob_0").val(dob);
+            // $("#document_type_0").val(documentType);
+            // $("#document_no_0").val(documentNo);
+            // $("#document_expire_date_0").val(documentExpireDate);
+            // $("#document_issue_country_0").val(documentIssueCountry);
+            // $("#nationality_0").val(nationality);
+            // $("#frequent_flyer_no_0").val(frequentFlyerNo);
         }
     </script>
 @endsection

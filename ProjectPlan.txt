@@ -37,3 +37,7 @@ Question for Sabre
 
 # Account Ledger (also export as excel for this and view transaction history)
 
+
+# Child soho booking hochhe na... (may be CNN jachhe sejonno)
+# sob gula passanger er name auto fillup hobe (Like scheenshot given in group)
+# Mr/Miss ei name er problem ta theke geche
