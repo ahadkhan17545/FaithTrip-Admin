@@ -1,0 +1,2899 @@
+{
+	"info": {
+		"_postman_id": "8d82da8c-06e3-4314-bae8-2d23023017bd",
+		"name": "05 - NAKAMURA TRAVELS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8711475"
+	},
+	"item": [
+		{
+			"name": "Flight",
+			"item": [
+				{
+					"name": "Search - +/- Days",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							},
+							{
+								"key": "",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"journey_type\": \"OneWay\", // OneWay, RoundTrip, MultiCity\n    \"segment\": [\n        {\n            \"departure_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"departure_airport\": \"KHI\",\n            \"arrival_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"arrival_airport\": \"DXB\",\n            \"departure_date\": \"2024-08-08\",\n            \"arrival_date\": \"2024-08-30\" // Only For RoundTrip\n        }\n    ],\n    \"travelers_adult\": 1,\n    \"travelers_child\": 0,\n    \"travelers_child_age\": 0,\n    \"travelers_infants\": 0,\n    \"travelers_infants_age\": [],\n    \"preferred_carrier\": [],\n    \"non_stop_flight\": \"any\", // any or non-stop,\n    \"baggage_option\": \"any\", // any or only-baggage\n    \"booking_class\": \"Economy\", // Economy , Premium-Economy, Business, First-Class\n    \"supplier_uid\": \"F1SE00027\", //all\n    \"partner_id\": \"\", //ftm_partner_id / mark blank,\n    \"member_id\": \"1\", //ftm_partner_id / mark blank,\n    \"calendar_days\": \"7\",\n    \"version\": \"2\",\n    \"language\": \"en\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/search-calender",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"search-calender"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search - +/- Days PTC",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							},
+							{
+								"key": "",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"journey_type\": \"OneWay\",\n    \"segment\": [\n        {\n            \"departure_airport_type\": \"AIRPORT\",\n            \"departure_airport\": \"DAC\",\n            \"arrival_airport_type\": \"AIRPORT\",\n            \"arrival_airport\": \"LHR\",\n            \"departure_date\": \"2024-06-20\",\n            \"departure_time\": \"anytime\",\n            \"departure_time_within\": \"anytime\",\n            \"arrival_date\": \"2024-06-21\",\n            \"arrival_time\": \"anytime\",\n            \"arrival_time_within\": \"anytime\",\n            \"booking_class\": \"Economy\",\n            \"stop\": \"any\",\n            \"alliance\": {\n                \"include\": [],\n                \"exclude\": []\n            },\n            \"country\": {\n                \"include\": [],\n                \"exclude\": []\n            },\n            \"airlines\": {\n                \"include\": [],\n                \"exclude\": []\n            }\n        }\n    ],\n    \"departure_airport_type\": [\n        \"AIRPORT\"\n    ],\n    \"departure_airport\": [\n        \"DAC\"\n    ],\n    \"arrival_airport_type\": [\n        \"AIRPORT\"\n    ],\n    \"arrival_airport\": [\n        \"LHR\"\n    ],\n    \"departure_date\": [\n        \"2024-05-20\"\n    ],\n    \"travelers_adult\": 1,\n    \"travelers_child\": 0,\n    \"travelers_child_age\": [],\n    \"travelers_infants\": 0,\n    \"travelers_infants_age\": [],\n    \"travelers_ptc\": \"\",\n    \"fare_type\": [],\n    \"fare_corporate_code\": null,\n    \"fare_option\": \"any\",\n    \"preferred_carrier\": [],\n    \"non_stop_flight\": \"any\",\n    \"baggage_option\": \"any\",\n    \"booking_class\": \"Economy\",\n    \"supplier_uid\": \"F1SE00027\",\n    \"partner_id\": \"\", //ftm_partner_id / mark blank,\n    \"member_id\": \"1\", //ftm_partner_id / mark blank,\n    \"calendar_days\": \"7\",\n    \"version\": \"2\",\n    \"language\": \"en\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/search-calender",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"search-calender"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search - OneWay",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							},
+							{
+								"key": "",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"journey_type\": \"OneWay\", // OneWay, RoundTrip, MultiCity\n    \"segment\": [\n        {\n            \"departure_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"departure_airport\": \"DAC\",\n            \"arrival_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"arrival_airport\": \"JFK\",\n            \"departure_date\": \"2024-11-01\"\n        }\n    ],\n    \"travelers_adult\": 2,\n    \"travelers_child\": 1,\n    \"travelers_child_age\": [],\n    \"travelers_infants\": 1,\n    \"travelers_infants_age\": [],\n    \"preferred_carrier\": [],\n    \"non_stop_flight\": \"any\", // any or non-stop, 1 or 2 or 3\n    \"baggage_option\": \"any\", // any or only-baggage\n    \"booking_class\": \"Economy\", // Economy , Premium-Economy, Business, First-Class\n    \"language\": \"en\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search - OneWay PTC",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							},
+							{
+								"key": "",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"journey_type\": \"OneWay\",\n    \"segment\": [\n        {\n            \"departure_airport_type\": \"AIRPORT\",\n            \"departure_airport\": \"DAC\",\n            \"arrival_airport_type\": \"AIRPORT\",\n            \"arrival_airport\": \"LHR\",\n            \"departure_date\": \"2024-05-20\",\n            \"departure_time\": \"anytime\",\n            \"departure_time_within\": \"anytime\",\n            \"arrival_date\": \"2024-05-21\",\n            \"arrival_time\": \"anytime\",\n            \"arrival_time_within\": \"anytime\",\n            \"booking_class\": \"Economy\",\n            \"stop\": \"any\",\n            \"alliance\": {\n                \"include\": [],\n                \"exclude\": []\n            },\n            \"country\": {\n                \"include\": [],\n                \"exclude\": []\n            },\n            \"airlines\": {\n                \"include\": [],\n                \"exclude\": []\n            }\n        }\n    ],\n    \"travelers_adult\": 1,\n    \"travelers_child\": 0,\n    \"travelers_child_age\": [],\n    \"travelers_infants\": 0,\n    \"travelers_infants_age\": [],\n    \"travelers_ptc\": \"ADT-CNF-INF\",\n    \"fare_type\": [\n        \"NEGO\",\n        \"NEGO Only\",\n        \"BRAND\",\n        \"PUBLIC\",\n        \"CORPORATE\",\n        \"ACCOUNT\"\n    ],\n    \"fare_corporate_code\": null,\n    \"fare_option\": \"any\",\n    \"preferred_carrier\": [],\n    \"non_stop_flight\": \"any\",\n    \"baggage_option\": \"any\",\n    \"booking_class\": \"Economy\",\n    \"language\": \"en\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search - Roudtrip",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"journey_type\": \"RoundTrip\", // OneWay, RoundTrip, MultiCity\n    \"segment\": [\n        {\n            \"departure_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"departure_airport\": \"DAC\",\n            \"arrival_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"arrival_airport\": \"CGP\",\n            \"departure_date\": \"2024-11-06\"\n        },\n        {\n            \"departure_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"departure_airport\": \"CGP\",\n            \"arrival_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"arrival_airport\": \"DAC\",\n            \"departure_date\": \"2024-11-13\"\n        }\n    ],\n    \"travelers_adult\": 1,\n    \"travelers_child\": 0,\n    \"travelers_child_age\": 0,\n    \"travelers_infants\": 0,\n    \"travelers_infants_age\": [],\n    \"preferred_carrier\": [\n        \n    ],\n    \"non_stop_flight\": \"any\", // any or non-stop,\n    \"baggage_option\": \"any\", // any or only-baggage\n    \"booking_class\": \"Economy\", // Economy , Premium-Economy, Business, First-Class\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search - Multicity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"journey_type\": \"MultiCity\",\n    \"segment\": [\n        {\n            \"departure_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"departure_airport\": \"DAC\",\n            \"arrival_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"arrival_airport\": \"VTE\",\n            \"departure_date\": \"2024-11-28\"\n        },\n        {\n            \"departure_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"departure_airport\": \"MNL\",\n            \"arrival_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"arrival_airport\": \"BKK\",\n            \"departure_date\": \"2024-12-05\"\n        },\n        {\n            \"departure_airport_type\": \"CITY\", // CITY or AIRPORT\n            \"departure_airport\": \"BKK\",\n            \"arrival_airport_type\": \"AIRPORT\", // CITY or AIRPORT\n            \"arrival_airport\": \"DAC\",\n            \"departure_date\": \"2024-12-08\"\n        }\n    ],\n    \"travelers_adult\": 1,\n    \"travelers_child\": 0,\n    \"travelers_child_age\": 0,\n    \"travelers_infants\": 0,\n    \"travelers_infants_age\": [\n        \"\"\n    ],\n    \"preferred_carrier\": [\n        null\n    ],\n    \"non_stop_flight\": \"any\", // any or non-stop,\n    \"baggage_option\": \"any\", // any or only-baggage\n    \"booking_class\": \"Economy\", // Economy , Premium-Economy, Business, First-Class\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Branded Fare",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_id\": \"1\",\n    \"tracking_id\": \"111727618395261934IQ1M\",\n    \"flight_key\": \"F1FI00022-0-0\",\n    \"result_type\": \"group\",\n    \"conncted_flight_key\": \"\",\n    \"conncted_brand_option\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/branded-fare",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"branded-fare"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_id\": \"1\",\n    \"result_type\": \"group\",\n    \"data\": [\n        {\n            \"tracking_id\": \"11172759252726193B8Q9I\",\n            \"flight_key\": \"F1TT00003-0-0\",\n            \"brand_option\": \"11-1\"\n        },\n        {\n            \"tracking_id\": \"11172759252726193B8Q9I\",\n            \"flight_key\": \"F1TT00003-0-3\",\n            \"brand_option\": \"11-1\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/validate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Validation-Status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"booking_tracking_id\": \"11172682700108142Q1KKM\",\n    \"member_id\": \"1\" //user Login member_id\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/validation-get-status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"validation-get-status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Fare-Rules",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tracking_id\": \"11172777624308142GHFX3\",\n    \"result_type\": \"group\",\n    \"flight_key\": \"F1TT00001-1-0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/fare-rules",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"fare-rules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Travellers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"booking_tracking_id\": \"11172208553115156YDMU3\", // booking_tracking_id from Validation\n    \"member_id\": \"1\", //user Login member_id\n    \"save_pax\": \"no\", //Save Pax Data\n    \"passenger\": [\n        {\n            \"pax_id\": \"1\",\n            \"pax_type\": \"ADT\", // ADT = Adult , CNN = Child , INF = Infant\n            \"gender\": \"M\",\n            \"title\": \"MR\", // Mr/Mrs/Ms/Miss/ Mstr\n            \"first_name\": \"Saaqeb\",\n            \"last_name\": \"Nayeem\",\n            \"dob\": \"1985-10-24\",\n            \"doc_country\": \"BD\",\n            \"doc_no\": \"A1235121\",\n            \"doc_dateofexpiry\": \"2030-04-25\",\n            \"doc_dateofissue\": \"\",\n            \"frequent_flyer\": \"21321313132\",\n            \"isd_code\": \"880\",\n            \"contact_no\": \"1966330000\",\n            \"email_address\": \"iam@saaqeb.com\",\n            \"wheelchair_required\": \"no\"\n        },\n        {\n            \"pax_id\": \"2\",\n            \"pax_type\": \"CNN\", // ADT = Adult , CNN = Child , INF = Infant\n            \"gender\": \"M\",\n            \"title\": \"MR\", // Mr/Mrs/Ms/Miss/ Mstr\n            \"first_name\": \"Ahmed\",\n            \"last_name\": \"Kamal\",\n            \"dob\": \"2016-10-24\",\n            \"doc_country\": \"BD\",\n            \"doc_no\": \"A1235121\",\n            \"doc_dateofexpiry\": \"2030-04-25\",\n            \"doc_dateofissue\": \"\",\n            \"frequent_flyer\": \"21321313132\",\n            \"isd_code\": \"880\",\n            \"contact_no\": \"1966330000\",\n            \"email_address\": \"iam@saaqeb.com\",\n            \"wheelchair_required\": \"no\"\n        },\n        {\n            \"pax_id\": \"3\",\n            \"pax_type\": \"INF\", // ADT = Adult , CNN = Child , INF = Infant\n            \"gender\": \"M\",\n            \"title\": \"Mstr\", // Mr/Mrs/Ms/Miss/ Mstr\n            \"first_name\": \"Abc\",\n            \"last_name\": \"Ballam\",\n            \"dob\": \"2023-10-24\",\n            \"doc_country\": \"BD\",\n            \"doc_no\": \"A1235121\",\n            \"doc_dateofexpiry\": \"2030-04-25\",\n            \"doc_dateofissue\": \"\",\n            \"frequent_flyer\": \"21321313132\",\n            \"isd_code\": \"880\",\n            \"contact_no\": \"1966330000\",\n            \"email_address\": \"iam@saaqeb.com\",\n            \"wheelchair_required\": \"no\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/update-travellers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"update-travellers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"booking_tracking_id\": \"11172701007108142EG3OZ\",\n    \"member_id\": \"1\", //user Login member_id\n    \"isd_code\": \"880\",\n    \"contact_no\": \"1966330000\",\n    \"email_address\": \"iam@saaqeb.com\",\n    \"payment_type\": \"account_balance\", // account_balance or card or onlinepayment\n    \"redirect_url\": \"https://showkat.innovatedemo.com/inno-travel-tech/custom_modal.html\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/create-booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"create-booking"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Booking-Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "apikey",
+										"value": "34152112944906126",
+										"type": "text"
+									},
+									{
+										"key": "secretecode",
+										"value": "4e7m4sf3ylynmxriijxygidvtyd7qzag3ylvty74x",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"booking_tracking_id\": \"1169751590226238FFXQU\",\n    \"member_id\": \"1\", //user Login member_id\n    \"isd_code\": \"880\",\n    \"contact_no\": \"1966330000\",\n    \"email_address\": \"iam@saaqeb.com\",\n    \"payment_type\": \"account_balance\", // account_balance or card\n    \"redirect_url\": \"https://showkat.innovatedemo.com/inno-travel-tech/custom_modal.html\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.gtrs.travel/flight/create-booking",
+									"protocol": "https",
+									"host": [
+										"api",
+										"gtrs",
+										"travel"
+									],
+									"path": [
+										"flight",
+										"create-booking"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"reason\": \"The booking has been successfully created, and it is associated with the Booking Id FL2317OCAA6P.\",\n    \"general\": {\n        \"service_type\": \"FLIGHT\",\n        \"service_details\": \"OneWay From DAC to LHR Departure date 2023-11-10\",\n        \"booking_remarks\": null,\n        \"generated_date\": \"2023-10-17\",\n        \"partner_id\": \"1\",\n        \"master_partner_id\": null,\n        \"branch_id\": null,\n        \"tracking_id\": \"1169751590226238FFXQU\",\n        \"booking_id\": \"FL2317OCAA6P\",\n        \"airlines_pnr\": \"2Q4JFZ\",\n        \"supplier_confirmation_id\": \"ord_0000AaqjPgNUG2Pgt1KZeq\",\n        \"supplier_others_id_a\": null,\n        \"supplier_others_id_b\": null,\n        \"member_id\": null,\n        \"book_by\": \"NSN\",\n        \"ip_address\": \"103.150.26.238\",\n        \"timestamp\": \"1697515935\",\n        \"last_update\": \"1697515935\"\n    },\n    \"voucher\": {\n        \"link\": \"https://apps.gtrs.travel/voucher/flight-e-ticket?uid=eyJ0cmFja2luZ19pZCI6IjExNjk3NTE1OTAyMjYyMzhGRlhRVSIsImZ0bV9wYXJ0bmVyX2lkIjoiMSIsIm1hc3Rlcl9wYXJ0bmVyX2lkIjpudWxsLCJtZW1iZXJfaWQiOm51bGwsImxpbmtfZXhwaXJlIjoiMjAzMC0xMi0zMSJ9\",\n        \"pdf\": \"https://apps.gtrs.travel/voucher/flight-booking-pdf?uid=eyJ0cmFja2luZ19pZCI6IjExNjk3NTE1OTAyMjYyMzhGRlhRVSIsImZ0bV9wYXJ0bmVyX2lkIjoiMSIsIm1hc3Rlcl9wYXJ0bmVyX2lkIjpudWxsLCJtZW1iZXJfaWQiOm51bGwsImxpbmtfZXhwaXJlIjoiMjAzMC0xMi0zMSJ9\"\n    },\n    \"booking\": {\n        \"status\": \"success\",\n        \"booking_status\": \"hold\",\n        \"booking_supplier_status\": \"hold\",\n        \"ticket_status\": \"queue\",\n        \"payment_status\": \"pending\",\n        \"auto_cancel_status\": \"pending\",\n        \"auto_cancel\": \"2023-10-17 23:59:59\",\n        \"auto_cancel_timestamp\": \"1697587199\"\n    },\n    \"price\": {\n        \"currency\": \"SGD\",\n        \"total_amount\": \"505.62\",\n        \"sell_total_price\": \"505.62\",\n        \"sales_comission\": null,\n        \"customer_markup_policy\": \"2\"\n    },\n    \"flight\": {\n        \"modify\": {\n            \"baggage\": \"yes\",\n            \"seat\": \"yes\",\n            \"meal\": \"yes\",\n            \"itinerary\": \"yes\"\n        },\n        \"search_parameter\": {\n            \"member_id\": \"1\",\n            \"journey_type\": \"OneWay\",\n            \"preferred_carrier\": \"\",\n            \"departure_airport\": [\n                \"DAC\"\n            ],\n            \"arrival_airport\": [\n                \"LHR\"\n            ],\n            \"departure_date\": [\n                \"2023-11-10\"\n            ],\n            \"arrival_date\": \"\",\n            \"travelers_adult\": \"1\",\n            \"travelers_child\": \"0\",\n            \"travelers_child_age\": [\n                \"12\"\n            ],\n            \"travelers_infants\": \"0\",\n            \"travelers_infants_age\": [\n                \"1\"\n            ],\n            \"non_stop_flight\": \"any\",\n            \"baggage_option\": \"any\",\n            \"booking_class\": \"Economy\",\n            \"supplier_code\": \"all\",\n            \"language\": \"en\"\n        },\n        \"departure\": {\n            \"date\": \"2023-11-10\",\n            \"time\": \"06:58\"\n        },\n        \"arrival\": {\n            \"date\": \"2023-11-10\",\n            \"time\": \"12:14\"\n        },\n        \"departure_airport\": \"DAC\",\n        \"arrival_airport\": \"LHR\",\n        \"flight_group\": [\n            {\n                \"no_of_stops_title\": \"Direct Flight\",\n                \"no_of_stops\": 0,\n                \"flight_time\": \"PT11H16M\",\n                \"transit_time\": null,\n                \"routes\": [\n                    {\n                        \"air_segment_key\": \"seg_0000AaqjIrpXHOViNWCV9c\",\n                        \"origin\": \"DAC\",\n                        \"departure_time\": \"2023-11-10T06:58:00\",\n                        \"origin_terminal\": \"2\",\n                        \"origin_airport\": {\n                            \"name\": \"Hazrat Shahjalal International Airport\",\n                            \"city\": \"Dhaka\",\n                            \"country\": \"Bangladesh\",\n                            \"timezone\": \"Asia/Dhaka\"\n                        },\n                        \"destination\": \"LHR\",\n                        \"arrival_time\": \"2023-11-10T12:14:00\",\n                        \"destination_terminal\": \"1\",\n                        \"destination_airport\": {\n                            \"name\": \"London Heathrow Airport\",\n                            \"city\": \"London\",\n                            \"country\": \"United Kingdom\",\n                            \"timezone\": \"Europe/London\"\n                        },\n                        \"flight_date\": \"2023-11-10\",\n                        \"flight_time\": \"PT11H16M\",\n                        \"distance\": \"8014.840227411304\",\n                        \"lay_over\": \"not-applicable\",\n                        \"lay_over_date\": \"not-applicable\",\n                        \"aircraft\": {\n                            \"code\": \"773\",\n                            \"name\": \"Boeing 777-300\",\n                            \"picture\": \"773.png\"\n                        },\n                        \"operating\": {\n                            \"carrier\": \"ZZ\",\n                            \"carrier_name\": null,\n                            \"carrier_logo\": \"ZZ.png\",\n                            \"flight_number\": \"2878\"\n                        },\n                        \"marketing\": {\n                            \"carrier\": \"ZZ\",\n                            \"carrier_name\": null,\n                            \"carrier_logo\": \"ZZ.png\",\n                            \"flight_number\": \"2878\"\n                        },\n                        \"booking_class\": {\n                            \"cabin_class\": \"economy\",\n                            \"cabin_code\": \"economy\",\n                            \"booking_code\": \"economy\",\n                            \"meal_code\": \"economy\",\n                            \"seat_available\": \"economy\"\n                        },\n                        \"baggages\": {\n                            \"checked\": {\n                                \"ADT\": {\n                                    \"passenger_type\": \"ADT\",\n                                    \"baggage_type\": \"checked\",\n                                    \"pieceCount\": 1,\n                                    \"weight\": null,\n                                    \"unit\": null,\n                                    \"title\": \"1 pieces\"\n                                }\n                            },\n                            \"carry_on\": {\n                                \"ADT\": {\n                                    \"passenger_type\": \"ADT\",\n                                    \"baggage_type\": \"carry_on\",\n                                    \"pieceCount\": 1,\n                                    \"weight\": null,\n                                    \"unit\": null,\n                                    \"title\": \"1 pieces\"\n                                }\n                            }\n                        }\n                    }\n                ]\n            }\n        ],\n        \"price\": {\n            \"purchase\": {\n                \"base_fare\": {\n                    \"currency\": \"SGD\",\n                    \"amount\": 428.5\n                },\n                \"tax\": {\n                    \"currency\": \"SGD\",\n                    \"amount\": 77.12\n                },\n                \"total\": {\n                    \"currency\": \"SGD\",\n                    \"amount\": 505.62\n                },\n                \"price_breakdown\": [\n                    {\n                        \"passenger_id\": \"pas_0000AaqjIrZwDO29b8u2q5\",\n                        \"passenger_type\": \"ADT\",\n                        \"passenger_total\": 1,\n                        \"total\": {\n                            \"currency\": \"SGD\",\n                            \"amount\": 506\n                        },\n                        \"tax\": {\n                            \"currency\": \"SGD\",\n                            \"amount\": 78\n                        },\n                        \"base_fare\": {\n                            \"currency\": \"SGD\",\n                            \"amount\": 429\n                        }\n                    }\n                ]\n            },\n            \"sell\": {\n                \"base_fare\": {\n                    \"currency\": \"SGD\",\n                    \"amount\": 428.5\n                },\n                \"tax\": {\n                    \"currency\": \"SGD\",\n                    \"amount\": 77.12\n                },\n                \"total\": {\n                    \"currency\": \"SGD\",\n                    \"amount\": 505.62\n                },\n                \"price_breakdown\": [\n                    {\n                        \"passenger_id\": \"pas_0000AaqjIrZwDO29b8u2q5\",\n                        \"passenger_type\": \"ADT\",\n                        \"passenger_total\": 1,\n                        \"total\": {\n                            \"currency\": \"SGD\",\n                            \"amount\": 506\n                        },\n                        \"tax\": {\n                            \"currency\": \"SGD\",\n                            \"amount\": 78\n                        },\n                        \"base_fare\": {\n                            \"currency\": \"SGD\",\n                            \"amount\": 429\n                        }\n                    }\n                ]\n            }\n        },\n        \"customer_markup_policy\": {\n            \"Id\": 2,\n            \"ftm_partner_id\": \"1\",\n            \"partner_name\": \"GTRSystem\",\n            \"supplier_type\": \"FLIGHT\",\n            \"on_base_fare_ratio_markup\": \"0.00\",\n            \"on_base_fare_ratio_discount\": \"0.00\",\n            \"on_base_fare_fixed_markup\": \"0.00\",\n            \"on_tax_ratio_markup\": \"0.00\",\n            \"on_tax_fixed_markup\": \"0.00\",\n            \"cancellation_buffer_days\": \"3\",\n            \"ssr_charge_ratio\": \"0.00\",\n            \"ssr_charge_markup\": \"0.00\",\n            \"timestamp\": \"1686324825\",\n            \"last_update\": \"1697112784\",\n            \"markup_min_active\": \"disable\",\n            \"markup_min\": \"0.00\",\n            \"markup_max_active\": \"disable\",\n            \"markup_max\": \"0.00\",\n            \"ticket_issue_charge\": \"0.00\",\n            \"penalty_markup\": \"0.00\"\n        },\n        \"baggage\": [\n            {\n                \"passenger_id\": \"pas_0000AaqjIrZwDO29b8u2q5\",\n                \"passenger_type\": \"ADT\",\n                \"origin\": \"DAC\",\n                \"destination\": \"LHR\",\n                \"baggage_type\": \"checked\",\n                \"pieceCount\": 1,\n                \"weight\": null,\n                \"unit\": null\n            },\n            {\n                \"passenger_id\": \"pas_0000AaqjIrZwDO29b8u2q5\",\n                \"passenger_type\": \"ADT\",\n                \"origin\": \"DAC\",\n                \"destination\": \"LHR\",\n                \"baggage_type\": \"carry_on\",\n                \"pieceCount\": 1,\n                \"weight\": null,\n                \"unit\": null\n            }\n        ],\n        \"fare_rules\": {\n            \"refundable\": \"partially-refundable\",\n            \"change_before_departure\": \"charge applicable\"\n        }\n    },\n    \"pax\": {\n        \"primary\": {\n            \"guest_name\": \"NAZMUS NAYEEM\",\n            \"guest_email\": null,\n            \"guest_isd_code\": null,\n            \"guest_contact_no\": \"1966330000\",\n            \"guest_nationality\": \"BD\"\n        },\n        \"data\": [\n            {\n                \"Id\": 14,\n                \"timestamp\": \"1697515928\",\n                \"last_update\": \"1697515928\",\n                \"entry\": \"\",\n                \"entry_n\": null,\n                \"ftm_partner_id\": \"1\",\n                \"tracking_id\": \"1169751590226238FFXQU\",\n                \"service_type\": \"FLIGHT\",\n                \"room_number\": \"1\",\n                \"pax_id\": \"1\",\n                \"pax_type\": \"ADT\",\n                \"gender\": \"M\",\n                \"title\": \"MR\",\n                \"first_name\": \"NAZMUS\",\n                \"last_name\": \"NAYEEM\",\n                \"dob\": \"1985-10-24\",\n                \"pax_age\": \"38\",\n                \"doc_country\": \"BD\",\n                \"doc_no\": \"A1235121\",\n                \"doc_dateofexpiry\": \"2030-10-25\",\n                \"doc_dateofissue\": null,\n                \"frequent_flyer_airlines\": \"BG\",\n                \"frequent_flyer\": \"21321313132\",\n                \"wheelchair_required\": \"no\",\n                \"isd_code\": \"880\",\n                \"contact_no\": \"1966330000\",\n                \"email_address\": \"iam@saaqeb.com\",\n                \"doc_pics\": null,\n                \"seat_number\": null,\n                \"baggage_option\": null,\n                \"meal_option\": null,\n                \"booking_id\": null,\n                \"ticket_number\": null\n            }\n        ]\n    },\n    \"partner\": {\n        \"agency_isd_code\": null,\n        \"agency_contact_no\": null,\n        \"agency_email\": null,\n        \"contact\": {\n            \"person_name\": \"Zahidul\",\n            \"isd_code\": \"65\",\n            \"number\": \"31650588\",\n            \"email\": \"admin@GTRSystem.Com\"\n        },\n        \"partner_id\": \"1\",\n        \"master_partner_id\": \"1\",\n        \"partner_type\": \"MAIN\",\n        \"partner_profile_code\": \"GTRS\",\n        \"branch_id\": \"SGHE002\",\n        \"brand_name\": \"GTRSystem\",\n        \"tag_line\": \"Next generation B2B travel reservation portal specially designed only for travel professionals\",\n        \"legal_name\": \"GLOBAL TRAVEL RESERVATION SYSTEM\",\n        \"city\": \"Singapore\",\n        \"state\": \"Singapore\",\n        \"postal_code\": \"049712\",\n        \"address\": \"30 Cecil Street # 19-08 Prudential Tower\",\n        \"country\": \"SG\",\n        \"website\": \"https://gtrsystem.com/\",\n        \"customer_hotline\": \"\",\n        \"support_email\": \"operation@gtrsystem.com\",\n        \"customer_support_email\": \"operation@gtrsystem.com\",\n        \"priavcy_link\": \"https://gtrsystem.com/contact.php\",\n        \"terms_link\": \"https://gtrsystem.com/contact.php\",\n        \"logo_1440_448\": \"https://apps.gtrs.travel//partner_logos/b_rcs_large_image_111696658079262385FFHJ.png\",\n        \"logo_224_224\": \"https://apps.gtrs.travel//partner_logos/b_rcs_small_logo_111696658079262385FFHJ.png\",\n        \"logo_1024_1024\": \"https://apps.gtrs.travel//partner_logos/b_fb_app_icon_111696658079262385FFHJ.png\",\n        \"logo_400_400\": \"https://apps.gtrs.travel//partner_logos/b_viber_account_image_111696658079262385FFHJ.png\",\n        \"logo_512_512\": \"https://apps.gtrs.travel//partner_logos/b_apple_square_logo_111696658079262385FFHJ.png\",\n        \"logo_1706_256\": \"https://apps.gtrs.travel//partner_logos/b_apple_wide_logo_111696658079262385FFHJ.png\",\n        \"partner_from_email_address\": \"noreply@gtrsystem.com\",\n        \"partner_from_email_full_name\": \"GTRSystem\"\n    },\n    \"supplier\": {\n        \"info\": {\n            \"supplier_type\": \"FLIGHT\",\n            \"supplier_title\": null,\n            \"supplier_code\": \"duffel\",\n            \"supplier_uid\": \"FD00002\",\n            \"supplier_partner_code\": \"duffel-1-003\",\n            \"supplier_timezone\": null,\n            \"currency\": null,\n            \"notification_email\": null,\n            \"supplier_fare_rules\": null,\n            \"airlines_comission\": null\n        },\n        \"price\": {\n            \"supplier_currency\": \"USD\",\n            \"flight_price\": 377.45,\n            \"fmg_price\": 377.45,\n            \"revenue\": 0,\n            \"total_passenger\": 1,\n            \"ticket_issue_charge\": \"0\",\n            \"total_ticket_issue_charge\": \"0.00\",\n            \"purchase\": {\n                \"total\": {\n                    \"currency\": \"USD\",\n                    \"amount\": \"377.45\"\n                },\n                \"tax\": {\n                    \"currency\": \"USD\",\n                    \"amount\": \"57.57\"\n                },\n                \"base_fare\": {\n                    \"currency\": \"USD\",\n                    \"amount\": \"319.88\"\n                }\n            },\n            \"fmg\": {\n                \"base_fare\": {\n                    \"currency\": \"USD\",\n                    \"amount\": 319.88\n                },\n                \"tax\": {\n                    \"currency\": \"USD\",\n                    \"amount\": 57.57\n                },\n                \"total\": {\n                    \"currency\": \"USD\",\n                    \"amount\": 377.45\n                }\n            },\n            \"supplier_fare_policy\": {\n                \"ftm_partner_id\": \"1\",\n                \"partner_name\": \"GTRSystem\",\n                \"faregroup_id\": \"7\",\n                \"supplier_type\": \"FLIGHT\",\n                \"supplier_code\": \"duffel\",\n                \"supplier_partner_code\": \"duffel-1-003\",\n                \"title\": \"Default Fare Group For Duffel USA\",\n                \"status\": \"active\",\n                \"on_base_fare_ratio_markup\": \"0\",\n                \"on_base_fare_ratio_discount\": \"0\",\n                \"on_base_fare_fixed_markup\": \"0\",\n                \"on_tax_ratio_markup\": \"0\",\n                \"on_tax_fixed_markup\": \"0\",\n                \"cancellation_buffer_days\": \"0\",\n                \"ssr_charge_ratio\": \"0\",\n                \"ssr_charge_markup\": \"0\",\n                \"markup_min_active\": \"disable\",\n                \"markup_min\": \"0\",\n                \"markup_max_active\": \"disable\",\n                \"markup_max\": \"0\",\n                \"ticket_issue_charge\": \"0\",\n                \"penalty_markup\": \"0\"\n            },\n            \"currency_exchange_data\": {\n                \"agent_currency\": \"SGD\",\n                \"partner_currency_data\": {\n                    \"from_currency_list\": {\n                        \"0\": \"SGD\",\n                        \"1\": \"USD\",\n                        \"10\": \"BDT\",\n                        \"18\": \"INR\",\n                        \"23\": \"GBP\",\n                        \"24\": \"AFN\",\n                        \"25\": \"ARS\",\n                        \"26\": \"AED\",\n                        \"29\": \"JPY\",\n                        \"34\": \"PKR\"\n                    },\n                    \"to_currency_list\": {\n                        \"0\": \"BDT\",\n                        \"2\": \"SGD\",\n                        \"3\": \"USD\",\n                        \"4\": \"INR\",\n                        \"8\": \"PHP\",\n                        \"15\": \"EUR\",\n                        \"24\": \"AFN\",\n                        \"27\": \"AED\",\n                        \"28\": \"PKR\"\n                    },\n                    \"filter_data\": {\n                        \"SGD\": [\n                            {\n                                \"from_currency\": \"SGD\",\n                                \"to_currency\": \"BDT\",\n                                \"exchange_rate\": \"80.37384009\",\n                                \"markup_percentage\": \"2.2\",\n                                \"markup_fixed\": \"5.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"SGD\",\n                                \"to_currency\": \"USD\",\n                                \"exchange_rate\": \"0.746510285\",\n                                \"markup_percentage\": \"0.0\",\n                                \"markup_fixed\": \"0\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"SGD\",\n                                \"to_currency\": \"INR\",\n                                \"exchange_rate\": \"61.81884371\",\n                                \"markup_percentage\": \"1.00\",\n                                \"markup_fixed\": \"1.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"SGD\",\n                                \"to_currency\": \"SGD\",\n                                \"exchange_rate\": \"1.00\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"SGD\",\n                                \"to_currency\": \"PHP\",\n                                \"exchange_rate\": \"41.13256222\",\n                                \"markup_percentage\": \"1\",\n                                \"markup_fixed\": \"0.5\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"SGD\",\n                                \"to_currency\": \"EUR\",\n                                \"exchange_rate\": \"0.684041475\",\n                                \"markup_percentage\": \"0.5\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"SGD\",\n                                \"to_currency\": \"AED\",\n                                \"exchange_rate\": \"2.685512023\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"SGD\",\n                                \"to_currency\": \"PKR\",\n                                \"exchange_rate\": \"204.7417783\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            }\n                        ],\n                        \"USD\": [\n                            {\n                                \"from_currency\": \"USD\",\n                                \"to_currency\": \"BDT\",\n                                \"exchange_rate\": \"107.6523107\",\n                                \"markup_percentage\": \"3.7\",\n                                \"markup_fixed\": \"5.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"USD\",\n                                \"to_currency\": \"SGD\",\n                                \"exchange_rate\": \"1.339566272\",\n                                \"markup_percentage\": \"0\",\n                                \"markup_fixed\": \"0\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"USD\",\n                                \"to_currency\": \"INR\",\n                                \"exchange_rate\": \"82.81043801\",\n                                \"markup_percentage\": \"1.00\",\n                                \"markup_fixed\": \"1.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"USD\",\n                                \"to_currency\": \"USD\",\n                                \"exchange_rate\": \"1.00\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"USD\",\n                                \"to_currency\": \"PHP\",\n                                \"exchange_rate\": \"55.09979303\",\n                                \"markup_percentage\": \"1\",\n                                \"markup_fixed\": \"0.5\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"USD\",\n                                \"to_currency\": \"EUR\",\n                                \"exchange_rate\": \"0.913346479\",\n                                \"markup_percentage\": \"0.5\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"USD\",\n                                \"to_currency\": \"AED\",\n                                \"exchange_rate\": \"3.6725\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"USD\",\n                                \"to_currency\": \"PKR\",\n                                \"exchange_rate\": \"283.9995431\",\n                                \"markup_percentage\": \"0.01\",\n                                \"markup_fixed\": \"0.01\",\n                                \"status\": \"active\"\n                            }\n                        ],\n                        \"BDT\": [\n                            {\n                                \"from_currency\": \"BDT\",\n                                \"to_currency\": \"SGD\",\n                                \"exchange_rate\": \"0.012508372\",\n                                \"markup_percentage\": \"-1\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"BDT\",\n                                \"to_currency\": \"USD\",\n                                \"exchange_rate\": \"0.009337628\",\n                                \"markup_percentage\": \"0.0\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"BDT\",\n                                \"to_currency\": \"BDT\",\n                                \"exchange_rate\": \"1\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"BDT\",\n                                \"to_currency\": \"INR\",\n                                \"exchange_rate\": \"0.773253130\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"BDT\",\n                                \"to_currency\": \"PHP\",\n                                \"exchange_rate\": \"0.514501413\",\n                                \"markup_percentage\": \"0.0\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"BDT\",\n                                \"to_currency\": \"EUR\",\n                                \"exchange_rate\": \"0.008601112\",\n                                \"markup_percentage\": \"-4\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"BDT\",\n                                \"to_currency\": \"AED\",\n                                \"exchange_rate\": \"0.033320962\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            }\n                        ],\n                        \"INR\": [\n                            {\n                                \"from_currency\": \"INR\",\n                                \"to_currency\": \"SGD\",\n                                \"exchange_rate\": \"0.016424874\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"INR\",\n                                \"to_currency\": \"USD\",\n                                \"exchange_rate\": \"0.012102512\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"INR\",\n                                \"to_currency\": \"BDT\",\n                                \"exchange_rate\": \"1.37\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"INR\",\n                                \"to_currency\": \"PHP\",\n                                \"exchange_rate\": \"0.686940099\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"INR\",\n                                \"to_currency\": \"EUR\",\n                                \"exchange_rate\": \"0.011222473\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            }\n                        ],\n                        \"GBP\": [\n                            {\n                                \"from_currency\": \"GBP\",\n                                \"to_currency\": \"SGD\",\n                                \"exchange_rate\": \"1.71\",\n                                \"markup_percentage\": \"0\",\n                                \"markup_fixed\": \"0\",\n                                \"status\": \"active\"\n                            }\n                        ],\n                        \"AFN\": [\n                            {\n                                \"from_currency\": \"AFN\",\n                                \"to_currency\": \"AFN\",\n                                \"exchange_rate\": \"10\",\n                                \"markup_percentage\": \"1\",\n                                \"markup_fixed\": \"1\",\n                                \"status\": \"active\"\n                            }\n                        ],\n                        \"ARS\": [\n                            {\n                                \"from_currency\": \"ARS\",\n                                \"to_currency\": \"AFN\",\n                                \"exchange_rate\": \"1\",\n                                \"markup_percentage\": \"1\",\n                                \"markup_fixed\": \"1\",\n                                \"status\": \"active\"\n                            }\n                        ],\n                        \"AED\": [\n                            {\n                                \"from_currency\": \"AED\",\n                                \"to_currency\": \"BDT\",\n                                \"exchange_rate\": \"29.98674686\",\n                                \"markup_percentage\": \"1\",\n                                \"markup_fixed\": \"1\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"AED\",\n                                \"to_currency\": \"USD\",\n                                \"exchange_rate\": \"0.272294077\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"AED\",\n                                \"to_currency\": \"SGD\",\n                                \"exchange_rate\": \"0.372368468\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"AED\",\n                                \"to_currency\": \"PKR\",\n                                \"exchange_rate\": \"75.84846048\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            }\n                        ],\n                        \"JPY\": [\n                            {\n                                \"from_currency\": \"JPY\",\n                                \"to_currency\": \"USD\",\n                                \"exchange_rate\": \"0.006701243\",\n                                \"markup_percentage\": \"1.00\",\n                                \"markup_fixed\": \"0.25\",\n                                \"status\": \"active\"\n                            }\n                        ],\n                        \"PKR\": [\n                            {\n                                \"from_currency\": \"PKR\",\n                                \"to_currency\": \"SGD\",\n                                \"exchange_rate\": \"0.004884201\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"PKR\",\n                                \"to_currency\": \"USD\",\n                                \"exchange_rate\": \"0.003589975\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            },\n                            {\n                                \"from_currency\": \"PKR\",\n                                \"to_currency\": \"AED\",\n                                \"exchange_rate\": \"0.013184183\",\n                                \"markup_percentage\": \"0.00\",\n                                \"markup_fixed\": \"0.00\",\n                                \"status\": \"active\"\n                            }\n                        ]\n                    },\n                    \"all_currency\": [\n                        {\n                            \"Id\": 1,\n                            \"timestamp\": \"1673340816\",\n                            \"last_update\": \"1696519462\",\n                            \"entry\": \"2\",\n                            \"entry_n\": \"GTRSystem Admin Zahidul\",\n                            \"ip\": \"203.117.161.250\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"SGD\",\n                            \"to_currency\": \"BDT\",\n                            \"exchange_rate\": \"80.37384009\",\n                            \"last_day_exchange_rate\": \"79.59757888\",\n                            \"markup_percentage\": \"2.2\",\n                            \"markup_fixed\": \"5.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": \"2023-02-22T16:00:00Z\",\n                            \"xe_data_json\": \"{\\\"terms\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/legal\\\\/dfs.php\\\",\\\"privacy\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/privacy.php\\\",\\\"from\\\":\\\"SGD\\\",\\\"amount\\\":1,\\\"timestamp\\\":\\\"2023-02-22T16:00:00Z\\\",\\\"to\\\":[{\\\"quotecurrency\\\":\\\"BDT\\\",\\\"mid\\\":79.9464513095},{\\\"quotecurrency\\\":\\\"INR\\\",\\\"mid\\\":61.8188437193},{\\\"quotecurrency\\\":\\\"PHP\\\",\\\"mid\\\":41.1325622263},{\\\"quotecurrency\\\":\\\"USD\\\",\\\"mid\\\":0.7465102854}]}\",\n                            \"xe_rate_datetime\": \"2023-02-22T16:00:00Z\"\n                        },\n                        {\n                            \"Id\": 2,\n                            \"timestamp\": \"1673340872\",\n                            \"last_update\": \"1684124433\",\n                            \"entry\": \"2\",\n                            \"entry_n\": \"GTRSystem Admin Zahidul\",\n                            \"ip\": \"203.117.161.250\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"USD\",\n                            \"to_currency\": \"BDT\",\n                            \"exchange_rate\": \"107.6523107\",\n                            \"last_day_exchange_rate\": \"106.6533171\",\n                            \"markup_percentage\": \"3.7\",\n                            \"markup_fixed\": \"5.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": \"2023-02-22T16:00:00Z\",\n                            \"xe_data_json\": \"{\\\"terms\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/legal\\\\/dfs.php\\\",\\\"privacy\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/privacy.php\\\",\\\"from\\\":\\\"USD\\\",\\\"amount\\\":1,\\\"timestamp\\\":\\\"2023-02-22T16:00:00Z\\\",\\\"to\\\":[{\\\"quotecurrency\\\":\\\"BDT\\\",\\\"mid\\\":107.0935697365},{\\\"quotecurrency\\\":\\\"INR\\\",\\\"mid\\\":82.8104380174},{\\\"quotecurrency\\\":\\\"PHP\\\",\\\"mid\\\":55.0997930373},{\\\"quotecurrency\\\":\\\"SGD\\\",\\\"mid\\\":1.339566272}]}\",\n                            \"xe_rate_datetime\": \"2023-02-22T16:00:00Z\"\n                        },\n                        {\n                            \"Id\": 3,\n                            \"timestamp\": \"1673340960\",\n                            \"last_update\": \"1686650313\",\n                            \"entry\": \"2\",\n                            \"entry_n\": \"GTRSystem Admin Zahidul\",\n                            \"ip\": \"203.117.161.250\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"USD\",\n                            \"to_currency\": \"SGD\",\n                            \"exchange_rate\": \"1.339566272\",\n                            \"last_day_exchange_rate\": \"1.339906547\",\n                            \"markup_percentage\": \"0\",\n                            \"markup_fixed\": \"0\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": \"2023-02-22T16:00:00Z\",\n                            \"xe_data_json\": \"{\\\"terms\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/legal\\\\/dfs.php\\\",\\\"privacy\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/privacy.php\\\",\\\"from\\\":\\\"USD\\\",\\\"amount\\\":1,\\\"timestamp\\\":\\\"2023-02-22T16:00:00Z\\\",\\\"to\\\":[{\\\"quotecurrency\\\":\\\"BDT\\\",\\\"mid\\\":107.0935697365},{\\\"quotecurrency\\\":\\\"INR\\\",\\\"mid\\\":82.8104380174},{\\\"quotecurrency\\\":\\\"PHP\\\",\\\"mid\\\":55.0997930373},{\\\"quotecurrency\\\":\\\"SGD\\\",\\\"mid\\\":1.339566272}]}\",\n                            \"xe_rate_datetime\": \"2023-02-22T16:00:00Z\"\n                        },\n                        {\n                            \"Id\": 4,\n                            \"timestamp\": \"1673340981\",\n                            \"last_update\": \"1686650326\",\n                            \"entry\": \"2\",\n                            \"entry_n\": \"GTRSystem Admin Zahidul\",\n                            \"ip\": \"203.117.161.250\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"SGD\",\n                            \"to_currency\": \"USD\",\n                            \"exchange_rate\": \"0.746510285\",\n                            \"last_day_exchange_rate\": \"0.746320705\",\n                            \"markup_percentage\": \"0.0\",\n                            \"markup_fixed\": \"0\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": \"2023-02-22T16:00:00Z\",\n                            \"xe_data_json\": \"{\\\"terms\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/legal\\\\/dfs.php\\\",\\\"privacy\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/privacy.php\\\",\\\"from\\\":\\\"SGD\\\",\\\"amount\\\":1,\\\"timestamp\\\":\\\"2023-02-22T16:00:00Z\\\",\\\"to\\\":[{\\\"quotecurrency\\\":\\\"BDT\\\",\\\"mid\\\":79.9464513095},{\\\"quotecurrency\\\":\\\"INR\\\",\\\"mid\\\":61.8188437193},{\\\"quotecurrency\\\":\\\"PHP\\\",\\\"mid\\\":41.1325622263},{\\\"quotecurrency\\\":\\\"USD\\\",\\\"mid\\\":0.7465102854}]}\",\n                            \"xe_rate_datetime\": \"2023-02-22T16:00:00Z\"\n                        },\n                        {\n                            \"Id\": 5,\n                            \"timestamp\": \"1673341038\",\n                            \"last_update\": \"1677081605\",\n                            \"entry\": \"2\",\n                            \"entry_n\": \"GTRSystem Admin Zahidul\",\n                            \"ip\": \"203.117.161.250\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"USD\",\n                            \"to_currency\": \"INR\",\n                            \"exchange_rate\": \"82.81043801\",\n                            \"last_day_exchange_rate\": \"82.90186154\",\n                            \"markup_percentage\": \"1.00\",\n                            \"markup_fixed\": \"1.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": \"2023-02-22T16:00:00Z\",\n                            \"xe_data_json\": \"{\\\"terms\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/legal\\\\/dfs.php\\\",\\\"privacy\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/privacy.php\\\",\\\"from\\\":\\\"USD\\\",\\\"amount\\\":1,\\\"timestamp\\\":\\\"2023-02-22T16:00:00Z\\\",\\\"to\\\":[{\\\"quotecurrency\\\":\\\"BDT\\\",\\\"mid\\\":107.0935697365},{\\\"quotecurrency\\\":\\\"INR\\\",\\\"mid\\\":82.8104380174},{\\\"quotecurrency\\\":\\\"PHP\\\",\\\"mid\\\":55.0997930373},{\\\"quotecurrency\\\":\\\"SGD\\\",\\\"mid\\\":1.339566272}]}\",\n                            \"xe_rate_datetime\": \"2023-02-22T16:00:00Z\"\n                        },\n                        {\n                            \"Id\": 6,\n                            \"timestamp\": \"1673341061\",\n                            \"last_update\": \"1677081605\",\n                            \"entry\": \"2\",\n                            \"entry_n\": \"GTRSystem Admin Zahidul\",\n                            \"ip\": \"203.117.161.250\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"SGD\",\n                            \"to_currency\": \"INR\",\n                            \"exchange_rate\": \"61.81884371\",\n                            \"last_day_exchange_rate\": \"61.87137579\",\n                            \"markup_percentage\": \"1.00\",\n                            \"markup_fixed\": \"1.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": \"2023-02-22T16:00:00Z\",\n                            \"xe_data_json\": \"{\\\"terms\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/legal\\\\/dfs.php\\\",\\\"privacy\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/privacy.php\\\",\\\"from\\\":\\\"SGD\\\",\\\"amount\\\":1,\\\"timestamp\\\":\\\"2023-02-22T16:00:00Z\\\",\\\"to\\\":[{\\\"quotecurrency\\\":\\\"BDT\\\",\\\"mid\\\":79.9464513095},{\\\"quotecurrency\\\":\\\"INR\\\",\\\"mid\\\":61.8188437193},{\\\"quotecurrency\\\":\\\"PHP\\\",\\\"mid\\\":41.1325622263},{\\\"quotecurrency\\\":\\\"USD\\\",\\\"mid\\\":0.7465102854}]}\",\n                            \"xe_rate_datetime\": \"2023-02-22T16:00:00Z\"\n                        },\n                        {\n                            \"Id\": 7,\n                            \"timestamp\": \"1673452348\",\n                            \"last_update\": \"1673569069\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"SGD\",\n                            \"to_currency\": \"SGD\",\n                            \"exchange_rate\": \"1.00\",\n                            \"last_day_exchange_rate\": \"1\",\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 8,\n                            \"timestamp\": \"1673452367\",\n                            \"last_update\": \"1673569078\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"USD\",\n                            \"to_currency\": \"USD\",\n                            \"exchange_rate\": \"1.00\",\n                            \"last_day_exchange_rate\": \"1\",\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 9,\n                            \"timestamp\": \"1674105268\",\n                            \"last_update\": \"1677081605\",\n                            \"entry\": \"2\",\n                            \"entry_n\": \"S M ZAHIDUL ISLAM\",\n                            \"ip\": \"27.125.159.58\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"SGD\",\n                            \"to_currency\": \"PHP\",\n                            \"exchange_rate\": \"41.13256222\",\n                            \"last_day_exchange_rate\": \"41.18186241\",\n                            \"markup_percentage\": \"1\",\n                            \"markup_fixed\": \"0.5\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": \"2023-02-22T16:00:00Z\",\n                            \"xe_data_json\": \"{\\\"terms\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/legal\\\\/dfs.php\\\",\\\"privacy\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/privacy.php\\\",\\\"from\\\":\\\"SGD\\\",\\\"amount\\\":1,\\\"timestamp\\\":\\\"2023-02-22T16:00:00Z\\\",\\\"to\\\":[{\\\"quotecurrency\\\":\\\"BDT\\\",\\\"mid\\\":79.9464513095},{\\\"quotecurrency\\\":\\\"INR\\\",\\\"mid\\\":61.8188437193},{\\\"quotecurrency\\\":\\\"PHP\\\",\\\"mid\\\":41.1325622263},{\\\"quotecurrency\\\":\\\"USD\\\",\\\"mid\\\":0.7465102854}]}\",\n                            \"xe_rate_datetime\": \"2023-02-22T16:00:00Z\"\n                        },\n                        {\n                            \"Id\": 10,\n                            \"timestamp\": \"1674105399\",\n                            \"last_update\": \"1677081605\",\n                            \"entry\": \"2\",\n                            \"entry_n\": \"S M ZAHIDUL ISLAM\",\n                            \"ip\": \"27.125.159.58\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"USD\",\n                            \"to_currency\": \"PHP\",\n                            \"exchange_rate\": \"55.09979303\",\n                            \"last_day_exchange_rate\": \"55.17984709\",\n                            \"markup_percentage\": \"1\",\n                            \"markup_fixed\": \"0.5\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": \"2023-02-22T16:00:00Z\",\n                            \"xe_data_json\": \"{\\\"terms\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/legal\\\\/dfs.php\\\",\\\"privacy\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/privacy.php\\\",\\\"from\\\":\\\"USD\\\",\\\"amount\\\":1,\\\"timestamp\\\":\\\"2023-02-22T16:00:00Z\\\",\\\"to\\\":[{\\\"quotecurrency\\\":\\\"BDT\\\",\\\"mid\\\":107.0935697365},{\\\"quotecurrency\\\":\\\"INR\\\",\\\"mid\\\":82.8104380174},{\\\"quotecurrency\\\":\\\"PHP\\\",\\\"mid\\\":55.0997930373},{\\\"quotecurrency\\\":\\\"SGD\\\",\\\"mid\\\":1.339566272}]}\",\n                            \"xe_rate_datetime\": \"2023-02-22T16:00:00Z\"\n                        },\n                        {\n                            \"Id\": 11,\n                            \"timestamp\": \"1676884486\",\n                            \"last_update\": \"1682022243\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"BDT\",\n                            \"to_currency\": \"SGD\",\n                            \"exchange_rate\": \"0.012508372\",\n                            \"last_day_exchange_rate\": \"0.012563196\",\n                            \"markup_percentage\": \"-1\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": \"2023-02-22T16:00:00Z\",\n                            \"xe_data_json\": \"{\\\"terms\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/legal\\\\/dfs.php\\\",\\\"privacy\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/privacy.php\\\",\\\"from\\\":\\\"BDT\\\",\\\"amount\\\":1,\\\"timestamp\\\":\\\"2023-02-22T16:00:00Z\\\",\\\"to\\\":[{\\\"quotecurrency\\\":\\\"INR\\\",\\\"mid\\\":0.7732531301},{\\\"quotecurrency\\\":\\\"PHP\\\",\\\"mid\\\":0.5145014138},{\\\"quotecurrency\\\":\\\"SGD\\\",\\\"mid\\\":0.0125083726},{\\\"quotecurrency\\\":\\\"USD\\\",\\\"mid\\\":0.0093376288}]}\",\n                            \"xe_rate_datetime\": \"2023-02-22T16:00:00Z\"\n                        },\n                        {\n                            \"Id\": 12,\n                            \"timestamp\": \"1676884495\",\n                            \"last_update\": \"1682022193\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"BDT\",\n                            \"to_currency\": \"USD\",\n                            \"exchange_rate\": \"0.009337628\",\n                            \"last_day_exchange_rate\": \"0.009376173\",\n                            \"markup_percentage\": \"0.0\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": \"2023-02-22T16:00:00Z\",\n                            \"xe_data_json\": \"{\\\"terms\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/legal\\\\/dfs.php\\\",\\\"privacy\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/privacy.php\\\",\\\"from\\\":\\\"BDT\\\",\\\"amount\\\":1,\\\"timestamp\\\":\\\"2023-02-22T16:00:00Z\\\",\\\"to\\\":[{\\\"quotecurrency\\\":\\\"INR\\\",\\\"mid\\\":0.7732531301},{\\\"quotecurrency\\\":\\\"PHP\\\",\\\"mid\\\":0.5145014138},{\\\"quotecurrency\\\":\\\"SGD\\\",\\\"mid\\\":0.0125083726},{\\\"quotecurrency\\\":\\\"USD\\\",\\\"mid\\\":0.0093376288}]}\",\n                            \"xe_rate_datetime\": \"2023-02-22T16:00:00Z\"\n                        },\n                        {\n                            \"Id\": 13,\n                            \"timestamp\": \"1676884507\",\n                            \"last_update\": \"1676884507\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"BDT\",\n                            \"to_currency\": \"BDT\",\n                            \"exchange_rate\": \"1\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 14,\n                            \"timestamp\": \"1676884520\",\n                            \"last_update\": \"1682022210\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"BDT\",\n                            \"to_currency\": \"INR\",\n                            \"exchange_rate\": \"0.773253130\",\n                            \"last_day_exchange_rate\": \"0.777302232\",\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": \"2023-02-22T16:00:00Z\",\n                            \"xe_data_json\": \"{\\\"terms\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/legal\\\\/dfs.php\\\",\\\"privacy\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/privacy.php\\\",\\\"from\\\":\\\"BDT\\\",\\\"amount\\\":1,\\\"timestamp\\\":\\\"2023-02-22T16:00:00Z\\\",\\\"to\\\":[{\\\"quotecurrency\\\":\\\"INR\\\",\\\"mid\\\":0.7732531301},{\\\"quotecurrency\\\":\\\"PHP\\\",\\\"mid\\\":0.5145014138},{\\\"quotecurrency\\\":\\\"SGD\\\",\\\"mid\\\":0.0125083726},{\\\"quotecurrency\\\":\\\"USD\\\",\\\"mid\\\":0.0093376288}]}\",\n                            \"xe_rate_datetime\": \"2023-02-22T16:00:00Z\"\n                        },\n                        {\n                            \"Id\": 15,\n                            \"timestamp\": \"1676884531\",\n                            \"last_update\": \"1682022223\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"BDT\",\n                            \"to_currency\": \"PHP\",\n                            \"exchange_rate\": \"0.514501413\",\n                            \"last_day_exchange_rate\": \"0.517375817\",\n                            \"markup_percentage\": \"0.0\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": \"2023-02-22T16:00:00Z\",\n                            \"xe_data_json\": \"{\\\"terms\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/legal\\\\/dfs.php\\\",\\\"privacy\\\":\\\"http:\\\\/\\\\/www.xe.com\\\\/privacy.php\\\",\\\"from\\\":\\\"BDT\\\",\\\"amount\\\":1,\\\"timestamp\\\":\\\"2023-02-22T16:00:00Z\\\",\\\"to\\\":[{\\\"quotecurrency\\\":\\\"INR\\\",\\\"mid\\\":0.7732531301},{\\\"quotecurrency\\\":\\\"PHP\\\",\\\"mid\\\":0.5145014138},{\\\"quotecurrency\\\":\\\"SGD\\\",\\\"mid\\\":0.0125083726},{\\\"quotecurrency\\\":\\\"USD\\\",\\\"mid\\\":0.0093376288}]}\",\n                            \"xe_rate_datetime\": \"2023-02-22T16:00:00Z\"\n                        },\n                        {\n                            \"Id\": 16,\n                            \"timestamp\": \"1681925896\",\n                            \"last_update\": \"1682016159\",\n                            \"entry\": \"2\",\n                            \"entry_n\": \"S M ZAHIDUL ISLAM\",\n                            \"ip\": \"27.125.159.58\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"BDT\",\n                            \"to_currency\": \"EUR\",\n                            \"exchange_rate\": \"0.008601112\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"-4\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 17,\n                            \"timestamp\": \"1681925908\",\n                            \"last_update\": \"1681947238\",\n                            \"entry\": \"2\",\n                            \"entry_n\": \"S M ZAHIDUL ISLAM\",\n                            \"ip\": \"27.125.159.58\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"USD\",\n                            \"to_currency\": \"EUR\",\n                            \"exchange_rate\": \"0.913346479\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.5\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 18,\n                            \"timestamp\": \"1681925937\",\n                            \"last_update\": \"1681947253\",\n                            \"entry\": \"2\",\n                            \"entry_n\": \"S M ZAHIDUL ISLAM\",\n                            \"ip\": \"27.125.159.58\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"SGD\",\n                            \"to_currency\": \"EUR\",\n                            \"exchange_rate\": \"0.684041475\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.5\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 19,\n                            \"timestamp\": \"1692929905\",\n                            \"last_update\": \"1692929905\",\n                            \"entry\": \"813\",\n                            \"entry_n\": \"Nayeem\",\n                            \"ip\": \"103.150.27.38\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"INR\",\n                            \"to_currency\": \"SGD\",\n                            \"exchange_rate\": \"0.016424874\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 20,\n                            \"timestamp\": \"1692929911\",\n                            \"last_update\": \"1692929911\",\n                            \"entry\": \"813\",\n                            \"entry_n\": \"Nayeem\",\n                            \"ip\": \"103.150.27.38\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"INR\",\n                            \"to_currency\": \"USD\",\n                            \"exchange_rate\": \"0.012102512\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 21,\n                            \"timestamp\": \"1692929946\",\n                            \"last_update\": \"1692940497\",\n                            \"entry\": \"813\",\n                            \"entry_n\": \"Nayeem\",\n                            \"ip\": \"103.150.27.38\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"INR\",\n                            \"to_currency\": \"BDT\",\n                            \"exchange_rate\": \"1.37\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 22,\n                            \"timestamp\": \"1692929955\",\n                            \"last_update\": \"1692929955\",\n                            \"entry\": \"813\",\n                            \"entry_n\": \"Nayeem\",\n                            \"ip\": \"103.150.27.38\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"INR\",\n                            \"to_currency\": \"PHP\",\n                            \"exchange_rate\": \"0.686940099\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 23,\n                            \"timestamp\": \"1692929963\",\n                            \"last_update\": \"1692929963\",\n                            \"entry\": \"813\",\n                            \"entry_n\": \"Nayeem\",\n                            \"ip\": \"103.150.27.38\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"INR\",\n                            \"to_currency\": \"EUR\",\n                            \"exchange_rate\": \"0.011222473\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 24,\n                            \"timestamp\": \"1692929963\",\n                            \"last_update\": \"1692929963\",\n                            \"entry\": \"813\",\n                            \"entry_n\": \"Nayeem\",\n                            \"ip\": \"103.150.27.38\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"GBP\",\n                            \"to_currency\": \"SGD\",\n                            \"exchange_rate\": \"1.71\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0\",\n                            \"markup_fixed\": \"0\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 25,\n                            \"timestamp\": \"1696148813\",\n                            \"last_update\": \"1696148813\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"AFN\",\n                            \"to_currency\": \"AFN\",\n                            \"exchange_rate\": \"10\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"1\",\n                            \"markup_fixed\": \"1\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 26,\n                            \"timestamp\": \"1696148863\",\n                            \"last_update\": \"1696148863\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"ARS\",\n                            \"to_currency\": \"AFN\",\n                            \"exchange_rate\": \"1\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"1\",\n                            \"markup_fixed\": \"1\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 27,\n                            \"timestamp\": \"1696150658\",\n                            \"last_update\": \"1696150658\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"AED\",\n                            \"to_currency\": \"BDT\",\n                            \"exchange_rate\": \"29.98674686\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"1\",\n                            \"markup_fixed\": \"1\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 28,\n                            \"timestamp\": \"1696169943\",\n                            \"last_update\": \"1696169943\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"119.148.32.46\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"USD\",\n                            \"to_currency\": \"AED\",\n                            \"exchange_rate\": \"3.6725\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 29,\n                            \"timestamp\": \"1696519419\",\n                            \"last_update\": \"1696519419\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"USD\",\n                            \"to_currency\": \"PKR\",\n                            \"exchange_rate\": \"283.9995431\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.01\",\n                            \"markup_fixed\": \"0.01\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 30,\n                            \"timestamp\": \"1696659712\",\n                            \"last_update\": \"1696659712\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"JPY\",\n                            \"to_currency\": \"USD\",\n                            \"exchange_rate\": \"0.006701243\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"1.00\",\n                            \"markup_fixed\": \"0.25\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 31,\n                            \"timestamp\": \"1696860064\",\n                            \"last_update\": \"1696860064\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"SGD\",\n                            \"to_currency\": \"AED\",\n                            \"exchange_rate\": \"2.685512023\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 32,\n                            \"timestamp\": \"1696860082\",\n                            \"last_update\": \"1696860082\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"BDT\",\n                            \"to_currency\": \"AED\",\n                            \"exchange_rate\": \"0.033320962\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 33,\n                            \"timestamp\": \"1696860093\",\n                            \"last_update\": \"1696860093\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"AED\",\n                            \"to_currency\": \"USD\",\n                            \"exchange_rate\": \"0.272294077\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 34,\n                            \"timestamp\": \"1696860098\",\n                            \"last_update\": \"1696860098\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"AED\",\n                            \"to_currency\": \"SGD\",\n                            \"exchange_rate\": \"0.372368468\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 35,\n                            \"timestamp\": \"1697093238\",\n                            \"last_update\": \"1697093238\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"PKR\",\n                            \"to_currency\": \"SGD\",\n                            \"exchange_rate\": \"0.004884201\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 36,\n                            \"timestamp\": \"1697093245\",\n                            \"last_update\": \"1697093245\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"PKR\",\n                            \"to_currency\": \"USD\",\n                            \"exchange_rate\": \"0.003589975\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 37,\n                            \"timestamp\": \"1697093250\",\n                            \"last_update\": \"1697093250\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"PKR\",\n                            \"to_currency\": \"AED\",\n                            \"exchange_rate\": \"0.013184183\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 38,\n                            \"timestamp\": \"1697093271\",\n                            \"last_update\": \"1697093271\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"SGD\",\n                            \"to_currency\": \"PKR\",\n                            \"exchange_rate\": \"204.7417783\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        },\n                        {\n                            \"Id\": 39,\n                            \"timestamp\": \"1697093277\",\n                            \"last_update\": \"1697093277\",\n                            \"entry\": \"1\",\n                            \"entry_n\": \"NSN\",\n                            \"ip\": \"103.150.26.238\",\n                            \"ftm_partner_id\": \"1\",\n                            \"from_currency\": \"AED\",\n                            \"to_currency\": \"PKR\",\n                            \"exchange_rate\": \"75.84846048\",\n                            \"last_day_exchange_rate\": null,\n                            \"markup_percentage\": \"0.00\",\n                            \"markup_fixed\": \"0.00\",\n                            \"status\": \"active\",\n                            \"expire_timestamp\": null,\n                            \"api_last_update\": null,\n                            \"xe_data_json\": null,\n                            \"xe_rate_datetime\": null\n                        }\n                    ]\n                }\n            }\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Baggage Option",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"booking_tracking_id\": \"11172430384226193FEU4A\",\n    \"member_id\": \"1\" //user Login member_id\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/get-baggage-option",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"get-baggage-option"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update-Baggage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"booking_tracking_id\": \"11172430384226193FEU4A\",\n    \"member_id\": \"1\",\n    \"pax_type\": \"ADT\",\n    \"pax_id\": \"1\",\n    \"data\": [\n        {\n            \"flight_group\": \"0\",\n            \"select_code\": \"2\"\n        },\n        {\n            \"flight_group\": \"1\",\n            \"select_code\": \"3\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/update-baggage",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"update-baggage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Seat Plan",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"booking_tracking_id\": \"1169768623226238H5Y9A\",\n    \"member_id\": \"1\" //user Login member_id\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/get-seat-option",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"get-seat-option"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Seat",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tracking_id\": \"11169470175826238JXG6J\",\n    \"booking_id\": \"FL2314SEAAAE\",\n    \"member_id\": \"1\" //user Login member_id\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/update-seat",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"update-seat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Meal Options",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"booking_tracking_id\": \"1169967602924273U63KS\",\n    \"member_id\": \"1\" //user Login member_id\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/get-meal-option",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"get-meal-option"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Meals",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"booking_tracking_id\": \"1169772012226238QSGUX\",\n    \"member_id\": \"1\",\n    \"pax_type\": \"ADT\",\n    \"pax_id\": \"1\",\n    \"data\": [\n        {\n            \"select_code\": \"3\",\n            \"meal_quantity\": \"1\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/update-meals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"update-meals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Booking Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tracking_id\": \"111719818162352083LNH7\",\n    \"booking_id\": \"FL2401JLAA83\",\n    \"member_id\": \"1\" //user Login member_id\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/booking-details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"booking-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Eligibility",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tracking_id\": \"1170030836024273Z9KBV\",\n    \"member_id\": \"1\" //user Login member_id\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/cancel-get-eligibility",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"cancel-get-eligibility"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Booking/Ticket",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_id\": \"1\", //user Login member_id\n    \"tracking_id\": \"11171965358535208ON1DD\",\n    \"reason\": \"not required\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/cancel-booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"cancel-booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Issue Ticket",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_id\": \"1\", //user Login member_id\n    \"tracking_id\": \"11171949440035208CBVPE\",\n    \"price_change_accepted\": \"no\",  // yes or no\n    \"notes\": \"not required\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/flight/issue-ticket",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"flight",
+								"issue-ticket"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hotel",
+			"item": [
+				{
+					"name": "Auto Suggestion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"location\": \"delhi\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/auto-suggetion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"auto-suggetion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Availability - 1 Adult",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"location\": \"Dhaka Gulshan BD\",\n    \"radius\": \"auto\", //auto // 2 /5 /9/10In Km\n    \"checkIn\": \"2024-11-11\",\n    \"checkOut\": \"2024-11-12\",\n    \"occupancies\": [\n        {\n            \"adult\": \"1\"\n        }\n    ],\n    \"guest_nationality\": \"SG\",\n    \"hotel_star_level\": \"any\", // any/1/2/3/4/5\n    \"language\": \"en\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Availability - 2 Adult 1 Child",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"location\": \"dubai intenet city\",\n    \"radius\": \"auto\",  //auto // 2 /5 /9/10In Km\n    \"checkIn\": \"2024-05-10\",\n    \"checkOut\": \"2024-05-14\",\n    \"occupancies\": [\n        {\n            \"adult\": \"2\",\n            \"child\": \"1\",\n            \"child_age\": [\n                \"5\"\n            ]\n        },\n        {\n            \"adult\": \"1\"\n        }\n    ],\n    \"guest_nationality\": \"SG\",\n    \"hotel_star_level\": \"any\", // any/1/2/3/4/5\n    \"language\": \"en\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single Hotel Availability",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hotel_id\": \"H1HS00017#88889\",\n    \"checkIn\": \"2024-10-11\",\n    \"checkOut\": \"2024-10-12\",\n    \"occupancies\": [\n        \n        {\n            \"adult\": \"2\",\n            \"child\": \"2\",\n            \"child_age\": [\n                \"10\",\"10\"\n            ]\n        },\n        {\n            \"adult\": \"2\",\n            \"child\": \"1\",\n            \"child_age\": [\n                \"10\"\n            ]\n        }\n    ],\n    \"guest_nationality\": \"SG\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/rooms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"rooms"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Single Hotel Availability",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "apikey",
+										"value": "34152112944906126",
+										"type": "text"
+									},
+									{
+										"key": "secretecode",
+										"value": "4e7m4sf3ylynmxriijxygidvtyd7qzag3ylvty74x",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"tracking_id\": \"111697521363681101RNDN\",\n    \"hotel_id\": \"hotelbeds-4\",\n    \"checkIn\": \"2023-10-24\",\n    \"checkOut\": \"2023-10-25\",\n    \"occupancies\": [\n        {\n            \"adult\": \"1\"\n        }\n    ],\n    \"guest_nationality\": \"SG\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.gtrs.travel/hotel/rooms",
+									"protocol": "https",
+									"host": [
+										"api",
+										"gtrs",
+										"travel"
+									],
+									"path": [
+										"hotel",
+										"rooms"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\r\n    \"status\": \"success\",\r\n    \"tracking_id\": \"11170398842026238CWCML\",\r\n    \"search_parameter\": {\r\n        \"hotel_id\": \"H10004#770081\",\r\n        \"checkIn\": \"2024-02-11\",\r\n        \"checkOut\": \"2024-02-12\",\r\n        \"occupancies\": [\r\n            {\r\n                \"adult\": \"1\"\r\n            }\r\n        ],\r\n        \"guest_nationality\": \"SG\",\r\n        \"total_night\": \"1\"\r\n    },\r\n    \"session_expire\": {\r\n        \"timestamp\": 1703990222,\r\n        \"datetime\": \"2023-12-31 10:37:02 +08\",\r\n        \"message\": \"The booking process should be completed by no later than 2023-12-31 10:37:02 +08.\"\r\n    },\r\n    \"response_data\": [\r\n        {\r\n            \"tracking_id\": \"11170398842026238CWCML\",\r\n            \"room_tracking_id\": \"11170398842026238CWCML-hotelbeds-0\",\r\n            \"supplier_partner_code\": \"hotelbeds-1-0004\",\r\n            \"supplier_code\": \"hotelbeds\",\r\n            \"total_amount\": 77.77,\r\n            \"sell_total_price\": 77.77,\r\n            \"currency\": \"USD\",\r\n            \"sales_comission\": null,\r\n            \"customer_markup_policy\": {\r\n                \"Id\": \"2\",\r\n                \"ftm_partner_id\": \"1\",\r\n                \"partner_name\": null,\r\n                \"supplier_type\": \"HOTEL\",\r\n                \"on_base_fare_ratio_markup\": \"0.00\",\r\n                \"on_base_fare_ratio_discount\": \"0.00\",\r\n                \"on_base_fare_fixed_markup\": \"0.00\",\r\n                \"on_tax_ratio_markup\": \"0.00\",\r\n                \"on_tax_fixed_markup\": \"0.00\",\r\n                \"cancellation_buffer_days\": \"0\",\r\n                \"ssr_charge_ratio\": \"0.00\",\r\n                \"ssr_charge_markup\": \"0.00\",\r\n                \"timestamp\": null,\r\n                \"last_update\": null,\r\n                \"markup_min_active\": \"disable\",\r\n                \"markup_min\": \"0.00\",\r\n                \"markup_max_active\": \"disable\",\r\n                \"markup_max\": \"0.00\",\r\n                \"ticket_issue_charge\": \"0.00\",\r\n                \"penalty_markup\": \"0.00\"\r\n            },\r\n            \"data\": [\r\n                {\r\n                    \"uid\": 0,\r\n                    \"room_id\": \"SUI.DX-KG\",\r\n                    \"room_name\": \"Deluxe King Suite\",\r\n                    \"hotel_id\": 770081,\r\n                    \"supplier\": \"hotelbeds\",\r\n                    \"hold_possible\": \"yes\",\r\n                    \"rate_id\": \"20240211|20240212|W|321|770081|SUI.DX-KG|GC-ALL|RO||1~1~0||N@06~~2226a~1868699188~N~~~NOR~BD45516EE9C545C170398842092100AASG000000100000000052226a\",\r\n                    \"rate_code\": \"RO\",\r\n                    \"rate_type\": \"ROOM ONLY\",\r\n                    \"rate_class\": \"NOR\",\r\n                    \"availability\": \"BOOKABLE\",\r\n                    \"available_rooms\": 2,\r\n                    \"refundable\": null,\r\n                    \"occupancies\": {\r\n                        \"total_room\": 1,\r\n                        \"total_guest\": 1,\r\n                        \"adults\": 1,\r\n                        \"children\": 0\r\n                    },\r\n                    \"amenities\": null,\r\n                    \"amenities_list\": [\r\n                        \"\"\r\n                    ],\r\n                    \"price\": 77.77,\r\n                    \"sell\": 77.77,\r\n                    \"currency\": \"USD\",\r\n                    \"price_breakdown\": {\r\n                        \"total\": {\r\n                            \"purchase\": {\r\n                                \"price\": 77.77,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"sell\": {\r\n                                \"price\": 77.77,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"fmg\": {\r\n                                \"price\": 106.34,\r\n                                \"currency\": \"SGD\"\r\n                            },\r\n                            \"supplier\": {\r\n                                \"price\": \"106.34\",\r\n                                \"currency\": \"SGD\"\r\n                            }\r\n                        },\r\n                        \"base_fare\": {\r\n                            \"purchase\": {\r\n                                \"price\": 77.77,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"sell\": {\r\n                                \"price\": 77.77,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"fmg\": {\r\n                                \"price\": 106.34,\r\n                                \"currency\": \"SGD\"\r\n                            },\r\n                            \"supplier\": {\r\n                                \"price\": \"106.34\",\r\n                                \"currency\": \"SGD\"\r\n                            }\r\n                        },\r\n                        \"tax\": {\r\n                            \"purchase\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"sell\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"fmg\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"SGD\"\r\n                            },\r\n                            \"buy\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"SGD\"\r\n                            }\r\n                        },\r\n                        \"stay_tax\": {\r\n                            \"purchase\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"sell\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"fmg\": {\r\n                                \"price\": null,\r\n                                \"currency\": \"SGD\"\r\n                            },\r\n                            \"buy\": {\r\n                                \"price\": null,\r\n                                \"currency\": \"SGD\"\r\n                            }\r\n                        },\r\n                        \"extra_person_fee\": {\r\n                            \"purchase\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"sell\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"fmg\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"SGD\"\r\n                            },\r\n                            \"buy\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"SGD\"\r\n                            }\r\n                        }\r\n                    },\r\n                    \"bed\": {\r\n                        \"bed_type\": \"1 King Bed\",\r\n                        \"bed_icon\": \"bed.svg\",\r\n                        \"bed_type_guarantee\": \"\"\r\n                    },\r\n                    \"cancellation_policies\": {\r\n                        \"auto_cancel\": \"2023-12-31T10:07:02+08:00\",\r\n                        \"summery\": \"non refundable\",\r\n                        \"cancellation_buffer_days\": \"0\"\r\n                    }\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"tracking_id\": \"11170398842026238CWCML\",\r\n            \"room_tracking_id\": \"11170398842026238CWCML-hotelbeds-1\",\r\n            \"supplier_partner_code\": \"hotelbeds-1-0004\",\r\n            \"supplier_code\": \"hotelbeds\",\r\n            \"total_amount\": 83.75,\r\n            \"sell_total_price\": 83.75,\r\n            \"currency\": \"USD\",\r\n            \"sales_comission\": null,\r\n            \"customer_markup_policy\": {\r\n                \"Id\": \"2\",\r\n                \"ftm_partner_id\": \"1\",\r\n                \"partner_name\": null,\r\n                \"supplier_type\": \"HOTEL\",\r\n                \"on_base_fare_ratio_markup\": \"0.00\",\r\n                \"on_base_fare_ratio_discount\": \"0.00\",\r\n                \"on_base_fare_fixed_markup\": \"0.00\",\r\n                \"on_tax_ratio_markup\": \"0.00\",\r\n                \"on_tax_fixed_markup\": \"0.00\",\r\n                \"cancellation_buffer_days\": \"0\",\r\n                \"ssr_charge_ratio\": \"0.00\",\r\n                \"ssr_charge_markup\": \"0.00\",\r\n                \"timestamp\": null,\r\n                \"last_update\": null,\r\n                \"markup_min_active\": \"disable\",\r\n                \"markup_min\": \"0.00\",\r\n                \"markup_max_active\": \"disable\",\r\n                \"markup_max\": \"0.00\",\r\n                \"ticket_issue_charge\": \"0.00\",\r\n                \"penalty_markup\": \"0.00\"\r\n            },\r\n            \"data\": [\r\n                {\r\n                    \"uid\": 1,\r\n                    \"room_id\": \"DBL.DX-GD\",\r\n                    \"room_name\": \"Grand Deluxe King Suite\",\r\n                    \"hotel_id\": 770081,\r\n                    \"supplier\": \"hotelbeds\",\r\n                    \"hold_possible\": \"yes\",\r\n                    \"rate_id\": \"20240211|20240212|W|321|770081|DBL.DX-GD|GC-ALL|RO||1~1~0||N@06~~23472~-1518448322~N~~~NOR~BD45516EE9C545C170398842092100AASG0000001000000000523472\",\r\n                    \"rate_code\": \"RO\",\r\n                    \"rate_type\": \"ROOM ONLY\",\r\n                    \"rate_class\": \"NOR\",\r\n                    \"availability\": \"BOOKABLE\",\r\n                    \"available_rooms\": 2,\r\n                    \"refundable\": null,\r\n                    \"occupancies\": {\r\n                        \"total_room\": 1,\r\n                        \"total_guest\": 1,\r\n                        \"adults\": 1,\r\n                        \"children\": 0\r\n                    },\r\n                    \"amenities\": null,\r\n                    \"amenities_list\": [\r\n                        \"\"\r\n                    ],\r\n                    \"price\": 83.75,\r\n                    \"sell\": 83.75,\r\n                    \"currency\": \"USD\",\r\n                    \"price_breakdown\": {\r\n                        \"total\": {\r\n                            \"purchase\": {\r\n                                \"price\": 83.75,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"sell\": {\r\n                                \"price\": 83.75,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"fmg\": {\r\n                                \"price\": 114.52,\r\n                                \"currency\": \"SGD\"\r\n                            },\r\n                            \"supplier\": {\r\n                                \"price\": \"114.52\",\r\n                                \"currency\": \"SGD\"\r\n                            }\r\n                        },\r\n                        \"base_fare\": {\r\n                            \"purchase\": {\r\n                                \"price\": 83.75,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"sell\": {\r\n                                \"price\": 83.75,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"fmg\": {\r\n                                \"price\": 114.52,\r\n                                \"currency\": \"SGD\"\r\n                            },\r\n                            \"supplier\": {\r\n                                \"price\": \"114.52\",\r\n                                \"currency\": \"SGD\"\r\n                            }\r\n                        },\r\n                        \"tax\": {\r\n                            \"purchase\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"sell\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"fmg\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"SGD\"\r\n                            },\r\n                            \"buy\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"SGD\"\r\n                            }\r\n                        },\r\n                        \"stay_tax\": {\r\n                            \"purchase\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"sell\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"fmg\": {\r\n                                \"price\": null,\r\n                                \"currency\": \"SGD\"\r\n                            },\r\n                            \"buy\": {\r\n                                \"price\": null,\r\n                                \"currency\": \"SGD\"\r\n                            }\r\n                        },\r\n                        \"extra_person_fee\": {\r\n                            \"purchase\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"sell\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"USD\"\r\n                            },\r\n                            \"fmg\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"SGD\"\r\n                            },\r\n                            \"buy\": {\r\n                                \"price\": 0,\r\n                                \"currency\": \"SGD\"\r\n                            }\r\n                        }\r\n                    },\r\n                    \"bed\": {\r\n                        \"bed_type\": \"1 King Bed\",\r\n                        \"bed_icon\": \"bed.svg\",\r\n                        \"bed_type_guarantee\": \"\"\r\n                    },\r\n                    \"cancellation_policies\": {\r\n                        \"auto_cancel\": \"2023-12-31T10:07:02+08:00\",\r\n                        \"summery\": \"non refundable\",\r\n                        \"cancellation_buffer_days\": \"0\"\r\n                    }\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}"
+						}
+					]
+				},
+				{
+					"name": "Get-Hotel-Room-Validation-Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tracking_id\": \"11172510632308142OMWBZ\",\n    \"member_id\": \"1\" //user Login member_id\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/validation-get-detail",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"validation-get-detail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single Hotel Details Contents",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hotel_id\": \"H1MK00007#TH10005494\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/get-hotel-details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"get-hotel-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Price & Policy Validatation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tracking_id\": \"11172510695526193DSJJW\",\n    \"room_tracking_id\": \"11172510695526193DSJJW-H1RL00021-0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/validate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get-Price-Validation-Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"booking_tracking_id\": \"11172395563114179HG6H3\",\n    \"member_id\": \"1\" //user Login member_id\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/validation-price-get-detail",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"validation-price-get-detail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Travellers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tracking_id\": \"11172396108014125AHESK\", // booking_tracking_id from Price Validation\n    \"member_id\": \"1\", //user Login member_id\n    \"save_pax\": \"no\", //if you want to save  yes or no\n    \"passenger\": [\n        {\n            \"pax_id\": \"1\",\n            \"room_number\": \"1\",\n            \"pax_type\": \"ADT\",\n            \"title\": \"MR\",\n            \"first_name\": \"Jasim\",\n            \"last_name\": \"Kalam\",\n            \"age\": \"30\",\n            \"isd_code\": \"880\",\n            \"contact_no\": \"1966330000\",\n            \"email_address\": \"iam@saaqeb.com\"\n        },\n        {\n            \"pax_id\": \"2\",\n            \"room_number\": \"1\",\n            \"pax_type\": \"ADT\",\n            \"title\": \"MR\",\n            \"first_name\": \"Ahmed\",\n            \"last_name\": \"Karim\",\n            \"age\": \"30\",\n            \"isd_code\": \"880\",\n            \"contact_no\": \"1966330000\",\n            \"email_address\": \"iam@saaqeb.com\"\n        },\n        {\n            \"pax_id\": \"3\",\n            \"room_number\": \"1\",\n            \"pax_type\": \"CNN\",\n            \"title\": \"MR\",\n            \"first_name\": \"Child\",\n            \"last_name\": \"A\",\n            \"age\": \"5\",\n            \"isd_code\": \"880\",\n            \"contact_no\": \"1966330000\",\n            \"email_address\": \"iam@saaqeb.com\"\n        },\n        {\n            \"pax_id\": \"4\",\n            \"room_number\": \"2\",\n            \"pax_type\": \"ADT\",\n            \"title\": \"MR\",\n            \"first_name\": \"Ahmed\",\n            \"last_name\": \"Karim\",\n            \"age\": \"30\",\n            \"isd_code\": \"880\",\n            \"contact_no\": \"1966330000\",\n            \"email_address\": \"iam@saaqeb.com\"\n        },\n        {\n            \"pax_id\": \"5\",\n            \"room_number\": \"2\",\n            \"pax_type\": \"CNN\",\n            \"title\": \"MR\",\n            \"first_name\": \"Child\",\n            \"last_name\": \"B\",\n            \"age\": \"5\",\n            \"isd_code\": \"880\",\n            \"contact_no\": \"1966330000\",\n            \"email_address\": \"iam@saaqeb.com\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/update-travellers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"update-travellers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tracking_id\": \"11172396108014125AHESK\",\n    \"member_id\": \"1\", //user Login member_id\n    \"isd_code\": \"880\",\n    \"contact_no\": \"1966330000\",\n    \"email_address\": \"iam@saaqeb.com\",\n    \"payment_type\": \"account_balance\", // account_balance or card - If Card Provide redirect_url\n    \"redirect_url\": \"https://showkat.innovatedemo.com/inno-travel-tech/custom_modal.html\",\n    \"special_requests_notes\": \"n/a\",\n    \"agency_isd_code\": \"880\",\n    \"agency_contact_no\": \"1966330000\",\n    \"agency_email\": \"iam@saaqeb.com\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/create-booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"create-booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Booking Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tracking_id\": \"11169832285456125AFURW\",\n    \"booking_id\": \"HO2326OCAA2N\",\n    \"member_id\": \"1\" //user Login member_id\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/booking-details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"booking-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Issue Voucher",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_id\": \"1\", //user Login member_id\n    \"tracking_id\": \"11171387141905112YV252\",\n    \"price_change_accepted\": \"no\",  // yes or no\n    \"notes\": \"not required\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/issue-voucher",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"issue-voucher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_id\": \"1\", //user Login member_id\n    \"tracking_id\": \"11172396342008142KFPLK\",\n    \"reason\": \"not required\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/hotel/cancel-booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"hotel",
+								"cancel-booking"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "VISA - Own Contents",
+			"item": [
+				{
+					"name": "Available Country",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/service-visa/country-suggetion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-visa",
+								"country-suggetion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Available Visa Category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/service-visa/category-suggetion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-visa",
+								"category-suggetion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Visa Search",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"country_code\": \"\", //Set Null for all country example: TH, AE\r\n    \"visa_category\": \"\", //Set Null for all category example: tourist-visa, business-visa\r\n    \"guest_nationality\": \"BD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/service-visa/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-visa",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Visa Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"visa_seo_code\": \"india-tourist-visa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/service-visa/details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-visa",
+								"details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"member_id\": \"1\",\r\n    \"visa_seo_code\": \"thai-tourist-visa\",\r\n    \"visa_options\": [\r\n        {\r\n            \"visa_option_code\": \"job-holder\",\r\n            \"pax_id\": \"1\",\r\n            \"gender\": \"M\",\r\n            \"title\": \"Mr\",\r\n            \"first_name\": \"Showkat\",\r\n            \"last_name\": \"Ali\",\r\n            \"dob\": \"1993-10-24\",\r\n            \"doc_country\": \"BD\",\r\n            \"doc_no\": \"ER1212121\",\r\n            \"doc_dateofexpiry\": \"2030-04-25\",\r\n            \"isd_code\": \"880\",\r\n            \"contact_no\": \"1966330000\",\r\n            \"email_address\": \"test@test.com\",\r\n            \"attachment\": {\r\n                \"passport\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"picture\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"bank_solvency_certificate\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"bank_statement\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"birth_certificate\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"noc_certificate\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"nid\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"leave_letter\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"employee_student_id_card\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"spouse_passport\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"doctor_certificate\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"visiting_card\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\"\r\n            }\r\n        },\r\n        {\r\n            \"visa_option_code\": \"businessman\",\r\n            \"pax_id\": \"2\",\r\n            \"gender\": \"M\",\r\n            \"title\": \"Mr\",\r\n            \"first_name\": \"Nazmus\",\r\n            \"last_name\": \"Nayeem\",\r\n            \"dob\": \"1995-10-24\",\r\n            \"doc_country\": \"BD\",\r\n            \"doc_no\": \"ER1212121\",\r\n            \"doc_dateofexpiry\": \"2030-04-25\",\r\n            \"isd_code\": \"880\",\r\n            \"contact_no\": \"1966330000\",\r\n            \"email_address\": \"test@test.com\",\r\n            \"attachment\": {\r\n                \"passport\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"picture\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"bank_solvency_certificate\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"bank_statement\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"birth_certificate\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"noc_certificate\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"nid\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"leave_letter\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"employee_student_id_card\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"spouse_passport\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"doctor_certificate\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\",\r\n                \"visiting_card\": \"https://enterpise.s3.ap-southeast-1.amazonaws.com/profile_picture/profile_picture-1-3-1721194599-90880.jpg\"\r\n            }\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/service-visa/order",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-visa",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uid\": \"159617\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/service-visa/order-details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-visa",
+								"order-details"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tour Services - Own Contents",
+			"item": [
+				{
+					"name": "Available Country",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/service-tour/country-suggetion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-tour",
+								"country-suggetion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Available City",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"country_code\": \"\" //Set Null for all country example: TH, AE\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/service-tour/city-suggetion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-tour",
+								"city-suggetion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Available Tour Category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/service-tour/category-suggetion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-tour",
+								"category-suggetion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tour Search",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"country_code\": \"\", //Set Null for all country example: TH, AE\r\n    \"city_code\": \"\", //Set Null for all country example: Dubai, Dhaka\r\n    \"tour_category_code\": \"\", //Set Null for all category example: luxury, family\r\n    \"tour_name\": \"Dubai\" //Set Null for all category example: tourist-visa, business-visa\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/service-tour/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-tour",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tour Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tour_seo_code\": \"dubai-user-water-sea-world\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/service-tour/details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-tour",
+								"details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"member_id\": \"1\",\r\n    \"seo_code\": \"dubai-user-water-sea-world\",\r\n    \"options\": [\r\n        {\r\n            \"pax_id\": \"1\",\r\n            \"gender\": \"M\",\r\n            \"title\": \"Mr\",\r\n            \"first_name\": \"Showkat\",\r\n            \"last_name\": \"Ali\",\r\n            \"dob\": \"1993-10-24\",\r\n            \"doc_country\": \"BD\",\r\n            \"doc_no\": \"ER1212121\",\r\n            \"doc_dateofexpiry\": \"2030-04-25\",\r\n            \"isd_code\": \"880\",\r\n            \"contact_no\": \"1966330000\",\r\n            \"email_address\": \"test@test.com\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/service-tour/order",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-tour",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uid\": \"159617\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/service-tour/order-details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"service-tour",
+								"order-details"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "General - Bookings",
+			"item": [
+				{
+					"name": "Booking List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_id\": \"1\",\n    \"tracking_id\": \"\",\n    \"booking_id\": \"\", //booking_id\n    \"supplier_confirmation_id\": \"\", //supplier_confirmation_id\n    \"airlines_pnr\": \"\", //airlines_pnr\n    \"service_type\": \"FLIGHT\", //FLIGHT / HOTEL /TRANSFER/CAR/CRUISE/SIGHTSEEING/RAIL\n    \"generated_date_start\": \"2023-11-12\", //user Login member_id\n    \"generated_date_end\": \"2024-12-12\",\n    \"book_date_start\": \"\", //user Login member_id\n    \"book_date_end\": \"\", //user Login member_id\n    \"primary_guest_name\": \"\", //user Login member_id\n    \"primary_guest_contact_no\": \"\",\n    \"limit_data\": \"50\" //Show Last 50 Data\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking-list",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking-list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Booking List - Master Restricted Version",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_id\": \"1\",\n    \"tracking_id\": \"\",\n    \"booking_id\": \"\", //booking_id\n    \"supplier_confirmation_id\": \"\", //supplier_confirmation_id\n    \"airlines_pnr\": \"\", //airlines_pnr\n    \"service_type\": \"FLIGHT\", //FLIGHT / HOTEL /TRANSFER/CAR/CRUISE/SIGHTSEEING/RAIL\n    \"generated_date_start\": \"2023-11-12\", //user Login member_id\n    \"generated_date_end\": \"2024-12-12\",\n    \"book_date_start\": \"\", //user Login member_id\n    \"book_date_end\": \"\", //user Login member_id\n    \"primary_guest_name\": \"\", //user Login member_id\n    \"primary_guest_contact_no\": \"\",\n    \"limit_data\": \"50\" //Show Last 50 Data\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking-list-master",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking-list-master"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Booking Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_id\": \"1\",\n    \"tracking_id\": \"11172682700108142Q1KKM\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking-details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Voucher By Method",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_id\": \"1\",\n    \"tracking_id\": \"11171965876535208D7Q2J\",\n    \"platform_type\": \"email\", // email, telegram, whatsapp, viber, sms\n    \"receiver_id\": \"iam@saaqeb.com\", // For WhastApp Mobile Number\n    \"name\": \"Nazmus Nayeem\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/tools/send-voucher-link",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tools",
+								"send-voucher-link"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Booking Payment Link",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_id\": \"1\",\n    \"tracking_id\": \"11170572534919518BAL9N\",\n    \"platform_type\": \"email\", // email, telegram, whatsapp, viber, sms\n    \"receiver_id\": \"iam@saaqeb.com\", // For WhastApp Mobile Number\n    \"name\": \"Nazmus Nayeem\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/tools/send-booking-payment-link",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tools",
+								"send-booking-payment-link"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Execute Success Payment Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"member_id\": \"1\",\n    \"tracking_id\": \"111707875665051126WWJH\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/execute-payment-booking",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"execute-payment-booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Force Booking Cancel - Refund Option",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tracking_id\": \"11171568125805112SYPBK\",\n    \"member_id\": \"1\",\n    \"refund_request\": \"no\",\n    \"refund_request_amount\": 100,\n    \"notify_partner\": \"no\",\n    \"remark\": \"bla bla bal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking-force-cancel",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking-force-cancel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Manual Refund Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tracking_id\": \"11171699260205112S3P7H\",\n    \"member_id\": \"1\",\n    \"refund_amount\": 10,\n    \"remark\": \"bla bla bal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/booking-refund-request",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"booking-refund-request"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Articles & Blog",
+			"item": [
+				{
+					"name": "Articles & Blog List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"category\": \"\",\r\n    \"articles_type\": \"\",\r\n    \"title\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/articles/list",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"articles",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Articles & Blog Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "{{apikey}}",
+								"type": "text"
+							},
+							{
+								"key": "secretecode",
+								"value": "{{secretecode}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"seo_title\": \"most-important-meta-and-html-tags-you-need-to-know-for-seo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/articles/details",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"articles",
+								"details"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://api.nakamura-tour.com",
+			"type": "string"
+		},
+		{
+			"key": "apikey",
+			"value": "XXXXXXXX",
+			"type": "string"
+		},
+		{
+			"key": "secretecode",
+			"value": "XXXXXXXX",
+			"type": "string"
+		},
+		{
+			"key": "checkout_url",
+			"value": "https://checkout.nakamura-tour.com",
+			"type": "string"
+		}
+	]
+}
