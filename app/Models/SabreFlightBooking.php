@@ -138,9 +138,12 @@ class SabreFlightBooking extends Model
 
                     $specialServices[] = [
                         "SSR_Code" => "INFT",
+
                         "Text" => str_replace(" ","/",str_replace(".","",$passangerTitles[$passangerIndex])."/".trim($firstName))."/".str_replace(" ","/",trim($lastNames[$passangerIndex]))." /".date("dMy", strtotime($dob[$passangerIndex])),
+                        // "Text" => "Sultana/Abeda /11Jan23",
+
                         "PersonName" => [
-                            "NameNumber" => (string) $passangerIndex+1 .".1"
+                            "NameNumber" => (string) 1.1 //(string) $passangerIndex+1 .".1" Infant have to attached with Adult
                         ],
                         "SegmentNumber" => "A"
                     ];
@@ -162,7 +165,7 @@ class SabreFlightBooking extends Model
             $personName[] = [
                 "GivenName" => str_replace(".","",$passangerTitles[$passangerIndex])." ".$firstName,
                 "Surname" => $lastNames[$passangerIndex],
-                "NameNumber" => (string) $passangerIndex+1 .".1",
+                "NameNumber" => (string) $passangerIndex+1 .".1", //Infant have to attached with Adult but not here
                 "Infant" => $passangerTypes[$passangerIndex] == 'INF' ? true : false,
                 "NameReference" => $nameReference,
                 "PassengerType" => $passengerTypeForPersonName,
@@ -177,22 +180,22 @@ class SabreFlightBooking extends Model
                     'Type' => "P",
                 ],
                 "PersonName" => [
-                    'Gender' => ($passangerTitles[$passangerIndex] == 'Mr.' || $passangerTitles[$passangerIndex] == 'Mstr.') ? "M" : "F",
+                    'Gender' => ($passangerTitles[$passangerIndex] == 'Mr.' || $passangerTitles[$passangerIndex] == 'Mstr.') ? "M" : ($passangerTypes[$passangerIndex] != 'INF' ? "F" : "FI"),
                     'GivenName' => str_replace(".","",$passangerTitles[$passangerIndex])." ".$firstName,
                     'Surname' => $lastNames[$passangerIndex],
                     'DateOfBirth' => (string) $dob[$passangerIndex],
-                    'NameNumber' => (string) $passangerIndex+1 .".1",
+                    'NameNumber' => $passangerTypes[$passangerIndex] != 'INF' ? (string) $passangerIndex+1 .".1" : (string) 1.1, //Infant have to attached with Adult
                 ],
                 "SegmentNumber" => "A"
             ];
 
             $secureFlights[] = [
                 "PersonName" => [
-                    'Gender' => ($passangerTitles[$passangerIndex] == 'Mr.' || $passangerTitles[$passangerIndex] == 'Mstr.') ? "M" : "F",
+                    'Gender' => ($passangerTitles[$passangerIndex] == 'Mr.' || $passangerTitles[$passangerIndex] == 'Mstr.') ? "M" : ($passangerTypes[$passangerIndex] != 'INF' ? "F" : "FI"),
                     'GivenName' => str_replace(".","",$passangerTitles[$passangerIndex])." ".$firstName,
                     'Surname' => $lastNames[$passangerIndex],
                     'DateOfBirth' => (string) $dob[$passangerIndex],
-                    'NameNumber' => (string) $passangerIndex+1 .".1",
+                    'NameNumber' => $passangerTypes[$passangerIndex] != 'INF' ? (string) $passangerIndex+1 .".1" : (string) 1.1, //Infant have to attached with Adult
                 ],
                 "SegmentNumber" => "A",
                 "VendorPrefs" => [
