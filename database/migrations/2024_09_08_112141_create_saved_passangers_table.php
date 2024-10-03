@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('last_name')->nullable();
             $table->string('type')->comment('Adult/Child/Infant')->nullable();
             $table->string('dob')->nullable();
+            $table->string('age')->nullable();
             $table->tinyInteger('document_type')->comment('1=>Passport; 2=>National ID')->nullable();
             $table->string('document_no')->nullable();
             $table->string('document_expire_date')->nullable();

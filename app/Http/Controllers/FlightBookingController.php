@@ -47,7 +47,7 @@ class FlightBookingController extends Controller
             $status = 0;
         }
 
-        DB::transaction(function () use ($request, $bookinPnrID, $status, $bookingResponse) {
+        // DB::transaction(function () use ($request, $bookinPnrID, $status, $bookingResponse) {
 
             // fetching price using session for security (not from hidden field)
             $revlidatedData = session('revlidatedData');
@@ -152,10 +152,9 @@ class FlightBookingController extends Controller
 
             foreach($request->first_name as $passangerIndex => $firstName){
 
-                if($request->save_passanger[$passangerIndex]){
+                if(in_array($passangerIndex, $request->save_passanger)){
 
-                    $savedPassanger = DB::table('saved_passangers')
-                                        ->where([
+                    $savedPassanger = SavedPassanger::where([
                                             ['first_name', $firstName],
                                             ['last_name', $request->last_name[$passangerIndex]],
                                             ['dob', '=', $request->dob[$passangerIndex]]
@@ -173,6 +172,7 @@ class FlightBookingController extends Controller
                     $savedPassanger->first_name = $firstName;
                     $savedPassanger->last_name = $request->last_name[$passangerIndex];
                     $savedPassanger->dob = $request->dob[$passangerIndex];
+                    $savedPassanger->age = str_pad($request->age[$passangerIndex],2,"0",STR_PAD_LEFT);
                     $savedPassanger->document_type = $request->document_type[$passangerIndex];
                     $savedPassanger->document_no = $request->document_no[$passangerIndex];
                     $savedPassanger->document_expire_date = $request->document_expire_date[$passangerIndex];
@@ -203,7 +203,7 @@ class FlightBookingController extends Controller
                 ]);
             }
 
-        }, 5);
+        // }, 5);
 
         session()->forget(['adult', 'child', 'infant', 'revlidatedData']);
 

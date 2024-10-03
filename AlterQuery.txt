@@ -13,3 +13,4 @@ ALTER TABLE `sabre_gds_configs` ADD `pcc` VARCHAR(255) NULL DEFAULT NULL COMMENT
 =========01-10-2024========
 ALTER TABLE `flight_passangers` ADD `age` VARCHAR(255) NULL DEFAULT NULL COMMENT 'In years for Child & in months for infant' AFTER `dob`;
 ALTER TABLE `flight_passangers` ADD `email` VARCHAR(255) NULL DEFAULT NULL AFTER `last_name`, ADD `phone` VARCHAR(255) NULL DEFAULT NULL AFTER `email`;
+ALTER TABLE `saved_passangers` ADD `age` VARCHAR(255) NULL DEFAULT NULL AFTER `dob`;

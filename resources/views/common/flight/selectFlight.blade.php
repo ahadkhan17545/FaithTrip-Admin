@@ -1,7 +1,22 @@
 @extends('master')
 
 @section('header_css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
+        .select2-container--default .select2-selection--single .select2-selection__arrow b::before{
+            content: "" !important;
+        }
+        .select2{
+            border: 1px solid lightgray !important;
+            border-radius: 4px !important;
+            padding: 4px !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow{
+            top: 4px !important;
+            right: 4px !important;
+        }
+
         /* live search css start */
         ul.live_search_box {
             position: absolute;
@@ -455,6 +470,49 @@
                             @for ($i = 1; $i <= session('adult'); $i++)
                                 <hr>
                                 <h6 class="fw-bold mb-4">Please fill the information for ADT - {{ $i }}</h6>
+
+                                @php
+                                    $savedPassangers = DB::table('saved_passangers')
+                                                        ->where('type', 'ADT')
+                                                        ->where('saved_by', Auth::user()->id)
+                                                        ->orderBy('first_name', 'asc')
+                                                        ->get();
+                                @endphp
+
+                                <div class="form-row mt-3">
+                                    <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                        <label style="line-height: 35px; font-weight: 600">Select From List</label>
+                                        <span class="text-danger"></span>
+                                    </div>
+                                    <div class="col-12 col-md-8 mb-3 mb-sm-3">
+                                        <div class="input-select position-relative">
+                                            <select id="select_passenger_{{$passangerTitleIndex}}" class="mySelect2" onchange="fillUpCustomerDetails(this, {{$passangerTitleIndex}})">
+                                                <option value="">Select Customer</option>
+                                                @foreach($savedPassangers as $savedPassanger)
+                                                <option
+
+                                                    value="{{$savedPassanger->id}}"
+                                                    data_title="{{$savedPassanger->title}}"
+                                                    data_first_name="{{$savedPassanger->first_name}}"
+                                                    data_last_name="{{$savedPassanger->last_name}}"
+                                                    data_email="{{$savedPassanger->email}}"
+                                                    data_contact="{{$savedPassanger->contact}}"
+                                                    data_dob="{{$savedPassanger->dob}}"
+                                                    data_age="{{$savedPassanger->age}}"
+                                                    data_document_type="{{$savedPassanger->document_type}}"
+                                                    data_document_no="{{$savedPassanger->document_no}}"
+                                                    data_document_expire_date="{{$savedPassanger->document_expire_date}}"
+                                                    data_document_issue_country="{{$savedPassanger->document_issue_country}}"
+                                                    data_nationality="{{$savedPassanger->nationality}}"
+                                                    data_frequent_flyer_no="{{$savedPassanger->frequent_flyer_no}}"
+
+                                                >{{$savedPassanger->title}} {{$savedPassanger->first_name}} {{$savedPassanger->last_name}} ({{$savedPassanger->dob}})</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <input type="hidden" name="passanger_type[]" value="ADT">
 
                                 <div class="form-row mt-3">
@@ -479,27 +537,46 @@
                                     </div>
 
                                 </div>
+
                                 <div class="form-row mt-3">
                                     <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                        <label style="line-height: 35px">First Name</label>
+                                        <label style="line-height: 35px">Passenger Name</label>
                                         <span class="text-danger">*</span>
                                     </div>
                                     <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                        <div class="input-select position-relative">
-                                            <input name="first_name[]" id="first_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="First name" required="">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="input-select position-relative">
+                                                    <input name="first_name[]" id="first_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="First name" required="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input name="last_name[]" id="last_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="Last name" required="">
+                                            </div>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div
                                         class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                        <label style="line-height: 35px">Last Name</label>
-                                        <span class="text-danger">*</span>
+                                        <label style="line-height: 35px">Contact Info</label>
+                                        <span class="text-danger"></span>
                                     </div>
                                     <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                        <input name="last_name[]" id="last_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="Last name" required="">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="input-select position-relative">
+                                                    <input name="email[]" id="email_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="example@email.com">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input name="phone[]" id="phone_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="Phone No.">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                                 <div class="form-row">
                                     <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
                                         <label style="line-height: 35px">Date of birth</label>
@@ -592,6 +669,49 @@
                             @for ($i = 1; $i <= session('child'); $i++)
                                 <hr>
                                 <h6 class="fw-bold mb-4">Please fill the information for CHD - {{ $i }}</h6>
+
+                                @php
+                                    $savedPassangers = DB::table('saved_passangers')
+                                                        ->where('type', 'CNN')
+                                                        ->where('saved_by', Auth::user()->id)
+                                                        ->orderBy('first_name', 'asc')
+                                                        ->get();
+                                @endphp
+
+                                <div class="form-row mt-3">
+                                    <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                        <label style="line-height: 35px; font-weight: 600">Select From List</label>
+                                        <span class="text-danger"></span>
+                                    </div>
+                                    <div class="col-12 col-md-8 mb-3 mb-sm-3">
+                                        <div class="input-select position-relative">
+                                            <select id="select_passenger_{{$passangerTitleIndex}}" class="mySelect2" onchange="fillUpCustomerDetails(this, {{$passangerTitleIndex}})">
+                                                <option value="">Select Customer</option>
+                                                @foreach($savedPassangers as $savedPassanger)
+                                                <option
+
+                                                    value="{{$savedPassanger->id}}"
+                                                    data_title="{{$savedPassanger->title}}"
+                                                    data_first_name="{{$savedPassanger->first_name}}"
+                                                    data_last_name="{{$savedPassanger->last_name}}"
+                                                    data_email="{{$savedPassanger->email}}"
+                                                    data_contact="{{$savedPassanger->contact}}"
+                                                    data_dob="{{$savedPassanger->dob}}"
+                                                    data_age="{{$savedPassanger->age}}"
+                                                    data_document_type="{{$savedPassanger->document_type}}"
+                                                    data_document_no="{{$savedPassanger->document_no}}"
+                                                    data_document_expire_date="{{$savedPassanger->document_expire_date}}"
+                                                    data_document_issue_country="{{$savedPassanger->document_issue_country}}"
+                                                    data_nationality="{{$savedPassanger->nationality}}"
+                                                    data_frequent_flyer_no="{{$savedPassanger->frequent_flyer_no}}"
+
+                                                >{{$savedPassanger->title}} {{$savedPassanger->first_name}} {{$savedPassanger->last_name}} ({{$savedPassanger->dob}})</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <input type="hidden" name="passanger_type[]" value="CHD">
 
                                 <div class="form-row mt-3">
@@ -612,27 +732,46 @@
                                     </div>
 
                                 </div>
+
                                 <div class="form-row mt-3">
                                     <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                        <label style="line-height: 35px">First Name</label>
+                                        <label style="line-height: 35px">Passenger Name</label>
                                         <span class="text-danger">*</span>
                                     </div>
                                     <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                        <div class="input-select position-relative">
-                                            <input name="first_name[]" id="first_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="First name" required="">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="input-select position-relative">
+                                                    <input name="first_name[]" id="first_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="First name" required="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input name="last_name[]" id="last_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="Last name" required="">
+                                            </div>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div
                                         class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                        <label style="line-height: 35px">Last Name</label>
-                                        <span class="text-danger">*</span>
+                                        <label style="line-height: 35px">Contact Info</label>
+                                        <span class="text-danger"></span>
                                     </div>
                                     <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                        <input name="last_name[]" id="last_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="Last name" required="">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="input-select position-relative">
+                                                    <input name="email[]" id="email_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="example@email.com">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input name="phone[]" id="phone_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="Phone No.">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                                 <div class="form-row">
                                     <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
                                         <label style="line-height: 35px">Date of birth</label>
@@ -731,6 +870,49 @@
                             @for ($i = 1; $i <= session('infant'); $i++)
                                 <hr>
                                 <h6 class="fw-bold mb-4">Please fill the information for INF - {{ $i }}</h6>
+
+                                @php
+                                    $savedPassangers = DB::table('saved_passangers')
+                                                        ->where('type', 'INF')
+                                                        ->where('saved_by', Auth::user()->id)
+                                                        ->orderBy('first_name', 'asc')
+                                                        ->get();
+                                @endphp
+
+                                <div class="form-row mt-3">
+                                    <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
+                                        <label style="line-height: 35px; font-weight: 600">Select From List</label>
+                                        <span class="text-danger"></span>
+                                    </div>
+                                    <div class="col-12 col-md-8 mb-3 mb-sm-3">
+                                        <div class="input-select position-relative">
+                                            <select id="select_passenger_{{$passangerTitleIndex}}" class="mySelect2" onchange="fillUpCustomerDetails(this, {{$passangerTitleIndex}})">
+                                                <option value="">Select Customer</option>
+                                                @foreach($savedPassangers as $savedPassanger)
+                                                <option
+
+                                                    value="{{$savedPassanger->id}}"
+                                                    data_title="{{$savedPassanger->title}}"
+                                                    data_first_name="{{$savedPassanger->first_name}}"
+                                                    data_last_name="{{$savedPassanger->last_name}}"
+                                                    data_email="{{$savedPassanger->email}}"
+                                                    data_contact="{{$savedPassanger->contact}}"
+                                                    data_dob="{{$savedPassanger->dob}}"
+                                                    data_age="{{$savedPassanger->age}}"
+                                                    data_document_type="{{$savedPassanger->document_type}}"
+                                                    data_document_no="{{$savedPassanger->document_no}}"
+                                                    data_document_expire_date="{{$savedPassanger->document_expire_date}}"
+                                                    data_document_issue_country="{{$savedPassanger->document_issue_country}}"
+                                                    data_nationality="{{$savedPassanger->nationality}}"
+                                                    data_frequent_flyer_no="{{$savedPassanger->frequent_flyer_no}}"
+
+                                                >{{$savedPassanger->title}} {{$savedPassanger->first_name}} {{$savedPassanger->last_name}} ({{$savedPassanger->dob}})</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <input type="hidden" name="passanger_type[]" value="INF">
 
                                 <div class="form-row mt-3">
@@ -751,27 +933,46 @@
                                     </div>
 
                                 </div>
+
                                 <div class="form-row mt-3">
                                     <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                        <label style="line-height: 35px">First Name</label>
+                                        <label style="line-height: 35px">Passenger Name</label>
                                         <span class="text-danger">*</span>
                                     </div>
                                     <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                        <div class="input-select position-relative">
-                                            <input name="first_name[]" id="first_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="First name" required="">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="input-select position-relative">
+                                                    <input name="first_name[]" id="first_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="First name" required="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input name="last_name[]" id="last_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="Last name" required="">
+                                            </div>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div
                                         class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                        <label style="line-height: 35px">Last Name</label>
-                                        <span class="text-danger">*</span>
+                                        <label style="line-height: 35px">Contact Info</label>
+                                        <span class="text-danger"></span>
                                     </div>
                                     <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                        <input name="last_name[]" id="last_name_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="Last name" required="">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="input-select position-relative">
+                                                    <input name="email[]" id="email_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="example@email.com">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input name="phone[]" id="phone_{{$passangerTitleIndex}}" type="text" class="form-control" placeholder="Phone No.">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                                 <div class="form-row">
                                     <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
                                         <label style="line-height: 35px">Date of birth</label>
@@ -905,6 +1106,60 @@
 
 @section('footer_js')
     <script>
+
+        $(document).ready(function() {
+            $('.mySelect2').select2();
+        });
+
+        function fillUpCustomerDetails(selectElement, id){
+
+            var selectedValue = selectElement.value;
+            var savetitle = selectElement.options[selectElement.selectedIndex].getAttribute('data_title');
+            var saveFirstName = selectElement.options[selectElement.selectedIndex].getAttribute('data_first_name');
+            var savedLastName = selectElement.options[selectElement.selectedIndex].getAttribute('data_last_name');
+            var savedEmail = selectElement.options[selectElement.selectedIndex].getAttribute('data_email');
+            var savedContact = selectElement.options[selectElement.selectedIndex].getAttribute('data_contact');
+            var savedDob = selectElement.options[selectElement.selectedIndex].getAttribute('data_dob');
+            var savedAge = selectElement.options[selectElement.selectedIndex].getAttribute('data_age');
+            var savedDocumentType = selectElement.options[selectElement.selectedIndex].getAttribute('data_document_type');
+            var savedDocumentNo = selectElement.options[selectElement.selectedIndex].getAttribute('data_document_no');
+            var savedDocumentIssueCountry = selectElement.options[selectElement.selectedIndex].getAttribute('data_document_issue_country');
+            var savedDocumentExpireDate = selectElement.options[selectElement.selectedIndex].getAttribute('data_document_expire_date');
+            var savedNationality = selectElement.options[selectElement.selectedIndex].getAttribute('data_nationality');
+            var savedFrequentFlyerNo = selectElement.options[selectElement.selectedIndex].getAttribute('data_frequent_flyer_no');
+
+            if(savetitle == 'Mr.'){
+                $("#passanger_title_"+id+"_mr").prop('checked', true);
+            }
+            if(savetitle == 'Mrs.'){
+                $("#passanger_title_"+id+"_mrs").prop('checked', true);
+            }
+            if(savetitle == 'Ms.'){
+                $("#passanger_title_"+id+"_ms").prop('checked', true);
+            }
+            if(savetitle == 'Mstr.'){
+                $("#passanger_title_"+id+"_mstr").prop('checked', true);
+            }
+            if(savetitle == 'Miss.'){
+                $("#passanger_title_"+id+"_miss").prop('checked', true);
+            }
+
+            $("#first_name_"+id).val(saveFirstName);
+            $("#last_name_"+id).val(savedLastName);
+            $("#email_"+id).val(savedEmail);
+            $("#phone_"+id).val(savedContact);
+            $("#dob_"+id).val(savedDob);
+            $("#age_"+id).val(savedAge);
+            $("#document_type_"+id).val(savedDocumentType);
+            $("#document_no_"+id).val(savedDocumentNo);
+            $("#document_expire_date_"+id).val(savedDocumentExpireDate);
+            $("#document_issue_country_"+id).val(savedDocumentIssueCountry);
+            $("#nationality_"+id).val(savedNationality);
+            $("#frequent_flyer_no_"+id).val(savedFrequentFlyerNo);
+
+            // alert(id);
+        }
+
         function liveSearchPassanger(){
             var searchKeyword = $("#search_keyword").val();
 
@@ -972,6 +1227,8 @@
             $("#search_keyword").val(contact);
             $("#first_name_0").val(firstName);
             $("#last_name_0").val(lastName);
+            $("#email_0").val(email);
+            $("#phone_0").val(contact);
             $("#dob_0").val(dob);
             $("#document_type_0").val(documentType);
             $("#document_no_0").val(documentNo);

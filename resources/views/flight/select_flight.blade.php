@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('header_css')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
         .select2-container--default .select2-selection--single .select2-selection__arrow b::before{
@@ -464,8 +464,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div
-                                    class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-2 mb-md-0 pr-3 px-3">
+                                <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-2 mb-md-0 pr-3 px-3">
                                     <label for="traveller_email" style="line-height: 35px">Traveler Email</label>
                                     <span class="text-danger">*</span>
                                 </div>
@@ -519,6 +518,7 @@
                                                         data_email="{{$savedPassanger->email}}"
                                                         data_contact="{{$savedPassanger->contact}}"
                                                         data_dob="{{$savedPassanger->dob}}"
+                                                        data_age="{{$savedPassanger->age}}"
                                                         data_document_type="{{$savedPassanger->document_type}}"
                                                         data_document_no="{{$savedPassanger->document_no}}"
                                                         data_document_expire_date="{{$savedPassanger->document_expire_date}}"
@@ -704,10 +704,11 @@
                                     </div>
 
                                     <div class="form-row">
-                                        <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
-                                        </div>
+                                        <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3"></div>
                                         <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                            <label class="d-block mt-2"><input type="checkbox" name="save_passanger[]" value="1"> Save Passenger Information</label>
+                                            <label class="d-block mt-2">
+                                                <input type="checkbox" name="save_passanger[]" value="{{ $passangerTitleIndex }}"> Save Passenger Information
+                                            </label>
                                         </div>
                                     </div>
 
@@ -767,6 +768,7 @@
             var savedEmail = selectElement.options[selectElement.selectedIndex].getAttribute('data_email');
             var savedContact = selectElement.options[selectElement.selectedIndex].getAttribute('data_contact');
             var savedDob = selectElement.options[selectElement.selectedIndex].getAttribute('data_dob');
+            var savedAge = selectElement.options[selectElement.selectedIndex].getAttribute('data_age');
             var savedDocumentType = selectElement.options[selectElement.selectedIndex].getAttribute('data_document_type');
             var savedDocumentNo = selectElement.options[selectElement.selectedIndex].getAttribute('data_document_no');
             var savedDocumentIssueCountry = selectElement.options[selectElement.selectedIndex].getAttribute('data_document_issue_country');
@@ -795,6 +797,7 @@
             $("#email_"+id).val(savedEmail);
             $("#phone_"+id).val(savedContact);
             $("#dob_"+id).val(savedDob);
+            $("#age_"+id).val(savedAge);
             $("#document_type_"+id).val(savedDocumentType);
             $("#document_no_"+id).val(savedDocumentNo);
             $("#document_expire_date_"+id).val(savedDocumentExpireDate);
@@ -842,43 +845,45 @@
             var lastName = $("#passanger_last_name__"+index).val();
             var email = $("#passanger_email_"+index).val();
             var contact = $("#passanger_contact_"+index).val();
-            // var type = $("#passanger_type_"+index).val();
-            // var dob = $("#passanger_dob_"+index).val();
-            // var documentType = $("#passanger_document_type_"+index).val();
-            // var documentNo = $("#passanger_document_no_"+index).val();
-            // var documentExpireDate = $("#passanger_document_expire_date_"+index).val();
-            // var documentIssueCountry = $("#passanger_document_issue_country_"+index).val();
-            // var nationality = $("#passanger_nationality_"+index).val();
-            // var frequentFlyerNo = $("#passanger_frequent_flyer_no_"+index).val();
+            var type = $("#passanger_type_"+index).val();
+            var dob = $("#passanger_dob_"+index).val();
+            var documentType = $("#passanger_document_type_"+index).val();
+            var documentNo = $("#passanger_document_no_"+index).val();
+            var documentExpireDate = $("#passanger_document_expire_date_"+index).val();
+            var documentIssueCountry = $("#passanger_document_issue_country_"+index).val();
+            var nationality = $("#passanger_nationality_"+index).val();
+            var frequentFlyerNo = $("#passanger_frequent_flyer_no_"+index).val();
 
-            // if(title == 'Mr.'){
-            //     $("#passanger_title_0_mr").prop('checked', true);
-            // }
-            // if(title == 'Mrs.'){
-            //     $("#passanger_title_0_mrs").prop('checked', true);
-            // }
-            // if(title == 'Ms.'){
-            //     $("#passanger_title_0_ms").prop('checked', true);
-            // }
-            // if(title == 'Mstr.'){
-            //     $("#passanger_title_0_mstr").prop('checked', true);
-            // }
-            // if(title == 'Miss.'){
-            //     $("#passanger_title_0_miss").prop('checked', true);
-            // }
+            if(title == 'Mr.'){
+                $("#passanger_title_0_mr").prop('checked', true);
+            }
+            if(title == 'Mrs.'){
+                $("#passanger_title_0_mrs").prop('checked', true);
+            }
+            if(title == 'Ms.'){
+                $("#passanger_title_0_ms").prop('checked', true);
+            }
+            if(title == 'Mstr.'){
+                $("#passanger_title_0_mstr").prop('checked', true);
+            }
+            if(title == 'Miss.'){
+                $("#passanger_title_0_miss").prop('checked', true);
+            }
 
             $("#traveller_name").val(title+" "+firstName+" "+lastName);
             $("#traveller_email").val(email);
             $("#search_keyword").val(contact);
-            // $("#first_name_0").val(firstName);
-            // $("#last_name_0").val(lastName);
-            // $("#dob_0").val(dob);
-            // $("#document_type_0").val(documentType);
-            // $("#document_no_0").val(documentNo);
-            // $("#document_expire_date_0").val(documentExpireDate);
-            // $("#document_issue_country_0").val(documentIssueCountry);
-            // $("#nationality_0").val(nationality);
-            // $("#frequent_flyer_no_0").val(frequentFlyerNo);
+            $("#first_name_0").val(firstName);
+            $("#last_name_0").val(lastName);
+            $("#email_0").val(email);
+            $("#phone_0").val(contact);
+            $("#dob_0").val(dob);
+            $("#document_type_0").val(documentType);
+            $("#document_no_0").val(documentNo);
+            $("#document_expire_date_0").val(documentExpireDate);
+            $("#document_issue_country_0").val(documentIssueCountry);
+            $("#nationality_0").val(nationality);
+            $("#frequent_flyer_no_0").val(frequentFlyerNo);
         }
     </script>
 @endsection

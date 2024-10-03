@@ -3,10 +3,8 @@ Task:
 
 ======04-08-2024=======
 1. check last ticketing time from api response and cancel the booking with that time
-2. Improve Ticket Design (check some new desing from online)
 3. Net Price and Gross prices for b2b
 4. Send email to client after booking/ticket issue/cancel
-5. Show Enoguht Details at the time of Flight Booking
 6. Manage System user (Admin can his own system user and b2b user can add his own system user)
 7. Make all the tables responsive (for Mobile Screens)
 8. Remove Company profit form report of b2b user
@@ -39,5 +37,4 @@ Question for Sabre
 
 
 # Child soho booking hochhe na... (may be CNN jachhe sejonno)
-# sob gula passanger er name auto fillup hobe (Like scheenshot given in group)
 # Mr/Miss ei name er problem ta theke geche
