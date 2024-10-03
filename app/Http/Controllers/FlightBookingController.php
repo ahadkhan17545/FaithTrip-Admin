@@ -152,7 +152,7 @@ class FlightBookingController extends Controller
 
             foreach($request->first_name as $passangerIndex => $firstName){
 
-                if(in_array($passangerIndex, $request->save_passanger)){
+                if(is_array($request->save_passanger) && count($request->save_passanger) > 0 && in_array($passangerIndex, $request->save_passanger)){
 
                     $savedPassanger = SavedPassanger::where([
                                             ['first_name', $firstName],
