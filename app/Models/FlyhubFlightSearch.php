@@ -192,16 +192,16 @@ class FlyhubFlightSearch extends Model
                 $searchResults[$index]['penalty_applicable'] = isset($item['fare_rules']['refundable_data']) && isset($item['fare_rules']['refundable_data'][0]['PenaltyApplies']) ? $item['fare_rules']['refundable_data'][0]['PenaltyApplies'] : null;
 
                 // pricing
-                if(isset($item['margin'])){
-                    $searchResults[$index]['base_fare_amount'] = $item['margin']['supplier']['base_fare']['amount'];
-                    $searchResults[$index]['total_tax_amount'] = $item['margin']['supplier']['tax']['amount'];
-                    $searchResults[$index]['total_fare'] = $item['margin']['supplier']['total']['amount'];
-                    $searchResults[$index]['currency'] = $item['margin']['supplier']['total']['currency'];
+                if(isset($item['price']['sell'])){
+                    $searchResults[$index]['base_fare_amount'] = $item['price']['sell']['base_fare'];
+                    $searchResults[$index]['total_tax_amount'] = $item['price']['sell']['tax'];
+                    $searchResults[$index]['total_fare'] = $item['price']['sell']['total'];
+                    $searchResults[$index]['currency'] = $item['price']['sell']['currency'];
                 } else {
-                    $searchResults[$index]['base_fare_amount'] = $item['price']['supplier']['base_fare'];
-                    $searchResults[$index]['total_tax_amount'] = $item['price']['supplier']['tax'];
-                    $searchResults[$index]['total_fare'] = $item['price']['supplier']['total'];
-                    $searchResults[$index]['currency'] = $item['price']['supplier']['currency'];
+                    $searchResults[$index]['base_fare_amount'] = $item['price']['base_fare'];
+                    $searchResults[$index]['total_tax_amount'] = $item['price']['tax'];
+                    $searchResults[$index]['total_fare'] = $item['price']['total'];
+                    $searchResults[$index]['currency'] = $item['price']['currency'];
                 }
 
 

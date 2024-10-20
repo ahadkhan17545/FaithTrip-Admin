@@ -10,15 +10,21 @@ class FlyhubFlightRevalidate extends Model
     use HasFactory;
 
     public static function flightRevalidate($sessionIndex){
+
         $revalidatedResult = session('search_results');
         $data = $revalidatedResult[$sessionIndex];
 
-        $postFields = array(
+        $postFields = [
             "member_id" => "1",
-            "tracking_id" => $data['flyhub_tracking_id'],
-            "flight_key" => $data['flyhub_flight_key'],
-            "result_type" => "general"
-        );
+            "result_type" => "group", //general
+            "data" => [
+                [
+                    "tracking_id" => $data['flyhub_tracking_id'],
+                    "flight_key" => $data['flyhub_flight_key'],
+                    "brand_option" => "11-1"
+                ]
+            ]
+        ];
 
         // Getting credentials from GDS Config
         $flyhubGds = FlyhubGdsConfig::where('id', 1)->first();
@@ -43,10 +49,6 @@ class FlyhubFlightRevalidate extends Model
         ));
         $response = curl_exec($curl);
         curl_close($curl);
-
-
-        // echo $response;
-        // exit();
 
 
         $rawValidatedResult = json_decode($response, true);
@@ -234,8 +236,6 @@ class FlyhubFlightRevalidate extends Model
                 }
                 $revalidatedResult['return_segments'] = $segmentsArray;
             }
-            // return segments end
-
         }
         // custom data set
 
