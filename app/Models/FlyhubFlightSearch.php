@@ -32,8 +32,8 @@ class FlyhubFlightSearch extends Model
         $non_stop_flight = "any";
         $baggage_option = "any";
         $booking_class = $cabinClass;
-        $supplier_uid = "all";
-        $partner_id = "1";
+        // $supplier_uid = "all"; //it was needed in previous api
+        // $partner_id = "1"; //it was needed in previous api
         $language = "en";
 
 
@@ -70,8 +70,8 @@ class FlyhubFlightSearch extends Model
             "non_stop_flight" => $non_stop_flight,
             "baggage_option" => $baggage_option,
             "booking_class" => $booking_class,
-            "supplier_uid" => $supplier_uid,
-            "partner_id" => $partner_id,
+            // "supplier_uid" => $supplier_uid, //it was needed in previous api
+            // "partner_id" => $partner_id, //it was needed in previous api
             "language" => $language,
         ];
 
