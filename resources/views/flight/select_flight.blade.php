@@ -411,7 +411,7 @@
 
 
 
-                <form id="submit_ticket_reservation_info" action="{{ url('create/pnr/with/booking') }}" method="POST"
+                <form id="submit_ticket_reservation_info" action="{{ url('create/pnr/with/booking/sabre') }}" method="POST"
                     class="on-submit">
                     @csrf
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\FlightSearchController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\SabreGdsConfig;
+use App\Models\SabreFlightSearch;
 use DateTime;
 
 class SabreFlightRevalidate extends Model
@@ -247,10 +248,10 @@ class SabreFlightRevalidate extends Model
         if (session('access_token') && $expiresIn) {
             $tokenExpireDate = (new DateTime())->setTimestamp(time() + $expiresIn)->format('Y-m-d');
             if (date("Y-m-d") >= $tokenExpireDate) {
-                FlightSearchController::generateAccessToken();
+                SabreFlightSearch::generateAccessToken();
             }
         } else {
-            FlightSearchController::generateAccessToken();
+            SabreFlightSearch::generateAccessToken();
         }
 
         // Determine API endpoint

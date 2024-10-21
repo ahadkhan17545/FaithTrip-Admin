@@ -138,16 +138,16 @@ class FlyhubFlightRevalidate extends Model
             $revalidatedResult['penalty_applicable'] = isset($rawValidatedResult['data']['fare_rules']['refundable_data']) && isset($rawValidatedResult['data']['fare_rules']['refundable_data'][0]['PenaltyApplies']) ? $rawValidatedResult['data']['fare_rules']['refundable_data'][0]['PenaltyApplies'] : null;
 
             // pricing
-            if(isset($rawValidatedResult['data']['margin'])){
-                $revalidatedResult['base_fare_amount'] = $rawValidatedResult['data']['margin']['supplier']['base_fare']['amount'];
-                $revalidatedResult['total_tax_amount'] = $rawValidatedResult['data']['margin']['supplier']['tax']['amount'];
-                $revalidatedResult['total_fare'] = $rawValidatedResult['data']['margin']['supplier']['total']['amount'];
-                $revalidatedResult['currency'] = $rawValidatedResult['data']['margin']['supplier']['total']['currency'];
+            if(isset($rawValidatedResult['data']['price']['sell'])){
+                $revalidatedResult['base_fare_amount'] = $rawValidatedResult['data']['price']['sell']['base_fare'];
+                $revalidatedResult['total_tax_amount'] = $rawValidatedResult['data']['price']['sell']['tax'];
+                $revalidatedResult['total_fare'] = $rawValidatedResult['data']['price']['sell']['total'];
+                $revalidatedResult['currency'] = $rawValidatedResult['data']['price']['sell']['currency'];
             } else {
-                $revalidatedResult['base_fare_amount'] = $rawValidatedResult['data']['price']['supplier']['base_fare'];
-                $revalidatedResult['total_tax_amount'] = $rawValidatedResult['data']['price']['supplier']['tax'];
-                $revalidatedResult['total_fare'] = $rawValidatedResult['data']['price']['supplier']['total'];
-                $revalidatedResult['currency'] = $rawValidatedResult['data']['price']['supplier']['currency'];
+                $revalidatedResult['base_fare_amount'] = $rawValidatedResult['data']['price']['base_fare'];
+                $revalidatedResult['total_tax_amount'] = $rawValidatedResult['data']['price']['tax'];
+                $revalidatedResult['total_fare'] = $rawValidatedResult['data']['price']['total'];
+                $revalidatedResult['currency'] = $rawValidatedResult['data']['price']['currency'];
             }
 
 
@@ -162,7 +162,7 @@ class FlyhubFlightRevalidate extends Model
                 $segmentsArray[$segmentIndex]['departure_airport_name'] = $route['origin_airport']['name'];
                 $segmentsArray[$segmentIndex]['departure_terminal'] = $route['origin_terminal'];
                 $segmentsArray[$segmentIndex]['departure_country_code'] = null;
-                $segmentsArray[$segmentIndex]['arrival_country_name'] = $route['origin_airport']['country'];
+                $segmentsArray[$segmentIndex]['departure_country_name'] = $route['origin_airport']['country'];
 
                 $segmentsArray[$segmentIndex]['arrival_datetime'] = $route['arrival_time'];
                 $segmentsArray[$segmentIndex]['arrival_city_code'] = null;

@@ -17,7 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('booked_by')->nullable()->comment('User Table ID');
             $table->double('b2b_comission')->comment('In Percentage')->default(0);
 
-            $table->string('pnr_id')->nullable()->comment('From Sabre');
+            $table->string('pnr_id')->nullable();
+            $table->string('airlines_pnr')->nullable();
             $table->string('booking_id')->nullable()->comment('From Sabre');
             $table->string('ticket_id')->nullable()->comment('From Sabre');
 

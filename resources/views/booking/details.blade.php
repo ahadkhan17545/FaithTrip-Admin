@@ -11,7 +11,9 @@
                             <h6 class="mb-0" style="font-size: 18px"><b>Flight Booking Details</b></h6>
                         </div>
                         <div class="col-lg-7 text-end">
+                            @if($flightBookingDetails->gds == 'Sabre')
                             <a href="{{url('booking/preview')}}/{{$flightBookingDetails->booking_no}}" class="btn btn-sm btn-primary d-inline-block"><i class="fa fa-print"></i> Booking Preview</a>
+                            @endif
 
                             @if($flightBookingDetails->status == 1)
                                 <a href="{{url('issue/flight/ticket')}}/{{$flightBookingDetails->pnr_id}}" class="btn btn-sm btn-success d-inline-block"><i class="fas fa-check"></i> Issue Ticket</a>
@@ -61,6 +63,10 @@
                                 <tr>
                                     <th>PNR ID </th>
                                     <td>: {{ $flightBookingDetails->pnr_id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Airlines PNR </th>
+                                    <td>: {{ $flightBookingDetails->airlines_pnr }}</td>
                                 </tr>
                                 <tr>
                                     <th>Name </th>

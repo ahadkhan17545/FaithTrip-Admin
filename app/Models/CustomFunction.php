@@ -27,8 +27,8 @@ class CustomFunction extends Model
         preg_match('/PT(\d+)H(\d+)M/', $duration, $matches);
 
         // Extract hours and minutes
-        $hours = $matches[1];
-        $minutes = $matches[2];
+        $hours = isset($matches[1]) ? $matches[1] : null;
+        $minutes = isset($matches[2]) ? $matches[2] : null;
 
         return array('hours' => $hours, 'minutes' => $minutes);
     }

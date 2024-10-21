@@ -416,7 +416,7 @@
                     @endphp
 
                     <input type="hidden" name="gds" value="Flyhub">
-                    <input type="hidden" name="gds_unique_id" value="SOOL">
+                    <input type="hidden" name="gds_unique_id" value="">
                     <input type="hidden" name="departure_date" value="{{$revalidatedData['departure_datetime']}}">
                     <input type="hidden" name="departure_location" value="{{$revalidatedData['departure_airport_code']}}">
                     <input type="hidden" name="arrival_location" value="{{$revalidatedData['arrival_airport_code']}}">
@@ -583,12 +583,17 @@
                                         <span class="text-danger">*</span>
                                     </div>
                                     <div class="col-12 col-md-8 mb-3 mb-sm-3">
-                                        <input required="" id="dob_{{$passangerTitleIndex}}" class="form-control" type="date"
-                                            placeholder="dd-mm-yyyy" name="dob[]" min="1900-01-01"
-                                            max="{{ date('Y-m-d') }}">
-                                        <input id="age_{{$passangerTitleIndex}}" class="form-control" type="hidden" value="18" name="age[]">
+                                        <div class="row g-3">
+                                            <div class="col">
+                                                <input required="" id="dob_{{$passangerTitleIndex}}" class="form-control" type="date"
+                                                placeholder="dd-mm-yyyy" name="dob[]" min="1900-01-01"
+                                                max="{{ date('Y-m-d') }}">
+                                            </div>
+                                            <input id="age_{{$passangerTitleIndex}}" class="form-control" type="hidden" value="18" name="age[]">
+                                        </div>
                                     </div>
                                 </div>
+
                                 <div class="form-row">
                                     <div
                                         class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3">
@@ -658,6 +663,15 @@
                                                     placeholder="Frequent Flyer No.">
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3"></div>
+                                    <div class="col-12 col-md-8 mb-3 mb-sm-3">
+                                        <label class="d-block mt-2">
+                                            <input type="checkbox" name="save_passanger[]" value="{{ $passangerTitleIndex }}"> Save Passenger Information
+                                        </label>
                                     </div>
                                 </div>
 
@@ -779,12 +793,12 @@
                                     </div>
                                     <div class="col-12 col-md-8 mb-3 mb-sm-3">
                                         <div class="row g-3">
-                                            <div class="col-lg-6">
+                                            <div class="col">
                                                 <input required="" id="dob_{{$passangerTitleIndex}}" class="form-control" type="date"
                                                 placeholder="dd-mm-yyyy" name="dob[]" min="1900-01-01"
                                                 max="{{ date('Y-m-d') }}">
                                             </div>
-                                            <div class="col-lg-6">
+                                            <div class="col">
                                                 <input id="age_{{$passangerTitleIndex}}" class="form-control" type="number" name="age[]" required="" placeholder="ex. 07 (in years)" max="11" min="2">
                                             </div>
                                         </div>
@@ -859,6 +873,15 @@
                                                     placeholder="Frequent Flyer No.">
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3"></div>
+                                    <div class="col-12 col-md-8 mb-3 mb-sm-3">
+                                        <label class="d-block mt-2">
+                                            <input type="checkbox" name="save_passanger[]" value="{{ $passangerTitleIndex }}"> Save Passenger Information
+                                        </label>
                                     </div>
                                 </div>
 
@@ -980,12 +1003,12 @@
                                     </div>
                                     <div class="col-12 col-md-8 mb-3 mb-sm-3">
                                         <div class="row g-3">
-                                            <div class="col-lg-6">
+                                            <div class="col">
                                                 <input required="" id="dob_{{$passangerTitleIndex}}" class="form-control" type="date"
                                                 placeholder="dd-mm-yyyy" name="dob[]" min="1900-01-01"
                                                 max="{{ date('Y-m-d') }}">
                                             </div>
-                                            <div class="col-lg-6">
+                                            <div class="col">
                                                 <input id="age_{{$passangerTitleIndex}}" class="form-control" type="number" name="age[]" required="" placeholder="ex. 15 (in months)" max="24" min="0">
                                             </div>
                                         </div>
@@ -1060,6 +1083,15 @@
                                                     placeholder="Frequent Flyer No.">
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col-12 col-md-3 font-weight-500 text-left text-md-right mb-3 mb-md-0 pr-3 px-3"></div>
+                                    <div class="col-12 col-md-8 mb-3 mb-sm-3">
+                                        <label class="d-block mt-2">
+                                            <input type="checkbox" name="save_passanger[]" value="{{ $passangerTitleIndex }}"> Save Passenger Information
+                                        </label>
                                     </div>
                                 </div>
 

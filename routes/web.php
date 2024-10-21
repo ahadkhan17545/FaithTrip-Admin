@@ -68,7 +68,8 @@ Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
     Route::get('/remove/user/image', [ProfileController::class, 'removeUserImage'])->name('RemoveUserImage');
 
     // flight booking routes
-    Route::post('create/pnr/with/booking', [FlightBookingController::class, 'bookFlightWithPnr'])->name('BookFlightWithPnr');
+    Route::post('create/pnr/with/booking/sabre', [FlightBookingController::class, 'bookFlightWithPnrSabre'])->name('BookFlightWithPnrSabre');
+    Route::post('create/pnr/with/booking', [FlightBookingController::class, 'bookFlightWithPnr'])->name('bookFlightWithPnr');
     Route::get('view/all/booking', [FlightBookingController::class, 'viewAllBooking'])->name('ViewAllBooking');
     Route::get('view/cancel/booking', [FlightBookingController::class, 'viewCancelBooking'])->name('ViewCancelBooking');
     Route::get('flight/booking/details/{booking_no}', [FlightBookingController::class, 'flightBookingDetails'])->name('FlightBookingDetails');

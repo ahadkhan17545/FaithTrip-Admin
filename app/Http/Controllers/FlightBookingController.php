@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\FlightBooking;
+use App\Models\FlyhubFlightBooking;
+use App\Models\FlyhubGdsConfig;
+use App\Models\Gds;
+use App\Models\SabreFlightSearch;
 use App\Models\SavedPassanger;
 use Yajra\DataTables\DataTables;
 use App\Models\FlightPassanger;
@@ -20,7 +24,7 @@ use Illuminate\Support\Str;
 
 class FlightBookingController extends Controller
 {
-    public function bookFlightWithPnr(Request $request){
+    public function bookFlightWithPnrSabre(Request $request){
 
         $revlidatedData = session('revlidatedData');
 
@@ -217,6 +221,205 @@ class FlightBookingController extends Controller
 
     }
 
+    public function bookFlightWithPnr(Request $request){
+        $revalidatedData = session('revalidatedData');
+
+        // print_r($revalidatedData['segments']);
+        // exit();
+
+        // 1st step updateing passangers before Booking
+        $travellerUpdateResponse = json_decode(FlyhubFlightBooking::updateTravellers($request, $revalidatedData), true);
+
+        if($travellerUpdateResponse['status'] != 'success'){
+            Toastr::error('Failed to update traveller response');
+            return back();
+        }
+
+        // print_r($travellerUpdateResponse);
+        // exit();
+
+        // 2nd step booking
+        $bookingResponse = json_decode(FlyhubFlightBooking::createBooking($request, $revalidatedData), true);
+
+        // print_r($bookingResponse);
+        // exit();
+
+        if($bookingResponse['status'] != 'success'){
+            Toastr::error('Failed to Book this Flight');
+            return back();
+        }
+
+        $bookinPnrID = $bookingResponse['general']['booking_id'];
+        $airlines_pnr = $bookingResponse['general']['airlines_pnr'];
+        $rawBookingResponse = json_encode($bookingResponse, true);
+        $status = 1;
+        $flyhubGdsInfo = FlyhubGdsConfig::where('id', 1)->first();
+
+        $flightBookingId = FlightBooking::insertGetId([
+            'booking_no' => str::random(3) . "-" . time(),
+            'booked_by' => Auth::user()->id,
+            'b2b_comission' => Auth::user()->comission,
+            'pnr_id' => $bookinPnrID,
+            'airlines_pnr' => $airlines_pnr,
+            'gds' => $request->gds,
+            'gds_unique_id' => $request->gds_unique_id,
+            'traveller_name' => $request->traveller_name,
+            'traveller_email' => $request->traveller_email,
+            'traveller_contact' => $request->traveller_contact,
+            'departure_date' => date("Y-m-d h:i:s", strtotime($request->departure_date)),
+            'departure_location' => $request->departure_location,
+            'arrival_location' => $request->arrival_location,
+            'governing_carriers' => $request->governing_carriers,
+            'adult' => session('adult'),
+            'child' => session('child'),
+            'infant' => session('infant'),
+            'base_fare_amount' => $revalidatedData['base_fare_amount'],
+            'total_tax_amount' => $revalidatedData['total_tax_amount'],
+            'total_fare' => $revalidatedData['total_fare'],
+            'currency' => $request->currency,
+            'last_ticket_datetime' => $request->last_ticket_datetime ? date("Y-m-d h:i:s", strtotime($request->last_ticket_datetime)) : null,
+            'booking_response' => $rawBookingResponse,
+            'status' => $status,
+            'is_live' => $flyhubGdsInfo ? $flyhubGdsInfo->is_production : 0,
+            'created_at' => Carbon::now()
+        ]);
+
+        $onwardSegmentArray[] = $revalidatedData['segments'];
+        $returnSegmentArray[] = isset($revalidatedData['return_segments']) ? $revalidatedData['return_segments'] : array();
+
+        if(count($onwardSegmentArray) > 0){
+            foreach ($onwardSegmentArray as $onwardSegmentIndex => $segmentData){
+
+                $departureZone = DB::table('city_airports')->where('city_name', $segmentData[$onwardSegmentIndex]['departure_city_name'])->first();
+                $arrivalZone = DB::table('city_airports')->where('city_name', $segmentData[$onwardSegmentIndex]['arrival_city_name'])->first();
+
+                FlightSegment::insert([
+
+                    'flight_booking_id' => $flightBookingId,
+                    'total_miles_flown' => $segmentData[$onwardSegmentIndex]['miles_flown'],
+                    'elapsed_time' => $segmentData[$onwardSegmentIndex]['elapsed_time'],
+                    'booking_code' => $segmentData[$onwardSegmentIndex]['booking_code'],
+                    'cabin_code' => $segmentData[$onwardSegmentIndex]['cabin_code'],
+                    // 'baggage_allowance' => $segmentData[$onwardSegmentIndex]['baggage_allowance'], //its an array
+
+                    'departure_airport_code' => $segmentData[$onwardSegmentIndex]['departure_airport_code'],
+                    'departure_city_code' => $departureZone ? $departureZone->city_code : null,
+                    'departure_country_code' => $departureZone ? $departureZone->country_code : null,
+                    'departure_time' => date("Y-m-d h:i:s", strtotime($segmentData[$onwardSegmentIndex]['departure_datetime'])),
+                    'departure_terminal' => $segmentData[$onwardSegmentIndex]['departure_terminal'],
+
+                    'arrival_airport_code' => $segmentData[$onwardSegmentIndex]['arrival_airport_code'],
+                    'arrival_city_code' => $arrivalZone ? $arrivalZone->city_code : null,
+                    'arrival_country_code' => $arrivalZone ? $arrivalZone->country_code : null,
+                    'arrival_time' => date("Y-m-d h:i:s", strtotime($segmentData[$onwardSegmentIndex]['arrival_datetime'])),
+                    'arrival_terminal' => $segmentData[$onwardSegmentIndex]['arrival_terminal'],
+
+                    'carrier_marketing_code' => $segmentData[$onwardSegmentIndex]['marketing_carrier_code'],
+                    'carrier_marketing_flight_number' => $segmentData[$onwardSegmentIndex]['marketing_flight_number'],
+                    'carrier_operating_code' => $segmentData[$onwardSegmentIndex]['operating_carrier_code'],
+                    'carrier_operating_flight_number' => $segmentData[$onwardSegmentIndex]['operating_flight_number'],
+                    'carrier_equipment_code' => null,
+                    'created_at' => Carbon::now()
+                ]);
+            }
+        }
+
+        if(count($returnSegmentArray) > 0 && isset($revalidatedData['return_segments'])){
+            foreach ($returnSegmentArray as $returnSegmentIndex => $segmentData){
+
+                $departureZone = DB::table('city_airports')->where('city_name', $segmentData[$returnSegmentIndex]['departure_city_name'])->first();
+                $arrivalZone = DB::table('city_airports')->where('city_name', $segmentData[$returnSegmentIndex]['arrival_city_name'])->first();
+
+                FlightSegment::insert([
+
+                    'flight_booking_id' => $flightBookingId,
+                    'total_miles_flown' => $segmentData[$returnSegmentIndex]['miles_flown'],
+                    'elapsed_time' => $segmentData[$returnSegmentIndex]['elapsed_time'],
+                    'booking_code' => $segmentData[$returnSegmentIndex]['booking_code'],
+                    'cabin_code' => $segmentData[$returnSegmentIndex]['cabin_code'],
+                    // 'baggage_allowance' => $segmentData[$returnSegmentIndex]['baggage_allowance'],
+
+                    'departure_airport_code' => $segmentData[$returnSegmentIndex]['departure_airport_code'],
+                    'departure_city_code' => $departureZone ? $departureZone->city_code : null,
+                    'departure_country_code' => $departureZone ? $departureZone->country_code : null,
+                    'departure_time' => date("Y-m-d h:i:s", strtotime($segmentData[$returnSegmentIndex]['departure_datetime'])),
+                    'departure_terminal' => $segmentData[$returnSegmentIndex]['departure_terminal'],
+
+                    'arrival_airport_code' => $segmentData[$returnSegmentIndex]['arrival_airport_code'],
+                    'arrival_city_code' => $arrivalZone ? $arrivalZone->city_code : null,
+                    'arrival_country_code' => $arrivalZone ? $arrivalZone->country_code : null,
+                    'arrival_time' => date("Y-m-d h:i:s", strtotime($segmentData[$returnSegmentIndex]['arrival_datetime'])),
+                    'arrival_terminal' => $segmentData[$returnSegmentIndex]['arrival_terminal'],
+
+                    'carrier_marketing_code' => $segmentData[$returnSegmentIndex]['marketing_carrier_code'],
+                    'carrier_marketing_flight_number' => $segmentData[$returnSegmentIndex]['marketing_flight_number'],
+                    'carrier_operating_code' => $segmentData[$returnSegmentIndex]['operating_carrier_code'],
+                    'carrier_operating_flight_number' => $segmentData[$returnSegmentIndex]['operating_flight_number'],
+                    'carrier_equipment_code' => null,
+                    'created_at' => Carbon::now()
+                ]);
+            }
+        }
+
+        foreach($request->first_name as $passangerIndex => $firstName){
+
+            if(is_array($request->save_passanger) && count($request->save_passanger) > 0 && in_array($passangerIndex, $request->save_passanger)){
+
+                $savedPassanger = SavedPassanger::where([
+                                        ['first_name', $firstName],
+                                        ['last_name', $request->last_name[$passangerIndex]],
+                                        ['dob', '=', $request->dob[$passangerIndex]]
+                                    ])->first();
+
+                if(!$savedPassanger){
+                    $savedPassanger = new SavedPassanger();
+                }
+
+                $savedPassanger->saved_by = Auth::user()->id;
+                $savedPassanger->email = $request->email[$passangerIndex];
+                $savedPassanger->contact = $request->phone[$passangerIndex];
+                $savedPassanger->type = $request->passanger_type[$passangerIndex];
+                $savedPassanger->title = $request->titles[$passangerIndex];
+                $savedPassanger->first_name = $firstName;
+                $savedPassanger->last_name = $request->last_name[$passangerIndex];
+                $savedPassanger->dob = $request->dob[$passangerIndex];
+                $savedPassanger->age = str_pad($request->age[$passangerIndex],2,"0",STR_PAD_LEFT);
+                $savedPassanger->document_type = $request->document_type[$passangerIndex];
+                $savedPassanger->document_no = $request->document_no[$passangerIndex];
+                $savedPassanger->document_expire_date = $request->document_expire_date[$passangerIndex];
+                $savedPassanger->document_issue_country = $request->document_issue_country[$passangerIndex];
+                $savedPassanger->nationality = $request->nationality[$passangerIndex];
+                $savedPassanger->frequent_flyer_no = $request->frequent_flyer_no[$passangerIndex];
+                $savedPassanger->created_at = Carbon::now();
+                $savedPassanger->save();
+            }
+
+            FlightPassanger::insert([
+                'flight_booking_id' => $flightBookingId,
+                'passanger_type' => $request->passanger_type[$passangerIndex],
+                'title' => $request->titles[$passangerIndex],
+                'first_name' => $firstName,
+                'last_name' => $request->last_name[$passangerIndex],
+                'email' => $request->email[$passangerIndex],
+                'phone' => $request->phone[$passangerIndex],
+                'dob' => $request->dob[$passangerIndex],
+                'age' => str_pad($request->age[$passangerIndex],2,"0",STR_PAD_LEFT),
+                'document_type' => $request->document_type[$passangerIndex],
+                'document_no' => $request->document_no[$passangerIndex],
+                'document_expire_date' => $request->document_expire_date[$passangerIndex],
+                'document_issue_country' => $request->document_issue_country[$passangerIndex],
+                'nationality' => $request->nationality[$passangerIndex],
+                'frequent_flyer_no' => $request->frequent_flyer_no[$passangerIndex],
+                'created_at' => Carbon::now()
+            ]);
+        }
+
+        session()->forget(['adult', 'child', 'infant', 'revlidatedData']);
+        Toastr::success('Flight Booking Request Sent', 'Success');
+        return redirect('/view/all/booking');
+
+    }
+
     public function viewAllBooking(Request $request){
 
         if ($request->ajax()) {
@@ -325,11 +528,11 @@ class FlightBookingController extends Controller
             $currentDate = date("Y-m-d");
 
             if($currentDate >= $tokenExpireDate){
-                FlightSearchController::generateAccessToken();
+                SabreFlightSearch::generateAccessToken();
             }
 
         } else {
-            FlightSearchController::generateAccessToken();
+            SabreFlightSearch::generateAccessToken();
         }
 
         $data = array(
@@ -399,7 +602,6 @@ class FlightBookingController extends Controller
         }
 
         $flightBookingInfo = FlightBooking::where('pnr_id', $pnrId)->first();
-
         if(Auth::user()->user_type == 2){ //if b2b user then check balance
             $base_fare_amount = $flightBookingInfo->base_fare_amount;
             if(Auth::user()->balance < ( $base_fare_amount - (($base_fare_amount*Auth::user()->comission)/100) )){
@@ -408,23 +610,25 @@ class FlightBookingController extends Controller
             }
         }
 
-        $ticketIssueResponse = json_decode(SabreFlightTicketIssue::issueTicket($pnrId), true);
+        // sabre ticket issue
+        $sabreGds = Gds::where('code', 'sabre')->first();
+        if($sabreGds->status == 1){
+            $ticketIssueResponse = json_decode(SabreFlightTicketIssue::issueTicket($pnrId), true);
+            if(isset($ticketIssueResponse['AirTicketRS']['ApplicationResults']['status']) && $ticketIssueResponse['AirTicketRS']['ApplicationResults']['status'] == 'Complete'){
+                $flightBookingInfo->status = 2;
+                $flightBookingInfo->ticket_issued_at = Carbon::now();
+                $flightBookingInfo->save();
+                return redirect('view/issued/tickets');
+            } else {
+                Toastr::error('Failed to issue Ticket', 'Failed');
+                return back();
+            }
+        }
 
-        // echo "<pre>";
-        // print_r($ticketIssueResponse);
-        // echo "</pre>";
-        // exit();
-
-        if(isset($ticketIssueResponse['AirTicketRS']['ApplicationResults']['status']) && $ticketIssueResponse['AirTicketRS']['ApplicationResults']['status'] == 'Complete'){
-
-            $flightBookingInfo->status = 2;
-            $flightBookingInfo->ticket_issued_at = Carbon::now();
-            $flightBookingInfo->save();
-            return redirect('view/issued/tickets');
-
-        } else {
-            Toastr::success('Ticket Issued Successfully', 'Successful');
-            return back();
+        // flyhub
+        $flyhubGds = Gds::where('code', 'flyhub')->first();
+        if($flyhubGds->status == 1){
+            // $ticketIssueResponse = json_decode(SabreFlightTicketIssue::issueTicket($pnrId), true);
         }
 
     }
