@@ -73,9 +73,10 @@ Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
     Route::get('view/all/booking', [FlightBookingController::class, 'viewAllBooking'])->name('ViewAllBooking');
     Route::get('view/cancel/booking', [FlightBookingController::class, 'viewCancelBooking'])->name('ViewCancelBooking');
     Route::get('flight/booking/details/{booking_no}', [FlightBookingController::class, 'flightBookingDetails'])->name('FlightBookingDetails');
-    Route::get('cancel/flight/booking/{pnr_id}', [FlightBookingController::class, 'cancelFlightBooking'])->name('CancelFlightBooking');
+    Route::get('cancel/flight/booking/{booking_no}', [FlightBookingController::class, 'cancelFlightBooking'])->name('CancelFlightBooking');
+    Route::get('cancel/issued/ticket/{booking_no}', [FlightBookingController::class, 'cancelIssuedTicket'])->name('cancelIssuedTicket');
     Route::get('booking/preview/{pnr_id}', [FlightBookingController::class, 'bookingPreview'])->name('BookingPreview');
-    Route::get('issue/flight/ticket/{pnr_id}', [FlightBookingController::class, 'issueFlightTicket'])->name('IssueFlightTicket');
+    Route::get('issue/flight/ticket/{booking_no}', [FlightBookingController::class, 'issueFlightTicket'])->name('IssueFlightTicket');
     Route::get('view/issued/tickets', [FlightBookingController::class, 'viewIssuedTickets'])->name('ViewIssuedTickets');
     Route::get('view/cancelled/tickets', [FlightBookingController::class, 'viewCancelledTickets'])->name('ViewCancelledTickets');
     Route::post('update/pnr/booking', [FlightBookingController::class, 'updatePnrBooking'])->name('UpdatePnrBooking');

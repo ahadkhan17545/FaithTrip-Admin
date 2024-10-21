@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\FlightBooking;
 use App\Models\FlyhubFlightBooking;
+use App\Models\FlyhubFlightTicketIssue;
 use App\Models\FlyhubGdsConfig;
 use App\Models\Gds;
 use App\Models\SabreFlightSearch;
@@ -249,7 +250,7 @@ class FlightBookingController extends Controller
             return back();
         }
 
-        $bookinPnrID = $bookingResponse['general']['booking_id'];
+        $bookingID = $bookingResponse['general']['booking_id'];
         $airlines_pnr = $bookingResponse['general']['airlines_pnr'];
         $rawBookingResponse = json_encode($bookingResponse, true);
         $status = 1;
@@ -259,7 +260,8 @@ class FlightBookingController extends Controller
             'booking_no' => str::random(3) . "-" . time(),
             'booked_by' => Auth::user()->id,
             'b2b_comission' => Auth::user()->comission,
-            'pnr_id' => $bookinPnrID,
+            'pnr_id' => null,
+            'booking_id' => $bookingID,
             'airlines_pnr' => $airlines_pnr,
             'gds' => $request->gds,
             'gds_unique_id' => $request->gds_unique_id,
@@ -517,74 +519,71 @@ class FlightBookingController extends Controller
         return view('booking.details', compact('flightBookingDetails', 'flightSegments', 'flightPassangers'));
     }
 
-    public function cancelFlightBooking($pnrId){
+    public function cancelFlightBooking($booking_no){
 
-        if(session('access_token') && session('access_token') != '' && session('expires_in') != ''){
+        $flightBookingInfo = FlightBooking::where('booking_no', $booking_no)->first();
 
-            $seconds = session('expires_in');
-            $date = new DateTime();
-            $date->setTimestamp(time() + $seconds);
-            $tokenExpireDate = $date->format('Y-m-d');
-            $currentDate = date("Y-m-d");
+        // sabre
+        $sabreGds = Gds::where('code', 'sabre')->first();
+        if($sabreGds->status == 1){
+            $cancelResponse = json_decode(SabreFlightBooking::cancelBooking($booking_no), true);
+            if(isset($cancelResponse['booking']['bookingId']) && $cancelResponse['booking']['bookingId'] == $flightBookingInfo->pnr_id){
+                FlightBooking::where('pnr_id', $flightBookingInfo->pnr_id)->update([
+                    'status' => 3,
+                    'booking_cancelled_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
 
-            if($currentDate >= $tokenExpireDate){
-                SabreFlightSearch::generateAccessToken();
+                Toastr::success('Flight Booking Cancelled Successfully', 'Cancelled');
+                return back();
+            } else {
+                Toastr::error('Something Went Wrong', 'Try Again Later');
+                return back();
             }
-
-        } else {
-            SabreFlightSearch::generateAccessToken();
         }
 
-        $data = array(
-            "confirmationId" => $pnrId,
-            "retrieveBooking" => true,
-            "cancelAll" => true,
-            "errorHandlingPolicy" => "ALLOW_PARTIAL_CANCEL"
-        );
-        $payload = json_encode($data);
+        // flyhub
+        $flyhubGds = Gds::where('code', 'flyhub')->first();
+        if($flyhubGds->status == 1){
+            $ticketCancelResponse = json_decode(FlyhubFlightTicketIssue::cancelTicket($flightBookingInfo), true);
+            if($ticketCancelResponse['status'] == 'success'){
+                $flightBookingInfo->status = 3;
+                $flightBookingInfo->booking_cancelled_at = Carbon::now();
+                $flightBookingInfo->save();
 
-        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
-        if($sabreGdsInfo->is_production == 0){
-            $apiEndPoint = 'https://api.cert.platform.sabre.com/v1/trip/orders/cancelBooking';
-        } else{
-            $apiEndPoint = 'https://api.platform.sabre.com/v1/trip/orders/cancelBooking';
+                Toastr::success('Flight Booking Cancelled Successfully', 'Cancelled');
+                return back();
+            } else {
+                Toastr::error('Failed to Cancel Booking', 'Failed');
+                return back();
+            }
         }
+    }
 
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $apiEndPoint,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => $payload,
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json',
-                'Conversation-ID: 2021.01.DevStudio',
-                'Authorization: Bearer '. session('access_token'),
-            ),
-        ));
-
-        $response = curl_exec($curl);
-        curl_close($curl);
-
-        $cancelResponse = json_decode($response, true);
-        if(isset($cancelResponse['booking']['bookingId']) && $cancelResponse['booking']['bookingId'] == $pnrId){
-            FlightBooking::where('pnr_id', $pnrId)->update([
-                'status' => 3,
-                'booking_cancelled_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
-        } else {
-            Toastr::error('Something Went Wrong', 'Try Again Later');
+    public function cancelIssuedTicket($booking_no){
+        if(Auth::user()->ticket_status == 0){
+            Toastr::error('Ticketing Related Permission Denied');
             return back();
         }
 
-        Toastr::success('Flight Booking Cancelled Successfully', 'Cancelled');
-        return back();
+        $flightBookingInfo = FlightBooking::where('booking_no', $booking_no)->first();
+
+        // flyhub
+        $flyhubGds = Gds::where('code', 'flyhub')->first();
+        if($flyhubGds->status == 1){
+            $ticketCancelResponse = json_decode(FlyhubFlightTicketIssue::cancelTicket($flightBookingInfo), true);
+            if($ticketCancelResponse['status'] == 'success'){
+                $flightBookingInfo->status = 4;
+                $flightBookingInfo->ticket_cancelled_at = Carbon::now();
+                $flightBookingInfo->save();
+
+                Toastr::success('Flight Ticket Cancelled Successfully', 'Cancelled');
+                return back();
+            } else {
+                Toastr::error('Failed to Cancel Ticket', 'Failed');
+                return back();
+            }
+        }
     }
 
     public function bookingPreview($bookingNo){
@@ -594,14 +593,14 @@ class FlightBookingController extends Controller
         return view('booking.preview', compact('flightBookingDetails', 'flightSegments', 'flightPassangers'));
     }
 
-    public function issueFlightTicket($pnrId){
+    public function issueFlightTicket($booking_no){
 
         if(Auth::user()->ticket_status == 0){
             Toastr::error('Ticket Issue Permission Denied');
             return back();
         }
 
-        $flightBookingInfo = FlightBooking::where('pnr_id', $pnrId)->first();
+        $flightBookingInfo = FlightBooking::where('booking_no', $booking_no)->first();
         if(Auth::user()->user_type == 2){ //if b2b user then check balance
             $base_fare_amount = $flightBookingInfo->base_fare_amount;
             if(Auth::user()->balance < ( $base_fare_amount - (($base_fare_amount*Auth::user()->comission)/100) )){
@@ -613,7 +612,7 @@ class FlightBookingController extends Controller
         // sabre ticket issue
         $sabreGds = Gds::where('code', 'sabre')->first();
         if($sabreGds->status == 1){
-            $ticketIssueResponse = json_decode(SabreFlightTicketIssue::issueTicket($pnrId), true);
+            $ticketIssueResponse = json_decode(SabreFlightTicketIssue::issueTicket($flightBookingInfo->pnr_id), true);
             if(isset($ticketIssueResponse['AirTicketRS']['ApplicationResults']['status']) && $ticketIssueResponse['AirTicketRS']['ApplicationResults']['status'] == 'Complete'){
                 $flightBookingInfo->status = 2;
                 $flightBookingInfo->ticket_issued_at = Carbon::now();
@@ -628,7 +627,17 @@ class FlightBookingController extends Controller
         // flyhub
         $flyhubGds = Gds::where('code', 'flyhub')->first();
         if($flyhubGds->status == 1){
-            // $ticketIssueResponse = json_decode(SabreFlightTicketIssue::issueTicket($pnrId), true);
+            $ticketIssueResponse = json_decode(FlyhubFlightTicketIssue::issueTicket($flightBookingInfo), true);
+            if($ticketIssueResponse['status'] == 'success'){
+                $flightBookingInfo->status = 2;
+                $flightBookingInfo->ticket_issued_at = Carbon::now();
+                $flightBookingInfo->ticketing_response = json_encode($ticketIssueResponse, true);
+                $flightBookingInfo->save();
+                return redirect('view/issued/tickets');
+            } else {
+                Toastr::error('Failed to issue Ticket', 'Failed');
+                return back();
+            }
         }
 
     }

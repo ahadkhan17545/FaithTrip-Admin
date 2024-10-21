@@ -373,4 +373,60 @@ class SabreFlightBooking extends Model
         // return $flightSegment;
 
     }
+
+    public static function cancelBooking($booking_no){
+        if(session('access_token') && session('access_token') != '' && session('expires_in') != ''){
+
+            $seconds = session('expires_in');
+            $date = new DateTime();
+            $date->setTimestamp(time() + $seconds);
+            $tokenExpireDate = $date->format('Y-m-d');
+            $currentDate = date("Y-m-d");
+
+            if($currentDate >= $tokenExpireDate){
+                SabreFlightSearch::generateAccessToken();
+            }
+
+        } else {
+            SabreFlightSearch::generateAccessToken();
+        }
+
+        $flightBookingInfo = FlightBooking::where('booking_no', $booking_no)->first();
+        $data = array(
+            "confirmationId" => $flightBookingInfo->pnr_id,
+            "retrieveBooking" => true,
+            "cancelAll" => true,
+            "errorHandlingPolicy" => "ALLOW_PARTIAL_CANCEL"
+        );
+        $payload = json_encode($data);
+
+        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
+        if($sabreGdsInfo->is_production == 0){
+            $apiEndPoint = 'https://api.cert.platform.sabre.com/v1/trip/orders/cancelBooking';
+        } else{
+            $apiEndPoint = 'https://api.platform.sabre.com/v1/trip/orders/cancelBooking';
+        }
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $apiEndPoint,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Conversation-ID: 2021.01.DevStudio',
+                'Authorization: Bearer '. session('access_token'),
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return $response;
+    }
 }

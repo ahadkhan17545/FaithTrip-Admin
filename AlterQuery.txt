@@ -18,3 +18,5 @@ ALTER TABLE `saved_passangers` ADD `age` VARCHAR(255) NULL DEFAULT NULL AFTER `d
 =========22-10-2024========
 ALTER TABLE `flight_bookings` CHANGE `pnr_id` `pnr_id` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
 ALTER TABLE `flight_bookings` ADD `airlines_pnr` VARCHAR(255) NULL DEFAULT NULL AFTER `pnr_id`;
+ALTER TABLE `flight_bookings` CHANGE `booking_id` `booking_id` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+ALTER TABLE `flight_bookings` ADD `ticketing_response` LONGTEXT NULL DEFAULT NULL COMMENT 'Directly From API (Unfiltered)' AFTER `booking_response`;

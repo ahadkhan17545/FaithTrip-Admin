@@ -16,8 +16,12 @@
                             @endif
 
                             @if($flightBookingDetails->status == 1)
-                                <a href="{{url('issue/flight/ticket')}}/{{$flightBookingDetails->pnr_id}}" class="btn btn-sm btn-success d-inline-block"><i class="fas fa-check"></i> Issue Ticket</a>
-                                <a href="{{url('cancel/flight/booking')}}/{{$flightBookingDetails->pnr_id}}" class="btn btn-sm btn-danger d-inline-block"><i class="fas fa-ban"></i> Cancel Booking</a>
+                                <a href="{{url('issue/flight/ticket')}}/{{$flightBookingDetails->booking_no}}" class="btn btn-sm btn-success d-inline-block"><i class="fas fa-check"></i> Issue Ticket</a>
+                                <a href="{{url('cancel/flight/booking')}}/{{$flightBookingDetails->booking_no}}" class="btn btn-sm btn-danger d-inline-block"><i class="fas fa-ban"></i> Cancel Booking</a>
+                            @endif
+
+                            @if($flightBookingDetails->status == 2)
+                                <a href="{{url('cancel/issued/ticket')}}/{{$flightBookingDetails->booking_no}}" class="btn btn-sm btn-danger d-inline-block"><i class="fas fa-ban"></i> Cancel Ticket</a>
                             @endif
 
                             <a href="javascript:void(0)" onclick="sharePnr('{{$flightBookingDetails->pnr_id}}', '{{$flightBookingDetails->traveller_email}}', '{{$flightBookingDetails->traveller_contact}}')" class="btn btn-sm btn-info d-inline-block"><i class="fas fa-share"></i> Share PNR</a>
@@ -60,10 +64,18 @@
                         <div class="col-lg-4 mb-2 border-end">
                             <h6 class="fw-bold mb-2 pb-1 border-bottom" style="font-size: 16px">Traveller Info</h6>
                             <table>
+                                @if($flightBookingDetails->pnr_id)
                                 <tr>
                                     <th>PNR ID </th>
                                     <td>: {{ $flightBookingDetails->pnr_id }}</td>
                                 </tr>
+                                @endif
+                                @if($flightBookingDetails->booking_id)
+                                <tr>
+                                    <th>Booking ID </th>
+                                    <td>: {{ $flightBookingDetails->booking_id }}</td>
+                                </tr>
+                                @endif
                                 <tr>
                                     <th>Airlines PNR </th>
                                     <td>: {{ $flightBookingDetails->airlines_pnr }}</td>
