@@ -12,18 +12,6 @@ class SabreFlightBooking extends Model
     use HasFactory;
     public static function flightBooking($revlidatedData, $travellerContact, $travellerEmail, $firstNames, $lastNames, $passangerTitles, $dob, $passangerTypes, $ages, $documentIssueCountry, $nationality, $documentNo, $documentExpireDate){
 
-        // $passengerTypes = array();
-        // if (session('adult') > 0) {
-        //     $passengerTypes[] = array("Code" => "ADT", "Quantity" => (string) session('adult'));
-        // }
-        // if (session('child') > 0) {
-        //     $passengerTypes[] = array("Code" => "CNN", "Quantity" => (string) session('child'));
-        // }
-        // if (session('infant') > 0) {
-        //     $passengerTypes[] = array("Code" => "INF", "Quantity" => (string) session('infant'));
-        // }
-
-
         // making flight segment start
         $segmentArray = [];
         $legsArray = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['legs'];
@@ -192,7 +180,8 @@ class SabreFlightBooking extends Model
             $secureFlights[] = [
                 "PersonName" => [
                     'Gender' => ($passangerTitles[$passangerIndex] == 'Mr.' || $passangerTitles[$passangerIndex] == 'Mstr.') ? "M" : ($passangerTypes[$passangerIndex] != 'INF' ? "F" : "FI"),
-                    'GivenName' => str_replace(".","",$passangerTitles[$passangerIndex])." ".$firstName,
+                    // 'GivenName' => str_replace(".","",$passangerTitles[$passangerIndex])." ".$firstName,
+                    'GivenName' => $firstName,
                     'Surname' => $lastNames[$passangerIndex],
                     'DateOfBirth' => (string) $dob[$passangerIndex],
                     'NameNumber' => $passangerTypes[$passangerIndex] != 'INF' ? (string) $passangerIndex+1 .".1" : (string) 1.1, //Infant have to attached with Adult

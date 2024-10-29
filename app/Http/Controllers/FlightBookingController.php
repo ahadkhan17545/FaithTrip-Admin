@@ -12,6 +12,7 @@ use App\Models\SavedPassanger;
 use Yajra\DataTables\DataTables;
 use App\Models\FlightPassanger;
 use App\Models\FlightSegment;
+use App\Models\SabreBookingDetails;
 use App\Models\SabreFlightBooking;
 use App\Models\SabreFlightTicketIssue;
 use App\Models\SabreGdsConfig;
@@ -514,6 +515,10 @@ class FlightBookingController extends Controller
 
     public function flightBookingDetails($bookingNo){
         $flightBookingDetails = FlightBooking::where('booking_no', $bookingNo)->first();
+        if($flightBookingDetails->gds == "Sabre" && ($flightBookingDetails->status == 1 || $flightBookingDetails->status == 2)){
+            SabreBookingDetails::getBookingDetails($flightBookingDetails->pnr_id);
+            $flightBookingDetails = FlightBooking::where('booking_no', $bookingNo)->first();
+        }
         $flightSegments = FlightSegment::where('flight_booking_id', $flightBookingDetails->id)->get();
         $flightPassangers = FlightPassanger::where('flight_booking_id', $flightBookingDetails->id)->get();
         return view('booking.details', compact('flightBookingDetails', 'flightSegments', 'flightPassangers'));

@@ -2,9 +2,6 @@ Task:
 1. Share PNR Option in Email
 
 ======04-08-2024=======
-1. check last ticketing time from api response and cancel the booking with that time
-3. Net Price and Gross prices for b2b
-4. Send email to client after booking/ticket issue/cancel
 6. Manage System user (Admin can his own system user and b2b user can add his own system user)
 7. Make all the tables responsive (for Mobile Screens)
 8. Remove Company profit form report of b2b user
@@ -15,24 +12,29 @@ Task:
 12. Ticket VOID option
 
 Terminal
-13. Booking e naam er issue (passanger info and passport info jai nai)
-14. Ticket issue korle issue hochhe but ticket number asche na plus name (Mr./Miss.) and price wrong show korche (class chnage hoye jachhe "Y") and passport information ni & passanger nai
-15. Check Ticket Details/PNR details api so that i can know the update about any ticket that it has been cancelled from the terminl or not
-16. Ticket Void Option
-17. Do booking and check passanger info is stored or not (like passport no. agency name missing, name with gender, phone number er pashe b2b company name missing)
-18. Cancel korle sathe sathe client k message diben...
+17. Do booking and check passanger info is stored or not (agency name missing, phone number er pashe b2b company name missing)
 19. Some time base fare shows in USD in search result accrodian fare details
 
 
 Question for Sabre
 ============================
-1. Whats NDC Search and should i use this api for flight Search (They have told to Implement that later)
-
-# There should be an another Airline PNR (Save this)
 # Booling er por class change hoye jachhe and price o change hoye jachhe
 # Child Tax properly kaaj korche na karon child er age use kora hochhe na
-# Auto Sync for cancellation while visitng flight details from b2b portal
 # Account Ledger (also export as excel for this and view transaction history)
-
 # Infant soho booking hochhe na.
-# Mr/Miss ei name er problem ta theke geche
+
+# add extra field name agent ID show (Auto Generate Incrementally)
+# agent search field larger
+# Recarge Request Submit hole mail jabe and approve holeo mail jabe
+# Booking e Agent Info
+
+
+Refined Task List
+--------------------------------
+1. Show Airline PNR in Booking Details (Done)
+2. Auto Sync for cancellation while visitng flight details from b2b portal (Done)
+3. Mr/Mrs title adding in Passanger name which is creating a conflict with Passport Name
+4. Show Number of Available Seats in Search Results
+5. Auto Cancel Booking Before Last Ticketing Datetime (Cron JOB)
+6. Gross Price Net Price for B2B Users
+7. Send email to passanger after booking/ticket issue/cancel

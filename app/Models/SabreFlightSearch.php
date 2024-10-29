@@ -214,7 +214,7 @@ class SabreFlightSearch extends Model
             )),
             CURLOPT_HTTPHEADER => array(
                 "Content-Type: application/json",
-                "Conversation-ID: ",
+                'Conversation-ID: 2021.01.DevStudio',
                 "Authorization: Bearer $accessToken",
             ),
         ));
