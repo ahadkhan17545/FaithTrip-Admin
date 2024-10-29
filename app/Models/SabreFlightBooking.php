@@ -151,7 +151,7 @@ class SabreFlightBooking extends Model
             }
 
             $personName[] = [
-                "GivenName" => str_replace(".","",$passangerTitles[$passangerIndex])." ".$firstName,
+                "GivenName" => $firstName." ".str_replace(".","",$passangerTitles[$passangerIndex]),
                 "Surname" => $lastNames[$passangerIndex],
                 "NameNumber" => (string) $passangerIndex+1 .".1", //Infant have to attached with Adult but not here
                 "Infant" => $passangerTypes[$passangerIndex] == 'INF' ? true : false,
@@ -337,6 +337,9 @@ class SabreFlightBooking extends Model
 
         // Convert the request body array to JSON format
         $request_json = json_encode($request_body);
+
+        // return $request_json;
+        // exit();
 
         $curl = curl_init();
         curl_setopt_array($curl, array(

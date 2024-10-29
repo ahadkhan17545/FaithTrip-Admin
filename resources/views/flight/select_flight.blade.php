@@ -669,7 +669,7 @@
                                                         <option selected="" disabled="">Select Issue Country
                                                         </option>
                                                         @foreach ($countries as $country)
-                                                            <option value="{{ $country->iso3 }}">{{ $country->nicename }}
+                                                            <option value="{{ $country->iso }}">{{ $country->nicename }}
                                                             </option>
                                                         @endforeach
                                                     </select>

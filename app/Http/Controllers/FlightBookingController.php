@@ -40,7 +40,7 @@ class FlightBookingController extends Controller
         }
 
         // echo "<pre>";
-        // echo SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->traveller_email, $request->first_name, $request->last_name, $request->titles, $request->dob, $request->passanger_type, $request->age, $request->document_issue_country, $request->nationality, $request->document_no, $request->document_expire_date);
+        // echo SabreFlightBooking::flightBooking($revlidatedData, $request->traveller_contact, $request->traveller_email,  $request->first_name, $request->last_name, $request->titles, $request->dob, $request->passanger_type, $request->age, $request->document_issue_country, $request->nationality, $request->document_no, $request->document_expire_date);
         // echo "</pre>";
         // exit();
 
