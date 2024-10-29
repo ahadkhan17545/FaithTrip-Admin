@@ -33,8 +33,8 @@ Refined Task List
 --------------------------------
 1. Show Airline PNR in Booking Details (Done)
 2. Auto Sync for cancellation while visitng flight details from b2b portal (Done)
-3. Mr/Mrs title adding in Passanger name which is creating a conflict with Passport Name
-4. Show Number of Available Seats in Search Results
-5. Auto Cancel Booking Before Last Ticketing Datetime (Cron JOB)
-6. Gross Price Net Price for B2B Users
+3. Mr/Mrs title adding in Passanger name which is creating a conflict with Passport Name (Running)
+4. Gross Price Net Price for B2B Users
+5. Show Number of Available Seats in Search Results
+6. Auto Cancel Booking Before Last Ticketing Datetime (Cron JOB)
 7. Send email to passanger after booking/ticket issue/cancel

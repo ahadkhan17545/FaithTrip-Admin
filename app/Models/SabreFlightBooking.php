@@ -169,7 +169,8 @@ class SabreFlightBooking extends Model
                 ],
                 "PersonName" => [
                     'Gender' => ($passangerTitles[$passangerIndex] == 'Mr.' || $passangerTitles[$passangerIndex] == 'Mstr.') ? "M" : ($passangerTypes[$passangerIndex] != 'INF' ? "F" : "FI"),
-                    'GivenName' => str_replace(".","",$passangerTitles[$passangerIndex])." ".$firstName,
+                    // 'GivenName' => str_replace(".","",$passangerTitles[$passangerIndex])." ".$firstName,
+                    'GivenName' => $firstName,
                     'Surname' => $lastNames[$passangerIndex],
                     'DateOfBirth' => (string) $dob[$passangerIndex],
                     'NameNumber' => $passangerTypes[$passangerIndex] != 'INF' ? (string) $passangerIndex+1 .".1" : (string) 1.1, //Infant have to attached with Adult
