@@ -53,7 +53,7 @@
                                         <div class="font-weight-600 fs-13">
                                             {{ $segmentData['carrier']['operating'] }}
                                         </div>
-                                        <div class="font-weight-600 fs-13 text-muted w-max-content">
+                                        <div class="font-weight-600 fs-13 text-muted w-max-content text-center">
                                             {{ $segmentData['carrier']['operatingFlightNumber'] }}
                                             -
                                             {{ $segmentData['carrier']['equipment']['code'] }}

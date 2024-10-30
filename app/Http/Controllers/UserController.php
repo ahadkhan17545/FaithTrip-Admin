@@ -67,6 +67,7 @@ class UserController extends Controller
             'logo' => $logo,
             'user_id' => $userId,
             'name' => $request->company_name,
+            'email' => $request->company_email,
             'address' => $request->company_address,
             'phone' => $request->company_phone,
             'tin' => $request->tin,
@@ -194,6 +195,7 @@ class UserController extends Controller
         CompanyProfile::where('id', $companyProfile->id)->update([
             'logo' => $logo,
             'name' => $request->company_name,
+            'email' => $request->company_email,
             'address' => $request->company_address,
             'phone' => $request->company_phone,
             'tin' => $request->tin,

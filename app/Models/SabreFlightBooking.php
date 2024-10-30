@@ -6,6 +6,7 @@ use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\SabreGdsConfig;
+use Illuminate\Support\Facades\Auth;
 
 class SabreFlightBooking extends Model
 {
@@ -212,7 +213,6 @@ class SabreFlightBooking extends Model
                     "Quantity" => (string) 1
                 ];
             }
-
         }
 
         $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
@@ -221,6 +221,30 @@ class SabreFlightBooking extends Model
         } else{
             $apiEndPoint = 'https://api.platform.sabre.com/v2.5.0/passenger/records?mode=create';
         }
+
+        // agency info to set in booking details start
+        $agencyUserInfo = User::where('id', Auth::user()->id)->first();
+        $agencyCompanyInfo = CompanyProfile::where('user_id', $agencyUserInfo->id)->first();
+        $receivedFrom = "";
+        $agencyContact = "";
+        $agencyEmail = "";
+        if($agencyCompanyInfo){
+            $receivedFrom = $agencyCompanyInfo->name." ".$agencyCompanyInfo->phone;
+            $agencyContact = $agencyCompanyInfo->phone;
+            $agencyEmail = $agencyCompanyInfo->email;
+        }
+
+        if($receivedFrom == ""){
+            $receivedFrom = $agencyUserInfo->name." ".$agencyUserInfo->phone;
+        }
+        if($agencyContact == ""){
+            $agencyContact = $agencyUserInfo->phone;
+        }
+        if($agencyEmail == ""){
+            $agencyEmail = $agencyUserInfo->email;
+        }
+        // agency info to set in booking details end
+
 
         $request_body = array(
             "CreatePassengerNameRecordRQ" => array(
@@ -250,13 +274,13 @@ class SabreFlightBooking extends Model
                                     "LocationCode" => "DAC",
                                     "NameNumber" => "1.1",
                                     "PhoneUseType" => "M",
-                                    "Phone" => $travellerContact
+                                    "Phone" => $agencyContact //$travellerContact
                                 )
                             )
                         ),
                         "Email" => array(
                             array(
-                                "Address" => $travellerEmail,
+                                "Address" => $agencyEmail, //$travellerEmail,
                                 "Type" => "CC"
                             )
                         ),
@@ -323,7 +347,7 @@ class SabreFlightBooking extends Model
                 "PostProcessing" => array(
                     "EndTransaction" => array(
                         "Source" => array(
-                            "ReceivedFrom" => "FaithTrip B2B Portal"
+                            "ReceivedFrom" => $receivedFrom
                         ),
                         "Email" => array(
                             "Ind" => true,
