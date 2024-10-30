@@ -3,6 +3,8 @@ Already Done
 1. Show Airline PNR in Booking Details (Done)
 2. Auto Sync for cancellation while visitng flight details from b2b portal (Done)
 3. Mr/Mrs title adding in Passanger name which is creating a conflict with Passport Name (Done)
+4. Agency Info Missing in Booking Details (Done)
+5. Remove Marketing Flight & Total Miles From Booking Details (Done)
 ===============================================================================================
 
 
@@ -54,10 +56,5 @@ Booking Code
 5. Cabin Code
 6. Baggage Allowance
 7. Elapsed Time
-
-Dont Need
--------------------
-Markleting Flight *
-Total Miles *
 
 

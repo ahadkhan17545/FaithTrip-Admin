@@ -164,47 +164,49 @@
                             <table class="table table-bordered border-dark table-sm table-striped table-hover">
                                 <thead>
                                     <tr class="table-success">
-                                        <th scope="col" class="text-center" colspan="14" style="font-size: 14px">
-                                            Flight Segments</th>
+                                        <th scope="col" class="text-center" colspan="14" style="font-size: 14px">Flight Segments</th>
                                     </tr>
                                     <tr class="table-success">
                                         <th scope="col" class="text-center">Sl</th>
-                                        <th scope="col" class="text-center">Departure</th>
+                                        <th scope="col" class="text-center">Operating Airline</th>
+                                        <th scope="col" class="text-center">Flight No</th>
                                         <th scope="col" class="text-center">From</th>
                                         <th scope="col" class="text-center">Terminal</th>
-                                        <th scope="col" class="text-center">Elapsed Time</th>
-                                        <th scope="col" class="text-center">Arrival</th>
+                                        <th scope="col" class="text-center">Departure Datetime</th>
                                         <th scope="col" class="text-center">To</th>
                                         <th scope="col" class="text-center">Terminal</th>
-                                        <th scope="col" class="text-center">Baggage</th>
-                                        <th scope="col" class="text-center">Operating Flight</th>
-                                        <th scope="col" class="text-center">Marketing Flight</th>
+                                        <th scope="col" class="text-center">Arrival Datetime</th>
                                         <th scope="col" class="text-center">Booking Code</th>
                                         <th scope="col" class="text-center">Cabin Code</th>
-                                        <th scope="col" class="text-center">Total Miles</th>
+                                        <th scope="col" class="text-center">Baggage</th>
+                                        <th scope="col" class="text-center">Elapsed Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($flightSegments as $index => $segment)
                                         <tr>
-                                            <th scope="row">{{ $index + 1 }}</th>
-                                            <td class="text-center">{{ $segment->departure_time }}</td>
-                                            <td class="text-center">{{ $segment->departure_airport_code }}</td>
-                                            <td class="text-center">{{ $segment->departure_terminal }}</td>
-                                            <td class="text-center">{{ $segment->elapsed_time }} mins</td>
-                                            <td class="text-center">{{ $segment->arrival_time }}</td>
-                                            <td class="text-center">{{ $segment->arrival_airport_code }}</td>
-                                            <td class="text-center">{{ $segment->arrival_terminal }}</td>
-                                            <td class="text-center">{{ $segment->baggage_allowance }}</td>
+                                            <th class="text-center" scope="row">{{ $index + 1 }}</th>
+                                            <td class="text-center">
+                                                @php
+                                                    $airlineInfo = DB::table('airlines')->where('iata', $segment->carrier_operating_code)->first();
+                                                @endphp
+                                                {{ $airlineInfo ? $airlineInfo->name : 'N/A' }}
+                                            </td>
                                             <td class="text-center">
                                                 {{ $segment->carrier_operating_code }}-{{ $segment->carrier_operating_flight_number }}
                                             </td>
-                                            <td class="text-center">
-                                                {{ $segment->carrier_marketing_code }}-{{ $segment->carrier_marketing_flight_number }}
-                                            </td>
+                                            <td class="text-center">{{ $segment->departure_airport_code }}</td>
+                                            <td class="text-center">{{ $segment->departure_terminal }}</td>
+                                            <td class="text-center">{{ $segment->departure_time }}</td>
+
+                                            <td class="text-center">{{ $segment->arrival_airport_code }}</td>
+                                            <td class="text-center">{{ $segment->arrival_terminal }}</td>
+                                            <td class="text-center">{{ $segment->arrival_time }}</td>
+
                                             <td class="text-center">{{ $segment->booking_code }}</td>
                                             <td class="text-center">{{ $segment->cabin_code }}</td>
-                                            <td class="text-center">{{ $segment->total_miles_flown }}</td>
+                                            <td class="text-center">{{ $segment->baggage_allowance }}</td>
+                                            <td class="text-center">{{ $segment->elapsed_time }} mins</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
