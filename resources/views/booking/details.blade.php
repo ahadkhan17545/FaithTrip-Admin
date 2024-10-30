@@ -45,7 +45,10 @@
                                 </tr>
                                 <tr>
                                     <th>Booked By </th>
-                                    <td>: {{ Auth::user()->name }}</td>
+                                    @php
+                                        $bookedByUser = DB::table('users')->where('id', $flightBookingDetails->booked_by)->first();
+                                    @endphp
+                                    <td>: {{ $bookedByUser ? $bookedByUser->name : 'N/A' }}</td>
                                 </tr>
                                 <tr>
                                     <th>GDS </th>
@@ -64,12 +67,10 @@
                         <div class="col-lg-4 mb-2 border-end">
                             <h6 class="fw-bold mb-2 pb-1 border-bottom" style="font-size: 16px">Traveller Info</h6>
                             <table>
-                                @if($flightBookingDetails->pnr_id)
                                 <tr>
                                     <th>PNR ID </th>
                                     <td>: {{ $flightBookingDetails->pnr_id }}</td>
                                 </tr>
-                                @endif
                                 @if($flightBookingDetails->booking_id)
                                 <tr>
                                     <th>Booking ID </th>
@@ -188,7 +189,7 @@
                                             <th class="text-center" scope="row">{{ $index + 1 }}</th>
                                             <td class="text-center">
                                                 @php
-                                                    $airlineInfo = DB::table('airlines')->where('iata', $segment->carrier_operating_code)->first();
+                                                    $airlineInfo = DB::table('airlines')->where('iata', $segment->carrier_operating_code)->where('iata', $segment->carrier_operating_code)->where('active', 'Y')->first();
                                                 @endphp
                                                 {{ $airlineInfo ? $airlineInfo->name : 'N/A' }}
                                             </td>

@@ -35,6 +35,7 @@ Question for Sabre
 
 Refined Task List
 --------------------------------
+0. DAC to CGP Return Flight Booking Failed
 4. Gross Price Net Price for B2B Users
 5. Auto Cancel Booking Before Last Ticketing Datetime (Cron JOB)
 6. Send email to passanger after booking/ticket issue/cancel
@@ -44,17 +45,9 @@ Refined Task List
 
 
 Flight Segments Format in Details Page
-0. Operating Flight (Air India) Full Airlines
-0.1 Flight No (AI-238)
-1. Dept From
 2. Depart DateTime (Remove Timezone) (2024-12-14 12:00 am)
-Terminal
-3. Arrival To
-4. Arrival DateTime
-Terminal
-Booking Code
-5. Cabin Code
-6. Baggage Allowance
-7. Elapsed Time
+4. Arrival DateTime (Proper Format)
+6. Baggage Allowance (with Carry In)
+7. Elapsed Time (Hr min)
 
 
