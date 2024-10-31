@@ -22,7 +22,7 @@
     <meta property="og:site_name" content="{{env('APP_NAME')}}" />
 
     <!-- Favicon -->
-    @if($companyProfile)
+    @if($companyProfile && $companyProfile->logo && file_exists(public_path($companyProfile->logo)))
     <link rel="shortcut icon" href="{{ url($companyProfile->logo) }}" />
     @endif
 
