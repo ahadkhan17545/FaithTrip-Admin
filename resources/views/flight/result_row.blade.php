@@ -30,10 +30,27 @@
 
             <div class="list-item_end title hotel-right clearfix grid-hidden d-flex align-items-center d-md-block mt-2 pt-2 col-md-3 justify-content-center">
                 <div class="price-area d-xl-flex align-items-xl-center justify-content-xl-center text-center">
-                    <div class="purchase-price fs-22 font-weight-600">
+                    <div class="purchase-price fs-18 font-weight-600" style="line-height: 22px">
                         <div class="main-price">
-                            {{ $data['pricingInformation'][0]['fare']['totalFare']['currency'] }}
-                            {{ number_format($data['pricingInformation'][0]['fare']['totalFare']['totalPrice']) }}
+                            {{-- {{$data['pricingInformation'][0]['fare']['totalFare']['currency']}} --}}
+                            Gross: ৳ {{ number_format($data['pricingInformation'][0]['fare']['totalFare']['totalPrice']) }}
+                        </div>
+                        <div class="main-price">
+                            @php
+                                $netPrice = $data['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
+                                $basePrice = $data['pricingInformation'][0]['fare']['totalFare']['equivalentAmount'];
+                                if(Auth::user()->user_type == 2) {
+                                    $b2bUsersComission = Auth::user()->comission;
+                                    if(!empty($b2bUsersComission) && is_numeric($b2bUsersComission) && $b2bUsersComission > 0) {
+                                        $comissionAmount = round(($basePrice * $b2bUsersComission) / 100, 2);
+                                        $netPrice -= $comissionAmount;
+                                    }
+                                } else {
+                                    $comissionAmount = round(($basePrice * 7) / 100, 2);
+                                    $netPrice -= $comissionAmount;
+                                }
+                            @endphp
+                            Net: ৳ {{ number_format($netPrice) }}
                         </div>
                     </div>
                 </div>

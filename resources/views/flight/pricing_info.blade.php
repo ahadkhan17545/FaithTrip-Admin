@@ -16,13 +16,18 @@
         <div class="fs-16 font-weight-500" style="font-weight: 600;">
             ({{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'])-1]['fare']['totalFare']['currency'] }})
 
-            @if (
-                $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'])-1][
-                    'fare'
+            @php $basePrice = 0; @endphp
+            @if ($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'])-1]['fare'
                 ]['totalFare']['baseFareCurrency'] == 'USD')
-                {{ number_format($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'])-1]['fare']['totalFare']['baseFareAmount'] * $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'])-1]['fare']['passengerInfoList'][0]['passengerInfo']['currencyConversion']['exchangeRateUsed']) }}
+                @php
+                    $basePrice = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'])-1]['fare']['totalFare']['baseFareAmount'] * $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'])-1]['fare']['passengerInfoList'][0]['passengerInfo']['currencyConversion']['exchangeRateUsed'];
+                @endphp
+                {{ number_format($basePrice) }}
             @else
-                {{ number_format($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'])-1]['fare']['totalFare']['baseFareAmount']) }}
+                @php
+                    $basePrice = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'])-1]['fare']['totalFare']['baseFareAmount'];
+                @endphp
+                {{ number_format($basePrice) }}
             @endif
         </div>
     </div>
@@ -37,9 +42,30 @@
     </div>
     <hr>
     <div class="d-flex align-items-center justify-content-between">
-        <div class="">
-            <div class="fs-14 font-weight-300">Total Payable Amount</div>
+        <div class="fs-14 font-weight-300">Total Net Amount</div>
+        <div class="fs-16 font-weight-500">
+            @php
+                $netPrice = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'])-1]['fare']['totalFare']['totalPrice'];
+
+                if(Auth::user()->user_type == 2) {
+                    $b2bUsersComission = Auth::user()->comission;
+                    if(!empty($b2bUsersComission) && is_numeric($b2bUsersComission) && $b2bUsersComission > 0) {
+                        $comissionAmount = round(($basePrice * $b2bUsersComission) / 100, 2);
+                        $netPrice -= $comissionAmount;
+                    }
+                } else {
+                    $comissionAmount = round(($basePrice * 7) / 100, 2);
+                    $netPrice -= $comissionAmount;
+                }
+            @endphp
+            <span class="ml-2 text-primary" style="font-weight: 600;">
+                ({{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'])-1]['fare']['totalFare']['currency'] }})
+                {{number_format($netPrice)}}
+            </span>
         </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="fs-14 font-weight-300">Total Gross Amount</div>
         <div class="fs-16 font-weight-500">
             <span class="ml-2 text-primary" style="font-weight: 600;">
                 ({{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][count($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'])-1]['fare']['totalFare']['currency'] }})
