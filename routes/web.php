@@ -107,6 +107,9 @@ Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
         Route::post('save/excluded/airline', [GdsController::class, 'saveExcludedAirline'])->name('SaveExcludedAirline');
         Route::get('delete/excluded/airline/{id}', [GdsController::class, 'deleteExcludedAirline'])->name('DeleteExcludedAirline');
         Route::get('excluded/airline/info/{id}', [GdsController::class, 'excludedAirlineInfo'])->name('ExcludedAirlineInfo');
+        Route::get('view/airlines/comissions', [GdsController::class, 'viewAirlinesComissions'])->name('ViewAirlinesComissions');
+        Route::get('airline/info/{id}', [GdsController::class, 'airlineInfo'])->name('AirlineInfo');
+        Route::post('update/airline/comission', [GdsController::class, 'updateAirlineComission'])->name('UpdateAirlineComission');
 
         // system route for sms & email
         Route::get('/setup/sms/gateways', [SystemController::class, 'viewSmsGateways'])->name('ViewSmsGateways');

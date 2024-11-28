@@ -1,10 +1,6 @@
 Already Done
 =========================
-1. Show Airline PNR in Booking Details (Done)
-2. Auto Sync for cancellation while visitng flight details from b2b portal (Done)
-3. Mr/Mrs title adding in Passanger name which is creating a conflict with Passport Name (Done)
-4. Agency Info Missing in Booking Details (Done)
-5. Remove Marketing Flight & Total Miles From Booking Details (Done)
+
 ===============================================================================================
 
 
@@ -50,4 +46,10 @@ Flight Segments Format in Details Page
 6. Baggage Allowance (with Carry In)
 7. Elapsed Time (Hr min)
 
+
+New Findings:
+8. Search Flights From DAC-CGP but gettting Muscat as a last flight
+9. New Config for Airlines which have ticketing authority (will get 7%)
+10. Try to book Return Flight (DAC-DXB)
+11. Tour Package (Ref Go Zayan)
 

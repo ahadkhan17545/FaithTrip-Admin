@@ -132,4 +132,31 @@ class GdsController extends Controller
         $data = ExcludedAirlines::where('id', $id)->first();
         return response()->json($data);
     }
+
+    public function viewAirlinesComissions(Request $request){
+        if ($request->ajax()) {
+            $data = DB::table('airlines')->where('iata', '!=', null)->where('active', 'Y')->orderBy('name', 'asc')->get();
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $btn = ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Edit" class="btn-sm btn-warning rounded d-inline-block editBtn"><i class="fas fa-edit"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        return view('airlines_comissions');
+    }
+
+    public function airlineInfo($id){
+        $data = DB::table('airlines')->where('id', $id)->first();
+        return response()->json($data);
+    }
+
+    public function updateAirlineComission(Request $request){
+        DB::table('airlines')->where('id', $request->airline_id)->update([
+            'comission' => $request->airline_comission
+        ]);
+        return response()->json(['success' => 'Updated Successfully.']);
+    }
 }

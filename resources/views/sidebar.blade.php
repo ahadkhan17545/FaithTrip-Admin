@@ -163,6 +163,11 @@
                                 Exclude Airlines
                             </a>
                         </li>
+                        <li class="@if($currentRoute == 'ViewAirlinesComissions') mm-active @endif">
+                            <a class="text-capitalize" href="{{url('view/airlines/comissions')}}">
+                                Airlines Comissions
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="@if(in_array($currentRoute, ['ViewSmsGateways', 'ViewEmailConfig'])) mm-active @endif">

@@ -389,10 +389,10 @@ class PaymentController extends Controller
         $validate = SSLCommerz::validate_payment($request);
         if ($validate) {
 
-            $transactionId = session('ssl_tran_id');
+            // $transactionId = session('ssl_tran_id');
             date_default_timezone_set("Asia/Dhaka");
 
-            $rechargeRequestInfo = RechargeRequest::where('transaction_id', $transactionId)->first();
+            $rechargeRequestInfo = RechargeRequest::where('transaction_id', $request->tran_id)->first();
             $rechargeRequestInfo->status = 1;
             $rechargeRequestInfo->updated_at = Carbon::now();
             $rechargeRequestInfo->sve();
