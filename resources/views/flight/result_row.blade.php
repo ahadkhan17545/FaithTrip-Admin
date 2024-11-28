@@ -40,14 +40,18 @@
                                 $netPrice = $data['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
                                 $basePrice = $data['pricingInformation'][0]['fare']['totalFare']['equivalentAmount'];
                                 if(Auth::user()->user_type == 2) {
-                                    $b2bUsersComission = Auth::user()->comission;
-                                    if(!empty($b2bUsersComission) && is_numeric($b2bUsersComission) && $b2bUsersComission > 0) {
-                                        $comissionAmount = round(($basePrice * $b2bUsersComission) / 100, 2);
-                                        $netPrice -= $comissionAmount;
+                                    if($airlineInfo && $airlineInfo->comission > 0){ // if airline has comission
+                                        $b2bUsersComission = Auth::user()->comission;
+                                        if(!empty($b2bUsersComission) && is_numeric($b2bUsersComission) && $b2bUsersComission > 0) {
+                                            $comissionAmount = round(($basePrice * $b2bUsersComission) / 100, 2);
+                                            $netPrice -= $comissionAmount;
+                                        }
                                     }
                                 } else {
-                                    $comissionAmount = round(($basePrice * 7) / 100, 2);
-                                    $netPrice -= $comissionAmount;
+                                    if($airlineInfo && $airlineInfo->comission > 0){ // if airline has comission
+                                        $comissionAmount = round(($basePrice * 7) / 100, 2);
+                                        $netPrice -= $comissionAmount;
+                                    }
                                 }
                             @endphp
                             Net: ৳ {{ number_format($netPrice) }}
