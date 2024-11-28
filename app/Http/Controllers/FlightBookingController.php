@@ -90,6 +90,7 @@ class FlightBookingController extends Controller
                 'total_fare' => $total_fare,
                 'currency' => $request->currency,
                 'last_ticket_datetime' => $request->last_ticket_datetime,
+                'booking_request' => session('booking_request'),
                 'booking_response' => $bookingResponse,
                 'status' => $status,
                 'is_live' => $sabreGdsInfo ? $sabreGdsInfo->is_production : 0,
@@ -211,7 +212,7 @@ class FlightBookingController extends Controller
 
         // }, 5);
 
-        session()->forget(['adult', 'child', 'infant', 'revlidatedData']);
+        session()->forget(['adult', 'child', 'infant', 'revlidatedData', 'booking_request']);
 
         if($status == 0){
             Toastr::success('Flight Booking Request Sent', 'Success');

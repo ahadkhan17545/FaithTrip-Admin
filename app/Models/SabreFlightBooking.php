@@ -361,6 +361,7 @@ class SabreFlightBooking extends Model
 
         // Convert the request body array to JSON format
         $request_json = json_encode($request_body);
+        session(["booking_request" => $request_json]); //lated saved in database
 
         // return $request_json;
         // exit();

@@ -46,6 +46,7 @@ return new class extends Migration
             $table->string('ticket_issued_at')->nullable();
             $table->string('ticket_cancelled_at')->nullable();
 
+            $table->longText('booking_request')->comment("Json Booking Request Payload")->nullable();
             $table->longText('booking_response')->comment("Directly From API (Unfiltered)")->nullable();
             $table->longText('ticketing_response')->comment("Directly From API (Unfiltered)")->nullable();
 

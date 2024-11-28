@@ -48,8 +48,6 @@ Flight Segments Format in Details Page
 
 
 New Findings:
-8. Search Flights From DAC-CGP but gettting Muscat as a last flight
-9. New Config for Airlines which have ticketing authority (will get 7%)
 10. Try to book Return Flight (DAC-DXB)
 11. Tour Package (Ref Go Zayan)
 
