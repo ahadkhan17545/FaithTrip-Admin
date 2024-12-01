@@ -9,11 +9,12 @@
                 </h6>
             </div>
             <div class="col-lg-6 text-end">
-                <a href="javascript:void(0);" onclick="printPageArea('printableArea')" class="hidden-print btn btn-sm btn-success rounded"> Print Report</a>
+                <a href="javascript:void(0);" id="exportButton" class="hidden-print btn btn-sm rounded" style="background: green; color: white;"><i class="far fa-file-excel"></i> Download as Excel</a>
+                <a href="javascript:void(0);" onclick="printPageArea('printableArea')" class="hidden-print btn btn-sm rounded" style="background: #b60000; color: white;"><i class="far fa-file-pdf"></i> Print Report</a>
             </div>
         </div>
 
-        <table class="table table-striped table-bordered w-100 table-sm">
+        <table class="table table-striped table-bordered w-100 table-sm" id="myTable">
             <thead>
                 <tr>
                     <th class="text-center">SL</th>
@@ -244,3 +245,12 @@
 
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script>
+    document.getElementById('exportButton').addEventListener('click', function () {
+        const table = document.getElementById('myTable');
+        let workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+        XLSX.writeFile(workbook, "b2b_financial_report.xlsx");
+    });
+</script>

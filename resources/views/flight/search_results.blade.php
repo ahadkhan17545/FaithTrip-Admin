@@ -217,6 +217,7 @@
                     </div>
                     <div class="col-md-3 d-none d-lg-block leftSidebar mb-3">
                         <div class="theiaStickySidebar">
+                            @include('flight.search_session_time')
                             @include('flight.filter_search_results')
                         </div>
                     </div>

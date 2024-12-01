@@ -84,6 +84,11 @@ class FlightSearchController extends Controller
             }
             $operatingCodes = array_values(array_unique($operatingCodes));
             session(['search_results_operating_carriers' => $operatingCodes]);
+
+            // session time out for search results
+            $currentDateTime = date('Y-m-d H:i:s');
+            $sessionTimeOutAt = date('Y-m-d H:i:s', strtotime('+30 minutes', strtotime($currentDateTime)));
+            session(['session_timeout_at' => $sessionTimeOutAt]);
         }
 
         // flyhub
