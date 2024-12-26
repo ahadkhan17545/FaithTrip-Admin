@@ -199,7 +199,7 @@ function oneWayTotalPassenger() {
   const mainDropDown = document.querySelectorAll(".dropdown-menu");
   mainDropDown[0].classList.remove("show");
   mainDropDown[1].classList.remove("show");
-  mainDropDown[2].classList.remove("show");
+//   mainDropDown[2].classList.remove("show");
 }
 
 const roundDatePicker = document.getElementById("roundDatePicker");
@@ -315,71 +315,71 @@ function oneWayChildDec() {
 
 // script for round trip adult person
 
-let addBtn = document.querySelector("#round-adult-plus");
-let subBtn = document.querySelector("#round-adult-minus");
-let qty = document.querySelector("#round-adult-input");
+// let addBtn = document.querySelector("#round-adult-plus");
+// let subBtn = document.querySelector("#round-adult-minus");
+// let qty = document.querySelector("#round-adult-input");
 
-let roundaddBtn = document.querySelector("#round-child-plus");
-let roundsubBtn = document.querySelector("#round-child-minus");
-let roundqty = document.querySelector("#round-child-input");
+// let roundaddBtn = document.querySelector("#round-child-plus");
+// let roundsubBtn = document.querySelector("#round-child-minus");
+// let roundqty = document.querySelector("#round-child-input");
 
-let infantaddBtn = document.querySelector("#round-infant-plus");
-let infantsubBtn = document.querySelector("#round-infant-minus");
-let infantqty = document.querySelector("#round-infant-input");
+// let infantaddBtn = document.querySelector("#round-infant-plus");
+// let infantsubBtn = document.querySelector("#round-infant-minus");
+// let infantqty = document.querySelector("#round-infant-input");
 
-var totalRound = 1;
+// var totalRound = 1;
 
-addBtn.addEventListener("click", () => {
-  if (totalRound < 9) {
-    qty.value = parseInt(qty.value) + 1;
-    totalRound++;
-  }
-});
+// addBtn.addEventListener("click", () => {
+//   if (totalRound < 9) {
+//     qty.value = parseInt(qty.value) + 1;
+//     totalRound++;
+//   }
+// });
 
-subBtn.addEventListener("click", () => {
-  if (qty.value <= 0) {
-    qty.value = 0;
-  } else {
-    qty.value = parseInt(qty.value) - 1;
-    totalRound--;
-  }
-});
+// subBtn.addEventListener("click", () => {
+//   if (qty.value <= 0) {
+//     qty.value = 0;
+//   } else {
+//     qty.value = parseInt(qty.value) - 1;
+//     totalRound--;
+//   }
+// });
 
 // script for round trip child
 
-roundaddBtn.addEventListener("click", () => {
-  if (totalRound < 9) {
-    roundqty.value = parseInt(roundqty.value) + 1;
-    totalRound++;
-  }
-});
+// roundaddBtn.addEventListener("click", () => {
+//   if (totalRound < 9) {
+//     roundqty.value = parseInt(roundqty.value) + 1;
+//     totalRound++;
+//   }
+// });
 
-roundsubBtn.addEventListener("click", () => {
-  if (roundqty.value <= 0) {
-    roundqty.value = 0;
-  } else {
-    roundqty.value = parseInt(roundqty.value) - 1;
-    totalRound--;
-  }
-});
+// roundsubBtn.addEventListener("click", () => {
+//   if (roundqty.value <= 0) {
+//     roundqty.value = 0;
+//   } else {
+//     roundqty.value = parseInt(roundqty.value) - 1;
+//     totalRound--;
+//   }
+// });
 
 // script for round trip infant
 
-infantaddBtn.addEventListener("click", () => {
-  if (totalRound < 9) {
-    infantqty.value = parseInt(infantqty.value) + 1;
-    totalRound++;
-  }
-});
+// infantaddBtn.addEventListener("click", () => {
+//   if (totalRound < 9) {
+//     infantqty.value = parseInt(infantqty.value) + 1;
+//     totalRound++;
+//   }
+// });
 
-infantsubBtn.addEventListener("click", () => {
-  if (infantqty.value <= 0) {
-    infantqty.value = 0;
-  } else {
-    infantqty.value = parseInt(infantqty.value) - 1;
-    totalRound--;
-  }
-});
+// infantsubBtn.addEventListener("click", () => {
+//   if (infantqty.value <= 0) {
+//     infantqty.value = 0;
+//   } else {
+//     infantqty.value = parseInt(infantqty.value) - 1;
+//     totalRound--;
+//   }
+// });
 
 // script for one way trip adult person
 
