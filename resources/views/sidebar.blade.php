@@ -170,11 +170,16 @@
                         </li>
                     </ul>
                 </li>
-                <li class="@if(in_array($currentRoute, ['ViewSmsGateways', 'ViewEmailConfig'])) mm-active @endif">
+                <li class="@if(in_array($currentRoute, ['ViewSmsGateways', 'ViewEmailConfig', 'SearchResultsViewConfig'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-cog-outline"></i> Application Setting
                     </a>
                     <ul class="nav-second-level">
+                        <li class="@if($currentRoute == 'SearchResultsViewConfig') mm-active @endif">
+                            <a class="text-capitalize" href="{{url('search/results/view/config')}}">
+                                Search Results View
+                            </a>
+                        </li>
                         <li class="@if($currentRoute == 'ViewEmailConfig') mm-active @endif">
                             <a class="text-capitalize" href="{{url('view/email/config')}}">
                                 Mail Server

@@ -1,0 +1,186 @@
+.flight_card{
+    background-color: white;
+    margin: 0px;
+    margin-bottom: 0px;
+    margin-bottom: 16px;
+    padding: 15px 8px;
+    border-radius: 6px;
+}
+
+/* flight_airlines css */
+.flight_card .flight_airlines{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /*border: 1px solid #ddd;*/
+}
+
+.flight_card .flight_airlines img{
+    width: 75px;
+    margin-bottom: 5px;
+}
+.flight_card .flight_airlines h5{
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.flight_card .flight_airlines h6{
+    font-size: 13px;
+    font-weight: 600;
+    color: darkred;
+}
+
+/* flight_timing css */
+.flight_card .flight_timing{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /*border: 1px solid #ddd;*/
+}
+
+.flight_card .flight_timing h4{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0px;
+}
+
+.flight_card .flight_timing h6{
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.flight_card .flight_timing h5{
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 0px;
+}
+
+.flight_card .flight_timing h6.city_name{
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 0px;
+}
+
+/* flight_price */
+.flight_card .flight_price{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /*border: 1px solid #ddd;*/
+}
+
+.flight_card .flight_price small{
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 0px;
+}
+
+.flight_card .flight_price h5{
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.flight_card .flight_price a{
+    text-decoration: none;
+    font-size: 12px;
+    text-shadow: 1px 1px black;
+    background: #084277;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all .1s linear;
+}
+
+.flight_card .flight_price a:hover{
+    box-shadow: 2px 2px 5px black;
+}
+
+/* flight_duration */
+.flight_card .flight_duration{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /*border: 1px solid #ddd;*/
+}
+
+.flight_card .flight_duration .fa-plane{
+    font-size: 20px;
+    color: #084277;
+}
+
+.flight_card .flight_duration span{
+    font-size: 14px;
+    font-weight: 600;
+    position: relative;
+}
+
+.flight_card .flight_duration button{
+    background: transparent;
+    border-style: none;
+    border: 2px solid #084277;
+    border-radius: 4px;
+    padding: 2px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #084277;
+}
+
+/* transit start */
+.flight_card .flight_duration .transit-container {
+    display: flex;
+    flex-direction: row;
+    gap: 0px;
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+    margin-top: 10px;
+}
+
+.flight_card .flight_duration .transit {
+    position: relative;
+    border-top: 2px solid #084277;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.flight_card .flight_duration .transit::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: #084277;
+    border-radius: 50%;
+  }
+
+.flight_card .flight_duration .transit span{
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.flight_card .flight_duration .transit h6{
+    font-size: 12px;
+    font-weight: 600;
+}
+/* transit end */
+
+/* additional_info */
+.flight_card .additional_info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*border: 1px solid #ddd;*/
+}
+.flight_card .additional_info h6{
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 1px;
+}

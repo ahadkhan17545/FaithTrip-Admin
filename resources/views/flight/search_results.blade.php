@@ -2,6 +2,7 @@
 
 @section('header_css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="{{ url('assets') }}/admin-assets/css/search_results_v2.css" rel="stylesheet" >
     <style>
         .select2-selection {
             position: relative !important;
@@ -159,6 +160,64 @@
 
                             <div class="list-content" id="flight-infos">
 
+                                @php
+                                    $config = App\Models\Config::where('id', 1)->first();
+                                @endphp
+
+                                @if($config->search_results_view == 1)
+                                @foreach ($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'] as $index => $data)
+
+                                    @php
+                                        $totalPrice = $data['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
+                                        $minPrice = session('filter_min_price');
+                                        $maxPrice = session('filter_max_price');
+                                        $airlineCarrierFilterArray = session('airline_carrier_code');
+                                    @endphp
+
+                                    @if ($minPrice && $minPrice > 0 && (!$maxPrice && $maxPrice == 0))
+                                        @if ($totalPrice >= $minPrice)
+                                            @if (session('airline_carrier_code') &&
+                                                    in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                                @include('flight.result_row_v2')
+                                            @endif
+
+                                            @if (!session('airline_carrier_code'))
+                                                @include('flight.result_row_v2')
+                                            @endif
+                                        @endif
+                                    @elseif ($maxPrice && $maxPrice > 0 && (!$minPrice && $minPrice == 0))
+                                        @if ($totalPrice <= $maxPrice)
+                                            @if (session('airline_carrier_code') &&
+                                                    in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                                @include('flight.result_row_v2')
+                                            @endif
+
+                                            @if (!session('airline_carrier_code'))
+                                                @include('flight.result_row_v2')
+                                            @endif
+                                        @endif
+                                    @elseif ($minPrice && $minPrice > 0 && ($maxPrice && $maxPrice > 0))
+                                        @if ($totalPrice >= $minPrice && $totalPrice <= $maxPrice)
+                                            @if (session('airline_carrier_code') &&
+                                                    in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                                @include('flight.result_row_v2')
+                                            @endif
+
+                                            @if (!session('airline_carrier_code'))
+                                                @include('flight.result_row_v2')
+                                            @endif
+                                        @endif
+                                    @else
+                                        @if (session('airline_carrier_code') && in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                            @include('flight.result_row_v2')
+                                        @endif
+
+                                        @if (!session('airline_carrier_code'))
+                                            @include('flight.result_row_v2')
+                                        @endif
+                                    @endif
+                                @endforeach
+                                @else
                                 @foreach ($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'] as $index => $data)
                                     @php
                                         $totalPrice = $data['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
@@ -211,6 +270,7 @@
                                         @endif
                                     @endif
                                 @endforeach
+                                @endif
 
                             </div>
                         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Config;
 use Illuminate\Http\Request;
 use App\Models\SmsGateway;
 use App\Models\EmailConfigure;
@@ -110,6 +111,19 @@ class SystemController extends Controller
         ]);
 
         return redirect()->back()->withErrors(['success_message' => 'Email Config Updated']);
+    }
+
+    public function searchResultsViewConfig(){
+        $config = Config::where('id', 1)->first();
+        return view('system.search_results_view', compact('config'));
+    }
+
+    public function changeSearchResultsView($value){
+        Config::where('id', 1)->update([
+            'search_results_view' => $value,
+            'updated_at' => Carbon::now()
+        ]);
+        return response()->json(['success' => 'Updated Successfully.']);
     }
 
 }

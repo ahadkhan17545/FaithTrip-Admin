@@ -117,6 +117,8 @@ Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
         Route::get('/change/gateway/status/{provider}', [SystemController::class, 'changeGatewayStatus'])->name('ChangeGatewayStatus');
         Route::get('/view/email/config', [SystemController::class, 'viewEmailConfig'])->name('ViewEmailConfig');
         Route::post('/update/email/config', [SystemController::class, 'updateEmailConfig'])->name('UpdateEmailConfig');
+        Route::get('/search/results/view/config', [SystemController::class, 'searchResultsViewConfig'])->name('SearchResultsViewConfig');
+        Route::get('/change/search/results/view/{value}', [SystemController::class, 'changeSearchResultsView'])->name('ChangeSearchResultsView');
 
         // bank accounts
         Route::get('view/bank/accounts', [PaymentController::class, 'viewBankAccounts'])->name('ViewBankAccounts');
