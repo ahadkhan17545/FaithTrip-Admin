@@ -114,6 +114,9 @@
             $netPrice -= $comissionAmount;
         }
     }
+
+    $departureDate = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'];
+    $arrivalDateTime = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'];
 @endphp
 
 <div class="row flight_card">
@@ -138,12 +141,47 @@
         <i class="fas fa-plane"></i>
         <span>{{ App\Models\CustomFunction::convertMinToHrMin($totalFlightTiming) }}</span>
 
+
+
         @if (count($segmentArray) > 1)
             <div class="transit-container">
+
+                @php
+                    $departureDateArray = [];
+                    $arrivalDateArray = [];
+                @endphp
+
                 @foreach ($segmentArray as $segmentIndex => $segmentData)
+
+                    @php
+                        $departureDateTime = new DateTime($departureDate . ' ' . $segmentData['departure']['time']);
+                        $arrivalDateTime = new DateTime($departureDate . ' ' . $segmentData['arrival']['time']);
+
+                        if(isset($segmentData['bothDateAdjustment']) && $segmentData['bothDateAdjustment'] >= 1){
+                            $departureDateTime->modify('+' . $segmentData['bothDateAdjustment'] . ' day');
+                            $arrivalDateTime->modify('+' . $segmentData['bothDateAdjustment'] . ' day');
+                        } else {
+                            // Adjust the departure date if there's a date adjustment only for departure
+                            if (isset($segmentData['departure']['dateAdjustment']) && $segmentData['departure']['dateAdjustment'] > 0) {
+                                $departureDateTime->modify('+' . $segmentData['departure']['dateAdjustment'] . ' day');
+                            }
+                        }
+                        $departureDateArray[] = $departureDateTime->format('d-M-y h:i A');
+                        $arrivalDateArray[] = $arrivalDateTime->format('d-M-y h:i A');
+                    @endphp
+
                     @if ($segmentIndex > 0)
                         <div class="transit text-center">
-                            <span>1hr 30min</span>
+                            @php
+                                $lastLandedAt = $arrivalDateArray[$segmentIndex - 1];
+                                $willDepartureAt = $departureDateArray[$segmentIndex];
+                                // Create DateTime objects
+                                $lastLandedDatetime = DateTime::createFromFormat('d-M-y h:i A', $lastLandedAt);
+                                $willDepartureDatetime = DateTime::createFromFormat('d-M-y h:i A', $willDepartureAt);
+                                // Calculate the difference
+                                $flightTransit = $lastLandedDatetime->diff($willDepartureDatetime);
+                            @endphp
+                            <span>{{$flightTransit->h}}hr {{$flightTransit->i}}min</span>
                             <h6>Transit at {{ $segmentData['departure']['airport'] }}</h6>
                         </div>
                     @endif
@@ -174,12 +212,71 @@
         <a href="{{ url('select/flight') }}/{{ $index }}">Select Flight</a>
     </div>
     <div class="col-lg-12 additional_info">
-        <h6>Baggage: 30kg, Seat: 9</h6>
-        <h6>per passnger: BDT {{ number_format($data['pricingInformation'][0]['fare']['totalFare']['totalPrice']) }}
+        <h6>
+            {{-- Baggage and seats --}}
+            @php
+            foreach ($data['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerData){
+                if (isset($passengerData['passengerInfo']['baggageInformation'][0]['allowance']['ref'])) {
+                    $baggageRef = $passengerData['passengerInfo']['baggageInformation'][0]['allowance']['ref'];
+                    if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1])) {
+                        if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['pieceCount'])) {
+                            echo 'Baggage: Piece Count: ' .
+                                $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['pieceCount'] *
+                                    $passengerData['passengerInfo']['passengerNumber'].", ";
+                        }
+                        if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['weight'])) {
+                            echo "Baggage: ".$searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['weight'] *
+                                $passengerData['passengerInfo']['passengerNumber'];
+                        }
+                        if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['unit'])) {
+                            echo $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['unit'].", ";
+                        }
+                    }
+                }
+            }
+
+            foreach ($data['pricingInformation'][0]['fare']['passengerInfoList'] as $passengerData){
+                foreach ($passengerData['passengerInfo']['fareComponents'][0]['segments'] as $itemIndex => $segment){
+                    if($itemIndex ==0){ //only for the 1st segment
+                        if(isset($segment['segment']['seatsAvailable'])){
+                            echo "Seat: ".$segment['segment']['seatsAvailable'];
+                        }
+                        else{
+                            echo "Seat: N/A";
+                        }
+                    }
+                }
+            }
+            @endphp
         </h6>
+        <h6>per passnger: BDT {{ number_format($data['pricingInformation'][0]['fare']['totalFare']['totalPrice']) }}</h6>
     </div>
     <div class="col-lg-12 additional_info mt-2 d-block">
-        <h6>VQ -921: From <strong>DAC</strong> (11-Jan-25 07:20 AM) To <strong>CXB</strong> (11-Jan-25 08:25 AM)</h6>
-        <h6>VQ -921: From <strong>DAC</strong> (11-Jan-25 07:20 AM) To <strong>CXB</strong> (11-Jan-25 08:25 AM)</h6>
+
+        @foreach ($segmentArray as $segmentIndex => $segmentData)
+            @php
+                $departureDateTime = new DateTime($departureDate . ' ' . $segmentData['departure']['time']);
+                $arrivalDateTime = new DateTime($departureDate . ' ' . $segmentData['arrival']['time']);
+
+                if(isset($segmentData['bothDateAdjustment']) && $segmentData['bothDateAdjustment'] >= 1){
+                    $departureDateTime->modify('+' . $segmentData['bothDateAdjustment'] . ' day');
+                    $arrivalDateTime->modify('+' . $segmentData['bothDateAdjustment'] . ' day');
+                } else {
+                    // Adjust the departure date if there's a date adjustment only for departure
+                    if (isset($segmentData['departure']['dateAdjustment']) && $segmentData['departure']['dateAdjustment'] > 0) {
+                        $departureDateTime->modify('+' . $segmentData['departure']['dateAdjustment'] . ' day');
+                    }
+                }
+            @endphp
+            <h6>
+                {{ $segmentData['carrier']['operating'] }}-{{ $segmentData['carrier']['operatingFlightNumber'] }}:
+
+                From <strong>{{ $segmentData['departure']['airport'] }}</strong>
+                ({{$departureDateTime->format('d-M-y h:i A')}})
+
+                To <strong>{{ $segmentData['arrival']['airport'] }}</strong>
+                ({{$arrivalDateTime->format('d-M-y h:i A')}})
+            </h6>
+        @endforeach
     </div>
 </div>
