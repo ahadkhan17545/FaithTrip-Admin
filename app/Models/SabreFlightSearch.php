@@ -189,6 +189,10 @@ class SabreFlightSearch extends Model
                     ),
                     "OriginDestinationInformation" => $flightTypeData,
                     "TravelPreferences" => array(
+                        // "CabinPref"  => array(
+                        //     "Cabin" => "M", // M = Economy, C = Business, F = First
+                        //     "PreferLevel" => "Preferred"
+                        // ),
                         "TPA_Extensions" => array(
                             "DataSources" => array(
                                 "NDC" => "Disable",
