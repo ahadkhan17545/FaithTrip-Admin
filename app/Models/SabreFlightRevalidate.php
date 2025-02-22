@@ -42,16 +42,37 @@ class SabreFlightRevalidate extends Model
         $searchResults = json_decode(session('search_results'), true);
         $legsArray = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][$sessionIndex]['legs'];
         $segmentArray = [];
-
-        foreach ($legsArray as $leg) {
+        foreach ($legsArray as $legKey => $leg) {
             $legRef = $leg['ref'] - 1;
             $schedulesArray = $searchResults['groupedItineraryResponse']['legDescs'][$legRef]['schedules'];
             foreach ($schedulesArray as $schedule) {
+
                 $scheduleRef = $schedule['ref'] - 1;
                 $segment = $searchResults['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
+                $searchQueryDepartureDate = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][$legKey]['departureDate'];
+
+                $daysToBeAdded = 0;
+                if (isset($schedule['departureDateAdjustment'])) {
+                    $daysToBeAdded = $schedule['departureDateAdjustment'];
+                    $segment['departure']['dateTime'] = date("Y-m-d", strtotime("+".$daysToBeAdded." day", strtotime($searchQueryDepartureDate)))." ".$segment['departure']['time'];
+                    $segment['arrival']['dateTime'] = date("Y-m-d", strtotime("+".$daysToBeAdded." day", strtotime($searchQueryDepartureDate)))." ".$segment['arrival']['time'];
+                } else {
+                    $segment['departure']['dateTime'] = $searchQueryDepartureDate." ".$segment['departure']['time'];
+                    $segment['arrival']['dateTime'] = $searchQueryDepartureDate." ".$segment['arrival']['time'];
+                }
+
+                if (isset($segment['arrival']['dateAdjustment'])) {
+                    $daysToBeAdded = $daysToBeAdded + $segment['arrival']['dateAdjustment'];
+                    $segment['arrival']['dateTime'] = date("Y-m-d", strtotime("+".$daysToBeAdded." day", strtotime($searchQueryDepartureDate)))." ".$segment['arrival']['time'];
+                }
+
                 if (isset($schedule['departureDateAdjustment'])) {
                     $segment['bothDateAdjustment'] = $schedule['departureDateAdjustment'];
                 }
+
+                // extra field
+                $segment['step'] = $legKey; // to understand oneway/roundtrip/multicity
+
                 $segmentArray[] = $segment;
             }
         }

@@ -12,9 +12,8 @@
     <h6>{{ $segmentArray[0]['carrier']['operatingFlightNumber'] }}-{{ $segmentArray[0]['carrier']['equipment']['code'] }}</h6>
 </div>
 <div class="col-lg-2 flight_timing">
-    <h4>{{ date("H:i", strtotime($segmentArray[0]['departure']['dateTime'])) }}</h4>
-    <h6>({{ date("h:i A", strtotime($segmentArray[0]['departure']['dateTime'])) }})</h6>
-
+    <h4>{{(new DateTimeImmutable($segmentArray[0]['departure']['dateTime']))->format("H:i")}}</h4>
+    <h6>({{(new DateTimeImmutable($segmentArray[0]['departure']['dateTime']))->format("h:i A")}})</h6>
     <h5>{{ $segmentArray[0]['departure']['airport'] }}</h5>
     <h6 class="city_name">{{ DB::table('city_airports')->where('airport_code', $segmentArray[0]['departure']['airport'])->first()->city_name }}</h6>
 </div>
@@ -54,9 +53,8 @@
     </button>
 </div>
 <div class="col-lg-2 flight_timing">
-    <h4>{{ date("H:i", strtotime(end($segmentArray)['arrival']['dateTime'])) }}</h4>
-    <h6>({{ date("h:i A", strtotime(end($segmentArray)['arrival']['dateTime'])) }})</h6>
-
+    <h4>{{ (new DateTimeImmutable($segmentArray[0]['arrival']['dateTime']))->format("H:i") }}</h4>
+    <h6>({{ (new DateTimeImmutable($segmentArray[0]['arrival']['dateTime']))->format("h:i A") }})</h6>
     <h5>{{ end($segmentArray)['arrival']['airport'] }}</h5>
     <h6 class="city_name">{{ DB::table('city_airports')->where('airport_code', end($segmentArray)['arrival']['airport'])->first()->city_name }}</h6>
 </div>
@@ -76,9 +74,9 @@
                 $baggageRef = $passengerData['passengerInfo']['baggageInformation'][0]['allowance']['ref'];
                 if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1])) {
                     if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['pieceCount'])) {
-                        echo 'Baggage: Piece Count: ' .
+                        echo 'Baggage: ' .
                             $searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['pieceCount'] *
-                                $passengerData['passengerInfo']['passengerNumber'].", ";
+                                $passengerData['passengerInfo']['passengerNumber']." Piece, ";
                     }
                     if (isset($searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['weight'])) {
                         echo "Baggage: ".$searchResults['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageRef - 1]['weight'] *
@@ -113,10 +111,10 @@
             {{ $segmentData['carrier']['operating'] }}-{{ $segmentData['carrier']['operatingFlightNumber'] }}:
 
             From <strong>{{ $segmentData['departure']['airport'] }}</strong>
-            ({{ date("d-M-y h:i A", strtotime($segmentData['departure']['dateTime'])) }})
+            ({{(new DateTimeImmutable($segmentArray[0]['departure']['dateTime']))->format("d-M-y h:i A")}})
 
             To <strong>{{ $segmentData['arrival']['airport'] }}</strong>
-            ({{ date("d-M-y h:i A", strtotime($segmentData['arrival']['dateTime'])) }})
+            ({{ (new DateTimeImmutable($segmentArray[0]['arrival']['dateTime']))->format("d-M-y h:i A") }})
         </h6>
     @endforeach
 </div>

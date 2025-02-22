@@ -3,36 +3,36 @@
     $totalFlightTiming = 0;
     $legsArray = $data['legs'];
     foreach ($legsArray as $key => $leg) {
+
         $legRef = $leg['ref'] - 1;
         $legDescription = $searchResults['groupedItineraryResponse']['legDescs'][$legRef];
         $schedulesArray = $legDescription['schedules'];
 
-        foreach ($schedulesArray as $schedulesArrayIndex => $schedule) {
-
+        foreach ($schedulesArray as $schedule) {
             $scheduleRef = $schedule['ref'] - 1;
             $scheduleData = $searchResults['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
-            $segmentArray[] = $scheduleData;
             $searchQueryDepartureDate = $searchResults['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][$key]['departureDate'];
             $totalFlightTiming += $scheduleData['elapsedTime'];
 
             $daysToBeAdded = 0;
             if (isset($schedule['departureDateAdjustment'])) {
                 $daysToBeAdded = $schedule['departureDateAdjustment'];
-                $segmentArray[count($segmentArray)-1]['departure']['dateTime'] = date("Y-m-d", strtotime("+".$daysToBeAdded." day", strtotime($searchQueryDepartureDate)))." ".$scheduleData['departure']['time'];
-                $segmentArray[count($segmentArray)-1]['arrival']['dateTime'] = date("Y-m-d", strtotime("+".$daysToBeAdded." day", strtotime($searchQueryDepartureDate)))." ".$scheduleData['arrival']['time'];
+                $scheduleData['departure']['dateTime'] = date("Y-m-d", strtotime("+".$daysToBeAdded." day", strtotime($searchQueryDepartureDate)))." ".$scheduleData['departure']['time'];
+                $scheduleData['arrival']['dateTime'] = date("Y-m-d", strtotime("+".$daysToBeAdded." day", strtotime($searchQueryDepartureDate)))." ".$scheduleData['arrival']['time'];
             } else {
-                $segmentArray[count($segmentArray)-1]['departure']['dateTime'] = $searchQueryDepartureDate." ".$scheduleData['departure']['time'];
-                $segmentArray[count($segmentArray)-1]['arrival']['dateTime'] = $searchQueryDepartureDate." ".$scheduleData['arrival']['time'];
+                $scheduleData['departure']['dateTime'] = $searchQueryDepartureDate." ".$scheduleData['departure']['time'];
+                $scheduleData['arrival']['dateTime'] = $searchQueryDepartureDate." ".$scheduleData['arrival']['time'];
             }
 
             if (isset($scheduleData['arrival']['dateAdjustment'])) {
                 $daysToBeAdded = $daysToBeAdded + $scheduleData['arrival']['dateAdjustment'];
-                $segmentArray[count($segmentArray)-1]['arrival']['dateTime'] = date("Y-m-d", strtotime("+".$daysToBeAdded." day", strtotime($searchQueryDepartureDate)))." ".$scheduleData['arrival']['time'];
+                $scheduleData['arrival']['dateTime'] = date("Y-m-d", strtotime("+".$daysToBeAdded." day", strtotime($searchQueryDepartureDate)))." ".$scheduleData['arrival']['time'];
             }
 
             // extra field
-            $segmentArray[count($segmentArray)-1]['step'] = $key; // to understand oneway/roundtrip/multicity
+            $scheduleData['step'] = $key; // to understand oneway/roundtrip/multicity
 
+            $segmentArray[] = $scheduleData;
         }
     }
 
