@@ -53,18 +53,22 @@
     </button>
 </div>
 <div class="col-lg-2 flight_timing">
-    <h4>{{ (new DateTimeImmutable($segmentArray[0]['arrival']['dateTime']))->format("H:i") }}</h4>
-    <h6>({{ (new DateTimeImmutable($segmentArray[0]['arrival']['dateTime']))->format("h:i A") }})</h6>
+    <h4>{{ (new DateTimeImmutable(end($segmentArray)['arrival']['dateTime']))->format("H:i") }}</h4>
+    <h6>({{ (new DateTimeImmutable(end($segmentArray)['arrival']['dateTime']))->format("h:i A") }})</h6>
     <h5>{{ end($segmentArray)['arrival']['airport'] }}</h5>
     <h6 class="city_name">{{ DB::table('city_airports')->where('airport_code', end($segmentArray)['arrival']['airport'])->first()->city_name }}</h6>
 </div>
+
+
 <div class="col-lg-2 flight_price">
     <small>Gross:</small>
     <h5>৳ {{ number_format($data['pricingInformation'][0]['fare']['totalFare']['totalPrice']) }} </h5>
     <small>Net:</small>
-    <h5>৳ {{ number_format($netPrice) }} </h5>
+    <h5>৳ {{ number_format($netPrice) }}</h5>
     <a href="{{ url('select/flight') }}/{{ $index }}">Select Flight</a>
 </div>
+
+
 <div class="col-lg-12 additional_info">
     <h6>
         {{-- Baggage and seats --}}
@@ -111,10 +115,10 @@
             {{ $segmentData['carrier']['operating'] }}-{{ $segmentData['carrier']['operatingFlightNumber'] }}:
 
             From <strong>{{ $segmentData['departure']['airport'] }}</strong>
-            ({{(new DateTimeImmutable($segmentArray[0]['departure']['dateTime']))->format("d-M-y h:i A")}})
+            ({{(new DateTimeImmutable($segmentData['departure']['dateTime']))->format("d-M-y h:i A")}})
 
             To <strong>{{ $segmentData['arrival']['airport'] }}</strong>
-            ({{ (new DateTimeImmutable($segmentArray[0]['arrival']['dateTime']))->format("d-M-y h:i A") }})
+            ({{ (new DateTimeImmutable($segmentData['arrival']['dateTime']))->format("d-M-y h:i A") }})
         </h6>
     @endforeach
 </div>

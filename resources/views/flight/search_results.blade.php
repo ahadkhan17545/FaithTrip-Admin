@@ -218,16 +218,48 @@
                                     @endif
                                 @endforeach
                                 @else
-                                @foreach ($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'] as $index => $data)
-                                    @php
-                                        $totalPrice = $data['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
-                                        $minPrice = session('filter_min_price');
-                                        $maxPrice = session('filter_max_price');
-                                        $airlineCarrierFilterArray = session('airline_carrier_code');
-                                    @endphp
+                                    @foreach ($searchResults['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'] as $index => $data)
+                                        @php
+                                            $totalPrice = $data['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
+                                            $minPrice = session('filter_min_price');
+                                            $maxPrice = session('filter_max_price');
+                                            $airlineCarrierFilterArray = session('airline_carrier_code');
+                                        @endphp
 
-                                    @if ($minPrice && $minPrice > 0 && (!$maxPrice && $maxPrice == 0))
-                                        @if ($totalPrice >= $minPrice)
+                                        @if ($minPrice && $minPrice > 0 && (!$maxPrice && $maxPrice == 0))
+                                            @if ($totalPrice >= $minPrice)
+                                                @if (session('airline_carrier_code') &&
+                                                        in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                                    @include('flight.result_row')
+                                                @endif
+
+                                                @if (!session('airline_carrier_code'))
+                                                    @include('flight.result_row')
+                                                @endif
+                                            @endif
+                                        @elseif ($maxPrice && $maxPrice > 0 && (!$minPrice && $minPrice == 0))
+                                            @if ($totalPrice <= $maxPrice)
+                                                @if (session('airline_carrier_code') &&
+                                                        in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                                    @include('flight.result_row')
+                                                @endif
+
+                                                @if (!session('airline_carrier_code'))
+                                                    @include('flight.result_row')
+                                                @endif
+                                            @endif
+                                        @elseif ($minPrice && $minPrice > 0 && ($maxPrice && $maxPrice > 0))
+                                            @if ($totalPrice >= $minPrice && $totalPrice <= $maxPrice)
+                                                @if (session('airline_carrier_code') &&
+                                                        in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                                    @include('flight.result_row')
+                                                @endif
+
+                                                @if (!session('airline_carrier_code'))
+                                                    @include('flight.result_row')
+                                                @endif
+                                            @endif
+                                        @else
                                             @if (session('airline_carrier_code') &&
                                                     in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
                                                 @include('flight.result_row')
@@ -237,39 +269,7 @@
                                                 @include('flight.result_row')
                                             @endif
                                         @endif
-                                    @elseif ($maxPrice && $maxPrice > 0 && (!$minPrice && $minPrice == 0))
-                                        @if ($totalPrice <= $maxPrice)
-                                            @if (session('airline_carrier_code') &&
-                                                    in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
-                                                @include('flight.result_row')
-                                            @endif
-
-                                            @if (!session('airline_carrier_code'))
-                                                @include('flight.result_row')
-                                            @endif
-                                        @endif
-                                    @elseif ($minPrice && $minPrice > 0 && ($maxPrice && $maxPrice > 0))
-                                        @if ($totalPrice >= $minPrice && $totalPrice <= $maxPrice)
-                                            @if (session('airline_carrier_code') &&
-                                                    in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
-                                                @include('flight.result_row')
-                                            @endif
-
-                                            @if (!session('airline_carrier_code'))
-                                                @include('flight.result_row')
-                                            @endif
-                                        @endif
-                                    @else
-                                        @if (session('airline_carrier_code') &&
-                                                in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
-                                            @include('flight.result_row')
-                                        @endif
-
-                                        @if (!session('airline_carrier_code'))
-                                            @include('flight.result_row')
-                                        @endif
-                                    @endif
-                                @endforeach
+                                    @endforeach
                                 @endif
 
                             </div>

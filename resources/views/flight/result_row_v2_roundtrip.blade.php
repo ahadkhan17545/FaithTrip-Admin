@@ -250,10 +250,10 @@
             {{ $segmentData['carrier']['operating'] }}-{{ $segmentData['carrier']['operatingFlightNumber'] }}:
 
             From <strong>{{ $segmentData['departure']['airport'] }}</strong>
-            ({{ date("d-M-y h:i A", strtotime($segmentData['departure']['dateTime'])) }})
+            ({{(new DateTimeImmutable($segmentData['departure']['dateTime']))->format("d-M-y h:i A")}})
 
             To <strong>{{ $segmentData['arrival']['airport'] }}</strong>
-            ({{ date("d-M-y h:i A", strtotime($segmentData['arrival']['dateTime'])) }})
+            ({{ (new DateTimeImmutable($segmentData['arrival']['dateTime']))->format("d-M-y h:i A") }})
         </h6>
     @endforeach
 </div>

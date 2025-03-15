@@ -38,7 +38,8 @@
 
     // price related calculation
     $airlineInfo = DB::table('airlines')
-                    ->where('iata', $data['pricingInformation'][0]['fare']['validatingCarrierCode'])
+                    // ->where('iata', $data['pricingInformation'][0]['fare']['validatingCarrierCode'])
+                    ->where('iata', $segmentArray[0]['carrier']['operating'])
                     ->where('active', 'Y')
                     ->first();
 
