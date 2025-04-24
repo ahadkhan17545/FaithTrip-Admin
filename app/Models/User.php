@@ -23,7 +23,15 @@ class User extends Authenticatable
         'password',
         'phone',
         'image',
-        'comission'
+        'comission',
+        'verification_code',
+        'email_verified_at',
+        'balance',
+        'status',
+        'user_type',
+        'search_status',
+        'booking_status',
+        'ticket_status'
     ];
 
     /**
