@@ -90,8 +90,14 @@ table code {
 }
 
 .page-loader-wrapper .loader {
-    position: relative;
-    top: calc(50% - 30px);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+.page-loader-wrapper .loader img {
+	width: 180px;
+	height: 180px;
 }
 
 .preloader {

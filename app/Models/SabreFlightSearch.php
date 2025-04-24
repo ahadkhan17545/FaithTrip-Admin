@@ -149,7 +149,6 @@ class SabreFlightSearch extends Model
         }
 
         // Sabre API request payload with dynamic query
-
         $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
         if($sabreGdsInfo->is_production == 0){
             $apiEndPoint = 'https://api.cert.platform.sabre.com/v5/offers/shop';

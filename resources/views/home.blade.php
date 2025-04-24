@@ -109,6 +109,55 @@
         .input-group.custom-input-group {
             height: auto;
         }
+        
+        
+        
+        /*Services */
+         .services {
+          background-color:#fff;
+          padding: 56px 56px 80px 56px;
+        }
+     
+        .services-slider .swiper-slide {
+          display: block;
+           border-radius: 8px;
+           overflow:hidden;
+        }
+        .services-slider .swiper-slide img {
+          width: 100%;
+          border-radius: 8px;
+          transition:all 0.4s ease;
+        }
+        .services-slider .swiper-slide:hover img{
+            transform: scale(1.04);
+        } 
+    
+        /* Slider Contorls  */
+        .services .swiper-pagination {
+        	line-height: 0;
+        	bottom: -32px !important;
+        }
+        .services .swiper-pagination-bullet {
+          width: 10px;
+          height: 10px;
+          display: inline-block;
+          border-radius: 100%;
+          background: #084277;
+          opacity: 0.5;
+          margin: 0px 2px !important;
+        }
+        .services .swiper-pagination-bullet-active {
+          background: #084277;
+           opacity: 1;
+        }
+        
+   @media only screen and (max-width: 767px) {
+     .services {
+    	background-color: #fff;
+    	padding: 40px 0px 40px 0px !important;
+     }
+    }
+    
     </style>
 @endsection
 
@@ -275,12 +324,117 @@
                 </div>
             </div>
         </div>
+    
     </div>
+    
+      <!-- Start Services Area -->
+    <div class="services ">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 position-relative">
+            <div
+              class="swiper services-slider"
+            >
+              <div class="swiper-wrapper">
+                <!-- Slider Item -->
+                <a
+                  href="#"
+                  target="_blank"
+                  class="swiper-slide"
+                >
+                  <img
+                    src="https://placehold.co/480x240"
+                    alt="service-banner"
+                  />
+                </a>
+
+                <!-- Slider Item -->
+                <a
+                  href="#"
+                  target="_blank"
+                  class="swiper-slide"
+                >
+                  <img
+                    src="https://placehold.co/480x240"
+                   alt="service-banner"
+                  />
+                </a>
+
+                <!-- Slider Item -->
+                <a
+                  href="#"
+                  target="_blank"
+                  class="swiper-slide"
+                >
+                  <img
+                    src="https://placehold.co/480x240"
+                    alt="service-banner"
+                  />
+                </a>
+              </div>
+           
+            </div>
+               <div class="swiper-pagination"></div>
+               
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Servies Area -->
 @endsection
 
 @section('footer_js')
     <script src="{{ url('assets') }}/module-assets/js/booking/search_box.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+     <script src="{{ url('assets') }}/plugins/swiper/swiper-bundle.min.js"></script>
+    
+    <script>
+        var swiper = new Swiper(".services-slider", {
+          loop: true,
+          slidesPerView: 2,
+          spaceBetween: 16,
+          autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          },
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+          },
+          // Responsive breakpoints
+          breakpoints: {
+          
+            
+            300: {
+              slidesPerView: 1,
+              
+            },
+            
+            576: {
+              slidesPerView: 1,
+              
+            },
+          
+            768: {
+              slidesPerView: 1,
+             
+            },
+            
+            992: {
+              slidesPerView: 2,
+              
+            },
+  
+            1200: {
+              slidesPerView: 2,
+              
+            }
+          }
+        });
+    </script>
+    
+    
     <script>
         $('.flight_from').select2({
             placeholder: 'Departure City/Airport',

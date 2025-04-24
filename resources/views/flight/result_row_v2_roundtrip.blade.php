@@ -247,7 +247,7 @@
 
     @foreach ($segmentArray as $segmentIndex => $segmentData)
         <h6>
-            {{ $segmentData['carrier']['operating'] }}-{{ $segmentData['carrier']['operatingFlightNumber'] }}:
+            {{ $segmentData['carrier']['operating'] }}-{{ $segmentData['carrier']['marketingFlightNumber'] }}:
 
             From <strong>{{ $segmentData['departure']['airport'] }}</strong>
             ({{(new DateTimeImmutable($segmentData['departure']['dateTime']))->format("d-M-y h:i A")}})

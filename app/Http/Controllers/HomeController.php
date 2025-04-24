@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SabreGdsConfig;
+use App\Models\BankAccount;
+use App\Models\MfsAccount;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -81,6 +82,13 @@ class HomeController extends Controller
 
         $searchResults = view('flight.live_search_passangers', compact('searchPassangers'))->render();
         return response()->json(['searchResults' => $searchResults]);
+    }
+
+    public function paymentMethods()
+    {
+        $bankAccounts = BankAccount::where('status', 1)->orderBy('id', 'asc')->get();
+        $mfsAccounts = MfsAccount::where('status', 1)->orderBy('id', 'asc')->get();
+        return view('payment_method', compact('bankAccounts', 'mfsAccounts'));
     }
 
 }

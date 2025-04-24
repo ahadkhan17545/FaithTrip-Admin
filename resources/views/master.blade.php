@@ -42,6 +42,7 @@
     <link href="{{ url('assets') }}/nanopkg-assets/vendor/bootstrap-icons/css/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/nanopkg-assets/vendor/toastr/build/toastr.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/nanopkg-assets/css/arrow-hidden.min.css" rel="stylesheet" />
+    <link href="{{ url('assets') }}/plugins/swiper/swiper-bundle.min.css" rel="stylesheet"  />
     <link href="{{ url('assets') }}/nanopkg-assets/css/custom.min.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/admin-assets/css/style-new.css" rel="stylesheet" />
     <link href="{{ url('assets') }}/admin-assets/css/custom.css" rel="stylesheet" />
@@ -105,17 +106,19 @@
 
     <div class="page-loader-wrapper">
         <div class="loader">
-            <div class="preloader">
-                <div class="spinner-layer pl-green">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-            </div>
-            <p>Please wait...</p>
+            <!--<div class="preloader">-->
+            <!--    <div class="spinner-layer pl-green">-->
+            <!--        <div class="circle-clipper left">-->
+            <!--            <div class="circle"></div>-->
+            <!--        </div>-->
+            <!--        <div class="circle-clipper right">-->
+            <!--            <div class="circle"></div>-->
+            <!--        </div>-->
+            <!--    </div>-->
+            <!--</div>-->
+            <!--<p>Please wait...</p>-->
+            
+            <img src="{{url('assets')}}/img/preloader.gif" alt="preloader"/>
         </div>
     </div>
 
@@ -136,7 +139,7 @@
                     <div class="body-content">
 
                         @yield('content')
-
+                      
                     </div>
                 </div>
 
@@ -206,7 +209,7 @@
     <script src="{{ url('assets') }}/admin-assets/js/sidebar.min.js"></script>
     <script src="{{ url('assets') }}/nanopkg-assets/js/tosterSession.min.js"></script>
     <script defer src="{{ url('assets') }}/nanopkg-assets/vendor/alpine/alpine.min.js"></script>
-
+     <script defer src="{{ url('assets') }}/nanopkg-assets/vendor/alpine/alpine.min.js"></script>
     @yield('footer_js')
 
     {!! Toastr::message() !!}

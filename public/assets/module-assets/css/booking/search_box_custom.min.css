@@ -1,9 +1,10 @@
 .search_box_container {
-    position: relative;
-    width: 100%;
-    height: calc(100vh - 110px)
+	position: relative;
+	width: 100%;
+	/* height: calc(100vh - 110px); */
+	height: 100%;
+	padding-bottom: 20px;
 }
-
 .search_box_container .search_bg {
     position: absolute;
     width: 100%;

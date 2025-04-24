@@ -27,6 +27,7 @@ Auth::routes([
 Route::get('ckeditor', [CkeditorController::class, 'index']);
 Route::post('ckeditor/upload', [CkeditorController::class, 'upload'])->name('ckeditor.upload');
 
+
 // ssl commerz payment routes
 Route::get('sslcommerz/order', [PaymentController::class, 'order'])->name('payment.order');
 Route::post('sslcommerz/success', [PaymentController::class, 'success'])->name('payment.success');
@@ -41,6 +42,9 @@ Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
     Route::get('/live/city/airport/search', [HomeController::class, 'liveCityAirportSearch'])->name('LiveCityAirportSearch');
     Route::get('/live/airline/search', [HomeController::class, 'liveAirlineSearch'])->name('LiveAirlineSearch');
     Route::post('/passanger/live/search', [HomeController::class, 'passangerLiveSearch'])->name('PassangerLiveSearch');
+
+    // Payment Methods
+    Route::get('/payment-methods', [HomeController::class, 'paymentMethods'])->name('payment.methods');
 
     // search flights
     Route::post('/search/flights', [FlightSearchController::class, 'searchFlights'])->name('SearchFlights');
@@ -153,4 +157,3 @@ Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
     });
 
 });
-

@@ -27,7 +27,6 @@ class PaymentController extends Controller
                             return "<span style='font-weight:600; color:red'>Inactive</span>";
                         if($data->status == 1)
                             return "<span style='font-weight:600; color:green'>Active</span>";
-
                     })
                     ->addIndexColumn()
                     ->addColumn('action', function($data){
@@ -85,7 +84,7 @@ class PaymentController extends Controller
         ]);
 
         Toastr::success('Bank Account Updated');
-        return back();
+        return redirect('view/bank/accounts');
     }
 
     public function viewMfsAccounts(Request $request){

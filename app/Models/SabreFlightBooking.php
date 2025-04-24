@@ -56,7 +56,6 @@ class SabreFlightBooking extends Model
                 }
             }
 
-
             $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'] ?? "L";
 
             $marriageGrp = "O";
@@ -64,9 +63,10 @@ class SabreFlightBooking extends Model
                 $marriageGrp = "I";
             }
 
+            // mixed airlines er jonno booking er issue ta besi hoi sekhetre FlightNumber e always marketing flight number ta use korai valo
             $flightSegment[] = array(
                 "DepartureDateTime" => $departureDateTime->format('Y-m-d')."T".$departureDateTime->format('H:i:s'),
-                "FlightNumber" => (string) $segmentData['carrier']['operatingFlightNumber'],
+                "FlightNumber" => (string) $segmentData['carrier']['marketingFlightNumber'], //(string) $segmentData['carrier']['operatingFlightNumber'],
                 "NumberInParty" => (string) (session('adult')+session('child')+session('infant')),
                 "ResBookDesigCode" => (string) $bookingCode,
                 "Status" => "NN",
