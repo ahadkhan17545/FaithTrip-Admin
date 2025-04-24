@@ -54,13 +54,6 @@ New Findings:
 
 
 API
-1. Registration
-2. verification
-3. login
-4. User Info
-5. Logout
-6. Forget Password
-
 7. profile update
 8. Flight Booking
 9. Get My flight bookings
