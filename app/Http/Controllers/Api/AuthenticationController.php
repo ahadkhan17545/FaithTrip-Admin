@@ -170,6 +170,11 @@ class AuthenticationController extends Controller
                 ]);
             }
 
+            // cancel account delete request if user login
+            $user->delete_request_submitted = 0;
+            $user->delete_request_submitted_at = null;
+            $user->save();
+
             $data['token'] = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([

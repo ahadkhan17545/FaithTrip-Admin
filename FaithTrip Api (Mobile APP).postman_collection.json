@@ -146,7 +146,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "1|Mmn2dfgQftcAwYRcPfp21qEc0uxD49LWNRFqLHWt56a11356",
+							"value": "6|n3HGcGkYqV2Fd6cN898ty6kcyOZ3rVSoH9heZD0R88da12b2",
 							"type": "string"
 						}
 					]
@@ -309,6 +309,430 @@
 						"api",
 						"reset",
 						"password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Profile Update (Login Required)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Authenication Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization-Header",
+						"value": "OTA-786845756UYUDJEU",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/update-profile",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"update-profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book My Flight (Login Required)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<style type=\"text/css\">\r",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+							"    .tftable tr {background-color:#ffffff;}\r",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+							"    .tftable tr:hover {background-color:#e0ffff;}\r",
+							"</style>\r",
+							"\r",
+							"<table class=\"tftable\" border=\"1\">\r",
+							"    <tr>\r",
+							"        <th>ID</th>\r",
+							"        <th>Source</th>\r",
+							"        <th>Passanger ID</th>\r",
+							"        <th>Booking No</th>\r",
+							"        <th>Departure Date</th>\r",
+							"        <th>Arrival Location</th>\r",
+							"        <th>Adult</th>\r",
+							"        <th>Child</th>\r",
+							"        <th>Infant</th>\r",
+							"        <th>Base Fare Amount</th>\r",
+							"        <th>Total Tax Amount</th>\r",
+							"        <th>Total Fare</th>\r",
+							"        <th>Currency</th>\r",
+							"        <th>Status</th>\r",
+							"        <th>Payment Status</th>\r",
+							"        <th>Payment Method</th>\r",
+							"        <th>Is Live</th>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>{{response.data.id}}</td>\r",
+							"        <td>{{response.data.source}}</td>\r",
+							"        <td>{{response.data.passanger_id}}</td>\r",
+							"        <td>{{response.data.booking_no}}</td>\r",
+							"        <td>{{response.data.departure_date}}</td>\r",
+							"        <td>{{response.data.arrival_location}}</td>\r",
+							"        <td>{{response.data.adult}}</td>\r",
+							"        <td>{{response.data.child}}</td>\r",
+							"        <td>{{response.data.infant}}</td>\r",
+							"        <td>{{response.data.base_fare_amount}}</td>\r",
+							"        <td>{{response.data.total_tax_amount}}</td>\r",
+							"        <td>{{response.data.total_fare}}</td>\r",
+							"        <td>{{response.data.currency}}</td>\r",
+							"        <td>{{response.data.status}}</td>\r",
+							"        <td>{{response.data.payment_status}}</td>\r",
+							"        <td>{{response.data.payment_method}}</td>\r",
+							"        <td>{{response.data.is_live}}</td>\r",
+							"    </tr>\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"function constructVisualizerPayload() {\r",
+							"    return {response: pm.response.json()};\r",
+							"}\r",
+							"\r",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|n3HGcGkYqV2Fd6cN898ty6kcyOZ3rVSoH9heZD0R88da12b2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization-Header",
+						"value": "OTA-786845756UYUDJEU",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"pnr_id\": \"PNR123456\",\r\n  \"airlines_pnr\": \"QJRNIA,AJ56NIA\", //comma seperated if array\r\n  \"traveller_name\": \"John Doe\",\r\n  \"traveller_email\": \"john@example.com\",\r\n  \"traveller_contact\": \"+123456789\",\r\n  \"departure_date\": \"2025-06-01\",\r\n  \"departure_location\": \"DAC\",\r\n  \"arrival_location\": \"JFK\",\r\n  \"governing_carriers\": \"EK\",\r\n  \"base_fare_amount\": 12545,\r\n  \"total_tax_amount\": 458,\r\n  \"total_fare\": 13003,\r\n  \"currency\": \"BDT\",\r\n  \"last_ticket_datetime\": \"2025-05-30 23:59:59\",\r\n  \"adult\": 1,\r\n  \"child\": 1,\r\n  \"infant\": 0,\r\n  \"is_live\": 0, // 0=>Sandbox; 1=>Production\r\n  \"segment_array\": [\r\n    {\r\n      \"totalMilesFlown\": \"4500\",\r\n      \"elapsedTime\": \"14h\",\r\n      \"bookingCode\": \"Y\",\r\n      \"cabinCode\": \"M\",\r\n      \"baggageAllowance\": \"2PC\",\r\n      \"departure\": {\r\n        \"airport\": \"DAC\",\r\n        \"city\": \"Dhaka\",\r\n        \"country\": \"BD\",\r\n        \"time\": \"2025-06-01 08:00:00\",\r\n        \"terminal\": \"1\"\r\n      },\r\n      \"arrival\": {\r\n        \"airport\": \"JFK\",\r\n        \"city\": \"New York\",\r\n        \"country\": \"US\",\r\n        \"time\": \"2025-06-01 22:00:00\",\r\n        \"terminal\": \"4\"\r\n      },\r\n      \"carrier\": {\r\n        \"marketing\": \"EK\",\r\n        \"marketingFlightNumber\": \"585\",\r\n        \"operating\": \"EK\",\r\n        \"operatingFlightNumber\": \"585\",\r\n        \"equipment\": {\r\n          \"code\": \"77W\"\r\n        }\r\n      }\r\n    }\r\n  ],\r\n  \"passenger_data\": [\r\n    {\r\n      \"passanger_type\": \"ADT\",\r\n      \"title\": \"Mr\",\r\n      \"first_name\": \"John\",\r\n      \"last_name\": \"Doe\",\r\n      \"email\": \"john@example.com\",\r\n      \"phone\": \"+123456789\",\r\n      \"dob\": \"1990-01-01\",\r\n      \"age\": \"35\",\r\n      \"document_type\": \"1\", // 1=>Passport;2=>National ID\r\n      \"document_no\": \"A12345678\",\r\n      \"document_expire_date\": \"2030-01-01\",\r\n      \"document_issue_country\": \"BD\",\r\n      \"nationality\": \"BD\",\r\n      \"frequent_flyer_no\": \"\"\r\n    },\r\n    {\r\n      \"passanger_type\": \"CHD\",\r\n      \"title\": \"Ms\",\r\n      \"first_name\": \"Jane\",\r\n      \"last_name\": \"Doe\",\r\n      \"email\": \"jane@example.com\",\r\n      \"phone\": \"+987654321\",\r\n      \"dob\": \"2015-05-10\",\r\n      \"age\": \"10\",\r\n      \"document_type\": \"1\",  // 1=>Passport;2=>National ID\r\n      \"document_no\": \"B98765432\",\r\n      \"document_expire_date\": \"2030-05-01\",\r\n      \"document_issue_country\": \"BD\",\r\n      \"nationality\": \"BD\",\r\n      \"frequent_flyer_no\": \"\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/book/my/flight",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"book",
+						"my",
+						"flight"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Flight Booking Payment (Login Required)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|n3HGcGkYqV2Fd6cN898ty6kcyOZ3rVSoH9heZD0R88da12b2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization-Header",
+						"value": "OTA-786845756UYUDJEU",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"flight_booking_id\": 99,\r\n  \"payment_method\": 1, // 1=>SSLCommerz; 2=>bkash; 3=>Nagad\r\n  \"transaction_id\": \"IUYT65498125\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/flight/booking/payment",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"flight",
+						"booking",
+						"payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "My Flight Bookings (Login Required)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|n3HGcGkYqV2Fd6cN898ty6kcyOZ3rVSoH9heZD0R88da12b2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization-Header",
+						"value": "OTA-786845756UYUDJEU",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/my/flight/bookings",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"my",
+						"flight",
+						"bookings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Flight Booking Details (Login Required)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|n3HGcGkYqV2Fd6cN898ty6kcyOZ3rVSoH9heZD0R88da12b2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization-Header",
+						"value": "OTA-786845756UYUDJEU",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"booking_no\": \"7gz-1747859255\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/flight/booking/details",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"flight",
+						"booking",
+						"details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Flight Booking (Login Required)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|n3HGcGkYqV2Fd6cN898ty6kcyOZ3rVSoH9heZD0R88da12b2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization-Header",
+						"value": "OTA-786845756UYUDJEU",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"booking_no\": \"7gz-1747859255\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/cancel/flight/booking",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"cancel",
+						"flight",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Account Delete (Login Required)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "6|n3HGcGkYqV2Fd6cN898ty6kcyOZ3rVSoH9heZD0R88da12b2",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization-Header",
+						"value": "OTA-786845756UYUDJEU",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/submit/user/delete/request",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"submit",
+						"user",
+						"delete",
+						"request"
 					]
 				}
 			},
