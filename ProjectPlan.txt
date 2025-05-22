@@ -1,60 +1,31 @@
-Already Done
-=========================
-
-===============================================================================================
-
-
-Task:
-1. Share PNR Option in Email
-
-======04-08-2024=======
-1. Manage System user (Admin can his own system user and b2b user can add his own system user)
+Task List
+---------
+1. Share PNR Option in Customer Email
+2. Manage System user (Admin can create his own system user and b2b user can add his own system user)
 3. Remove Company profit form report of b2b user
-4. Direct Flight/Segmented Flights Filter option before Flight Search
-5. Modify Search is working Properly or not check this
-6. Ticket VOID option
-
-Terminal
-2. Some time base fare shows in USD in search result accrodian fare details
-
-
-Question for Sabre
-============================
-# Account Ledger (also export as excel for this and view transaction history)
-# Infant soho booking hochhe na.
-
-# add extra field name agent ID show (Auto Generate Incrementally)
-# agent search field larger
-# Recarge Request Submit hole mail jabe and approve holeo mail jabe
-# Booking e Agent Info
-
-
-Refined Task List
---------------------------------
-0. DAC to CGP Return Flight Booking Failed
-4. Gross Price Net Price for B2B Users
+4. Modify Search is not working Properly
 5. Auto Cancel Booking Before Last Ticketing Datetime (Cron JOB)
 6. Send email to passanger after booking/ticket issue/cancel
 7. Show Number of Available Seats in Search Results
 8. MultiCity Search
-9. Show GDS & GDS Code for Admin only in Flight Details
 
 
-Flight Segments Format in Details Page
-2. Depart DateTime (Remove Timezone) (2024-12-14 12:00 am)
-4. Arrival DateTime (Proper Format)
-6. Baggage Allowance (with Carry In)
-7. Elapsed Time (Hr min)
-
-
-New Findings:
-10. Try to book Return Flight (DAC-DXB)
-11. Tour Package (Ref Go Zayan)
-
+Issue List
+----------
+1. Incomplete Pyament Method Page
+2. About Us Page missing
+3. Policy Pages are missing
+4. FCO-DAC Return Flight Booking Issue
+5. Admin Dasboard Bottom banner missing
+6. Booking & Ticket Preview need to change according to new design
+7. Business Class fare not working . After selecting business class it shows the fare of Economy Class
+8. DAC - FCO Booking Issue and price missmatch
+9. b2b te jei net fare ta dekhay etar sathe 0.3% increase kore dekhate hobe
+9. b2b agent der commission percentage ki fraction add kora jay na? like 6.5%/5.5%
 
 
 API
-7. profile update
+------------------------
 8. Flight Booking
 9. Get My flight bookings
 10. Flight Booking Details

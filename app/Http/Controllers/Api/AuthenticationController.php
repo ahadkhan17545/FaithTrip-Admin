@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AuthenticationController extends Controller
@@ -18,7 +19,7 @@ class AuthenticationController extends Controller
 
     public function userRegistration(Request $request){
 
-        if ($request->header('Authorization') == AuthenticationController::AUTHORIZATION_TOKEN) {
+        if ($request->header('Authorization') == self::AUTHORIZATION_TOKEN) {
 
             // need to send Accept: application/json if use this validation
             $request->validate([
@@ -110,7 +111,7 @@ class AuthenticationController extends Controller
     }
 
     public function userVerification(Request $request){
-        if ($request->header('Authorization') == AuthenticationController::AUTHORIZATION_TOKEN) {
+        if ($request->header('Authorization') == self::AUTHORIZATION_TOKEN) {
 
             // need to send Accept: application/json if use this validation
             $request->validate([
@@ -153,7 +154,7 @@ class AuthenticationController extends Controller
 
     public function userLogin(Request $request){
 
-        if ($request->header('Authorization') == AuthenticationController::AUTHORIZATION_TOKEN) {
+        if ($request->header('Authorization') == self::AUTHORIZATION_TOKEN) {
 
             // need to send Accept: application/json if use this validation
             $request->validate([
@@ -196,7 +197,7 @@ class AuthenticationController extends Controller
 
     public function forgotPassword(Request $request){
 
-        if ($request->header('Authorization') == AuthenticationController::AUTHORIZATION_TOKEN) {
+        if ($request->header('Authorization') == self::AUTHORIZATION_TOKEN) {
 
             // need to send Accept: application/json if use this validation
             $request->validate(['email' => 'required|email']);
@@ -258,7 +259,7 @@ class AuthenticationController extends Controller
 
     public function resetPassword(Request $request){
 
-        if ($request->header('Authorization') == AuthenticationController::AUTHORIZATION_TOKEN) {
+        if ($request->header('Authorization') == self::AUTHORIZATION_TOKEN) {
 
             $request->validate([
                 'email' => 'required|email',
@@ -292,6 +293,87 @@ class AuthenticationController extends Controller
             ], 422);
         }
 
+    }
+
+    public function updateProfile(Request $request){
+        if ($request->header('Authorization-Header') == self::AUTHORIZATION_TOKEN) {
+
+            $user = $request->user(); // assuming Sanctum is used
+
+            // need to send Accept: application/json if use this validation
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email,' . $request->user()->id,
+                 'phone' => [
+                    'required',
+                    'string',
+                    'max:20',
+                    'regex:/^\+?[0-9]{7,15}$/',
+                    'unique:users,phone,' . $request->user()->id
+                ],
+            ]);
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->nid = $request->nid;
+
+            if ($request->hasFile('image')){
+
+                if($user->image && file_exists(public_path($user->image))){
+                    unlink(public_path($user->image));
+                }
+
+                $get_image = $request->file('image');
+                $image_name = str::random(5) . time() . '.' . $get_image->getClientOriginalExtension();
+                $location = public_path('userImages/');
+                // Image::make($get_image)->save($location . $image_name, 50);
+                $get_image->move($location, $image_name);
+                $user->image = "userImages/" . $image_name;
+            }
+
+            if ($request->has('password')) {
+                $user->password = Hash::make($request->password);
+            }
+
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile updated successfully',
+                'data' => $user
+            ]);
+
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => "Authorization Token is Invalid",
+                'data' => null
+            ], 422);
+        }
+    }
+
+    public function submitAccountDeleteRequest(Request $request){
+        if ($request->header('Authorization-Header') == self::AUTHORIZATION_TOKEN) {
+
+            $user = $request->user();
+            $user->delete_request_submitted = 1;
+            $user->delete_request_submitted_at = Carbon::now();
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Account delete request submitted successfully',
+                'data' => null
+            ]);
+
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => "Authorization Token is Invalid",
+                'data' => null
+            ], 422);
+        }
     }
 
 

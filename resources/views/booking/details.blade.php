@@ -36,6 +36,33 @@
                             <h6 class="fw-bold mb-2 pb-1 border-bottom" style="font-size: 16px">Booking Info</h6>
                             <table>
                                 <tr>
+                                    <th>Source </th>
+                                    <td>: @if($flightBookingDetails->source == 1) FaithTrip Portal @elseif($flightBookingDetails->source == 2) Website @else Mobile App @endif</td>
+                                </tr>
+                                @if($flightBookingDetails->payment_status)
+                                <tr>
+                                    <th>Payment Status</th>
+                                    <td>
+                                        @if($flightBookingDetails->payment_status == 0)
+                                            : Pending
+                                        @elseif($flightBookingDetails->payment_status == 1)
+                                            : Paid (@if($flightBookingDetails->payment_method == 1) SSLCommerz @elseif($flightBookingDetails->payment_method == 2) bkash @else Nagad @endif)
+                                        @else
+                                            : Failed
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endif
+                                @if($flightBookingDetails->transaction_id)
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <td>
+                                        : {{ $flightBookingDetails->transaction_id }}
+                                    </td>
+                                </tr>
+                                @endif
+
+                                <tr>
                                     <th>Booking No </th>
                                     <td>: {{ $flightBookingDetails->booking_no }}</td>
                                 </tr>
@@ -48,15 +75,26 @@
                                     @php
                                         $bookedByUser = DB::table('users')->where('id', $flightBookingDetails->booked_by)->first();
                                     @endphp
-                                    <td>: {{ $bookedByUser ? $bookedByUser->name : 'N/A' }}</td>
+                                    <td>: {{ $bookedByUser ? $bookedByUser->name : 'Passanger' }}</td>
                                 </tr>
+
+                                @if($flightBookingDetails->passanger_id)
                                 <tr>
-                                    <th>GDS </th>
-                                    <td>: {{ $flightBookingDetails->gds }}</td>
+                                    <th>Passanger Acc. </th>
+                                    <td>
+                                        @php
+                                            $userInfo = DB::table('users')->where('id', $flightBookingDetails->passanger_id)->first();
+                                            if($userInfo){
+                                                echo ': '.$userInfo->name."(".$userInfo->email.")";
+                                            }
+                                        @endphp
+                                    </td>
                                 </tr>
+                                @endif
+
                                 <tr>
-                                    <th>GDS ID </th>
-                                    <td>: {{ $flightBookingDetails->gds_unique_id }}</td>
+                                    <th>GDS Info</th>
+                                    <td>: {{ $flightBookingDetails->gds }} ({{ $flightBookingDetails->gds_unique_id }})</td>
                                 </tr>
                                 <tr>
                                     <th>Booking Mode </th>
@@ -105,6 +143,7 @@
                                                 @endif
                                     </td>
                                 </tr>
+
                             </table>
                         </div>
                         <div class="col-lg-4 mb-2">

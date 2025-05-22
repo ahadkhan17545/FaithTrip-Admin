@@ -119,13 +119,9 @@
                                                                         ->first();
                                                                 @endphp
 
-                                                                {{ $departureLocation->city_name }},
-                                                                {{ $departureLocation->country_name }}
-                                                                ({{ $departureLocation->city_code }})
+                                                                {{ $departureLocation->city_name }}-{{ $departureLocation->airport_name }}&nbsp;
                                                                 <i class="fas fa-plane-departure"></i>
-                                                                {{ $arrivalLocation ? $arrivalLocation->city_name : '' }},
-                                                                {{ $arrivalLocation ? $arrivalLocation->country_name : '' }}
-                                                                ({{ $arrivalLocation ? $arrivalLocation->city_code : '' }}),
+                                                                {{ $arrivalLocation ? $arrivalLocation->city_name : '' }}-{{ $arrivalLocation ? $arrivalLocation->airport_name : '' }}&nbsp;
                                                                 <i class="fa fa-calendar" aria-hidden="true"></i>
                                                                 {{ date('d-m-Y', strtotime($data['departureDate'])) }}
                                                             @endforeach

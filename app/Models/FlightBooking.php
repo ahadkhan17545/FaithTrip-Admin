@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class FlightBooking extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'payment_method',
+        'transaction_id',
+        'payment_status',
+        'updated_at'
+    ];
 }

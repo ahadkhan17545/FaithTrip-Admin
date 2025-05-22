@@ -70,6 +70,7 @@ class FlightBookingController extends Controller
 
             $flightBookingId = FlightBooking::insertGetId([
                 'booking_no' => str::random(3) . "-" . time(),
+                "source" => 1, //portal
                 'booked_by' => Auth::user()->id,
                 'b2b_comission' => Auth::user()->comission,
                 'pnr_id' => $bookinPnrID,
@@ -93,6 +94,7 @@ class FlightBookingController extends Controller
                 'booking_request' => session('booking_request'),
                 'booking_response' => $bookingResponse,
                 'status' => $status,
+                'payment_status' => null,
                 'is_live' => $sabreGdsInfo ? $sabreGdsInfo->is_production : 0,
                 'created_at' => Carbon::now()
             ]);
@@ -260,6 +262,7 @@ class FlightBookingController extends Controller
 
         $flightBookingId = FlightBooking::insertGetId([
             'booking_no' => str::random(3) . "-" . time(),
+            "source" => 1, //portal
             'booked_by' => Auth::user()->id,
             'b2b_comission' => Auth::user()->comission,
             'pnr_id' => null,
@@ -284,6 +287,7 @@ class FlightBookingController extends Controller
             'last_ticket_datetime' => $request->last_ticket_datetime ? date("Y-m-d h:i:s", strtotime($request->last_ticket_datetime)) : null,
             'booking_response' => $rawBookingResponse,
             'status' => $status,
+            'payment_status' => null,
             'is_live' => $flyhubGdsInfo ? $flyhubGdsInfo->is_production : 0,
             'created_at' => Carbon::now()
         ]);
