@@ -149,6 +149,7 @@ Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
         Route::post('update/b2b/user', [UserController::class, 'updateB2bUser'])->name('UpdateB2bUser');
         Route::get('view/saved/passangers', [UserController::class, 'savedPassangers'])->name('SavedPassangers');
         Route::get('delete/saved/passanger/{id}', [UserController::class, 'deleteSavedPassanger'])->name('DeleteSavedPassanger');
+        Route::get('view/registered/customers', [UserController::class, 'viewRegisteredCustomers'])->name('ViewRegisteredCustomers');
 
         // Report
         Route::get('b2b/financial/report', [ReportController::class, 'b2bFinancialReport'])->name('B2bFinancialReport');

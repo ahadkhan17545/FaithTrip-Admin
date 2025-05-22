@@ -252,5 +252,43 @@ class UserController extends Controller
         return response()->json(['success' => 'Deleted Successfully.']);
     }
 
+    public function viewRegisteredCustomers(Request $request){
+        if ($request->ajax()) {
+
+            $data = DB::table('users')
+                    ->where('user_type', 3)
+                    ->orderBy('id', 'desc')
+                    ->get();
+
+            return Datatables::of($data)
+                    ->editColumn('created_at', function($data) {
+                        return date("Y-m-d h:i a", strtotime($data->created_at));
+                    })
+                    ->editColumn('status', function($data) {
+                        if($data->status == 0)
+                            return "<span style='font-weight:600; color:red'>Inactive</span>";
+                        if($data->status == 1)
+                            return "<span style='font-weight:600; color:green'>Active</span>";
+                    })
+                    ->editColumn('delete_request_submitted_at', function($data) {
+                        if($data->delete_request_submitted_at){
+                            return "<span style='font-weight:600; color:red'>".date("Y-m-d h:i a", strtotime($data->delete_request_submitted_at))."</span>";
+                        } else{
+                            return "N/A";
+                        }
+                    })
+                    ->addIndexColumn()
+                    // ->addColumn('action', function($data){
+                    //     // $btn = ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Edit" class="btn-sm btn-warning rounded d-inline-block mb-1 editButton"><i class="fa fa-edit"></i></a>';
+                    //     $btn = ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Delete" class="btn-sm btn-danger rounded d-inline-block deleteBtn"><i class="fa fa-trash"></i></a>';
+                    //     return $btn;
+                    // })
+                    ->rawColumns(['action', 'status', 'delete_request_submitted_at'])
+                    ->make(true);
+        }
+        return view('user.registered_customers');
+
+    }
+
 
 }

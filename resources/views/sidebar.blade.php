@@ -130,6 +130,12 @@
                         Saved Passangers
                     </a>
                 </li>
+                <li class="@if($currentRoute == 'view/saved/passangers') mm-active @endif">
+                    <a class="text-capitalize" href="{{ url('/view/registered/customers') }}">
+                        <i class="typcn typcn-group-outline"></i>
+                        Registered Customers
+                    </a>
+                </li>
 
                 <li>
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
