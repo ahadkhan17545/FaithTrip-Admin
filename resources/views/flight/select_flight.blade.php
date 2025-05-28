@@ -726,18 +726,6 @@
 
                 </form>
 
-                <div class="card shadow border-0 mb-3">
-                    <div class="card-body py-5 px-5">
-                        <div class="fs-14 mb-0 ">
-                            <h5 class="fw-bold">Mandatory check list for passengers</h5>
-                            <ul class="list-style ps-3">
-                                <li>Please reach at least 2 hours prior to flight departure</li>
-                                <li>Face masks are compulsory we urge you to carry your own</li>
-                                <li>You are requested to print and paste the baggage tag attached to your booking confirmation alternatively you can write your name pnr and flight number on an a4 sheet and affix on your bag</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="col-xl-4 rightSidebar">

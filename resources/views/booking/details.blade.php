@@ -150,16 +150,37 @@
                             <h6 class="fw-bold mb-2 pb-1 border-bottom" style="font-size: 16px">Flight Info</h6>
                             <table>
                                 <tr>
-                                    <th>Departure </th>
-                                    <td>: {{ $flightBookingDetails->departure_date }}</td>
+                                    <th>Flight Routes</th>
+                                    <td>
+                                        @php
+                                            $routeArray = array();
+                                            $routeArray[] = $flightSegments[0]->departure_airport_code;
+                                            $routeArray[] = $flightSegments[count($flightSegments)-1]->arrival_airport_code;
+                                            $uniqueRoutes = array_unique($routeArray);
+                                            $routeString = implode(' - ', $uniqueRoutes);
+                                            echo ': '.$routeString;
+                                        @endphp
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <th>From </th>
-                                    <td>: {{ $flightBookingDetails->departure_location }}</td>
+                                    <th>Departure Date</th>
+                                    <td>
+                                        @php
+                                            $departure = $bookingResSegs ? $bookingResSegs[0]['Product']['ProductDetails']['Air']['DepartureDateTime'] : null;
+                                            $departureDateTime = explode('T', $departure);
+                                        @endphp
+                                        : {{date('j M Y', strtotime($departureDateTime[0]))}} {{substr($departureDateTime[1], 0, 5)}}
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <th>To </th>
-                                    <td>: {{ $flightBookingDetails->arrival_location }}</td>
+                                    <th>Arrival Date</th>
+                                    <td>
+                                        @php
+                                            $arrival = $bookingResSegs ? $bookingResSegs[count($flightSegments)-1]['Product']['ProductDetails']['Air']['ArrivalDateTime'] : null;
+                                            $arrivalDateTime = explode('T', $arrival);
+                                        @endphp
+                                        : {{date('j M Y', strtotime($arrivalDateTime[0]))}} {{substr($arrivalDateTime[1], 0, 5)}}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Total Fare </th>
@@ -199,60 +220,7 @@
                     </div>
                     <hr>
 
-                    <div class="row mb-2">
-                        <div class="col-lg-12">
-                            <table class="table table-bordered border-dark table-sm table-striped table-hover">
-                                <thead>
-                                    <tr class="table-success">
-                                        <th scope="col" class="text-center" colspan="14" style="font-size: 14px">Flight Segments</th>
-                                    </tr>
-                                    <tr class="table-success">
-                                        <th scope="col" class="text-center">Sl</th>
-                                        <th scope="col" class="text-center">Operating Airline</th>
-                                        <th scope="col" class="text-center">Flight No</th>
-                                        <th scope="col" class="text-center">From</th>
-                                        <th scope="col" class="text-center">Terminal</th>
-                                        <th scope="col" class="text-center">Departure Datetime</th>
-                                        <th scope="col" class="text-center">To</th>
-                                        <th scope="col" class="text-center">Terminal</th>
-                                        <th scope="col" class="text-center">Arrival Datetime</th>
-                                        <th scope="col" class="text-center">Booking Code</th>
-                                        <th scope="col" class="text-center">Cabin Code</th>
-                                        <th scope="col" class="text-center">Baggage</th>
-                                        <th scope="col" class="text-center">Elapsed Time</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($flightSegments as $index => $segment)
-                                        <tr>
-                                            <th class="text-center" scope="row">{{ $index + 1 }}</th>
-                                            <td class="text-center">
-                                                @php
-                                                    $airlineInfo = DB::table('airlines')->where('iata', $segment->carrier_operating_code)->where('iata', $segment->carrier_operating_code)->where('active', 'Y')->first();
-                                                @endphp
-                                                {{ $airlineInfo ? $airlineInfo->name : 'N/A' }}
-                                            </td>
-                                            <td class="text-center">
-                                                {{ $segment->carrier_operating_code }}-{{ $segment->carrier_operating_flight_number }}
-                                            </td>
-                                            <td class="text-center">{{ $segment->departure_airport_code }}</td>
-                                            <td class="text-center">{{ $segment->departure_terminal }}</td>
-                                            <td class="text-center">{{ $segment->departure_time }}</td>
-
-                                            <td class="text-center">{{ $segment->arrival_airport_code }}</td>
-                                            <td class="text-center">{{ $segment->arrival_terminal }}</td>
-                                            <td class="text-center">{{ $segment->arrival_time }}</td>
-
-                                            <td class="text-center">{{ $segment->booking_code }}</td>
-                                            <td class="text-center">{{ $segment->cabin_code }}</td>
-                                            <td class="text-center">{{ $segment->baggage_allowance }}</td>
-                                            <td class="text-center">{{ $segment->elapsed_time }} mins</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    @include('booking.segments')
 
                     <div class="row">
                         <div class="col-lg-9">

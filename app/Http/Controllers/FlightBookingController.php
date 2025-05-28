@@ -102,7 +102,7 @@ class FlightBookingController extends Controller
 
             $segmentArray = [];
             $legsArray = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['legs'];
-            foreach ($legsArray as $key => $leg) {
+            foreach ($legsArray as $leg) {
                 $legRef = $leg['ref'] - 1;
                 $legDescription = $revlidatedData['groupedItineraryResponse']['legDescs'][$legRef];
                 $schedulesArray = $legDescription['schedules'];
@@ -115,9 +115,12 @@ class FlightBookingController extends Controller
 
             foreach ($segmentArray as $segmentIndex => $segmentData){
 
+                $bookingCode = null;
                 if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'])){
                     $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'];
                 }
+
+                $cabinCode = null;
                 if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'])){
                     $cabinCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'];
                 }
@@ -524,9 +527,16 @@ class FlightBookingController extends Controller
             SabreBookingDetails::getBookingDetails($flightBookingDetails->pnr_id);
             $flightBookingDetails = FlightBooking::where('booking_no', $bookingNo)->first();
         }
+
+        $bookingResSegs = null;
+        if($flightBookingDetails->booking_response){
+            $bookingRes = json_decode($flightBookingDetails->booking_response, true);
+            $bookingResSegs = $bookingRes['CreatePassengerNameRecordRS']['TravelItineraryRead']['TravelItinerary']['ItineraryInfo']['ReservationItems']['Item'];
+        }
+
         $flightSegments = FlightSegment::where('flight_booking_id', $flightBookingDetails->id)->get();
         $flightPassangers = FlightPassanger::where('flight_booking_id', $flightBookingDetails->id)->get();
-        return view('booking.details', compact('flightBookingDetails', 'flightSegments', 'flightPassangers'));
+        return view('booking.details', compact('flightBookingDetails', 'flightSegments', 'flightPassangers', 'bookingResSegs'));
     }
 
     public function cancelFlightBooking($booking_no){

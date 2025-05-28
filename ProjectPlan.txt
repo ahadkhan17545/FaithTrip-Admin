@@ -24,8 +24,13 @@ Issue List
 9. b2b agent der commission percentage ki fraction add kora jay na? like 6.5%/5.5%
 
 
-API
-------------------------
-8. Flight Booking
-9. Get My flight bookings
-10. Flight Booking Details
+Sunday Deadline Task (Only for Oneway & RoundTrip)
+--------------------
+1. Booking Details change (with Airlines Logo)
+2. Booking Preview Update (with Airlines Logo)
+3. Booking List Route Issue for RundTrip (DAC-DEL-DAC)
+4. Modify Search is not working after search
+5. booking Issued ticket should be green & Non issued  ticketed should be red
+6. B2b user can create user id and manage other users under his account
+7. Business Class fare not working . After selecting business class it shows the fare of Economy Class
+
