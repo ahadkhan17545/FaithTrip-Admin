@@ -16,16 +16,26 @@ class SabreFlightBooking extends Model
         // making flight segment start
         $segmentArray = [];
         $legsArray = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['legs'];
-        foreach ($legsArray as $key => $leg) {
+        foreach ($legsArray as $leg) {
             $legRef = $leg['ref'] - 1;
             $legDescription = $revlidatedData['groupedItineraryResponse']['legDescs'][$legRef];
             $schedulesArray = $legDescription['schedules'];
-            foreach ($schedulesArray as $schedulesArrayIndex => $schedule) {
+
+            // foreach ($schedulesArray as $schedulesArrayIndex => $schedule) {
+            //     $scheduleRef = $schedule['ref'] - 1;
+            //     $segmentArray[] = $revlidatedData['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
+            //     if(isset($schedule['departureDateAdjustment'])){
+            //         $segmentArray[$schedulesArrayIndex]['bothDateAdjustment'] = $schedule['departureDateAdjustment'];
+            //     }
+            // }
+
+            foreach ($schedulesArray as $schedule) {
                 $scheduleRef = $schedule['ref'] - 1;
-                $segmentArray[] = $revlidatedData['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
-                if(isset($schedule['departureDateAdjustment'])){
-                    $segmentArray[$schedulesArrayIndex]['bothDateAdjustment'] = $schedule['departureDateAdjustment'];
+                $segment = $revlidatedData['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
+                if (isset($schedule['departureDateAdjustment'])) {
+                    $segment['bothDateAdjustment'] = $schedule['departureDateAdjustment'];
                 }
+                $segmentArray[] = $segment;
             }
         }
 
