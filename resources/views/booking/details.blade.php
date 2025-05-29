@@ -154,10 +154,15 @@
                                     <td>
                                         @php
                                             $routeArray = array();
-                                            $routeArray[] = $flightSegments[0]->departure_airport_code;
-                                            $routeArray[] = $flightSegments[count($flightSegments)-1]->arrival_airport_code;
-                                            $uniqueRoutes = array_unique($routeArray);
-                                            $routeString = implode(' - ', $uniqueRoutes);
+                                            // $routeArray[] = $flightSegments[0]->departure_airport_code;
+                                            // $routeArray[] = $flightSegments[count($flightSegments)-1]->arrival_airport_code;
+                                            // $uniqueRoutes = array_unique($routeArray);
+                                            foreach($flightSegments as $fs){
+                                                $routeArray[] = $fs->departure_airport_code;
+                                                $routeArray[] = $fs->arrival_airport_code;
+                                            }
+                                            // $uniqueRoutes = array_unique($routeArray);
+                                            $routeString = implode(' - ', $routeArray);
                                             echo ': '.$routeString;
                                         @endphp
                                     </td>

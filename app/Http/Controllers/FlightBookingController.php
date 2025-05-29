@@ -67,6 +67,7 @@ class FlightBookingController extends Controller
             $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
 
             $flightBookingId = FlightBooking::insertGetId([
+                'flight_type' => session('flight_type'), // 1 = one way, 2 = round trip
                 'booking_no' => str::random(3) . "-" . time(),
                 "source" => 1, //portal
                 'booked_by' => Auth::user()->id,
@@ -78,8 +79,8 @@ class FlightBookingController extends Controller
                 'traveller_email' => $request->traveller_email,
                 'traveller_contact' => $request->traveller_contact,
                 'departure_date' => $request->departure_date,
-                'departure_location' => $request->departure_location,
-                'arrival_location' => $request->arrival_location,
+                'departure_location' => DB::table('city_airports')->where('id', session('departure_location_id'))->first()->airport_code, //$request->departure_location,
+                'arrival_location' => DB::table('city_airports')->where('id', session('destination_location_id'))->first()->airport_code, //$request->arrival_location,
                 'governing_carriers' => $request->governing_carriers,
                 'adult' => session('adult'),
                 'child' => session('child'),
@@ -262,6 +263,7 @@ class FlightBookingController extends Controller
         $flyhubGdsInfo = FlyhubGdsConfig::where('id', 1)->first();
 
         $flightBookingId = FlightBooking::insertGetId([
+            'flight_type' => session('flight_type'), // 1 = one way, 2 = round trip
             'booking_no' => str::random(3) . "-" . time(),
             "source" => 1, //portal
             'booked_by' => Auth::user()->id,
@@ -275,8 +277,8 @@ class FlightBookingController extends Controller
             'traveller_email' => $request->traveller_email,
             'traveller_contact' => $request->traveller_contact,
             'departure_date' => date("Y-m-d h:i:s", strtotime($request->departure_date)),
-            'departure_location' => $request->departure_location,
-            'arrival_location' => $request->arrival_location,
+            'departure_location' => DB::table('city_airports')->where('id', session('departure_location_id'))->first()->airport_code, //$request->departure_location,
+            'arrival_location' => DB::table('city_airports')->where('id', session('destination_location_id'))->first()->airport_code, //$request->arrival_location,
             'governing_carriers' => $request->governing_carriers,
             'adult' => session('adult'),
             'child' => session('child'),

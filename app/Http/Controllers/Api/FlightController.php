@@ -56,6 +56,7 @@ class FlightController extends Controller
             $user = $request->user();
 
             $flightBookingId = DB::table('flight_bookings')->insertGetId([
+                'flight_type' => $request->flight_type, // 1 = one way, 2 = round trip
                 'booking_no' => str::random(3) . "-" . time(),
                 "source" => 3,
                 'passanger_id' => $user->id,

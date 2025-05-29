@@ -44,6 +44,14 @@ class SabreFlightBooking extends Model
         $returnDepartureDate = isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureDate']) ? $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][1]['departureDate'] : null;
         $isReturnFlight = false;
 
+
+        // before your loop
+        $itinerary       = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0];
+        $legs            = $itinerary['legs'];
+        $firstLegRefIdx  = $legs[0]['ref'] - 1;
+        $outboundCount   = count($revlidatedData['groupedItineraryResponse']['legDescs'][$firstLegRefIdx]['schedules']);
+
+
         foreach ($segmentArray as $segmentIndex => $segmentData){
 
             // Check if this is a return flight segment
@@ -66,11 +74,24 @@ class SabreFlightBooking extends Model
                 }
             }
 
-            $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'] ?? "L";
 
-            $marriageGrp = "O";
-            if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['availabilityBreak'])){
-                $marriageGrp = "I";
+            if ($segmentIndex < $outboundCount) {
+                // outbound — use the same absolute index
+                $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'] ?? "L";
+
+                $marriageGrp = "O";
+                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['availabilityBreak'])){
+                    $marriageGrp = "I";
+                }
+            } else {
+                // return — subtract the outbound count to get a 0-based local index
+                $localReturnIdx = $segmentIndex - $outboundCount;
+                $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['bookingCode'] ?? "L";
+
+                $marriageGrp = "O";
+                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['availabilityBreak'])){
+                    $marriageGrp = "I";
+                }
             }
 
             // mixed airlines er jonno booking er issue ta besi hoi sekhetre FlightNumber e always marketing flight number ta use korai valo
