@@ -152,19 +152,7 @@
                                 <tr>
                                     <th>Flight Routes</th>
                                     <td>
-                                        @php
-                                            $routeArray = array();
-                                            // $routeArray[] = $flightSegments[0]->departure_airport_code;
-                                            // $routeArray[] = $flightSegments[count($flightSegments)-1]->arrival_airport_code;
-                                            // $uniqueRoutes = array_unique($routeArray);
-                                            foreach($flightSegments as $fs){
-                                                $routeArray[] = $fs->departure_airport_code;
-                                                $routeArray[] = $fs->arrival_airport_code;
-                                            }
-                                            // $uniqueRoutes = array_unique($routeArray);
-                                            $routeString = implode(' - ', $routeArray);
-                                            echo ': '.$routeString;
-                                        @endphp
+                                        : {{ $flightBookingDetails->departure_location }} - {{ $flightBookingDetails->arrival_location }} @if($flightBookingDetails->flight_type == 2) - {{ $flightBookingDetails->departure_location }} @endif
                                     </td>
                                 </tr>
                                 <tr>

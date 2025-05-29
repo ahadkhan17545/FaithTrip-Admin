@@ -1,6 +1,6 @@
 <div class="row mb-2">
     <div class="col-lg-12">
-        <table class="table table-bordered border-dark table-sm table-striped table-hover">
+        <table class="table table-bordered border-dark table-sm">
             <thead>
                 <tr class="table-success">
                     <th scope="col" class="text-center" colspan="9" style="font-size: 14px">Flight Itinerary</th>
@@ -18,6 +18,11 @@
                 </tr>
             </thead>
             <tbody>
+                <tr class="table-warning">
+                    <td class="text-center align-middle" colspan="9" style="font-size: 14px">
+                        {{ $flightBookingDetails->departure_location }} - {{ $flightBookingDetails->arrival_location }}
+                    </td>
+                </tr>
                 @foreach ($flightSegments as $index => $segment)
                     <tr>
                         <th class="text-center align-middle" scope="row">{{ $index + 1 }}</th>
@@ -87,7 +92,16 @@
                         </td>
                         <td class="text-center align-middle">{{ $segment->elapsed_time }} mins</td>
                     </tr>
-                    @if(isset($flightSegments[$index+1]))
+
+                    @if(isset($flightSegments[$index+1]) && $flightSegments[$index+1]->departure_airport_code == $flightBookingDetails->arrival_location)
+                    <tr class="table-warning">
+                        <td class="text-center align-middle" colspan="9" style="font-size: 14px">
+                            {{ $flightBookingDetails->arrival_location }} - {{ $flightBookingDetails->departure_location }}
+                        </td>
+                    </tr>
+                    @endif
+
+                    @if(isset($flightSegments[$index+1]) && $flightSegments[$index+1]->departure_airport_code != $flightBookingDetails->arrival_location)
                     <tr class="table-active">
                         <td class="text-center align-middle" colspan="9" style="font-size: 14px">
                             @php
