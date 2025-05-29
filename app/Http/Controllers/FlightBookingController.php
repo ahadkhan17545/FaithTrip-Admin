@@ -442,6 +442,13 @@ class FlightBookingController extends Controller
             }
 
             return Datatables::of($data)
+                    ->addColumn('flight_routes', function($data){
+                        $routeString = $data->departure_location." - ".$data->arrival_location;
+                        if($data->flight_type == 2){
+                            $routeString .= " - ".$data->departure_location;
+                        }
+                        return $routeString;
+                    })
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d h:i a", strtotime($data->created_at));
                     })
@@ -488,6 +495,13 @@ class FlightBookingController extends Controller
             }
 
             return Datatables::of($data)
+                    ->addColumn('flight_routes', function($data){
+                        $routeString = $data->departure_location." - ".$data->arrival_location;
+                        if($data->flight_type == 2){
+                            $routeString .= " - ".$data->departure_location;
+                        }
+                        return $routeString;
+                    })
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d h:i a", strtotime($data->created_at));
                     })

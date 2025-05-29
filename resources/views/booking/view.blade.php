@@ -55,8 +55,7 @@
                                             <th class="text-center">Booking Date</th>
                                             <th class="text-center">PNR</th>
                                             <th class="text-center">Departure</th>
-                                            <th class="text-center">From</th>
-                                            <th class="text-center">To</th>
+                                            <th class="text-center">Flight Routes</th>
                                             <th class="text-center">Contact</th>
                                             <th class="text-center">Passanger</th>
                                             <th class="text-center">Total Fare</th>
@@ -110,12 +109,8 @@
                     name: 'departure_date'
                 },
                 {
-                    data: 'departure_location',
-                    name: 'departure_location'
-                },
-                {
-                    data: 'arrival_location',
-                    name: 'arrival_location'
+                    data: 'flight_routes',
+                    name: 'flight_routes'
                 },
                 {
                     data: 'traveller_contact',
