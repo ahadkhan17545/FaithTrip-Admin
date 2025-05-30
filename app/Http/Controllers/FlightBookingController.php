@@ -16,6 +16,7 @@ use App\Models\SabreFlightBooking;
 use App\Models\SabreFlightTicketIssue;
 use App\Models\SabreGdsConfig;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Brian2694\Toastr\Facades\Toastr;
@@ -624,7 +625,8 @@ class FlightBookingController extends Controller
         $flightBookingDetails = FlightBooking::where('booking_no', $bookingNo)->first();
         $flightSegments = FlightSegment::where('flight_booking_id', $flightBookingDetails->id)->get();
         $flightPassangers = FlightPassanger::where('flight_booking_id', $flightBookingDetails->id)->get();
-        return view('booking.preview', compact('flightBookingDetails', 'flightSegments', 'flightPassangers'));
+        $pdf = Pdf::loadView('booking.preview', compact('flightBookingDetails', 'flightSegments', 'flightPassangers'));
+        return $pdf->stream('flight_booking_preview.pdf');
     }
 
     public function issueFlightTicket($booking_no){
