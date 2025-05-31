@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CompanyProfile;
 use App\Models\FlightBooking;
 use App\Models\FlyhubFlightBooking;
 use App\Models\FlyhubFlightTicketIssue;
@@ -625,8 +626,16 @@ class FlightBookingController extends Controller
         $flightBookingDetails = FlightBooking::where('booking_no', $bookingNo)->first();
         $flightSegments = FlightSegment::where('flight_booking_id', $flightBookingDetails->id)->get();
         $flightPassangers = FlightPassanger::where('flight_booking_id', $flightBookingDetails->id)->get();
-        $pdf = Pdf::loadView('booking.preview', compact('flightBookingDetails', 'flightSegments', 'flightPassangers'));
-        return $pdf->stream('flight_booking_preview.pdf');
+        $companyProfile = CompanyProfile::where('user_id', Auth::user()->id)->first();
+
+        $bookingResSegs = null;
+        if($flightBookingDetails->booking_response){
+            $bookingRes = json_decode($flightBookingDetails->booking_response, true);
+            $bookingResSegs = $bookingRes['CreatePassengerNameRecordRS']['TravelItineraryRead']['TravelItinerary']['ItineraryInfo']['ReservationItems']['Item'];
+        }
+
+        $pdf = Pdf::loadView('booking.preview', compact('flightBookingDetails', 'flightSegments', 'flightPassangers', 'companyProfile', 'bookingResSegs'));
+        return $pdf->stream($flightBookingDetails->booking_no.'.pdf');
     }
 
     public function issueFlightTicket($booking_no){
