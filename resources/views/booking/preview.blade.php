@@ -183,7 +183,14 @@
                         @endphp
                     </p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Baggage: @if($segment->baggage_allowance) {{ $segment->baggage_allowance }} @else N/A @endif</p>
-                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Duration: {{ $segment->elapsed_time }} mins</p>
+                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Duration:<br>
+                        @php
+                            $minutes = $segment->elapsed_time;
+                            $hours = intdiv($minutes, 60);
+                            $remainingMinutes = $minutes % 60;
+                            echo "{$hours} hour {$remainingMinutes} min";
+                        @endphp
+                    </p>
                 </td>
             </tr>
 

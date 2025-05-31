@@ -99,7 +99,14 @@
                             <span class="text-danger">Not Specified</span>
                             @endif
                         </td>
-                        <td class="text-center align-middle">{{ $segment->elapsed_time }} mins</td>
+                        <td class="text-center align-middle">
+                            @php
+                                $minutes = $segment->elapsed_time;
+                                $hours = intdiv($minutes, 60);
+                                $remainingMinutes = $minutes % 60;
+                                echo "{$hours} hour {$remainingMinutes} min";
+                            @endphp
+                        </td>
                     </tr>
 
                     @if(isset($flightSegments[$index+1]) && $flightSegments[$index+1]->departure_airport_code == $flightBookingDetails->arrival_location)

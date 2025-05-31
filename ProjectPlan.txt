@@ -29,7 +29,7 @@ Sunday Deadline Task (Only for Oneway & RoundTrip)
 
 1. Wrong Last Ticketing Deadline
 2. Ticket No is not showing after Ticket issue
-3. After Ticket Issue Balance is not decreasing
+3. Checking baggage required in Booking Details & Preview
 
 4. Modify Search is not working after search
 5. booking Issued ticket should be green & Non issued  ticketed should be red
