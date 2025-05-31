@@ -9,6 +9,7 @@ use App\Models\FlyhubFlightTicketIssue;
 use App\Models\FlyhubGdsConfig;
 use App\Models\Gds;
 use App\Models\SavedPassanger;
+use App\Models\User;
 use Yajra\DataTables\DataTables;
 use App\Models\FlightPassanger;
 use App\Models\FlightSegment;
@@ -665,8 +666,9 @@ class FlightBookingController extends Controller
         }
 
         $flightBookingInfo = FlightBooking::where('booking_no', $booking_no)->first();
+        $base_fare_amount = $flightBookingInfo->base_fare_amount;
+
         if(Auth::user()->user_type == 2){ //if b2b user then check balance
-            $base_fare_amount = $flightBookingInfo->base_fare_amount;
             if(Auth::user()->balance < ( $base_fare_amount - (($base_fare_amount*Auth::user()->comission)/100) )){
                 Toastr::error('Not Enough Balance', 'Please Recharge');
                 return back();
@@ -678,6 +680,11 @@ class FlightBookingController extends Controller
         if($sabreGds->status == 1){
             $ticketIssueResponse = json_decode(SabreFlightTicketIssue::issueTicket($flightBookingInfo->pnr_id), true);
             if(isset($ticketIssueResponse['AirTicketRS']['ApplicationResults']['status']) && $ticketIssueResponse['AirTicketRS']['ApplicationResults']['status'] == 'Complete'){
+
+                $user = User::where('id', Auth::user()->id)->first();
+                $user->balance = $user->balance - ($base_fare_amount - (($base_fare_amount*Auth::user()->comission)/100));
+                $user->save();
+
                 $flightBookingInfo->status = 2;
                 $flightBookingInfo->ticket_issued_at = Carbon::now();
                 $flightBookingInfo->save();
