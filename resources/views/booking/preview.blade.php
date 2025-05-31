@@ -31,7 +31,9 @@
                 <p style="margin: 0; font-size: 14px; font-weight: 400; margin-bottom: 2px;"><strong>Phone:</strong> {{$companyProfile->phone}}</p>
             </td>
             <td style="width: 30%; text-align: right; padding-bottom: 10px;">
+                @if($companyProfile->logo && file_exists(public_path($companyProfile->logo)))
                 <img src="{{public_path($companyProfile->logo)}}" alt="Company Logo" style="width: 80px; height: auto;">
+                @endif
             </td>
         </tr>
     </table>
@@ -125,7 +127,9 @@
                     <table border="0" style="width: 100%; border-collapse: collapse;">
                         <tr>
                             <td>
+                                @if($segment->carrier_operating_code && file_exists(public_path('airlines_logo/'.strtolower($segment->carrier_operating_code).'.png')))
                                 <img src="{{ public_path('airlines_logo/'.strtolower($segment->carrier_operating_code).'.png') }}" alt="Airline Logo" style="max-height: 50px; display: block;">
+                                @endif
                             </td>
                             <td>
                                 @php
@@ -174,8 +178,8 @@
                             if($flightBookingDetails->airlines_pnr) {
                                 $pnrList = explode(',', $flightBookingDetails->airlines_pnr);
                                 $airlinePNR = isset($pnrList[$index]) ? $pnrList[$index] : 'N/A';
+                                echo $airlinePNR;
                             }
-                            echo $airlinePNR;
                         @endphp
                     </p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Baggage: @if($segment->baggage_allowance) {{ $segment->baggage_allowance }} @else N/A @endif</p>

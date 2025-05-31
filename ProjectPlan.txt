@@ -26,7 +26,11 @@ Issue List
 
 Sunday Deadline Task (Only for Oneway & RoundTrip)
 --------------------
-2. Booking Preview Update (with Airlines Logo)
+
+1. Wrong Last Ticketing Deadline
+2. Ticket No is not showing after Ticket issue
+4. After Ticket Issue Balance is not decreasing
+
 4. Modify Search is not working after search
 5. booking Issued ticket should be green & Non issued  ticketed should be red
 6. B2b user can create user id and manage other users under his account

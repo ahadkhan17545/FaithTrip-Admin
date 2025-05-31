@@ -44,8 +44,8 @@
                                             if($flightBookingDetails->airlines_pnr) {
                                                 $pnrList = explode(',', $flightBookingDetails->airlines_pnr);
                                                 $airlinePNR = isset($pnrList[$index]) ? $pnrList[$index] : 'N/A';
+                                                echo "Airline PNR : ".$airlinePNR;
                                             }
-                                            echo "Airline PNR : ".$airlinePNR;
                                         @endphp
                                     </p>
                                 </div>
