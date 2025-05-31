@@ -68,6 +68,9 @@ class FlightBookingController extends Controller
 
             $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
 
+            $departureAirportCode = DB::table('city_airports')->where('id', session('departure_location_id'))->first()->airport_code;
+            $arrivalAirportCode = DB::table('city_airports')->where('id', session('destination_location_id'))->first()->airport_code;
+
             $flightBookingId = FlightBooking::insertGetId([
                 'flight_type' => session('flight_type'), // 1 = one way, 2 = round trip
                 'booking_no' => str::random(3) . "-" . time(),
@@ -81,8 +84,8 @@ class FlightBookingController extends Controller
                 'traveller_email' => $request->traveller_email,
                 'traveller_contact' => $request->traveller_contact,
                 'departure_date' => $request->departure_date,
-                'departure_location' => DB::table('city_airports')->where('id', session('departure_location_id'))->first()->airport_code, //$request->departure_location,
-                'arrival_location' => DB::table('city_airports')->where('id', session('destination_location_id'))->first()->airport_code, //$request->arrival_location,
+                'departure_location' => $departureAirportCode, //$request->departure_location,
+                'arrival_location' => $arrivalAirportCode, //$request->arrival_location,
                 'governing_carriers' => $request->governing_carriers,
                 'adult' => session('adult'),
                 'child' => session('child'),
@@ -113,18 +116,34 @@ class FlightBookingController extends Controller
                 }
             }
 
+            // before your loop
+            $itinerary       = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0];
+            $legs            = $itinerary['legs'];
+            $firstLegRefIdx  = $legs[0]['ref'] - 1;
+            $outboundCount   = count($revlidatedData['groupedItineraryResponse']['legDescs'][$firstLegRefIdx]['schedules']);
 
             foreach ($segmentArray as $segmentIndex => $segmentData){
 
                 $bookingCode = null;
-                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'])){
-                    $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'];
+                $cabinCode = null;
+
+                if ($segmentIndex < $outboundCount) {
+                    if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'])){
+                        $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'];
+                    }
+                    if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'])){
+                        $cabinCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'];
+                    }
+                } else {
+                    $localReturnIdx = $segmentIndex - $outboundCount;
+                    if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['bookingCode'])){
+                        $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['bookingCode'];
+                    }
+                    if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['cabinCode'])){
+                        $cabinCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['cabinCode'];
+                    }
                 }
 
-                $cabinCode = null;
-                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'])){
-                    $cabinCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'];
-                }
 
                 $baggageAllowanceRef = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][0]['allowance']['ref'];
                 $baggageAllowanceDescs = $revlidatedData['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageAllowanceRef-1];

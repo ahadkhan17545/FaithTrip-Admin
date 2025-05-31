@@ -8,7 +8,7 @@
             @endphp
 
             @if($companyProfile && file_exists(public_path($companyProfile->logo)))
-            <img class="brand_logo" src="{{url($companyProfile->logo)}}" alt="" style="width: 50%" />
+            <img class="brand_logo" src="{{url($companyProfile->logo)}}" alt="" style="width: 40%" />
             @endif
 
             <h3 class="fs-24 fw-bold heading mt-2">Welcome back</h3>

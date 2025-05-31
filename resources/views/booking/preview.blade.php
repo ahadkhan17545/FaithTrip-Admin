@@ -22,7 +22,7 @@
 </head>
 <body>
 
-    <table border="0" style="width: 100%; padding: 0px; margin: 0; border-collapse: collapse; border-bottom: 2px solid gray;">
+    <table border="0" style="width: 100%; padding: 0px; margin: 0; margin-bottom: 16px; border-collapse: collapse; border-bottom: 2px solid gray;">
         <tr>
             <td style="width: 70%; padding-bottom: 10px;">
                 <h1 style="margin: 0; font-size: 18px; font-weight: 600; margin-bottom: 6px; color: darkslategray;">{{$companyProfile->name}}</h1>
@@ -36,21 +36,34 @@
         </tr>
     </table>
 
+    <p style="font-size: 14px; margin: 0px;"><strong>Dear {{ $flightBookingDetails->traveller_name }},</strong></p>
+    <p style="font-size: 14px; margin: 0px; margin-top: 4px; margin-bottom: 16px; line-height: 20px;">
+        Thank you for choosing {{$companyProfile->name}}.
+        Your @if($flightBookingDetails->flight_type == 1) one way @else round trip @endif
+        <strong>
+            {{DB::table('city_airports')->where('airport_code', $flightBookingDetails->departure_location)->first()->city_name}} ({{ $flightBookingDetails->departure_location }}) -
+        {{DB::table('city_airports')->where('airport_code', $flightBookingDetails->arrival_location)->first()->city_name}} ({{ $flightBookingDetails->arrival_location }})
+        </strong>
+        @if($flightBookingDetails->flight_type == 2) and back flight @endif
+        has been confirmed on
+        @php
+            $departure = $bookingResSegs ? $bookingResSegs[0]['Product']['ProductDetails']['Air']['DepartureDateTime'] : null;
+            $departureDateTime = explode('T', $departure);
+        @endphp
+        <strong>{{date('l, jS \of F Y', strtotime($departureDateTime[0]))}} - {{substr($departureDateTime[1], 0, 5)}}</strong>
+    </p>
+
     <table class="booking_info" border="0">
         <tr>
-            <td style="width: 52%;"><strong>Booking Date:</strong> {{ date('Y-m-d h:i a', strtotime($flightBookingDetails->created_at)) }}</td>
-            <td style="width: 48%;"><strong>Traveller Name:</strong> {{ $flightBookingDetails->traveller_name }}</td>
+            <td style="width: 50%;"><strong>Booking Date:</strong> {{ date('Y-m-d h:i a', strtotime($flightBookingDetails->created_at)) }}</td>
+            <td style="width: 50%;"><strong>Booking Email:</strong> {{ $flightBookingDetails->traveller_email }}</td>
         </tr>
         <tr>
             <td><strong>Booking No:</strong> {{ $flightBookingDetails->booking_no }}</td>
-            <td><strong>Traveller Email:</strong> {{ $flightBookingDetails->traveller_email }}</td>
+            <td><strong>Booking Contact:</strong> {{ $flightBookingDetails->traveller_contact }}</td>
         </tr>
         <tr>
             <td><strong>PNR ID:</strong> {{ $flightBookingDetails->pnr_id }}</td>
-            <td><strong>Traveller Contact:</strong> {{ $flightBookingDetails->traveller_contact }}</td>
-        </tr>
-        <tr>
-            <td><strong>Ticket No:</strong> {{ $flightBookingDetails->ticket_id }}</td>
             <td>
                 <strong>Total Passangers:</strong>
                 @if ($flightBookingDetails->adult)
@@ -65,22 +78,13 @@
             </td>
         </tr>
         <tr>
-            <td><strong>Flight Route:</strong> {{ $flightBookingDetails->departure_location }} - {{ $flightBookingDetails->arrival_location }} @if($flightBookingDetails->flight_type == 2) - {{ $flightBookingDetails->departure_location }} @endif</td>
             <td>
-                <strong>Departure Date:</strong>
-                @php
-                    $departure = $bookingResSegs ? $bookingResSegs[0]['Product']['ProductDetails']['Air']['DepartureDateTime'] : null;
-                    $departureDateTime = explode('T', $departure);
-                @endphp
-                {{date('j M Y', strtotime($departureDateTime[0]))}} {{substr($departureDateTime[1], 0, 5)}}
-            </td>
-        </tr>
-        <tr>
-            <td><strong>Flight Type:</strong>
-                @if($flightBookingDetails->flight_type == 2)
-                    Round Trip
+                @if($flightBookingDetails->ticket_id)
+                    <strong>Ticket No:</strong> {{ $flightBookingDetails->ticket_id }}
                 @else
-                    One Way
+                    @if($flightBookingDetails->last_ticket_datetime)
+                    <strong>Ticket Deadline:</strong> {{ date("jS M-y, h:i:s a", strtotime($flightBookingDetails->last_ticket_datetime)) }}
+                    @endif
                 @endif
             </td>
             <td>
@@ -204,6 +208,40 @@
 
     </table>
 
+    <table border="0" style="width: 100%; padding: 0; margin: 0; margin-top: 15px; border-collapse: collapse;">
+        <tr>
+            <th colspan="4" style="text-align: center; font-size: 14px; background-color: lightgreen; padding: 4px 0px;">Flight Passangers</th>
+        </tr>
+        <tr>
+            <th style="width: 10%; text-align: center; font-size: 13px; padding: 4px 4px;">Type</th>
+            <th style="width: 50%; text-align: left; font-size: 13px; padding: 4px 4px;">Travellers Name</th>
+            <th style="width: 25%; text-align: center; font-size: 13px; padding: 4px 4px">Passport/NID</th>
+            <th style="width: 15%; text-align: center; font-size: 13px; padding: 4px 4px">DOB</th>
+        </tr>
+        @foreach ($flightPassangers as $flightPassanger)
+        <tr>
+            <td style="text-align: center; font-size: 12px; padding: 2px 4px;">{{$flightPassanger->passanger_type}}</td>
+            <td style="text-align: left; font-size: 12px; padding: 2px 4px;">{{$flightPassanger->title}} {{$flightPassanger->first_name}} {{$flightPassanger->last_name}}</td>
+            <td style="text-align: center; font-size: 12px; padding: 2px 4px;">{{$flightPassanger->document_no}}</td>
+            <td style="text-align: center; font-size: 12px; padding: 2px 4px;">{{$flightPassanger->dob}}</td>
+        </tr>
+        @endforeach
+    </table>
+
+    @if($flightBookingDetails->status == 1)
+    <h5 style="margin: 20px 0px 6px 0px; padding: px; font-size: 12px;">Booking Note:</h5>
+    <ul style="padding: 0px; margin: 0px; padding-left: 15px">
+        <li style="font-size: 12px; margin-bottom: 2px;">Please recheck with the spelling of your name with Travel documents(passport/NID).</li>
+        <li style="font-size: 12px; margin-bottom: 2px;">Please check Flight Itinerary(Destination/Airlines/Travel Date/Flight Number/Timings) as per your query</li>
+        <li style="font-size: 12px; margin-bottom: 2px;">Please issue the ticket or cancel the booking within the last ticketing time mentioned.</li>
+        <li style="font-size: 12px; margin-bottom: 2px;">Fare can be change without any notice by the airlines.</li>
+        <li style="font-size: 12px; margin-bottom: 2px;">Tickets are non endorsable, non reroutable.</li>
+        <li style="font-size: 12px; margin-bottom: 2px;">Fare are not confirm until the final ticket has been issued.</li>
+        <li style="font-size: 12px; margin-bottom: 2px;">Fare are not valid. subject to seat availability.</li>
+    </ul>
+    @endif
+
+    @if($flightBookingDetails->status == 2)
     <h5 style="margin: 20px 0px 6px 0px; padding: px; font-size: 12px;">Travel Note:</h5>
     <ul style="padding: 0px; margin: 0px; padding-left: 15px">
         <li style="font-size: 12px; margin-bottom: 2px;">Check in counter will open before 1.30 hours of domestic and 3 hours of international flight departure.</li>
@@ -211,6 +249,7 @@
         <li style="font-size: 12px; margin-bottom: 2px;">Check in counter will be closed before 30 minutes of domestic and 60 minutes of international flight departure.</li>
         <li style="font-size: 12px; margin-bottom: 2px;">Boarding gate will be closed before 20 minutes of domestic and 30 minutes of international flight departure.</li>
     </ul>
+    @endif
 
 </body>
 </html>

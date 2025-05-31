@@ -39,6 +39,15 @@
                                     <p style="margin: 0;">{{ $airlineInfo ? $airlineInfo->name : 'N/A' }}</p>
                                     <p style="margin: 0;">{{ $segment->carrier_operating_code }}-{{ $segment->carrier_operating_flight_number }}</p>
                                     <p style="margin: 0;">Aircraft : {{ getAircraftName($segment->carrier_equipment_code) }}</p>
+                                    <p style="margin: 0;">
+                                        @php
+                                            if($flightBookingDetails->airlines_pnr) {
+                                                $pnrList = explode(',', $flightBookingDetails->airlines_pnr);
+                                                $airlinePNR = isset($pnrList[$index]) ? $pnrList[$index] : 'N/A';
+                                            }
+                                            echo "Airline PNR : ".$airlinePNR;
+                                        @endphp
+                                    </p>
                                 </div>
                             </div>
                         </td>

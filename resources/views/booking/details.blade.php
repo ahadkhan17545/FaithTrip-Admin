@@ -115,10 +115,14 @@
                                     <td>: {{ $flightBookingDetails->booking_id }}</td>
                                 </tr>
                                 @endif
+
+                                @if($flightBookingDetails->ticket_id)
                                 <tr>
-                                    <th>Airlines PNR </th>
-                                    <td>: {{ $flightBookingDetails->airlines_pnr }}</td>
+                                    <th>Ticket No </th>
+                                    <td>: {{ $flightBookingDetails->ticket_id }}</td>
                                 </tr>
+                                @endif
+
                                 <tr>
                                     <th>Name </th>
                                     <td>: {{ $flightBookingDetails->traveller_name }}</td>
