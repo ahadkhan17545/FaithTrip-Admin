@@ -687,10 +687,15 @@ class FlightBookingController extends Controller
                 $user->save();
 
                 $flightBookingInfo->status = 2;
+                $flightBookingInfo->ticketing_response = json_encode($ticketIssueResponse, true);
                 $flightBookingInfo->ticket_issued_at = Carbon::now();
                 $flightBookingInfo->save();
                 return redirect('view/issued/tickets');
             } else {
+
+                $flightBookingInfo->ticketing_response = json_encode($ticketIssueResponse, true);
+                $flightBookingInfo->save();
+
                 Toastr::error('Failed to issue Ticket', 'Failed');
                 return back();
             }

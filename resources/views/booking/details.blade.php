@@ -207,6 +207,8 @@
                                     <td>
                                         @if($flightBookingDetails->last_ticket_datetime)
                                         : {{ date("jS M-y, h:i a", strtotime($flightBookingDetails->last_ticket_datetime)) }}
+                                        @else
+                                        : N/A
                                         @endif
                                     </td>
                                 </tr>

@@ -55,32 +55,32 @@ class SabreFlightTicketIssue extends Model
                 array(
                 "MiscQualifiers" => array(
                     "Commission" => array(
-                    "Percent" => 7
+                        "Percent" => 7
                     )
                 ),
                 "FOP_Qualifiers" => array(
                     "BasicFOP" => array(
-                    "Type" => "CA"
+                        "Type" => "CA"
                     )
                 ),
                 "PricingQualifiers" => array(
                     "PriceQuote" => array(
-                    array(
-                        "Record" => array(
                         array(
-                            "Number" => 1
+                            "Record" => array(
+                                array(
+                                    "Number" => 1
+                                )
+                            )
                         )
                         )
                     )
-                    )
-                )
                 )
             ),
             "PostProcessing" => array(
                 "EndTransaction" => array(
-                "Source" => array(
-                    "ReceivedFrom" => "API TEST"
-                )
+                    "Source" => array(
+                        "ReceivedFrom" => "FaithTrip"
+                    )
                 )
             )
             )

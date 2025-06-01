@@ -26,7 +26,7 @@ Issue List
 
 Sunday Deadline Task (Only for Oneway & RoundTrip)
 --------------------
-
+1. Issue in last ticketing Datetime
 2. Ticket No is not showing after Ticket issue
 
 4. Modify Search is not working after search
