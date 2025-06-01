@@ -109,12 +109,10 @@
                                     <th>PNR ID </th>
                                     <td>: {{ $flightBookingDetails->pnr_id }}</td>
                                 </tr>
-                                @if($flightBookingDetails->booking_id)
                                 <tr>
                                     <th>Booking ID </th>
                                     <td>: {{ $flightBookingDetails->booking_id }}</td>
                                 </tr>
-                                @endif
 
                                 @if($flightBookingDetails->ticket_id)
                                 <tr>
@@ -208,7 +206,7 @@
                                     <th>Last Ticket Datetime </th>
                                     <td>
                                         @if($flightBookingDetails->last_ticket_datetime)
-                                        : {{ date("jS M-y, h:i:s a", strtotime($flightBookingDetails->last_ticket_datetime)) }}
+                                        : {{ date("jS M-y, h:i a", strtotime($flightBookingDetails->last_ticket_datetime)) }}
                                         @endif
                                     </td>
                                 </tr>

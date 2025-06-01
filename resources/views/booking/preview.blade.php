@@ -42,17 +42,17 @@
     <p style="font-size: 14px; margin: 0px; margin-top: 4px; margin-bottom: 16px; line-height: 20px;">
         Thank you for choosing {{$companyProfile->name}}.
         Your @if($flightBookingDetails->flight_type == 1) one way @else round trip @endif
-        <strong>
-            {{DB::table('city_airports')->where('airport_code', $flightBookingDetails->departure_location)->first()->city_name}} ({{ $flightBookingDetails->departure_location }}) -
+
+        {{DB::table('city_airports')->where('airport_code', $flightBookingDetails->departure_location)->first()->city_name}} ({{ $flightBookingDetails->departure_location }}) -
         {{DB::table('city_airports')->where('airport_code', $flightBookingDetails->arrival_location)->first()->city_name}} ({{ $flightBookingDetails->arrival_location }})
-        </strong>
+
         @if($flightBookingDetails->flight_type == 2) and back flight @endif
         has been confirmed on
         @php
             $departure = $bookingResSegs ? $bookingResSegs[0]['Product']['ProductDetails']['Air']['DepartureDateTime'] : null;
             $departureDateTime = explode('T', $departure);
         @endphp
-        <strong>{{date('l, jS \of F Y', strtotime($departureDateTime[0]))}} - {{substr($departureDateTime[1], 0, 5)}}</strong>
+        {{date('l, jS \of F Y', strtotime($departureDateTime[0]))}} - {{substr($departureDateTime[1], 0, 5)}}
     </p>
 
     <table class="booking_info" border="0">
@@ -85,7 +85,7 @@
                     <strong>Ticket No:</strong> {{ $flightBookingDetails->ticket_id }}
                 @else
                     @if($flightBookingDetails->last_ticket_datetime)
-                    <strong>Ticket Deadline:</strong> {{ date("jS M-y, h:i:s a", strtotime($flightBookingDetails->last_ticket_datetime)) }}
+                    <strong>Ticket Deadline:</strong> {{ date("jS M-y, h:i a", strtotime($flightBookingDetails->last_ticket_datetime)) }}
                     @endif
                 @endif
             </td>
@@ -142,6 +142,16 @@
                                 <p style="margin: 0; margin-bottom: 2px;">{{ $segment->carrier_operating_code }}-{{ $segment->carrier_operating_flight_number }}</p>
                                 <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Aircraft: {{ getAircraftName($segment->carrier_equipment_code) }}</p>
                                 <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">{{ getCabinClass($segment->cabin_code) }} ({{$segment->booking_code}}) Class</p>
+                                <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">
+                                    Airlines PNR:
+                                    @php
+                                        if($flightBookingDetails->airlines_pnr) {
+                                            $pnrList = explode(',', $flightBookingDetails->airlines_pnr);
+                                            $airlinePNR = isset($pnrList[$index]) ? $pnrList[$index] : 'N/A';
+                                            echo $airlinePNR;
+                                        }
+                                    @endphp
+                                </p>
                             </td>
                         </tr>
                     </table>
@@ -172,17 +182,9 @@
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">{{date('D, j M Y', strtotime($arrivalDateTime[0]))}}</p>
                 </td>
                 <td style="width: 20%; font-size: 14px; padding: 5px 10px;">
-                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">
-                        Airlines PNR:
-                        @php
-                            if($flightBookingDetails->airlines_pnr) {
-                                $pnrList = explode(',', $flightBookingDetails->airlines_pnr);
-                                $airlinePNR = isset($pnrList[$index]) ? $pnrList[$index] : 'N/A';
-                                echo $airlinePNR;
-                            }
-                        @endphp
-                    </p>
-                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Baggage: @if($segment->baggage_allowance) {{ $segment->baggage_allowance }} @else N/A @endif</p>
+
+                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Checked: @if($segment->baggage_allowance) {{ $segment->baggage_allowance }} @else N/A @endif</p>
+                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Cabin: @if($segment->cabin_baggage) {{ $segment->cabin_baggage }} @else N/A @endif</p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Duration:<br>
                         @php
                             $minutes = $segment->elapsed_time;

@@ -440,12 +440,6 @@
                     <input type="hidden" name="currency"
                         value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['currency'] }}">
 
-                    @if (isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate']))
-                        <input type="hidden" name="last_ticket_datetime" value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketDate'] . ' ' . $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['lastTicketTime'] . ':00' }}">
-                    @else
-                        <input type="hidden" name="last_ticket_datetime" value="">
-                    @endif
-
                     <div class="card shadow border-0 mb-3">
                         <div class="content-header media">
                             <div class="media-body">

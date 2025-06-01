@@ -19,6 +19,7 @@ class FlightController extends Controller
 
             $request->validate([
 
+                'flight_type' => 'required|integer',
                 'pnr_id' => 'required|string',
                 'traveller_name' => 'required|string',
                 'traveller_email' => 'required|email',

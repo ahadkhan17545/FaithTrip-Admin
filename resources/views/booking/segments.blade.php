@@ -94,9 +94,15 @@
                         </td>
                         <td class="text-center align-middle">
                             @if($segment->baggage_allowance)
-                            {{ $segment->baggage_allowance }}
+                                Checked: {{ $segment->baggage_allowance }}
                             @else
-                            <span class="text-danger">Not Specified</span>
+                                Checked: <span class="text-danger">Not Specified</span>
+                            @endif
+                            <br>
+                            @if($segment->cabin_baggage)
+                                Cabin: {{ $segment->cabin_baggage }}
+                            @else
+                                Cabin: <span class="text-danger">Not Specified</span>
                             @endif
                         </td>
                         <td class="text-center align-middle">

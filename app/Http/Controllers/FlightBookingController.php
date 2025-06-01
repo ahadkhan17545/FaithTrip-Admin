@@ -54,189 +54,188 @@ class FlightBookingController extends Controller
             $status = 0;
         }
 
-        // DB::transaction(function () use ($request, $bookinPnrID, $status, $bookingResponse) {
+        // fetching price using session for security (not from hidden field)
+        $revlidatedData = session('revlidatedData');
+        if($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareCurrency'] == 'USD'){
+            $base_fare_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'] * $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['currencyConversion']['exchangeRateUsed'];
+        }
+        else{
+            $base_fare_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'];
+        }
+        $total_tax_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalTaxAmount'];
+        $total_fare = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
 
-            // fetching price using session for security (not from hidden field)
-            $revlidatedData = session('revlidatedData');
-            if($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareCurrency'] == 'USD'){
-                $base_fare_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'] * $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['currencyConversion']['exchangeRateUsed'];
+        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
+
+        $departureAirportCode = DB::table('city_airports')->where('id', session('departure_location_id'))->first()->airport_code;
+        $arrivalAirportCode = DB::table('city_airports')->where('id', session('destination_location_id'))->first()->airport_code;
+
+        $flightBookingId = FlightBooking::insertGetId([
+            'flight_type' => session('flight_type'), // 1 = one way, 2 = round trip
+            'booking_no' => str::random(3) . "-" . time(),
+            "source" => 1, //portal
+            'booked_by' => Auth::user()->id,
+            'b2b_comission' => Auth::user()->comission,
+            'pnr_id' => $bookinPnrID,
+            'booking_id' => null,
+            'gds' => $request->gds,
+            'gds_unique_id' => $request->gds_unique_id,
+            'traveller_name' => $request->traveller_name,
+            'traveller_email' => $request->traveller_email,
+            'traveller_contact' => $request->traveller_contact,
+            'departure_date' => $request->departure_date,
+            'departure_location' => $departureAirportCode, //$request->departure_location,
+            'arrival_location' => $arrivalAirportCode, //$request->arrival_location,
+            'governing_carriers' => $request->governing_carriers,
+            'adult' => session('adult'),
+            'child' => session('child'),
+            'infant' => session('infant'),
+            'base_fare_amount' => $base_fare_amount,
+            'total_tax_amount' => $total_tax_amount,
+            'total_fare' => $total_fare,
+            'currency' => $request->currency,
+            'last_ticket_datetime' => null, //will extract from getbooking response later
+            'booking_request' => session('booking_request'),
+            'booking_response' => $bookingResponse,
+            'get_booking_response' => null,
+            'status' => $status,
+            'payment_status' => null,
+            'is_live' => $sabreGdsInfo ? $sabreGdsInfo->is_production : 0,
+            'created_at' => Carbon::now()
+        ]);
+
+
+        $segmentArray = [];
+        $legsArray = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['legs'];
+        foreach ($legsArray as $leg) {
+            $legRef = $leg['ref'] - 1;
+            $legDescription = $revlidatedData['groupedItineraryResponse']['legDescs'][$legRef];
+            $schedulesArray = $legDescription['schedules'];
+            foreach ($schedulesArray as $schedule) {
+                $scheduleRef = $schedule['ref'] - 1;
+                $segmentArray[] = $revlidatedData['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
             }
-            else{
-                $base_fare_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['baseFareAmount'];
+        }
+
+        // before your loop
+        $itinerary       = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0];
+        $legs            = $itinerary['legs'];
+        $firstLegRefIdx  = $legs[0]['ref'] - 1;
+        $outboundCount   = count($revlidatedData['groupedItineraryResponse']['legDescs'][$firstLegRefIdx]['schedules']);
+
+        foreach ($segmentArray as $segmentIndex => $segmentData){
+
+            $bookingCode = null;
+            $cabinCode = null;
+
+            if ($segmentIndex < $outboundCount) {
+                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'])){
+                    $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'];
+                }
+                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'])){
+                    $cabinCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'];
+                }
+            } else {
+                $localReturnIdx = $segmentIndex - $outboundCount;
+                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['bookingCode'])){
+                    $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['bookingCode'];
+                }
+                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['cabinCode'])){
+                    $cabinCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['cabinCode'];
+                }
             }
-            $total_tax_amount = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalTaxAmount'];
-            $total_fare = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['totalFare']['totalPrice'];
 
-            $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
 
-            $departureAirportCode = DB::table('city_airports')->where('id', session('departure_location_id'))->first()->airport_code;
-            $arrivalAirportCode = DB::table('city_airports')->where('id', session('destination_location_id'))->first()->airport_code;
+            // $baggageAllowanceRef = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][0]['allowance']['ref'];
+            // $baggageAllowanceDescs = $revlidatedData['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageAllowanceRef-1];
+            // if(isset($baggageAllowanceDescs['weight'])){
+            //     $baggageAllowance = $baggageAllowanceDescs['weight']." ".$baggageAllowanceDescs['unit'];
+            // } else if(isset($baggageAllowance['pieceCount'])){
+            //     $baggageAllowance = $baggageAllowanceDescs['pieceCount']." Pieces";
+            // } else{
+                $baggageAllowance = null;
+            // }
 
-            $flightBookingId = FlightBooking::insertGetId([
-                'flight_type' => session('flight_type'), // 1 = one way, 2 = round trip
-                'booking_no' => str::random(3) . "-" . time(),
-                "source" => 1, //portal
-                'booked_by' => Auth::user()->id,
-                'b2b_comission' => Auth::user()->comission,
-                'pnr_id' => $bookinPnrID,
-                'gds' => $request->gds,
-                'gds_unique_id' => $request->gds_unique_id,
-                'traveller_name' => $request->traveller_name,
-                'traveller_email' => $request->traveller_email,
-                'traveller_contact' => $request->traveller_contact,
-                'departure_date' => $request->departure_date,
-                'departure_location' => $departureAirportCode, //$request->departure_location,
-                'arrival_location' => $arrivalAirportCode, //$request->arrival_location,
-                'governing_carriers' => $request->governing_carriers,
-                'adult' => session('adult'),
-                'child' => session('child'),
-                'infant' => session('infant'),
-                'base_fare_amount' => $base_fare_amount,
-                'total_tax_amount' => $total_tax_amount,
-                'total_fare' => $total_fare,
-                'currency' => $request->currency,
-                'last_ticket_datetime' => $request->last_ticket_datetime,
-                'booking_request' => session('booking_request'),
-                'booking_response' => $bookingResponse,
-                'status' => $status,
-                'payment_status' => null,
-                'is_live' => $sabreGdsInfo ? $sabreGdsInfo->is_production : 0,
+            FlightSegment::insert([
+                'flight_booking_id' => $flightBookingId,
+                'total_miles_flown' => $segmentData['totalMilesFlown'],
+                'elapsed_time' => $segmentData['elapsedTime'],
+                'booking_code' => $bookingCode,
+                'cabin_code' => $cabinCode,
+                'baggage_allowance' => $baggageAllowance,
+                'departure_airport_code' => $segmentData['departure']['airport'],
+                'departure_city_code' => $segmentData['departure']['city'],
+                'departure_country_code' => $segmentData['departure']['country'],
+                'departure_time' => $segmentData['departure']['time'],
+                'departure_terminal' => isset($segmentData['departure']['terminal']) ? $segmentData['departure']['terminal'] : null,
+                'arrival_airport_code' => $segmentData['arrival']['airport'],
+                'arrival_city_code' => $segmentData['arrival']['city'],
+                'arrival_country_code' => $segmentData['arrival']['country'],
+                'arrival_time' => $segmentData['arrival']['time'],
+                'arrival_terminal' => isset($segmentData['arrival']['terminal']) ? $segmentData['arrival']['terminal'] : null,
+                'carrier_marketing_code' => $segmentData['carrier']['marketing'],
+                'carrier_marketing_flight_number' => $segmentData['carrier']['marketingFlightNumber'],
+                'carrier_operating_code' => $segmentData['carrier']['operating'],
+                'carrier_operating_flight_number' => $segmentData['carrier']['operatingFlightNumber'],
+                'carrier_equipment_code' => $segmentData['carrier']['equipment']['code'],
                 'created_at' => Carbon::now()
             ]);
 
+        }
 
-            $segmentArray = [];
-            $legsArray = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['legs'];
-            foreach ($legsArray as $leg) {
-                $legRef = $leg['ref'] - 1;
-                $legDescription = $revlidatedData['groupedItineraryResponse']['legDescs'][$legRef];
-                $schedulesArray = $legDescription['schedules'];
-                foreach ($schedulesArray as $schedule) {
-                    $scheduleRef = $schedule['ref'] - 1;
-                    $segmentArray[] = $revlidatedData['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
+        foreach($request->first_name as $passangerIndex => $firstName){
+
+            if(is_array($request->save_passanger) && count($request->save_passanger) > 0 && in_array($passangerIndex, $request->save_passanger)){
+
+                $savedPassanger = SavedPassanger::where([
+                                        ['first_name', $firstName],
+                                        ['last_name', $request->last_name[$passangerIndex]],
+                                        ['dob', '=', $request->dob[$passangerIndex]]
+                                    ])->first();
+
+                if(!$savedPassanger){
+                    $savedPassanger = new SavedPassanger();
                 }
+
+                $savedPassanger->saved_by = Auth::user()->id;
+                $savedPassanger->email = $request->email[$passangerIndex];
+                $savedPassanger->contact = $request->phone[$passangerIndex];
+                $savedPassanger->type = $request->passanger_type[$passangerIndex];
+                $savedPassanger->title = $request->titles[$passangerIndex];
+                $savedPassanger->first_name = $firstName;
+                $savedPassanger->last_name = $request->last_name[$passangerIndex];
+                $savedPassanger->dob = $request->dob[$passangerIndex];
+                $savedPassanger->age = str_pad($request->age[$passangerIndex],2,"0",STR_PAD_LEFT);
+                $savedPassanger->document_type = $request->document_type[$passangerIndex];
+                $savedPassanger->document_no = $request->document_no[$passangerIndex];
+                $savedPassanger->document_expire_date = $request->document_expire_date[$passangerIndex];
+                $savedPassanger->document_issue_country = $request->document_issue_country[$passangerIndex];
+                $savedPassanger->nationality = $request->nationality[$passangerIndex];
+                $savedPassanger->frequent_flyer_no = $request->frequent_flyer_no[$passangerIndex];
+                $savedPassanger->created_at = Carbon::now();
+                $savedPassanger->save();
             }
 
-            // before your loop
-            $itinerary       = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0];
-            $legs            = $itinerary['legs'];
-            $firstLegRefIdx  = $legs[0]['ref'] - 1;
-            $outboundCount   = count($revlidatedData['groupedItineraryResponse']['legDescs'][$firstLegRefIdx]['schedules']);
+            FlightPassanger::insert([
+                'flight_booking_id' => $flightBookingId,
+                'passanger_type' => $request->passanger_type[$passangerIndex],
+                'title' => $request->titles[$passangerIndex],
+                'first_name' => $firstName,
+                'last_name' => $request->last_name[$passangerIndex],
+                'email' => $request->email[$passangerIndex],
+                'phone' => $request->phone[$passangerIndex],
+                'dob' => $request->dob[$passangerIndex],
+                'age' => str_pad($request->age[$passangerIndex],2,"0",STR_PAD_LEFT),
+                'document_type' => $request->document_type[$passangerIndex],
+                'document_no' => $request->document_no[$passangerIndex],
+                'document_expire_date' => $request->document_expire_date[$passangerIndex],
+                'document_issue_country' => $request->document_issue_country[$passangerIndex],
+                'nationality' => $request->nationality[$passangerIndex],
+                'frequent_flyer_no' => $request->frequent_flyer_no[$passangerIndex],
+                'created_at' => Carbon::now()
+            ]);
+        }
 
-            foreach ($segmentArray as $segmentIndex => $segmentData){
-
-                $bookingCode = null;
-                $cabinCode = null;
-
-                if ($segmentIndex < $outboundCount) {
-                    if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'])){
-                        $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'];
-                    }
-                    if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'])){
-                        $cabinCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'];
-                    }
-                } else {
-                    $localReturnIdx = $segmentIndex - $outboundCount;
-                    if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['bookingCode'])){
-                        $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['bookingCode'];
-                    }
-                    if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['cabinCode'])){
-                        $cabinCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['cabinCode'];
-                    }
-                }
-
-
-                $baggageAllowanceRef = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][0]['allowance']['ref'];
-                $baggageAllowanceDescs = $revlidatedData['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageAllowanceRef-1];
-                if(isset($baggageAllowanceDescs['weight'])){
-                    $baggageAllowance = $baggageAllowanceDescs['weight']." ".$baggageAllowanceDescs['unit'];
-                } else if(isset($baggageAllowance['pieceCount'])){
-                    $baggageAllowance = $baggageAllowanceDescs['pieceCount']." Pieces";
-                } else{
-                    $baggageAllowance = null;
-                }
-
-                FlightSegment::insert([
-                    'flight_booking_id' => $flightBookingId,
-                    'total_miles_flown' => $segmentData['totalMilesFlown'],
-                    'elapsed_time' => $segmentData['elapsedTime'],
-                    'booking_code' => $bookingCode,
-                    'cabin_code' => $cabinCode,
-                    'baggage_allowance' => $baggageAllowance,
-                    'departure_airport_code' => $segmentData['departure']['airport'],
-                    'departure_city_code' => $segmentData['departure']['city'],
-                    'departure_country_code' => $segmentData['departure']['country'],
-                    'departure_time' => $segmentData['departure']['time'],
-                    'departure_terminal' => isset($segmentData['departure']['terminal']) ? $segmentData['departure']['terminal'] : null,
-                    'arrival_airport_code' => $segmentData['arrival']['airport'],
-                    'arrival_city_code' => $segmentData['arrival']['city'],
-                    'arrival_country_code' => $segmentData['arrival']['country'],
-                    'arrival_time' => $segmentData['arrival']['time'],
-                    'arrival_terminal' => isset($segmentData['arrival']['terminal']) ? $segmentData['arrival']['terminal'] : null,
-                    'carrier_marketing_code' => $segmentData['carrier']['marketing'],
-                    'carrier_marketing_flight_number' => $segmentData['carrier']['marketingFlightNumber'],
-                    'carrier_operating_code' => $segmentData['carrier']['operating'],
-                    'carrier_operating_flight_number' => $segmentData['carrier']['operatingFlightNumber'],
-                    'carrier_equipment_code' => $segmentData['carrier']['equipment']['code'],
-                    'created_at' => Carbon::now()
-                ]);
-
-            }
-
-            foreach($request->first_name as $passangerIndex => $firstName){
-
-                if(is_array($request->save_passanger) && count($request->save_passanger) > 0 && in_array($passangerIndex, $request->save_passanger)){
-
-                    $savedPassanger = SavedPassanger::where([
-                                            ['first_name', $firstName],
-                                            ['last_name', $request->last_name[$passangerIndex]],
-                                            ['dob', '=', $request->dob[$passangerIndex]]
-                                        ])->first();
-
-                    if(!$savedPassanger){
-                        $savedPassanger = new SavedPassanger();
-                    }
-
-                    $savedPassanger->saved_by = Auth::user()->id;
-                    $savedPassanger->email = $request->email[$passangerIndex];
-                    $savedPassanger->contact = $request->phone[$passangerIndex];
-                    $savedPassanger->type = $request->passanger_type[$passangerIndex];
-                    $savedPassanger->title = $request->titles[$passangerIndex];
-                    $savedPassanger->first_name = $firstName;
-                    $savedPassanger->last_name = $request->last_name[$passangerIndex];
-                    $savedPassanger->dob = $request->dob[$passangerIndex];
-                    $savedPassanger->age = str_pad($request->age[$passangerIndex],2,"0",STR_PAD_LEFT);
-                    $savedPassanger->document_type = $request->document_type[$passangerIndex];
-                    $savedPassanger->document_no = $request->document_no[$passangerIndex];
-                    $savedPassanger->document_expire_date = $request->document_expire_date[$passangerIndex];
-                    $savedPassanger->document_issue_country = $request->document_issue_country[$passangerIndex];
-                    $savedPassanger->nationality = $request->nationality[$passangerIndex];
-                    $savedPassanger->frequent_flyer_no = $request->frequent_flyer_no[$passangerIndex];
-                    $savedPassanger->created_at = Carbon::now();
-                    $savedPassanger->save();
-                }
-
-                FlightPassanger::insert([
-                    'flight_booking_id' => $flightBookingId,
-                    'passanger_type' => $request->passanger_type[$passangerIndex],
-                    'title' => $request->titles[$passangerIndex],
-                    'first_name' => $firstName,
-                    'last_name' => $request->last_name[$passangerIndex],
-                    'email' => $request->email[$passangerIndex],
-                    'phone' => $request->phone[$passangerIndex],
-                    'dob' => $request->dob[$passangerIndex],
-                    'age' => str_pad($request->age[$passangerIndex],2,"0",STR_PAD_LEFT),
-                    'document_type' => $request->document_type[$passangerIndex],
-                    'document_no' => $request->document_no[$passangerIndex],
-                    'document_expire_date' => $request->document_expire_date[$passangerIndex],
-                    'document_issue_country' => $request->document_issue_country[$passangerIndex],
-                    'nationality' => $request->nationality[$passangerIndex],
-                    'frequent_flyer_no' => $request->frequent_flyer_no[$passangerIndex],
-                    'created_at' => Carbon::now()
-                ]);
-            }
-
-        // }, 5);
 
         session()->forget(['adult', 'child', 'infant', 'revlidatedData', 'booking_request']);
 
@@ -558,7 +557,9 @@ class FlightBookingController extends Controller
     }
 
     public function flightBookingDetails($bookingNo){
+
         $flightBookingDetails = FlightBooking::where('booking_no', $bookingNo)->first();
+
         if($flightBookingDetails->gds == "Sabre" && ($flightBookingDetails->status == 1 || $flightBookingDetails->status == 2)){
             SabreBookingDetails::getBookingDetails($flightBookingDetails->pnr_id);
             $flightBookingDetails = FlightBooking::where('booking_no', $bookingNo)->first();
