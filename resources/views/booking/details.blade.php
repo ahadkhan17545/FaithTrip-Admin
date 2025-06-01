@@ -109,10 +109,12 @@
                                     <th>PNR ID </th>
                                     <td>: {{ $flightBookingDetails->pnr_id }}</td>
                                 </tr>
+                                @if($flightBookingDetails->pnr_id != $flightBookingDetails->booking_id)
                                 <tr>
                                     <th>Booking ID </th>
                                     <td>: {{ $flightBookingDetails->booking_id }}</td>
                                 </tr>
+                                @endif
 
                                 @if($flightBookingDetails->ticket_id)
                                 <tr>
