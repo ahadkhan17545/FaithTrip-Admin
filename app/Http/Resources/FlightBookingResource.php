@@ -25,7 +25,7 @@ class FlightBookingResource extends JsonResource
             'pnr_id' => $this->pnr_id,
             "airlines_pnr" => $this->airlines_pnr,
             "booking_id" => $this->booking_id,
-            "ticket_id" => $this->ticket_id,
+            "ticket_id" => null, //obsoleted; added flight passanger
             'traveller_name' => $this->traveller_name,
             'traveller_email' => $this->traveller_email,
             'traveller_contact' => $this->traveller_contact,

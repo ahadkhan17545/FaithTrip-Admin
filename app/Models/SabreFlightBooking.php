@@ -21,14 +21,6 @@ class SabreFlightBooking extends Model
             $legDescription = $revlidatedData['groupedItineraryResponse']['legDescs'][$legRef];
             $schedulesArray = $legDescription['schedules'];
 
-            // foreach ($schedulesArray as $schedulesArrayIndex => $schedule) {
-            //     $scheduleRef = $schedule['ref'] - 1;
-            //     $segmentArray[] = $revlidatedData['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];
-            //     if(isset($schedule['departureDateAdjustment'])){
-            //         $segmentArray[$schedulesArrayIndex]['bothDateAdjustment'] = $schedule['departureDateAdjustment'];
-            //     }
-            // }
-
             foreach ($schedulesArray as $schedule) {
                 $scheduleRef = $schedule['ref'] - 1;
                 $segment = $revlidatedData['groupedItineraryResponse']['scheduleDescs'][$scheduleRef];

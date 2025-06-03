@@ -16,6 +16,7 @@ class FlightPassangerResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
+            'ticket_no' => $this->ticket_no,
             'type' => $this->passanger_type,
             'title' => $this->title,
             'first_name' => $this->first_name,

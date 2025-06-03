@@ -107,7 +107,7 @@
                         </td>
                         <td class="text-center align-middle">
                             @php
-                                $minutes = $segment->elapsed_time;
+                                $minutes = (int) $segment->elapsed_time;
                                 $hours = intdiv($minutes, 60);
                                 $remainingMinutes = $minutes % 60;
                                 echo "{$hours} hour {$remainingMinutes} min";

@@ -121,30 +121,47 @@ class SabreBookingDetails extends Model
             }
         }
 
-        SabreBookingDetails::fixBaggageAllowance($flightBookingInfo->id, $responseData);
+        SabreBookingDetails::updateClassAndBaggage($flightBookingInfo->id, $responseData);
         $flightBookingInfo->save();
+
+        // update ticket no if flight is ticketed
+        if($flightBookingInfo->status == 2){
+            $flightPassangers = FlightPassanger::where('flight_booking_id', $flightBookingInfo->id)->get();
+            if(isset($responseData['flightTickets']) && count($responseData['flightTickets']) > 0){
+                $flightPassangerIndex = 0;
+                foreach($flightPassangers as $flightPassanger){
+                    FlightPassanger::where('id', $flightPassanger->id)->update([
+                        'ticket_no' => $responseData['flightTickets'][$flightPassangerIndex]['number'] ?? null
+                    ]);
+                    $flightPassangerIndex++;
+                }
+            }
+        }
+        // update ticket no if flight is ticketed
 
     }
 
-    public static function fixBaggageAllowance($flightBookingId, $getBookingResponse){
+    public static function updateClassAndBaggage($flightBookingId, $getBookingResponse){
 
         $data = $getBookingResponse;
         $perSegmentBaggage = [];
 
         // 4. Initialize $perSegmentBaggage with each segment’s basic info
-        foreach ($data['flights'] as $flight) {
-            $segmentId = $flight['itemId'];
-            $perSegmentBaggage[$segmentId] = [
-                'segmentInfo' => [
-                    'from'         => $flight['fromAirportCode']   ?? null,
-                    'to'           => $flight['toAirportCode']     ?? null,
-                    'departure'    => ($flight['departureDate'] ?? '') . ' ' . ($flight['departureTime'] ?? ''),
-                    'arrival'      => ($flight['arrivalDate']   ?? '') . ' ' . ($flight['arrivalTime']   ?? ''),
-                    'flightNumber' => ($flight['airlineCode']   ?? '') . ' ' . ($flight['flightNumber'] ?? ''),
-                ],
-                'cabinBaggage'   => [], // will hold cabin-baggage‐entries
-                'checkedBaggage' => [], // will hold checked-baggage‐entries
-            ];
+        if(isset($data['flights'])){
+            foreach ($data['flights'] as $flight) {
+                $segmentId = $flight['itemId'];
+                $perSegmentBaggage[$segmentId] = [
+                    'segmentInfo' => [
+                        'from'         => $flight['fromAirportCode']   ?? null,
+                        'to'           => $flight['toAirportCode']     ?? null,
+                        'departure'    => ($flight['departureDate'] ?? '') . ' ' . ($flight['departureTime'] ?? ''),
+                        'arrival'      => ($flight['arrivalDate']   ?? '') . ' ' . ($flight['arrivalTime']   ?? ''),
+                        'flightNumber' => ($flight['airlineCode']   ?? '') . ' ' . ($flight['flightNumber'] ?? ''),
+                    ],
+                    'cabinBaggage'   => [], // will hold cabin-baggage‐entries
+                    'checkedBaggage' => [], // will hold checked-baggage‐entries
+                ];
+            }
         }
 
         // 5. Walk through every fareOffer; for each one, loop its "flights" array properly.
@@ -235,10 +252,12 @@ class SabreBookingDetails extends Model
 
             $flightSegments = FlightSegment::where('flight_booking_id', $flightBookingId)->get();
             $customIndex = 0;
-            foreach($flightSegments as $flightSegmentIndex => $flightSegment){
+            foreach($flightSegments as $flightSegment){
                 FlightSegment::where('id', $flightSegment->id)->update([
                     'baggage_allowance' => $customBaggageArray[$customIndex]['checkedBaggage'],
                     'cabin_baggage' => $customBaggageArray[$customIndex]['cabinBaggage'],
+                    'booking_code' => $data['flights'][$customIndex]['bookingClass'] ?? null,
+                    'cabin_code' => $data['flights'][$customIndex]['cabinTypeCode'] ?? null,
                 ]);
                 $customIndex++;
             }

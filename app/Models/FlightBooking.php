@@ -13,6 +13,7 @@ class FlightBooking extends Model
         'payment_method',
         'transaction_id',
         'payment_status',
+        'ticketing_response',
         'updated_at'
     ];
 }

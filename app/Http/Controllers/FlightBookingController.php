@@ -117,52 +117,15 @@ class FlightBookingController extends Controller
             }
         }
 
-        // before your loop
-        $itinerary       = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0];
-        $legs            = $itinerary['legs'];
-        $firstLegRefIdx  = $legs[0]['ref'] - 1;
-        $outboundCount   = count($revlidatedData['groupedItineraryResponse']['legDescs'][$firstLegRefIdx]['schedules']);
-
-        foreach ($segmentArray as $segmentIndex => $segmentData){
-
-            $bookingCode = null;
-            $cabinCode = null;
-
-            if ($segmentIndex < $outboundCount) {
-                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'])){
-                    $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['bookingCode'];
-                }
-                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'])){
-                    $cabinCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][0]['segments'][$segmentIndex]['segment']['cabinCode'];
-                }
-            } else {
-                $localReturnIdx = $segmentIndex - $outboundCount;
-                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['bookingCode'])){
-                    $bookingCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['bookingCode'];
-                }
-                if(isset($revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['cabinCode'])){
-                    $cabinCode = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['fareComponents'][1]['segments'][$localReturnIdx]['segment']['cabinCode'];
-                }
-            }
-
-
-            // $baggageAllowanceRef = $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['itineraries'][0]['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['baggageInformation'][0]['allowance']['ref'];
-            // $baggageAllowanceDescs = $revlidatedData['groupedItineraryResponse']['baggageAllowanceDescs'][$baggageAllowanceRef-1];
-            // if(isset($baggageAllowanceDescs['weight'])){
-            //     $baggageAllowance = $baggageAllowanceDescs['weight']." ".$baggageAllowanceDescs['unit'];
-            // } else if(isset($baggageAllowance['pieceCount'])){
-            //     $baggageAllowance = $baggageAllowanceDescs['pieceCount']." Pieces";
-            // } else{
-                $baggageAllowance = null;
-            // }
+        foreach ($segmentArray as $segmentData){
 
             FlightSegment::insert([
                 'flight_booking_id' => $flightBookingId,
                 'total_miles_flown' => $segmentData['totalMilesFlown'],
                 'elapsed_time' => $segmentData['elapsedTime'],
-                'booking_code' => $bookingCode,
-                'cabin_code' => $cabinCode,
-                'baggage_allowance' => $baggageAllowance,
+                'booking_code' => null, //update while visiting booking details from getbooking response
+                'cabin_code' => null, //update while visiting booking details from getbooking response
+                'baggage_allowance' => null, //update while visiting booking details from getbooking response
                 'departure_airport_code' => $segmentData['departure']['airport'],
                 'departure_city_code' => $segmentData['departure']['city'],
                 'departure_country_code' => $segmentData['departure']['country'],
@@ -678,13 +641,15 @@ class FlightBookingController extends Controller
 
         // sabre ticket issue
         $sabreGds = Gds::where('code', 'sabre')->first();
-        if($sabreGds->status == 1){
+        if($sabreGds->status == 1 && $flightBookingInfo->gds == 'Sabre'){
             $ticketIssueResponse = json_decode(SabreFlightTicketIssue::issueTicket($flightBookingInfo->pnr_id), true);
             if(isset($ticketIssueResponse['AirTicketRS']['ApplicationResults']['status']) && $ticketIssueResponse['AirTicketRS']['ApplicationResults']['status'] == 'Complete'){
 
-                $user = User::where('id', Auth::user()->id)->first();
-                $user->balance = $user->balance - ($base_fare_amount - (($base_fare_amount*Auth::user()->comission)/100));
-                $user->save();
+                if(Auth::user()->user_type == 2){
+                    $user = User::where('id', Auth::user()->id)->first();
+                    $user->balance = $user->balance - ($base_fare_amount - (($base_fare_amount*Auth::user()->comission)/100));
+                    $user->save();
+                }
 
                 $flightBookingInfo->status = 2;
                 $flightBookingInfo->ticketing_response = json_encode($ticketIssueResponse, true);
@@ -729,6 +694,13 @@ class FlightBookingController extends Controller
             }
 
             return Datatables::of($data)
+                    ->addColumn('flight_routes', function($data){
+                        $routeString = $data->departure_location." - ".$data->arrival_location;
+                        if($data->flight_type == 2){
+                            $routeString .= " - ".$data->departure_location;
+                        }
+                        return $routeString;
+                    })
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d h:i a", strtotime($data->created_at));
                     })
@@ -770,6 +742,13 @@ class FlightBookingController extends Controller
             }
 
             return Datatables::of($data)
+                    ->addColumn('flight_routes', function($data){
+                        $routeString = $data->departure_location." - ".$data->arrival_location;
+                        if($data->flight_type == 2){
+                            $routeString .= " - ".$data->departure_location;
+                        }
+                        return $routeString;
+                    })
                     ->editColumn('created_at', function($data) {
                         return date("Y-m-d h:i a", strtotime($data->created_at));
                     })

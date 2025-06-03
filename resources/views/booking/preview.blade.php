@@ -51,8 +51,10 @@
         @php
             $departure = $bookingResSegs ? $bookingResSegs[0]['Product']['ProductDetails']['Air']['DepartureDateTime'] : null;
             $departureDateTime = explode('T', $departure);
+            if(isset($departureDateTime[0]) && isset($departureDateTime[1])){
+                echo date('l, jS \of F Y', strtotime($departureDateTime[0])) . ' - ' . substr($departureDateTime[1], 0, 5);
+            }
         @endphp
-        {{date('l, jS \of F Y', strtotime($departureDateTime[0]))}} - {{substr($departureDateTime[1], 0, 5)}}
     </p>
 
     <table class="booking_info" border="0">
@@ -81,15 +83,6 @@
         </tr>
         <tr>
             <td>
-                @if($flightBookingDetails->ticket_id)
-                    <strong>Ticket No:</strong> {{ $flightBookingDetails->ticket_id }}
-                @else
-                    @if($flightBookingDetails->last_ticket_datetime)
-                    <strong>Ticket Deadline:</strong> {{ date("jS M-y, h:i a", strtotime($flightBookingDetails->last_ticket_datetime)) }}
-                    @endif
-                @endif
-            </td>
-            <td>
                 <strong>Status:</strong>
                 @if ($flightBookingDetails->status == 0)
                     <span style="color: goldenrod; font-weight: 600">Booking Requested</span>
@@ -105,6 +98,11 @@
                 @endif
                 @if ($flightBookingDetails->status == 4)
                     <span style="color: red; font-weight: 600">Ticket Cancelled</span>
+                @endif
+            </td>
+            <td>
+                @if($flightPassangers[0]->ticket_no == null && $flightBookingDetails->last_ticket_datetime)
+                    <strong>Ticket Deadline:</strong> {{ date("jS M-y, h:i a", strtotime($flightBookingDetails->last_ticket_datetime)) }}
                 @endif
             </td>
         </tr>
@@ -166,8 +164,8 @@
                     <p style="margin: 0; margin-bottom: 2px;">{{ $departureLocation->city_name }} ({{ $departureLocation->city_code }})</p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">{{ $departureLocation->airport_name }}</p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Terminal - {{ $segment->departure_terminal }}</p>
-                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">{{substr($departureDateTime[1], 0, 5)}}</p>
-                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">{{date('D, j M Y', strtotime($departureDateTime[0]))}}</p>
+                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">@if(isset($departureDateTime[1])){{substr($departureDateTime[1], 0, 5)}}@endif</p>
+                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">@if(isset($departureDateTime[0])){{date('D, j M Y', strtotime($departureDateTime[0]))}}@endif</p>
                 </td>
                 <td style="width: 25%; font-size: 14px; padding: 5px 10px; border-right: 1px solid gray;">
                     @php
@@ -178,8 +176,8 @@
                     <p style="margin: 0; margin-bottom: 2px;">{{ $arrivalLocation->city_name }} ({{ $arrivalLocation->city_code }})</p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">{{ $arrivalLocation->airport_name }}</p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Terminal - {{ $segment->arrival_terminal }}</p>
-                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">{{substr($arrivalDateTime[1], 0, 5)}}</p>
-                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">{{date('D, j M Y', strtotime($arrivalDateTime[0]))}}</p>
+                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">@if(isset($arrivalDateTime[1])){{substr($arrivalDateTime[1], 0, 5)}}@endif</p>
+                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">@if(isset($arrivalDateTime[0])){{date('D, j M Y', strtotime($arrivalDateTime[0]))}}@endif</p>
                 </td>
                 <td style="width: 20%; font-size: 14px; padding: 5px 10px;">
 
@@ -187,7 +185,7 @@
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Cabin: @if($segment->cabin_baggage) {{ $segment->cabin_baggage }} @else N/A @endif</p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Duration:<br>
                         @php
-                            $minutes = $segment->elapsed_time;
+                            $minutes = (int) $segment->elapsed_time;
                             $hours = intdiv($minutes, 60);
                             $remainingMinutes = $minutes % 60;
                             echo "{$hours} hour {$remainingMinutes} min";
@@ -221,18 +219,20 @@
 
     </table>
 
-    <table border="0" style="width: 100%; padding: 0; margin: 0; margin-top: 15px; border-collapse: collapse;">
+    <table border="0" style="width: 100%; padding: 0; margin: 0; margin-top: 15px; border-collapse: collapse; ">
         <tr>
-            <th colspan="4" style="text-align: center; font-size: 14px; background-color: lightgreen; padding: 4px 0px;">Flight Passangers</th>
+            <th colspan="5" style="text-align: center; font-size: 14px; background-color: lightgreen; padding: 4px 0px;">Flight Passangers</th>
         </tr>
         <tr>
+            <th style="width: 20%; text-align: center; font-size: 13px; padding: 4px 4px;">Ticket No</th>
             <th style="width: 10%; text-align: center; font-size: 13px; padding: 4px 4px;">Type</th>
-            <th style="width: 50%; text-align: left; font-size: 13px; padding: 4px 4px;">Travellers Name</th>
-            <th style="width: 25%; text-align: center; font-size: 13px; padding: 4px 4px">Passport/NID</th>
+            <th style="width: 35%; text-align: left; font-size: 13px; padding: 4px 4px;">Travellers Name</th>
+            <th style="width: 20%; text-align: center; font-size: 13px; padding: 4px 4px">Passport/NID</th>
             <th style="width: 15%; text-align: center; font-size: 13px; padding: 4px 4px">DOB</th>
         </tr>
         @foreach ($flightPassangers as $flightPassanger)
         <tr>
+            <td style="text-align: center; font-size: 12px; padding: 2px 4px;">@if($flightPassanger->ticket_no){{$flightPassanger->ticket_no}}@else N/A @endif</td>
             <td style="text-align: center; font-size: 12px; padding: 2px 4px;">{{$flightPassanger->passanger_type}}</td>
             <td style="text-align: left; font-size: 12px; padding: 2px 4px;">{{$flightPassanger->title}} {{$flightPassanger->first_name}} {{$flightPassanger->last_name}}</td>
             <td style="text-align: center; font-size: 12px; padding: 2px 4px;">{{$flightPassanger->document_no}}</td>
@@ -241,7 +241,7 @@
         @endforeach
     </table>
 
-    @if($flightBookingDetails->status == 1)
+    @if($flightBookingDetails->status == 1 || $flightBookingDetails->status == 3)
     <h5 style="margin: 20px 0px 6px 0px; padding: px; font-size: 12px;">Booking Note:</h5>
     <ul style="padding: 0px; margin: 0px; padding-left: 15px">
         <li style="font-size: 12px; margin-bottom: 2px;">Please recheck with the spelling of your name with Travel documents(passport/NID).</li>
@@ -254,7 +254,7 @@
     </ul>
     @endif
 
-    @if($flightBookingDetails->status == 2)
+    @if($flightBookingDetails->status == 2 || $flightBookingDetails->status == 4)
     <h5 style="margin: 20px 0px 6px 0px; padding: px; font-size: 12px;">Travel Note:</h5>
     <ul style="padding: 0px; margin: 0px; padding-left: 15px">
         <li style="font-size: 12px; margin-bottom: 2px;">Check in counter will open before 1.30 hours of domestic and 3 hours of international flight departure.</li>

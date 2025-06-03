@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('pnr_id')->nullable();
             $table->string('airlines_pnr')->nullable();
             $table->string('booking_id')->nullable();
-            $table->string('ticket_id')->nullable()->comment('From Sabre');
 
             $table->string('gds')->nullable();
             $table->string('gds_unique_id')->nullable()->comment('e.g. PCC');

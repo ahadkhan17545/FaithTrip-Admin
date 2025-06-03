@@ -116,13 +116,6 @@
                                 </tr>
                                 @endif
 
-                                @if($flightBookingDetails->ticket_id)
-                                <tr>
-                                    <th>Ticket No </th>
-                                    <td>: {{ $flightBookingDetails->ticket_id }}</td>
-                                </tr>
-                                @endif
-
                                 <tr>
                                     <th>Name </th>
                                     <td>: {{ $flightBookingDetails->traveller_name }}</td>
@@ -165,8 +158,10 @@
                                         @php
                                             $departure = $bookingResSegs ? $bookingResSegs[0]['Product']['ProductDetails']['Air']['DepartureDateTime'] : null;
                                             $departureDateTime = explode('T', $departure);
+                                            if(isset($departureDateTime[0]) && isset($departureDateTime[1])){
+                                                echo ": ".date('j M Y', strtotime($departureDateTime[0]))." ".substr($departureDateTime[1], 0, 5);
+                                            }
                                         @endphp
-                                        : {{date('j M Y', strtotime($departureDateTime[0]))}} {{substr($departureDateTime[1], 0, 5)}}
                                     </td>
                                 </tr>
                                 <tr>
@@ -175,8 +170,10 @@
                                         @php
                                             $arrival = $bookingResSegs ? $bookingResSegs[count($flightSegments)-1]['Product']['ProductDetails']['Air']['ArrivalDateTime'] : null;
                                             $arrivalDateTime = explode('T', $arrival);
+                                            if(isset($arrivalDateTime[0]) && isset($arrivalDateTime[1])){
+                                                echo ": ".date('j M Y', strtotime($arrivalDateTime[0]))." ".substr($arrivalDateTime[1], 0, 5);
+                                            }
                                         @endphp
-                                        : {{date('j M Y', strtotime($arrivalDateTime[0]))}} {{substr($arrivalDateTime[1], 0, 5)}}
                                     </td>
                                 </tr>
                                 <tr>
@@ -204,6 +201,8 @@
                                         @endif
                                     </td>
                                 </tr>
+
+                                @if($flightPassangers[0]->ticket_no == null)
                                 <tr>
                                     <th>Last Ticket Datetime </th>
                                     <td>
@@ -214,6 +213,8 @@
                                         @endif
                                     </td>
                                 </tr>
+                                @endif
+
                             </table>
                         </div>
                     </div>
@@ -226,11 +227,11 @@
                             <table class="table table-bordered border-dark table-sm table-striped table-hover">
                                 <thead>
                                     <tr class="table-success">
-                                        <th scope="col" class="text-center" colspan="9" style="font-size: 14px">
-                                            Flight Passangers</th>
+                                        <th scope="col" class="text-center" colspan="10" style="font-size: 14px">Flight Passangers</th>
                                     </tr>
                                     <tr class="table-success">
                                         <th scope="col" class="text-center">Sl</th>
+                                        <th scope="col" class="text-center">Ticket No</th>
                                         <th scope="col" class="text-center">Type</th>
                                         <th scope="col" class="text-center">Name</th>
                                         <th scope="col" class="text-center">DOB</th>
@@ -245,6 +246,7 @@
                                     @foreach ($flightPassangers as $passangerIndex => $flightPassanger)
                                         <tr>
                                             <th scope="row">{{ $passangerIndex + 1 }}</th>
+                                            <td class="text-center">@if($flightPassanger->ticket_no){{ $flightPassanger->ticket_no }}@else N/A @endif</td>
                                             <td class="text-center">{{ $flightPassanger->passanger_type }}</td>
                                             <td class="text-center">{{ $flightPassanger->title }} {{ $flightPassanger->first_name }} {{ $flightPassanger->last_name }}</td>
                                             <td class="text-center">{{ $flightPassanger->dob }}</td>
