@@ -129,6 +129,19 @@
                     </ul>
                 </li>
 
+                <li class="@if(in_array($currentRoute, ['ViewAllBanners'])) mm-active @endif">
+                    <a class="has-arrow material-ripple" href="javascript:void(0);">
+                        <i class="typcn typcn-tabs-outline"></i>Content Management
+                    </a>
+                    <ul class="nav-second-level">
+                        <li class="@if(in_array($currentRoute, ['ViewAllBanners'])) mm-active @endif">
+                            <a class="text-capitalize" href="{{url('view/all/banners')}}">
+                                View All Banners
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="@if($currentRoute == 'view/saved/passangers') mm-active @endif">
                     <a class="text-capitalize" href="{{ url('/view/saved/passangers') }}">
                         <i class="typcn typcn-user-outline"></i>

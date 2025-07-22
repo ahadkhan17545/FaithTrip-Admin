@@ -6,19 +6,13 @@
                     <div class="swiper services-slider">
                         <div class="swiper-wrapper">
                             <!-- Slider Item -->
-                            <a href="#" target="_blank" class="swiper-slide">
-                                <img src="https://placehold.co/480x240" alt="service-banner" />
-                            </a>
 
-                            <!-- Slider Item -->
-                            <a href="#" target="_blank" class="swiper-slide">
-                                <img src="https://placehold.co/480x240" alt="service-banner" />
+                            @foreach ($banners as $banner)
+                            <a href="{{$banner->url}}" target="_blank" class="swiper-slide">
+                                <img src="{{url($banner->image)}}" alt="FaithTrip" />
                             </a>
+                            @endforeach
 
-                            <!-- Slider Item -->
-                            <a href="#" target="_blank" class="swiper-slide">
-                                <img src="https://placehold.co/480x240" alt="service-banner" />
-                            </a>
                         </div>
 
                     </div>

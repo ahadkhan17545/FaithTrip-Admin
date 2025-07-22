@@ -33,3 +33,17 @@ Pending Tasks
 3. ⁠flyer upload/delete/modify
 4. Archeive Booking
 
+
+
+New Updates
+===========
+1. Admin can recharge for B2B user
+2. Admin can deduct b2b user amount
+3. Content Management: banner
+4. Archeive Tickets
+5. Faster Data load in all the view pages
+
+Next Update
+===========
+1. Flight Booking Issue Feedback
+2. Flight Ticketing Issue

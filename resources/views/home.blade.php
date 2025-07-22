@@ -198,7 +198,9 @@
             </div>
         </div>
 
-        @include('promotional_banners')
+        @if(count($banners) > 0)
+            @include('promotional_banners')
+        @endif
 
     </div>
 @endsection

@@ -12,6 +12,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\FlightBookingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\BannerController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -97,6 +98,14 @@ Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
     Route::post('generate/flight/booking/report', [ReportController::class, 'generateFlightBookingReport'])->name('GenerateFlightBookingReport');
 
     Route::group(['middleware' => ['CheckUserType']], function () {
+
+        // banner
+        Route::get('view/all/banners', [BannerController::class, 'viewAllBanners'])->name('ViewAllBanners');
+        Route::get('add/new/banner', [BannerController::class, 'addNewBanner'])->name('AddNewBanner');
+        Route::post('save/banner', [BannerController::class, 'saveBanner'])->name('SaveBanner');
+        Route::get('edit/banner/{slug}', [BannerController::class, 'editBanner'])->name('EditBanner');
+        Route::post('update/banner', [BannerController::class, 'updateBanner'])->name('UpdateBanner');
+        Route::get('delete/banner/{slug}', [BannerController::class, 'deleteBanner'])->name('DeleteBanner');
 
         // b2b account deductions
         Route::get('view/account/deductions', [PaymentController::class, 'viewAccountDeductions'])->name('ViewAccountDeductions');

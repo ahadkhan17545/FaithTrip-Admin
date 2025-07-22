@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BankAccount;
+use App\Models\Banner;
 use App\Models\MfsAccount;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -28,7 +29,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('home');
+        $banners = Banner::where('status', 1)->orderBy('id', 'desc')->get();
+        return view('home', compact('banners'));
     }
 
     public function liveCityAirportSearch(Request $request){
