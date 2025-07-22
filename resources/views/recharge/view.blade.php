@@ -13,6 +13,10 @@
             font-weight: 600;
         }
 
+        table.dataTable tbody td:nth-child(13) {
+            min-width: 100px;
+        }
+
         table.dataTable tbody {
             text-align: center !important;
         }
@@ -91,13 +95,23 @@
 
     <script type="text/javascript">
         var table = $(".data-table").DataTable({
+
             processing: true,
             serverSide: true,
+            stateSave: true,
+            pageLength: 10,
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, "All"]
+            ],
+
             ajax: "{{ url('view/recharge/requests') }}",
             columns: [
                 {
                     data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
+                    name: '',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'receiving_channel',

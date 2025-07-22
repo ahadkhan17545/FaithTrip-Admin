@@ -91,11 +91,19 @@ Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
     Route::get('view/recharge/requests', [PaymentController::class, 'viewRechargeRequests'])->name('ViewRechargeRequests');
     Route::get('delete/recharge/request/{slug}', [PaymentController::class, 'deleteRechargeRequest'])->name('ViewRechargeRequests');
 
+
     // report
     Route::get('flight/booking/report', [ReportController::class, 'flightBookingReport'])->name('FlightBookingReport');
     Route::post('generate/flight/booking/report', [ReportController::class, 'generateFlightBookingReport'])->name('GenerateFlightBookingReport');
 
     Route::group(['middleware' => ['CheckUserType']], function () {
+
+        // b2b account deductions
+        Route::get('view/account/deductions', [PaymentController::class, 'viewAccountDeductions'])->name('ViewAccountDeductions');
+        Route::get('submit/b2b/account/deduction', [PaymentController::class, 'submitAccountDeduction'])->name('SubmitAccountDeduction');
+        Route::get('get/user/balance/{id}', [PaymentController::class, 'getUserBalance'])->name('GetUserBalance');
+        Route::post('deduct/b2b/account', [PaymentController::class, 'deductB2bAccount'])->name('DeductB2bAccount');
+        Route::get('delete/b2b/account/deduction/{slug}', [PaymentController::class, 'deleteDeductionHistory'])->name('DeleteDeductionHistory');
 
         // recharge
         Route::get('approve/recharge/request/{slug}', [PaymentController::class, 'approveRechargeRequest'])->name('ApproveRechargeRequest');

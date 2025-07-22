@@ -107,7 +107,7 @@
                         </li>
                         <li class="@if(in_array($currentRoute, ['ViewRechargeRequests'])) mm-active @endif">
                             <a class="text-capitalize" href="{{url('view/recharge/requests')}}">
-                                View Transactions
+                                View Topup Requests
                             </a>
                         </li>
                     </ul>

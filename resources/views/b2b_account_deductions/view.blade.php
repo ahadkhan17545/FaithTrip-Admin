@@ -41,25 +41,27 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h6 class="mb-0" style="font-size: 18px">View All Booked Flights</h6>
+                    <h6 class="mb-0" style="font-size: 18px">View B2B Account Deductions</h6>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-12">
 
+                            <label id="customFilter">
+                                <a href="{{url('submit/b2b/account/deduction')}}" style="margin-left: 5px" class="btn btn-success btn-sm"><b><i class="fas fa-coins"></i> New Deduction</b></a>
+                            </label>
+
                             <div class="table-responsive">
+
                                 <table class="table table-bordered mb-0 data-table">
                                     <thead>
                                         <tr>
                                             <th class="text-center">SL</th>
-                                            <th class="text-center">Booking Date</th>
-                                            <th class="text-center">PNR</th>
-                                            <th class="text-center">Departure</th>
-                                            <th class="text-center">Flight Routes</th>
-                                            <th class="text-center">Contact</th>
-                                            <th class="text-center">Passanger</th>
-                                            <th class="text-center">Total Fare</th>
-                                            <th class="text-center">Status</th>
+                                            <th class="text-center">B2B User Name</th>
+                                            <th class="text-center">B2B User Company</th>
+                                            <th class="text-center">Amount</th>
+                                            <th class="text-center">Reason</th>
+                                            <th class="text-center">Deducted At</th>
                                             <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -88,9 +90,17 @@
 
     <script type="text/javascript">
         var table = $(".data-table").DataTable({
+
             processing: true,
             serverSide: true,
-            ajax: "{{ url('view/all/booking') }}",
+            stateSave: true,
+            pageLength: 10,
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, "All"]
+            ],
+
+            ajax: "{{ url('view/account/deductions') }}",
             columns: [
                 {
                     data: 'DT_RowIndex',
@@ -99,36 +109,24 @@
                     searchable: false
                 },
                 {
+                    data: 'user_name',
+                    name: 'user_name'
+                },
+                {
+                    data: 'company_name',
+                    name: 'company_name'
+                },
+                {
+                    data: 'amount',
+                    name: 'amount'
+                },
+                {
+                    data: 'details',
+                    name: 'details'
+                },
+                {
                     data: 'created_at',
                     name: 'created_at'
-                },
-                {
-                    data: 'pnr_id',
-                    name: 'pnr_id'
-                },
-                {
-                    data: 'departure_date',
-                    name: 'departure_date'
-                },
-                {
-                    data: 'flight_routes',
-                    name: 'flight_routes'
-                },
-                {
-                    data: 'traveller_contact',
-                    name: 'traveller_contact'
-                },
-                {
-                    data: 'total_passangers',
-                    name: 'total_passangers'
-                },
-                {
-                    data: 'total_fare',
-                    name: 'total_fare'
-                },
-                {
-                    data: 'status',
-                    name: 'status'
                 },
                 {
                     data: 'action',
@@ -138,6 +136,7 @@
                 },
             ],
         });
+        $(".dataTables_filter").append($("#customFilter"));
     </script>
 
     <script>
@@ -146,5 +145,23 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $('body').on('click', '.deleteBtn', function () {
+            var slug = $(this).data("id");
+            if(confirm("Are You sure want to delete history !")){
+                $.ajax({
+                    type: "GET",
+                    url: "{{ url('delete/b2b/account/deduction') }}"+'/'+slug,
+                    success: function (data) {
+                        table.draw(false);
+                        toastr.error("Account Deduction History Deleted");
+                    },
+                    error: function (data) {
+                        console.log('Error:', data);
+                    }
+                });
+            }
+        });
+
     </script>
 @endsection

@@ -420,12 +420,12 @@ class FlightBookingController extends Controller
         if ($request->ajax()) {
 
             if(Auth::user()->user_type == 1){
-                $data = FlightBooking::where('status', 1)->orWhere('status', 0)->orderBy('id', 'desc')->get();
+                $query = FlightBooking::where('status', 1)->orWhere('status', 0)->orderBy('id', 'desc');
             } else {
-                $data = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 1)->orWhere('status', 0)->orderBy('id', 'desc')->get();
+                $query = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 1)->orWhere('status', 0)->orderBy('id', 'desc');
             }
 
-            return Datatables::of($data)
+            return Datatables::of($query)
                     ->addColumn('flight_routes', function($data){
                         $routeString = $data->departure_location." - ".$data->arrival_location;
                         if($data->flight_type == 2){
@@ -473,12 +473,12 @@ class FlightBookingController extends Controller
         if ($request->ajax()) {
 
             if(Auth::user()->user_type == 1){
-                $data = FlightBooking::where('status', 3)->orderBy('id', 'desc')->get();
+                $query = FlightBooking::where('status', 3)->orderBy('id', 'desc');
             } else {
-                $data = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 3)->orderBy('id', 'desc')->get();
+                $query = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 3)->orderBy('id', 'desc');
             }
 
-            return Datatables::of($data)
+            return Datatables::of($query)
                     ->addColumn('flight_routes', function($data){
                         $routeString = $data->departure_location." - ".$data->arrival_location;
                         if($data->flight_type == 2){

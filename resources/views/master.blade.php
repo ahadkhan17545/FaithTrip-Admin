@@ -117,7 +117,7 @@
             <!--    </div>-->
             <!--</div>-->
             <!--<p>Please wait...</p>-->
-            
+
             <img src="{{url('assets')}}/img/preloader.gif" alt="preloader"/>
         </div>
     </div>
@@ -139,7 +139,7 @@
                     <div class="body-content">
 
                         @yield('content')
-                      
+
                     </div>
                 </div>
 

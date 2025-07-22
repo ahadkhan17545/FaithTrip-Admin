@@ -4,12 +4,8 @@
     <link href="{{url('assets')}}/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="{{url('assets')}}/plugins/bootstrap-touchspin/jquery.bootstrap-touchspin.css" rel="stylesheet" type="text/css" />
     <style>
-        .select2-selection{
-            min-height: 34px !important;
-            border: 1px solid #ced4da !important;
-        }
-        .select2 {
-            width: 100% !important;
+        .select2-container--default .select2-selection--single .select2-selection__arrow b::before{
+            content: "" !important;
         }
     </style>
 @endsection
@@ -28,11 +24,27 @@
                         <div class="row justify-content-center">
                             <div class="col-md-6">
 
+                                @if(Auth::user()->user_type == 1)
+                                <div class="row pb-3">
+                                    <div class="co-lg-12">
+                                        <div class="form-group">
+                                            <label for="user_id" class="col-form-label">Select B2B User for Account Recharge</label>
+                                            <select id="user_id" name="user_id" class="form-select">
+                                                <option value="">Select One</option>
+                                                @foreach ($b2bUsers as $b2bUser)
+                                                <option value="{{$b2bUser->id}}">{{$b2bUser->name}} - {{$b2bUser->email}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
                                 <div class="row pb-3">
                                     <div class="co-lg-12">
                                         <div class="form-group">
                                             <label for="payment_method" class="col-form-label">Payment Method<span class="text-danger">*</span></label>
-                                            <select id="payment_method" name="payment_method" onchange="paymentMethod()" class="form-control" required>
+                                            <select id="payment_method" name="payment_method" onchange="paymentMethod()" class="form-select" required>
                                                 <option value="">Select One</option>
                                                 <option value="1">Bank Transfer</option>
                                                 <option value="2">Bank Cheque</option>
@@ -173,6 +185,12 @@
         $( document ).ready(function() {
             paymentMethod();
         });
+
+        // $('#user_id').select2({
+        //     placeholder: 'Select One',
+        //     allowClear: true,
+        //     width: '100%'
+        // });
 
         function paymentMethod(){
             var paymentMethod = parseInt($("#payment_method").val());

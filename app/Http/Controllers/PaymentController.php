@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\B2bAccountDeduction;
 use App\Models\BankAccount;
 use App\Models\MfsAccount;
 use App\Models\RechargeRequest;
@@ -169,7 +170,8 @@ class PaymentController extends Controller
     public function createTopupRequest(){
         $bankAccounts = BankAccount::where('status', 1)->orderBy('id', 'asc')->get();
         $mfsAccounts = MfsAccount::where('status', 1)->orderBy('id', 'asc')->get();
-        return view('recharge.create', compact('bankAccounts', 'mfsAccounts'));
+        $b2bUsers = User::where('user_type', 2)->orderBy('name', 'asc')->get();
+        return view('recharge.create', compact('bankAccounts', 'mfsAccounts', 'b2bUsers'));
     }
 
     public function submitRechargeRequest(Request $request){
@@ -183,8 +185,14 @@ class PaymentController extends Controller
             $attachment = "recharge_attachments/" . $file_name;
         }
 
+        if(isset($request->user_id) && $request->user_id){
+            $userId = $request->user_id;
+        } else {
+            $userId = Auth::user()->id;
+        }
+
         $rechargeHistoryId = RechargeRequest::insertGetId([
-            'user_id' => Auth::user()->id,
+            'user_id' => $userId,
             'admin_bank_account_id' => $request->payment_method == 1 ? $request->admin_bank_account_id : null,
             'admin_mfs_account_id' => in_array($request->payment_method, [3,4,5,6,7]) ? $request->admin_mfs_account_id : null,
             'payment_method' => $request->payment_method,
@@ -229,23 +237,21 @@ class PaymentController extends Controller
         if ($request->ajax()) {
 
             if(Auth::user()->user_type == 1){
-                $data = DB::table('recharge_requests')
+                $query = DB::table('recharge_requests')
                         ->leftJoin('users', 'recharge_requests.user_id', 'users.id')
                         ->leftJoin('company_profiles', 'users.id', 'company_profiles.user_id')
                         ->select('recharge_requests.*', 'users.name as user_name', 'company_profiles.name as company_name')
-                        ->orderBy('recharge_requests.id', 'desc')
-                        ->get();
+                        ->orderBy('recharge_requests.id', 'desc');
             } else{
-                $data = DB::table('recharge_requests')
-                    ->leftJoin('users', 'recharge_requests.user_id', 'users.id')
-                    ->leftJoin('company_profiles', 'users.id', 'company_profiles.user_id')
-                    ->select('recharge_requests.*', 'users.name as user_name', 'company_profiles.name as company_name')
-                    ->where('recharge_requests.user_id', Auth::user()->id)
-                    ->orderBy('recharge_requests.id', 'desc')
-                    ->get();
+                $query = DB::table('recharge_requests')
+                        ->leftJoin('users', 'recharge_requests.user_id', 'users.id')
+                        ->leftJoin('company_profiles', 'users.id', 'company_profiles.user_id')
+                        ->select('recharge_requests.*', 'users.name as user_name', 'company_profiles.name as company_name')
+                        ->where('recharge_requests.user_id', Auth::user()->id)
+                        ->orderBy('recharge_requests.id', 'desc');
             }
 
-            return Datatables::of($data)
+            return Datatables::of($query)
                     ->addColumn('receiving_channel', function($data){
                         if($data->admin_bank_account_id){
                             $bankInfo = BankAccount::where('id', $data->admin_bank_account_id)->first();
@@ -364,6 +370,73 @@ class PaymentController extends Controller
             'updated_at' => Carbon::now(),
         ]);
         return response()->json(['success' => 'Denied Successfully.']);
+    }
+
+
+    public function viewAccountDeductions(Request $request){
+        if ($request->ajax()) {
+
+            $query = DB::table('b2b_account_deductions')
+                        ->leftJoin('users', 'b2b_account_deductions.b2b_user_id', 'users.id')
+                        ->leftJoin('company_profiles', 'users.id', 'company_profiles.user_id')
+                        ->select('b2b_account_deductions.*', 'users.name as user_name', 'company_profiles.name as company_name')
+                        ->orderBy('b2b_account_deductions.id', 'desc');
+
+            return Datatables::of($query)
+                    ->editColumn('created_at', function($data) {
+                        return date("Y-m-d", strtotime($data->created_at));
+                    })
+                    ->editColumn('amount', function($data) {
+                        return $data->amount."/=";
+                    })
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->slug.'" data-original-title="Delete" class="btn-sm btn-danger rounded d-inline-block deleteBtn mb-1"><i class="fa fa-trash"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        return view('b2b_account_deductions.view');
+    }
+
+    public function submitAccountDeduction(){
+        $b2bUsers = User::where('user_type', 2)->orderBy('name', 'asc')->get();
+        return view('b2b_account_deductions.create', compact('b2bUsers'));
+    }
+
+    public function getUserBalance($id){
+        $userInfo = User::where('id', $id)->select('balance')->first();
+        return response()->json($userInfo);
+    }
+
+    public function deductB2bAccount(Request $request){
+        $userInfo = User::where('id', $request->b2b_user_id)->first();
+
+        if($request->amount > $userInfo->balance){
+            Toastr::error('Deduction Amount cannot be greater than balance');
+            return back();
+        }
+
+        B2bAccountDeduction::insert([
+            'b2b_user_id' => $request->b2b_user_id,
+            'amount' => $request->amount,
+            'details' => $request->details,
+            'slug' => str::random(5) . time(),
+            'created_at' => Carbon::now()
+        ]);
+
+        $userInfo->balance = $userInfo->balance - $request->amount;
+        $userInfo->save();
+
+        Toastr::success('Amount Successfully Deducted');
+        return back();
+    }
+
+    public function deleteDeductionHistory($slug){
+        B2bAccountDeduction::where('slug', $slug)->delete();
+        Toastr::error('Deduction History Removed');
+        return back();
     }
 
 

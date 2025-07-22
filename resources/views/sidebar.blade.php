@@ -79,9 +79,9 @@
                         </li>
                     </ul>
                 </li>
-                <li class="@if(in_array($currentRoute, ['ViewBankAccounts', 'AddBankAccount', 'EditBankAccount', 'ViewMfsAccounts', 'AddMfsAccount', 'EditMfsAccount', 'CreateTopupRequest', 'ViewRechargeRequests'])) mm-active @endif">
+                <li class="@if(in_array($currentRoute, ['ViewBankAccounts', 'AddBankAccount', 'EditBankAccount', 'ViewMfsAccounts', 'AddMfsAccount', 'EditMfsAccount', 'ViewAccountDeductions', 'CreateTopupRequest', 'ViewRechargeRequests'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
-                        <i class="typcn typcn-credit-card "></i> Account Recharge
+                        <i class="typcn typcn-credit-card"></i> Financial Transactions
                     </a>
                     <ul class="nav-second-level">
                         <li class="@if(in_array($currentRoute, ['ViewBankAccounts', 'AddBankAccount', 'EditBankAccount'])) mm-active @endif">
@@ -94,6 +94,11 @@
                                 MFS Accounts
                             </a>
                         </li>
+                        <li class="@if(in_array($currentRoute, ['ViewAccountDeductions'])) mm-active @endif">
+                            <a class="text-capitalize" href="{{url('view/account/deductions')}}">
+                                B2b Account Deductions
+                            </a>
+                        </li>
                         <li class="@if(in_array($currentRoute, ['CreateTopupRequest'])) mm-active @endif">
                             <a class="text-capitalize" href="{{url('create/topup/request')}}">
                                 Submit Topup Request
@@ -101,7 +106,7 @@
                         </li>
                         <li class="@if(in_array($currentRoute, ['ViewRechargeRequests'])) mm-active @endif">
                             <a class="text-capitalize" href="{{url('view/recharge/requests')}}">
-                                View Transactions
+                                View Topup Requests
                             </a>
                         </li>
                     </ul>

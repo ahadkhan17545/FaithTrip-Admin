@@ -94,7 +94,9 @@
             columns: [
                 {
                     data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
+                    name: '',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'created_at',

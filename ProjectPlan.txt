@@ -21,13 +21,15 @@ Issue List
 
 
 Sunday Deadline Task (Only for Oneway & RoundTrip)
---------------------
-4. Remove Booking Request Data from live
+--------------------------------------------------
+1. Modify Search is not working after search
+2. B2b user can create user id and manage other users under his account
+3. Business Class fare not working . After selecting business class it shows the fare of Economy Class
 
-work with airlines pnr in flight segments
 
-
-4. Modify Search is not working after search
-6. B2b user can create user id and manage other users under his account
-7. Business Class fare not working . After selecting business class it shows the fare of Economy Class
+Pending Tasks
+-------------
+2. ⁠B2B user er booking/issued ticket record modification
+3. ⁠flyer upload/delete/modify
+4. Archeive Booking
 
