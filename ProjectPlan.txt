@@ -39,8 +39,8 @@ New Updates
 ===========
 1. Admin can recharge for B2B user
 2. Admin can deduct b2b user amount
-3. Content Management: banner
-4. Archeive Tickets
+3. Content Management: manage dashboard's banner
+4. Archeive Tickets (Previously Issued Tickets)
 5. Faster Data load in all the view pages
 
 Next Update

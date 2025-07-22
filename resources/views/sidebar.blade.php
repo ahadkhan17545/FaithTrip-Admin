@@ -79,6 +79,14 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="@if($currentRoute == 'ArchivedIssuedTickets') mm-active @endif">
+                    <a class="text-capitalize" href="{{ url('/archived/issued/tickets') }}">
+                        <i class="typcn typcn-folder-open"></i>
+                        Archived Issued Tickets
+                    </a>
+                </li>
+
                 <li class="@if(in_array($currentRoute, ['ViewBankAccounts', 'AddBankAccount', 'EditBankAccount', 'ViewMfsAccounts', 'AddMfsAccount', 'EditMfsAccount', 'ViewAccountDeductions', 'CreateTopupRequest', 'ViewRechargeRequests'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-credit-card"></i> Financial Transactions

@@ -41,7 +41,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h6 class="mb-0" style="font-size: 18px">View All Cancelled Flights</h6>
+                    <h6 class="mb-0" style="font-size: 18px">View All Archived Issued Tickets</h6>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -55,7 +55,7 @@
                                             <th class="text-center">Booking Date</th>
                                             <th class="text-center">PNR</th>
                                             <th class="text-center">Departure</th>
-                                            <th class="text-center">Flight Routes</th>
+                                            <th class="text-center">Flight Route</th>
                                             <th class="text-center">Contact</th>
                                             <th class="text-center">Passanger</th>
                                             <th class="text-center">Total Fare</th>
@@ -98,7 +98,7 @@
                 [10, 25, 50, 100, "All"]
             ],
 
-            ajax: "{{ url('view/cancel/booking') }}",
+            ajax: "{{ url('archived/issued/tickets') }}",
             columns: [
                 {
                     data: 'DT_RowIndex',

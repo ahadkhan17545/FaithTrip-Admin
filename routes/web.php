@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
     Route::get('booking/preview/{pnr_id}', [FlightBookingController::class, 'bookingPreview'])->name('BookingPreview');
     Route::get('issue/flight/ticket/{booking_no}', [FlightBookingController::class, 'issueFlightTicket'])->name('IssueFlightTicket');
     Route::get('view/issued/tickets', [FlightBookingController::class, 'viewIssuedTickets'])->name('ViewIssuedTickets');
+    Route::get('archived/issued/tickets', [FlightBookingController::class, 'archivedIssuedTickets'])->name('ArchivedIssuedTickets');
     Route::get('view/cancelled/tickets', [FlightBookingController::class, 'viewCancelledTickets'])->name('ViewCancelledTickets');
     Route::post('update/pnr/booking', [FlightBookingController::class, 'updatePnrBooking'])->name('UpdatePnrBooking');
 

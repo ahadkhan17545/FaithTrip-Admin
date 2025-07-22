@@ -88,8 +88,16 @@
 
     <script type="text/javascript">
         var table = $(".data-table").DataTable({
+
             processing: true,
             serverSide: true,
+            stateSave: true,
+            pageLength: 10,
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, "All"]
+            ],
+
             ajax: "{{ url('view/all/booking') }}",
             columns: [
                 {

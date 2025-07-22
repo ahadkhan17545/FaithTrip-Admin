@@ -688,12 +688,12 @@ class FlightBookingController extends Controller
         if ($request->ajax()) {
 
             if(Auth::user()->user_type == 1){
-                $data = FlightBooking::where('status', 2)->orderBy('id', 'desc')->get();
+                $query = FlightBooking::where('status', 2)->where('departure_date', '>=', Carbon::today()->toDateString())->orderBy('id', 'desc');
             } else {
-                $data = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 2)->orderBy('id', 'desc')->get();
+                $query = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 2)->where('departure_date', '>=', Carbon::today()->toDateString())->orderBy('id', 'desc');
             }
 
-            return Datatables::of($data)
+            return Datatables::of($query)
                     ->addColumn('flight_routes', function($data){
                         $routeString = $data->departure_location." - ".$data->arrival_location;
                         if($data->flight_type == 2){
@@ -732,6 +732,56 @@ class FlightBookingController extends Controller
         }
         return view('booking.issued_ticket');
     }
+
+    public function archivedIssuedTickets(Request $request){
+        if ($request->ajax()) {
+
+            if(Auth::user()->user_type == 1){
+                $query = FlightBooking::where('status', 2)->where('departure_date', '<', Carbon::today()->toDateString())->orderBy('id', 'desc');
+            } else {
+                $query = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 2)->where('departure_date', '<', Carbon::today()->toDateString())->orderBy('id', 'desc');
+            }
+
+            return Datatables::of($query)
+                    ->addColumn('flight_routes', function($data){
+                        $routeString = $data->departure_location." - ".$data->arrival_location;
+                        if($data->flight_type == 2){
+                            $routeString .= " - ".$data->departure_location;
+                        }
+                        return $routeString;
+                    })
+                    ->editColumn('created_at', function($data) {
+                        return date("Y-m-d h:i a", strtotime($data->created_at));
+                    })
+                    ->editColumn('total_fare', function($data) {
+                        return $data->currency." ".number_format($data->total_fare);
+                    })
+                    ->editColumn('status', function($data) {
+                        if($data->status == 1)
+                            return "<span style='font-weight:600; color:green'>Booked</span>";
+                        if($data->status == 2)
+                            return "<span style='font-weight:600; color:green'>Issued</span>";
+                        if($data->status == 3)
+                            return "<span style='font-weight:600; color:red'>Cancelled</span>";
+                        if($data->status == 4)
+                            return "<span style='font-weight:600; color:red'>Cancelled</span>";
+
+                    })
+                    ->addColumn('total_passangers', function($data){
+                        return $data->adult+$data->child+$data->infant;
+                    })
+                    ->addIndexColumn()
+                    ->addColumn('action', function($data){
+                        $btn = ' <a href="'.url('flight/booking/details')."/".$data->booking_no.'" class="btn-sm btn-info text-white rounded d-inline-block mb-1"><i class="fas fa-eye"></i></a>';
+                        // $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$data->id.'" data-original-title="Cancel" class="btn-sm btn-danger rounded d-inline-block cancelBtn"><i class="fas fa-times-circle"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action', 'status'])
+                    ->make(true);
+        }
+        return view('booking.archived_issued_tickets');
+    }
+
     public function viewCancelledTickets(Request $request){
         if ($request->ajax()) {
 
