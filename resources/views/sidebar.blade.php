@@ -137,7 +137,7 @@
                     </ul>
                 </li>
 
-                <li class="@if(in_array($currentRoute, ['ViewAllBanners'])) mm-active @endif">
+                <li class="@if(in_array($currentRoute, ['ViewAllBanners', 'ViewOfficeAddress'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-tabs-outline"></i>Content Management
                     </a>
@@ -145,6 +145,11 @@
                         <li class="@if(in_array($currentRoute, ['ViewAllBanners'])) mm-active @endif">
                             <a class="text-capitalize" href="{{url('view/all/banners')}}">
                                 View All Banners
+                            </a>
+                        </li>
+                        <li class="@if(in_array($currentRoute, ['ViewOfficeAddress'])) mm-active @endif">
+                            <a class="text-capitalize" href="{{url('view/office/address')}}">
+                                Office Addresses
                             </a>
                         </li>
                     </ul>

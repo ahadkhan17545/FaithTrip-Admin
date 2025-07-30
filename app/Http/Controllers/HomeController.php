@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\BankAccount;
 use App\Models\Banner;
+use App\Models\CompanyProfile;
 use App\Models\MfsAccount;
+use App\Models\OfficeAddress;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -90,7 +92,9 @@ class HomeController extends Controller
     {
         $bankAccounts = BankAccount::where('status', 1)->orderBy('id', 'asc')->get();
         $mfsAccounts = MfsAccount::where('status', 1)->orderBy('id', 'asc')->get();
-        return view('payment_method', compact('bankAccounts', 'mfsAccounts'));
+        $companyProfile = CompanyProfile::where('user_id', Auth::user()->id)->first();
+        $officeAddress = OfficeAddress::orderBy('id', 'desc')->get();
+        return view('payment_method', compact('bankAccounts', 'mfsAccounts', 'companyProfile', 'officeAddress'));
     }
 
 }

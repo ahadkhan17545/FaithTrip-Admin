@@ -10,6 +10,7 @@ use App\Http\Controllers\CkeditorController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\FlightBookingController;
+use App\Http\Controllers\OfficeAddressController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\BannerController;
@@ -99,6 +100,13 @@ Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
     Route::post('generate/flight/booking/report', [ReportController::class, 'generateFlightBookingReport'])->name('GenerateFlightBookingReport');
 
     Route::group(['middleware' => ['CheckUserType']], function () {
+
+        // office address
+        Route::get('view/office/address', [OfficeAddressController::class, 'viewOfficeAddress'])->name('ViewOfficeAddress');
+        Route::post('save/office/address', [OfficeAddressController::class, 'saveOfficeAddress'])->name('SaveOfficeAddress');
+        Route::get('delete/office/address/{slug}', [OfficeAddressController::class, 'deleteOfficeAddress'])->name('DeleteOfficeAddress');
+        Route::get('get/office/address/{slug}', [OfficeAddressController::class, 'getOfficeAddress'])->name('GetOfficeAddress');
+        Route::post('update/office/address', [OfficeAddressController::class, 'updateOfficeAddress'])->name('UpdateOfficeAddress');
 
         // banner
         Route::get('view/all/banners', [BannerController::class, 'viewAllBanners'])->name('ViewAllBanners');

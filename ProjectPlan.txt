@@ -14,7 +14,6 @@ Issue List
 1. Incomplete Pyament Method Page
 2. About Us Page missing
 3. Policy Pages are missing
-5. Admin Dasboard Bottom banner missing
 7. Business Class fare not working . After selecting business class it shows the fare of Economy Class
 9. b2b te jei net fare ta dekhay etar sathe 0.3% increase kore dekhate hobe
 9. b2b agent der commission percentage ki fraction add kora jay na? like 6.5%/5.5%
@@ -27,23 +26,10 @@ Sunday Deadline Task (Only for Oneway & RoundTrip)
 3. Business Class fare not working . After selecting business class it shows the fare of Economy Class
 
 
-Pending Tasks
--------------
-2. ⁠B2B user er booking/issued ticket record modification
-3. ⁠flyer upload/delete/modify
-4. Archeive Booking
 
-
-
-New Updates
-===========
-1. Admin can recharge for B2B user
-2. Admin can deduct b2b user amount
-3. Content Management: manage dashboard's banner
-4. Archeive Tickets (Previously Issued Tickets)
-5. Faster Data load in all the view pages
 
 Next Update
 ===========
-1. Flight Booking Issue Feedback
+1. Flight Booking Requested Issue
 2. Flight Ticketing Issue
+3. Check the Findings.pdf

@@ -284,31 +284,21 @@
             <h2>Cash at Office</h2>
         </div>
         <div class="card-grid">
-            <!-- Motijheel, Dhaka Office -->
-            <div class="card cash-office-card">
-                <div class="card-logo">
-                    <img src="https://portal.faithtrip.net/companyLogo/edAFN1717060920.svg" alt="Rights expert agent">
-                </div>
-                <div class="card-title">Gulshan, Dhaka Office</div>
-                <div class="cash-office-address">
-                    90/1 Gulshan, City Centre<br>
-                    Level 2B-1, Lift 26, Dhaka<br>
-                    Bangladesh
-                </div>
-            </div>
 
-            <!-- Agrabad, Chattogram Office -->
+            @foreach ($officeAddress as $address)
             <div class="card cash-office-card">
+                @if($companyProfile->logo && file_exists(public_path($companyProfile->logo)))
                 <div class="card-logo">
-                    <img src="https://portal.faithtrip.net/companyLogo/edAFN1717060920.svg" alt="Rights expert agent">
+                    <img src="{{url($companyProfile->logo)}}" alt="Rights expert agent">
                 </div>
-                <div class="card-title">Cox's Bazer, Chattogram Office</div>
+                @endif
+                <div class="card-title">{{$address->office_name}}</div>
                 <div class="cash-office-address">
-                    Level:8 4, Business Center<br>
-                    1280/B, SK Zia Road<br>
-                    Cox's Bazer, Chattogram
+                    {!! $address->office_address !!}
                 </div>
             </div>
+            @endforeach
+
         </div>
     </div>
 
