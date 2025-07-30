@@ -93,7 +93,7 @@ class HomeController extends Controller
         $bankAccounts = BankAccount::where('status', 1)->orderBy('id', 'asc')->get();
         $mfsAccounts = MfsAccount::where('status', 1)->orderBy('id', 'asc')->get();
         $companyProfile = CompanyProfile::where('user_id', Auth::user()->id)->first();
-        $officeAddress = OfficeAddress::orderBy('id', 'desc')->get();
+        $officeAddress = OfficeAddress::where('status', 1)->orderBy('id', 'desc')->get();
         return view('payment_method', compact('bankAccounts', 'mfsAccounts', 'companyProfile', 'officeAddress'));
     }
 

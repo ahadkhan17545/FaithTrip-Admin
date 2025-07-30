@@ -23,6 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class FlightBookingController extends Controller
@@ -419,10 +420,34 @@ class FlightBookingController extends Controller
 
         if ($request->ajax()) {
 
+            // removing log coloumns
+            $columns = Schema::getColumnListing('flight_bookings');
+            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response'];
+            $columns = array_diff($columns, $excluded);
+            $columns = array_map(function ($col) {
+                return "flight_bookings.$col";
+            }, $columns);
+
             if(Auth::user()->user_type == 1){
-                $query = FlightBooking::where('status', 1)->orWhere('status', 0)->orderBy('id', 'desc');
+
+                $query = DB::table('flight_bookings')
+                        ->leftJoin('users', 'flight_bookings.booked_by', '=', 'users.id')
+                        ->select([...$columns, 'users.name as b2b_user'])
+                        ->where(function ($q) {
+                            $q->where('flight_bookings.status', 1)
+                            ->orWhere('flight_bookings.status', 0);
+                        })
+                        ->orderBy('flight_bookings.id', 'desc');
+
             } else {
-                $query = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 1)->orWhere('status', 0)->orderBy('id', 'desc');
+
+                $query = FlightBooking::where('booked_by', Auth::user()->id)
+                                        ->where(function ($q) {
+                                            $q->where('status', 1)
+                                            ->orWhere('status', 0);
+                                        })
+                                        ->select([...$columns])
+                                        ->orderBy('id', 'desc');
             }
 
             return Datatables::of($query)
@@ -472,10 +497,29 @@ class FlightBookingController extends Controller
 
         if ($request->ajax()) {
 
+            // removing log coloumns
+            $columns = Schema::getColumnListing('flight_bookings');
+            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response'];
+            $columns = array_diff($columns, $excluded);
+            $columns = array_map(function ($col) {
+                return "flight_bookings.$col";
+            }, $columns);
+
             if(Auth::user()->user_type == 1){
-                $query = FlightBooking::where('status', 3)->orderBy('id', 'desc');
+
+                $query = DB::table('flight_bookings')
+                        ->leftJoin('users', 'flight_bookings.booked_by', '=', 'users.id')
+                        ->select([...$columns, 'users.name as b2b_user'])
+                        ->where('flight_bookings.status', 3)
+                        ->orderBy('flight_bookings.id', 'desc');
+
             } else {
-                $query = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 3)->orderBy('id', 'desc');
+
+                $query = FlightBooking::where('booked_by', Auth::user()->id)
+                                        ->where('status', 3)
+                                        ->select([...$columns])
+                                        ->orderBy('id', 'desc');
+
             }
 
             return Datatables::of($query)
@@ -687,10 +731,28 @@ class FlightBookingController extends Controller
     public function viewIssuedTickets(Request $request){
         if ($request->ajax()) {
 
+            // removing log coloumns
+            $columns = Schema::getColumnListing('flight_bookings');
+            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response'];
+            $columns = array_diff($columns, $excluded);
+            $columns = array_map(function ($col) {
+                return "flight_bookings.$col";
+            }, $columns);
+
             if(Auth::user()->user_type == 1){
-                $query = FlightBooking::where('status', 2)->where('departure_date', '>=', Carbon::today()->toDateString())->orderBy('id', 'desc');
+
+                $query = DB::table('flight_bookings')
+                        ->leftJoin('users', 'flight_bookings.booked_by', '=', 'users.id')
+                        ->select([...$columns, 'users.name as b2b_user'])
+                        ->where('flight_bookings.status', 2)
+                        ->where('departure_date', '>=', Carbon::today()->toDateString())
+                        ->orderBy('flight_bookings.id', 'desc');
+
             } else {
-                $query = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 2)->where('departure_date', '>=', Carbon::today()->toDateString())->orderBy('id', 'desc');
+                $query = FlightBooking::where('booked_by', Auth::user()->id)
+                                    ->where('status', 2)
+                                    ->where('departure_date', '>=', Carbon::today()->toDateString())
+                                    ->orderBy('id', 'desc');
             }
 
             return Datatables::of($query)
@@ -736,10 +798,30 @@ class FlightBookingController extends Controller
     public function archivedIssuedTickets(Request $request){
         if ($request->ajax()) {
 
+            // removing log coloumns
+            $columns = Schema::getColumnListing('flight_bookings');
+            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response'];
+            $columns = array_diff($columns, $excluded);
+            $columns = array_map(function ($col) {
+                return "flight_bookings.$col";
+            }, $columns);
+
             if(Auth::user()->user_type == 1){
-                $query = FlightBooking::where('status', 2)->where('departure_date', '<', Carbon::today()->toDateString())->orderBy('id', 'desc');
+
+                $query = DB::table('flight_bookings')
+                            ->leftJoin('users', 'flight_bookings.booked_by', '=', 'users.id')
+                            ->select([...$columns, 'users.name as b2b_user'])
+                            ->where('flight_bookings.status', 2)
+                            ->where('departure_date', '<', Carbon::today()->toDateString())
+                            ->orderBy('flight_bookings.id', 'desc');
+
             } else {
-                $query = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 2)->where('departure_date', '<', Carbon::today()->toDateString())->orderBy('id', 'desc');
+
+                $query = FlightBooking::where('booked_by', Auth::user()->id)
+                                    ->where('status', 2)
+                                    ->where('departure_date', '<', Carbon::today()->toDateString())
+                                    ->orderBy('id', 'desc');
+
             }
 
             return Datatables::of($query)
@@ -785,13 +867,32 @@ class FlightBookingController extends Controller
     public function viewCancelledTickets(Request $request){
         if ($request->ajax()) {
 
+            // removing log coloumns
+            $columns = Schema::getColumnListing('flight_bookings');
+            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response'];
+            $columns = array_diff($columns, $excluded);
+            $columns = array_map(function ($col) {
+                return "flight_bookings.$col";
+            }, $columns);
+
+
             if(Auth::user()->user_type == 1){
-                $data = FlightBooking::where('status', 4)->orderBy('id', 'desc')->get();
+
+                $query = DB::table('flight_bookings')
+                        ->leftJoin('users', 'flight_bookings.booked_by', '=', 'users.id')
+                        ->select([...$columns, 'users.name as b2b_user'])
+                        ->where('flight_bookings.status', 4)
+                        ->orderBy('flight_bookings.id', 'desc');
+
             } else {
-                $data = FlightBooking::where('booked_by', Auth::user()->id)->where('status', 4)->orderBy('id', 'desc')->get();
+
+                $query = FlightBooking::where('booked_by', Auth::user()->id)
+                                    ->where('status', 4)
+                                    ->select([...$columns])
+                                    ->orderBy('id', 'desc');
             }
 
-            return Datatables::of($data)
+            return Datatables::of($query)
                     ->addColumn('flight_routes', function($data){
                         $routeString = $data->departure_location." - ".$data->arrival_location;
                         if($data->flight_type == 2){

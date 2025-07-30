@@ -53,6 +53,9 @@
                                         <tr>
                                             <th class="text-center">SL</th>
                                             <th class="text-center">Booking Date</th>
+                                            @if(Auth::user()->user_type == 1)
+                                            <th class="text-center">Booked By</th>
+                                            @endif
                                             <th class="text-center">PNR</th>
                                             <th class="text-center">Departure</th>
                                             <th class="text-center">Flight Route</th>
@@ -110,6 +113,12 @@
                     data: 'created_at',
                     name: 'created_at'
                 },
+                @if(Auth::user()->user_type == 1)
+                {
+                    data: 'b2b_user',
+                    name: 'b2b_user'
+                },
+                @endif
                 {
                     data: 'pnr_id',
                     name: 'pnr_id'
