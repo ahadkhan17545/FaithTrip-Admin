@@ -56,8 +56,13 @@
                             @php
                                 $departureLocation = DB::table('city_airports')->where('airport_code', $segment->departure_airport_code)->first();
                             @endphp
+
+                            @if($departureLocation)
                             {{ $departureLocation->city_name }} ({{ $departureLocation->city_code }})
-                            <p style="margin: 0;">{{ $departureLocation->airport_name }}</p>
+                            @else
+                            {{$segment->departure_city_code}}
+                            @endif
+                            <p style="margin: 0;">@if($departureLocation){{ $departureLocation->airport_name }}@else{{$segment->departure_airport_code}}@endif</p>
                             <p style="margin: 0;">Terminal : {{ $segment->departure_terminal }}</p>
                         </td>
                         <td class="text-center align-middle">
@@ -76,8 +81,14 @@
                             @php
                                 $arrivalLocation = DB::table('city_airports')->where('airport_code', $segment->arrival_airport_code)->first();
                             @endphp
-                            {{ $arrivalLocation->city_name }} ({{ $arrivalLocation->city_code }})
-                            <p style="margin: 0;">{{ $arrivalLocation->airport_name }}</p>
+
+                            @if($arrivalLocation)
+                                {{ $arrivalLocation->city_name }} ({{ $arrivalLocation->city_code }})
+                            @else
+                                {{$segment->arrival_city_code}}
+                            @endif
+
+                            <p style="margin: 0;">@if($arrivalLocation){{ $arrivalLocation->airport_name }}@else{{$segment->arrival_airport_code}}@endif</p>
                             <p style="margin: 0;">Terminal : {{ $segment->arrival_terminal }}</p>
                         </td>
                         <td class="text-center align-middle">
@@ -132,7 +143,11 @@
                                 $secondDepartureDateTime = explode('T', $secondDepartureRes);
                                 $secondDeparture = new DateTime($secondDepartureDateTime[0].''.$secondDepartureDateTime[1]);
                                 $interval = $firstArrival->diff($secondDeparture);
-                                echo $interval->h . " hrs " . $interval->i . " mins Transit in " . $arrivalLocation->city_name . " (" . $arrivalLocation->airport_code . ")";
+                                $transitString = $interval->h . " hrs " . $interval->i . " mins Transit ";
+                                if($arrivalLocation){
+                                    $transitString .= "in ".$arrivalLocation->city_name . " (" . $arrivalLocation->airport_code . ")";
+                                }
+                                echo $transitString;
                             @endphp
                         </td>
                     </tr>

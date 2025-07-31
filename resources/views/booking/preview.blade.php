@@ -161,8 +161,15 @@
                         $departure = $bookingResSegs ? $bookingResSegs[$index]['Product']['ProductDetails']['Air']['DepartureDateTime'] : null;
                         $departureDateTime = explode('T', $departure);
                     @endphp
+
+                    @if($departureLocation)
                     <p style="margin: 0; margin-bottom: 2px;">{{ $departureLocation->city_name }} ({{ $departureLocation->city_code }})</p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">{{ $departureLocation->airport_name }}</p>
+                    @else
+                    <p style="margin: 0; margin-bottom: 2px;">{{ $segment->departure_city_code }}</p>
+                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">{{ $segment->departure_airport_code }}</p>
+                    @endif
+
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Terminal - {{ $segment->departure_terminal }}</p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">@if(isset($departureDateTime[1])){{substr($departureDateTime[1], 0, 5)}}@endif</p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">@if(isset($departureDateTime[0])){{date('D, j M Y', strtotime($departureDateTime[0]))}}@endif</p>
@@ -173,8 +180,15 @@
                         $arrival = $bookingResSegs ? $bookingResSegs[$index]['Product']['ProductDetails']['Air']['ArrivalDateTime'] : null;
                         $arrivalDateTime = explode('T', $arrival);
                     @endphp
+
+                    @if($arrivalLocation)
                     <p style="margin: 0; margin-bottom: 2px;">{{ $arrivalLocation->city_name }} ({{ $arrivalLocation->city_code }})</p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">{{ $arrivalLocation->airport_name }}</p>
+                    @else
+                    <p style="margin: 0; margin-bottom: 2px;">{{ $segment->arrival_city_code }}</p>
+                    <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">{{ $segment->arrival_airport_code }}</p>
+                    @endif
+
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">Terminal - {{ $segment->arrival_terminal }}</p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">@if(isset($arrivalDateTime[1])){{substr($arrivalDateTime[1], 0, 5)}}@endif</p>
                     <p style="margin: 0; margin-bottom: 2px; font-size: 12px;">@if(isset($arrivalDateTime[0])){{date('D, j M Y', strtotime($arrivalDateTime[0]))}}@endif</p>
@@ -209,7 +223,11 @@
                         $secondDepartureDateTime = explode('T', $secondDepartureRes);
                         $secondDeparture = new DateTime($secondDepartureDateTime[0].''.$secondDepartureDateTime[1]);
                         $interval = $firstArrival->diff($secondDeparture);
-                        echo $interval->h . " hrs " . $interval->i . " mins Transit in " . $arrivalLocation->city_name . " (" . $arrivalLocation->airport_code . ")";
+                        $transitString = $interval->h . " hrs " . $interval->i . " mins Transit ";
+                        if($arrivalLocation){
+                            $transitString .= "in ".$arrivalLocation->city_name . " (" . $arrivalLocation->airport_code . ")";
+                        }
+                        echo $transitString;
                     @endphp
                 </td>
             </tr>
