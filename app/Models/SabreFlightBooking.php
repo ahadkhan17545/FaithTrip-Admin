@@ -252,13 +252,13 @@ class SabreFlightBooking extends Model
         $agencyContact = "";
         $agencyEmail = "";
         if($agencyCompanyInfo){
-            $receivedFrom = $agencyCompanyInfo->name." ".$agencyCompanyInfo->phone;
+            $receivedFrom = $agencyCompanyInfo->name." ".preg_replace('/[^a-zA-Z0-9]/', '', $agencyCompanyInfo->phone);
             $agencyContact = preg_replace('/[^a-zA-Z0-9]/', '', $agencyCompanyInfo->phone);
             $agencyEmail = $agencyCompanyInfo->email;
         }
 
         if($receivedFrom == ""){
-            $receivedFrom = $agencyUserInfo->name." ".$agencyUserInfo->phone;
+            $receivedFrom = $agencyUserInfo->name." ".preg_replace('/[^a-zA-Z0-9]/', '', $agencyUserInfo->phone);
         }
         if($agencyContact == ""){
             $agencyContact = preg_replace('/[^a-zA-Z0-9]/', '', $agencyUserInfo->phone);
