@@ -33,3 +33,11 @@ Next Update
 1. Flight Booking Requested Issue (DAC-FCO)
 2. Flight Ticketing Issue
 3. Check the Findings.pdf
+
+
+New Update
+==========
+1. B2b users can see admins booking (bug fixed)
+2. DAC-FCO and others routes Booking Requested Issue Fixed
+3. Faster Data load by deselecting log coloumns
+4. Dynamically Change Office Address in Payment Page

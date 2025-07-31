@@ -117,7 +117,7 @@ class SabreFlightBooking extends Model
         $specialServices = [];
         $specialServices[] = [
             "SSR_Code" => "CTCM",
-            "Text" => (string) $travellerContact,
+            "Text" => (string) preg_replace('/[^a-zA-Z0-9]/', '', $travellerContact),
             "PersonName" => [
                 "NameNumber" => "1.1"
             ],
@@ -253,7 +253,7 @@ class SabreFlightBooking extends Model
         $agencyEmail = "";
         if($agencyCompanyInfo){
             $receivedFrom = $agencyCompanyInfo->name." ".$agencyCompanyInfo->phone;
-            $agencyContact = $agencyCompanyInfo->phone;
+            $agencyContact = preg_replace('/[^a-zA-Z0-9]/', '', $agencyCompanyInfo->phone);
             $agencyEmail = $agencyCompanyInfo->email;
         }
 
@@ -261,7 +261,7 @@ class SabreFlightBooking extends Model
             $receivedFrom = $agencyUserInfo->name." ".$agencyUserInfo->phone;
         }
         if($agencyContact == ""){
-            $agencyContact = $agencyUserInfo->phone;
+            $agencyContact = preg_replace('/[^a-zA-Z0-9]/', '', $agencyUserInfo->phone);
         }
         if($agencyEmail == ""){
             $agencyEmail = $agencyUserInfo->email;
