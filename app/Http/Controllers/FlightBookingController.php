@@ -428,9 +428,7 @@ class FlightBookingController extends Controller
                 return "flight_bookings.$col";
             }, $columns);
 
-            if(Auth::user()->user_type == 1){
-
-                $query = DB::table('flight_bookings')
+            $query = DB::table('flight_bookings')
                         ->leftJoin('users', 'flight_bookings.booked_by', '=', 'users.id')
                         ->select([...$columns, 'users.name as b2b_user'])
                         ->where(function ($q) {
@@ -439,18 +437,14 @@ class FlightBookingController extends Controller
                         })
                         ->orderBy('flight_bookings.id', 'desc');
 
-            } else {
-
-                $query = FlightBooking::where('booked_by', Auth::user()->id)
-                                        ->where(function ($q) {
-                                            $q->where('status', 1)
-                                            ->orWhere('status', 0);
-                                        })
-                                        ->select([...$columns])
-                                        ->orderBy('id', 'desc');
+            if (Auth::user()->user_type != 1) {
+                $query->where('flight_bookings.booked_by', Auth::user()->id);
             }
 
             return Datatables::of($query)
+                    ->filterColumn('b2b_user', function($query, $keyword) {
+                        $query->where('users.name', 'like', "%{$keyword}%");
+                    })
                     ->addColumn('flight_routes', function($data){
                         $routeString = $data->departure_location." - ".$data->arrival_location;
                         if($data->flight_type == 2){
@@ -505,24 +499,20 @@ class FlightBookingController extends Controller
                 return "flight_bookings.$col";
             }, $columns);
 
-            if(Auth::user()->user_type == 1){
-
-                $query = DB::table('flight_bookings')
+            $query = DB::table('flight_bookings')
                         ->leftJoin('users', 'flight_bookings.booked_by', '=', 'users.id')
                         ->select([...$columns, 'users.name as b2b_user'])
                         ->where('flight_bookings.status', 3)
                         ->orderBy('flight_bookings.id', 'desc');
 
-            } else {
-
-                $query = FlightBooking::where('booked_by', Auth::user()->id)
-                                        ->where('status', 3)
-                                        ->select([...$columns])
-                                        ->orderBy('id', 'desc');
-
+            if(Auth::user()->user_type != 1){
+                $query->where('flight_bookings.booked_by', Auth::user()->id);
             }
 
             return Datatables::of($query)
+                    ->filterColumn('b2b_user', function($query, $keyword) {
+                        $query->where('users.name', 'like', "%{$keyword}%");
+                    })
                     ->addColumn('flight_routes', function($data){
                         $routeString = $data->departure_location." - ".$data->arrival_location;
                         if($data->flight_type == 2){
@@ -739,23 +729,21 @@ class FlightBookingController extends Controller
                 return "flight_bookings.$col";
             }, $columns);
 
-            if(Auth::user()->user_type == 1){
-
-                $query = DB::table('flight_bookings')
+            $query = DB::table('flight_bookings')
                         ->leftJoin('users', 'flight_bookings.booked_by', '=', 'users.id')
                         ->select([...$columns, 'users.name as b2b_user'])
                         ->where('flight_bookings.status', 2)
-                        ->where('departure_date', '>=', Carbon::today()->toDateString())
+                        ->where('flight_bookings.departure_date', '>=', Carbon::today()->toDateString())
                         ->orderBy('flight_bookings.id', 'desc');
 
-            } else {
-                $query = FlightBooking::where('booked_by', Auth::user()->id)
-                                    ->where('status', 2)
-                                    ->where('departure_date', '>=', Carbon::today()->toDateString())
-                                    ->orderBy('id', 'desc');
+            if(Auth::user()->user_type != 1){
+                $query->where('flight_bookings.booked_by', Auth::user()->id);
             }
 
             return Datatables::of($query)
+                    ->filterColumn('b2b_user', function($query, $keyword) {
+                        $query->where('users.name', 'like', "%{$keyword}%");
+                    })
                     ->addColumn('flight_routes', function($data){
                         $routeString = $data->departure_location." - ".$data->arrival_location;
                         if($data->flight_type == 2){
@@ -806,25 +794,21 @@ class FlightBookingController extends Controller
                 return "flight_bookings.$col";
             }, $columns);
 
-            if(Auth::user()->user_type == 1){
-
-                $query = DB::table('flight_bookings')
+            $query = DB::table('flight_bookings')
                             ->leftJoin('users', 'flight_bookings.booked_by', '=', 'users.id')
                             ->select([...$columns, 'users.name as b2b_user'])
                             ->where('flight_bookings.status', 2)
-                            ->where('departure_date', '<', Carbon::today()->toDateString())
+                            ->where('flight_bookings.departure_date', '<', Carbon::today()->toDateString())
                             ->orderBy('flight_bookings.id', 'desc');
 
-            } else {
-
-                $query = FlightBooking::where('booked_by', Auth::user()->id)
-                                    ->where('status', 2)
-                                    ->where('departure_date', '<', Carbon::today()->toDateString())
-                                    ->orderBy('id', 'desc');
-
+            if(Auth::user()->user_type != 1){
+                $query->where('flight_bookings.booked_by', Auth::user()->id);
             }
 
             return Datatables::of($query)
+                    ->filterColumn('b2b_user', function($query, $keyword) {
+                        $query->where('users.name', 'like', "%{$keyword}%");
+                    })
                     ->addColumn('flight_routes', function($data){
                         $routeString = $data->departure_location." - ".$data->arrival_location;
                         if($data->flight_type == 2){
@@ -875,24 +859,20 @@ class FlightBookingController extends Controller
                 return "flight_bookings.$col";
             }, $columns);
 
-
-            if(Auth::user()->user_type == 1){
-
-                $query = DB::table('flight_bookings')
+            $query = DB::table('flight_bookings')
                         ->leftJoin('users', 'flight_bookings.booked_by', '=', 'users.id')
                         ->select([...$columns, 'users.name as b2b_user'])
                         ->where('flight_bookings.status', 4)
                         ->orderBy('flight_bookings.id', 'desc');
 
-            } else {
-
-                $query = FlightBooking::where('booked_by', Auth::user()->id)
-                                    ->where('status', 4)
-                                    ->select([...$columns])
-                                    ->orderBy('id', 'desc');
+            if(Auth::user()->user_type != 1){
+                $query->where('flight_bookings.booked_by', Auth::user()->id);
             }
 
             return Datatables::of($query)
+                    ->filterColumn('b2b_user', function($query, $keyword) {
+                        $query->where('users.name', 'like', "%{$keyword}%");
+                    })
                     ->addColumn('flight_routes', function($data){
                         $routeString = $data->departure_location." - ".$data->arrival_location;
                         if($data->flight_type == 2){

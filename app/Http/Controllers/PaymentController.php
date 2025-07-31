@@ -252,6 +252,12 @@ class PaymentController extends Controller
             }
 
             return Datatables::of($query)
+                    ->filterColumn('user_name', function($query, $keyword) {
+                        $query->where('users.name', 'like', "%{$keyword}%");
+                    })
+                    ->filterColumn('company_name', function($query, $keyword) {
+                        $query->where('company_profiles.name', 'like', "%{$keyword}%");
+                    })
                     ->addColumn('receiving_channel', function($data){
                         if($data->admin_bank_account_id){
                             $bankInfo = BankAccount::where('id', $data->admin_bank_account_id)->first();
