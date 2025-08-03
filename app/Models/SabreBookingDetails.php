@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use DateTime;
+use DateTimeZone;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -69,37 +70,93 @@ class SabreBookingDetails extends Model
         }
 
 
-        // code for last ticketing deadline start
+        // code for last ticketing deadline from get booking response start
         $specialServiceADTKText = null;
+        $specialServiceOTHSText = [];
         if (!empty($responseData['specialServices']) && is_array($responseData['specialServices'])) {
             foreach ($responseData['specialServices'] as $service) {
                 if (isset($service['code']) && $service['code'] === 'ADTK') {
                     $specialServiceADTKText = $service['message'];
                     break;
                 }
-            }
-        }
-
-        if($specialServiceADTKText){
-            if (preg_match('/\b(\d{2})([A-Z]{3})\s(\d{4})\b/', $specialServiceADTKText, $matches)) {
-
-                $day = $matches[1];       // 04
-                $monthStr = $matches[2];  // JUN
-                $timeStr = $matches[3];   // 2300
-                $year = date("Y");             // You can make this dynamic if needed
-
-                // Convert 2300 to HH:MM format
-                $hour = substr($timeStr, 0, 2);
-                $minute = substr($timeStr, 2, 2);
-                $dateString = "$day$monthStr$year $hour:$minute";
-                $date = DateTime::createFromFormat('dMY H:i', $dateString);
-
-                if ($date) {
-                    $flightBookingInfo->last_ticket_datetime = $date->format('Y-m-d H:i');
+                if (isset($service['code']) && $service['code'] === 'OTHS') {
+                    $specialServiceOTHSText[] = $service['message'];
                 }
             }
+
+            if($specialServiceADTKText){
+                if (preg_match('/\b(\d{2})([A-Z]{3})\s(\d{4})\b/', $specialServiceADTKText, $matches)) {
+
+                    $day = $matches[1];       // 04
+                    $monthStr = $matches[2];  // JUN
+                    $timeStr = $matches[3];   // 2300
+                    $year = date("Y", strtotime($flightBookingInfo->departure_date)); // You can make this dynamic if needed
+
+                    // Convert 2300 to HH:MM format
+                    $hour = substr($timeStr, 0, 2);
+                    $minute = substr($timeStr, 2, 2);
+                    $dateString = "$day$monthStr$year $hour:$minute";
+                    $date = DateTime::createFromFormat('dMY H:i', $dateString);
+
+                    if ($date) {
+                        $flightBookingInfo->last_ticket_datetime = $date->format('Y-m-d H:i');
+                    }
+                }
+            } else {
+
+                // Month‐abbr → month‐number map
+                $monthMap = [
+                    'JAN'=>1,'FEB'=>2,'MAR'=>3,'APR'=>4,'MAY'=>5,'JUN'=>6,
+                    'JUL'=>7,'AUG'=>8,'SEP'=>9,'OCT'=>10,'NOV'=>11,'DEC'=>12,
+                ];
+
+                foreach ($specialServiceOTHSText as $r) {
+                    // look for “BY DDMMMYY HHMMGMT”
+                    if (preg_match('/BY\s+(\d{2}[A-Z]{3}\d{2})\s+(\d{4})GMT/i', $r, $m)) {
+                        // $m[1] = e.g. “07AUG25”, $m[2] = “1759”
+                        $rawDate = $m[1];
+                        $rawTime = $m[2];
+
+                        // parse out day, month‐abbr, two‐digit year
+                        $day      = (int)substr($rawDate, 0, 2);
+                        $monAbbr  = strtoupper(substr($rawDate, 2, 3));
+                        $year2    = (int)substr($rawDate, 5, 2);
+
+                        // resolve to full year (e.g. “25” → 2025; adjust logic if you need a different pivot)
+                        $year = 2000 + $year2;
+
+                        // if (!isset($monthMap[$monAbbr])) {
+                        //     throw new \Exception("Unknown month abbreviation “{$monAbbr}”");
+                        // }
+                        $month = $monthMap[$monAbbr];
+
+                        // format time HHMM → HH:MM
+                        $hour   = substr($rawTime, 0, 2);
+                        $minute = substr($rawTime, 2, 2);
+
+                        // build a DateTime in GMT
+                        $dt = DateTime::createFromFormat(
+                            'Y-n-j H:i',
+                            sprintf('%04d-%d-%d %02d:%02d', $year, $month, $day, $hour, $minute),
+                            new DateTimeZone('GMT')
+                        );
+                        // if (!$dt) {
+                        //     throw new \Exception("Failed to parse date/time");
+                        // }
+
+                        // (optional) convert to your local zone:
+                        // $dt->setTimezone(new DateTimeZone('Europe/Berlin'));
+
+                        // store and break
+                        $flightBookingInfo->last_ticket_datetime = $dt->format('Y-m-d H:i');
+                        break;
+                    }
+                }
+
+
+            }
         }
-        // code for last ticketing deadline end
+        // code for last ticketing deadline from get booking response end
 
 
         if(isset($responseData['flights'])){
