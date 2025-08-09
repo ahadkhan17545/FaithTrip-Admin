@@ -21,7 +21,6 @@ Issue List
 
 Sunday Deadline Task (Only for Oneway & RoundTrip)
 --------------------------------------------------
-1. Modify Search is not working after search
 2. B2b user can create user id and manage other users under his account
 3. Business Class fare not working . After selecting business class it shows the fare of Economy Class
 
@@ -29,14 +28,9 @@ Sunday Deadline Task (Only for Oneway & RoundTrip)
 
 Next Update
 ===========
-
-1. Book Flight (check getBookingResponse)
-2. Issue Ticket (check getBookingResponse)
-3. Cancel Ticket (check getBookingResponse)
-
-in every stage load the details page and check it automatically change the status or not if any operation done by terminal
-
-1. Comission Calculation Issue (03 August)
-2. Option to apply filters on search results (05 August)
+1. Comission Calculation Issue (10 August)
+2. Option to apply filters on search results (10 August)
+3. Modify Search is not working after search (12 August)
+4. MultiCity Search (18 August)
 
 

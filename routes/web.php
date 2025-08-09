@@ -25,18 +25,29 @@ Route::get('/', function () {
 
 // cron job to auto cancel flight booking start
 Route::get('/check/last/ticketing/datetime', function () {
-    $data = DB::table('flight_bookings')->select('booking_no', 'pnr_id')->where('status', 1)->where('departure_date', '>', date("Y-m-d"))->whereNotNull('last_ticket_datetime')->get();
+
+    ini_set('max_execution_time', 300); // 5 minutes
+    ini_set('memory_limit', '4096M');   // 4 GB
+
+    $data = DB::table('flight_bookings')->select('booking_no', 'pnr_id', 'last_ticket_datetime')->where('status', 1)->where('departure_date', '>=', date("Y-m-d"))->whereNotNull('last_ticket_datetime')->get();
     foreach($data as $item){
-        $cancelResponse = json_decode(SabreFlightBooking::cancelBooking($item->booking_no), true);
-        if(isset($cancelResponse['booking']['bookingId']) && $cancelResponse['booking']['bookingId'] == $item->pnr_id){
-            DB::table('flight_bookings')->where('pnr_id', $item->pnr_id)->update([
-                'status' => 3,
-                'booking_cancelled_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
-            return response(null, 204);
+
+        $lastTicketTime = strtotime($item->last_ticket_datetime);
+        $now = time();
+        $twoHoursLater = $now + (2 * 60 * 60); // 2 hours in seconds
+
+        if($lastTicketTime > $now && $lastTicketTime <= $twoHoursLater){
+            $cancelResponse = json_decode(SabreFlightBooking::cancelBooking($item->booking_no), true);
+            if(isset($cancelResponse['booking']['bookingId']) && $cancelResponse['booking']['bookingId'] == $item->pnr_id){
+                DB::table('flight_bookings')->where('pnr_id', $item->pnr_id)->update([
+                    'status' => 3,
+                    'booking_cancelled_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            }
         }
     }
+    return response(null, 204);
 });
 // cron job to auto cancel flight booking end
 

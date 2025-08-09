@@ -13,6 +13,23 @@ class SabreFlightTicketIssue extends Model
 
     public static function issueTicket($pnrId){
 
+        if(session('access_token') && session('access_token') != '' && session('expires_in') != ''){
+
+            $seconds = session('expires_in');
+            $date = new DateTime();
+            $date->setTimestamp(time() + $seconds);
+            $tokenExpireDate = $date->format('Y-m-d');
+            $currentDate = date("Y-m-d");
+
+            if($currentDate >= $tokenExpireDate){
+                SabreFlightSearch::generateAccessToken();
+            }
+
+        } else {
+            SabreFlightSearch::generateAccessToken();
+        }
+
+
         $itineraryId = $pnrId;
 
         $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();

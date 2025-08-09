@@ -202,7 +202,7 @@
                                     </td>
                                 </tr>
 
-                                @if($flightPassangers[0]->ticket_no == null)
+                                @if($flightBookingDetails->status == 1 && $flightPassangers[0]->ticket_no == null)
                                 <tr>
                                     <th>Last Ticket Datetime </th>
                                     <td>

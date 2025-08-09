@@ -83,23 +83,36 @@ class SabreBookingDetails extends Model
             }
 
             if($specialServiceADTKText){
+
+                $year = date("Y", strtotime($flightBookingInfo->departure_date));
+
+                // Pattern 1: e.g., "04JUN 2300"
                 if (preg_match('/\b(\d{2})([A-Z]{3})\s(\d{4})\b/', $specialServiceADTKText, $matches)) {
-
-                    $day = $matches[1];       // 04
-                    $monthStr = $matches[2];  // JUN
-                    $timeStr = $matches[3];   // 2300
-                    $year = date("Y", strtotime($flightBookingInfo->departure_date)); // You can make this dynamic if needed
-
-                    // Convert 2300 to HH:MM format
+                    $day = $matches[1];
+                    $monthStr = $matches[2];
+                    $timeStr = $matches[3];
                     $hour = substr($timeStr, 0, 2);
                     $minute = substr($timeStr, 2, 2);
                     $dateString = "$day$monthStr$year $hour:$minute";
                     $date = DateTime::createFromFormat('dMY H:i', $dateString);
 
-                    if ($date) {
-                        $flightBookingInfo->last_ticket_datetime = $date->format('Y-m-d H:i');
-                    }
+                // Pattern 2: e.g., "11AUG25 AT 1537"
+                } elseif (preg_match('/\b(\d{2})([A-Z]{3})(\d{2})\s+AT\s+(\d{4})\b/i', $specialServiceADTKText, $matches)) {
+                    $day = $matches[1];
+                    $monthStr = strtoupper($matches[2]);
+                    $year = 2000 + (int)$matches[3]; // Convert "25" to 2025
+                    $timeStr = $matches[4];
+                    $hour = substr($timeStr, 0, 2);
+                    $minute = substr($timeStr, 2, 2);
+                    $dateString = "$day$monthStr$year $hour:$minute";
+                    $date = DateTime::createFromFormat('dMY H:i', $dateString);
                 }
+
+                // If a date was successfully parsed, save it
+                if (!empty($date)) {
+                    $flightBookingInfo->last_ticket_datetime = $date->format('Y-m-d H:i').":00";
+                }
+
             } else {
 
                 // Month‐abbr → month‐number map
