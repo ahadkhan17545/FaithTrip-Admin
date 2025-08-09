@@ -29,10 +29,14 @@ Sunday Deadline Task (Only for Oneway & RoundTrip)
 
 Next Update
 ===========
-1. Last Ticketing Datetime missing (01 August)
-2. Booking Auto Cancelation not working (01 August)
-3. Flight Ticketing Issue not working (02 August)
-4. Comission Calculation Issue (03 August)
-5. Option to apply filters on search results (05 August)
+
+1. Book Flight (check getBookingResponse)
+2. Issue Ticket (check getBookingResponse)
+3. Cancel Ticket (check getBookingResponse)
+
+in every stage load the details page and check it automatically change the status or not if any operation done by terminal
+
+1. Comission Calculation Issue (03 August)
+2. Option to apply filters on search results (05 August)
 
 

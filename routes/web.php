@@ -14,10 +14,32 @@ use App\Http\Controllers\OfficeAddressController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\BannerController;
+use App\Models\SabreFlightBooking;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 Route::get('/', function () {
     return redirect('/login');
 });
+
+
+// cron job to auto cancel flight booking start
+Route::get('/check/last/ticketing/datetime', function () {
+    $data = DB::table('flight_bookings')->select('booking_no', 'pnr_id')->where('status', 1)->where('departure_date', '>', date("Y-m-d"))->whereNotNull('last_ticket_datetime')->get();
+    foreach($data as $item){
+        $cancelResponse = json_decode(SabreFlightBooking::cancelBooking($item->booking_no), true);
+        if(isset($cancelResponse['booking']['bookingId']) && $cancelResponse['booking']['bookingId'] == $item->pnr_id){
+            DB::table('flight_bookings')->where('pnr_id', $item->pnr_id)->update([
+                'status' => 3,
+                'booking_cancelled_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+            return response(null, 204);
+        }
+    }
+});
+// cron job to auto cancel flight booking end
+
 
 Auth::routes([
     'login' => true,

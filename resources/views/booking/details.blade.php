@@ -209,13 +209,18 @@
                                         @if($flightBookingDetails->last_ticket_datetime)
                                         : {{ date("jS M-y, h:i a", strtotime($flightBookingDetails->last_ticket_datetime)) }}
                                         @else
-                                        : N/A
+                                        : <a href="{{url('flight/booking/details')}}/{{$flightBookingDetails->booking_no}}" style="padding: 0px 10px; text-shadow: 1px 1px 2px black;" class="btn btn-sm btn-success rounded">Try Again</a>
                                         @endif
                                     </td>
                                 </tr>
                                 @endif
 
                             </table>
+
+                            @if($flightBookingDetails->status == 1 && !$flightBookingDetails->last_ticket_datetime)
+                            <small class="d-block text-danger mt-3">N/B: Airlines does not share Last Ticket Datetime instantly right after PNR creation</small>
+                            @endif
+
                         </div>
                     </div>
                     <hr>

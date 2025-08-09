@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\SabreGdsConfig;
+use DateTime;
 
 class SabreFlightTicketIssue extends Model
 {
@@ -92,6 +93,59 @@ class SabreFlightTicketIssue extends Model
                 'Authorization: Bearer  '. session('access_token'),
             ),
         ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return $response;
+    }
+
+    public static function cancelIssuedTicket($ticketNumbers){
+
+        if(session('access_token') && session('access_token') != '' && session('expires_in') != ''){
+
+            $seconds = session('expires_in');
+            $date = new DateTime();
+            $date->setTimestamp(time() + $seconds);
+            $tokenExpireDate = $date->format('Y-m-d');
+            $currentDate = date("Y-m-d");
+
+            if($currentDate >= $tokenExpireDate){
+                SabreFlightSearch::generateAccessToken();
+            }
+
+        } else {
+            SabreFlightSearch::generateAccessToken();
+        }
+
+        $payload = [
+            'tickets' => $ticketNumbers,
+            'errorHandlingPolicy' => 'ALLOW_PARTIAL_CANCEL'
+        ];
+
+        $sabreGdsInfo = SabreGdsConfig::where('id', 1)->first();
+        if($sabreGdsInfo->is_production == 0){
+            $apiEndPoint = 'https://api.cert.platform.sabre.com/v1/trip/orders/voidFlightTickets';
+        } else{
+            $apiEndPoint = 'https://api.platform.sabre.com/v1/trip/orders/voidFlightTickets';
+        }
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $apiEndPoint,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($payload),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Conversation-ID: 2021.01.DevStudio',
+                'Authorization: Bearer '. session('access_token'),
+            ),
+        ));
+
         $response = curl_exec($curl);
         curl_close($curl);
         return $response;

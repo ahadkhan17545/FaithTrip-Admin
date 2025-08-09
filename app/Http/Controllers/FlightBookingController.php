@@ -422,7 +422,7 @@ class FlightBookingController extends Controller
 
             // removing log coloumns
             $columns = Schema::getColumnListing('flight_bookings');
-            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response'];
+            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response', 'ticketing_cancel_response'];
             $columns = array_diff($columns, $excluded);
             $columns = array_map(function ($col) {
                 return "flight_bookings.$col";
@@ -493,7 +493,7 @@ class FlightBookingController extends Controller
 
             // removing log coloumns
             $columns = Schema::getColumnListing('flight_bookings');
-            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response'];
+            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response', 'ticketing_cancel_response'];
             $columns = array_diff($columns, $excluded);
             $columns = array_map(function ($col) {
                 return "flight_bookings.$col";
@@ -621,6 +621,37 @@ class FlightBookingController extends Controller
         }
 
         $flightBookingInfo = FlightBooking::where('booking_no', $booking_no)->first();
+        $ticketNumbers = FlightPassanger::where('flight_booking_id', $flightBookingInfo->id)->pluck('ticket_no')->toArray();
+
+        // sabre issued ticket cancel
+        if($flightBookingInfo->gds == 'Sabre'){
+
+            $rawResponse = SabreFlightTicketIssue::cancelIssuedTicket($ticketNumbers);
+            $cancelTicketResponse = json_decode($rawResponse, true);
+
+            if(isset($cancelTicketResponse['voidedTickets'])){
+                $voidedTickets = $cancelTicketResponse['voidedTickets'] ?? [];
+                $allVoided = empty(array_diff($ticketNumbers, $voidedTickets));
+
+                if ($allVoided) {
+                    $flightBookingInfo->ticketing_cancel_response = $rawResponse;
+                    $flightBookingInfo->status = 4; //ticket cancelled
+                    $flightBookingInfo->save();
+                    Toastr::success('All ticket numbers were successfully voided', 'Voided');
+                    return back();
+                } else {
+                    $flightBookingInfo->ticketing_cancel_response = $rawResponse;
+                    $flightBookingInfo->save();
+                    Toastr::error('All ticket numbers were not voided', 'Failed');
+                    return back();
+                }
+            } else {
+                $flightBookingInfo->ticketing_cancel_response = $rawResponse;
+                $flightBookingInfo->save();
+                Toastr::warning('Something went Wrong', 'Failed');
+                return back();
+            }
+        }
 
         // flyhub
         $flyhubGds = Gds::where('code', 'flyhub')->first();
@@ -723,7 +754,7 @@ class FlightBookingController extends Controller
 
             // removing log coloumns
             $columns = Schema::getColumnListing('flight_bookings');
-            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response'];
+            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response', 'ticketing_cancel_response'];
             $columns = array_diff($columns, $excluded);
             $columns = array_map(function ($col) {
                 return "flight_bookings.$col";
@@ -788,7 +819,7 @@ class FlightBookingController extends Controller
 
             // removing log coloumns
             $columns = Schema::getColumnListing('flight_bookings');
-            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response'];
+            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response', 'ticketing_cancel_response'];
             $columns = array_diff($columns, $excluded);
             $columns = array_map(function ($col) {
                 return "flight_bookings.$col";
@@ -853,7 +884,7 @@ class FlightBookingController extends Controller
 
             // removing log coloumns
             $columns = Schema::getColumnListing('flight_bookings');
-            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response'];
+            $excluded = ['booking_request', 'booking_response', 'get_booking_response', 'ticketing_response', 'ticketing_cancel_response'];
             $columns = array_diff($columns, $excluded);
             $columns = array_map(function ($col) {
                 return "flight_bookings.$col";

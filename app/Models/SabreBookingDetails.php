@@ -64,9 +64,7 @@ class SabreBookingDetails extends Model
 
         if(isset($responseData['bookingId'])){
             $flightBookingInfo->booking_id = $responseData['bookingId'];
-            if($flightBookingInfo->get_booking_response == null){
-                $flightBookingInfo->get_booking_response = $response;
-            }
+            $flightBookingInfo->get_booking_response = $response;
         }
 
 
@@ -112,7 +110,8 @@ class SabreBookingDetails extends Model
 
                 foreach ($specialServiceOTHSText as $r) {
                     // look for “BY DDMMMYY HHMMGMT”
-                    if (preg_match('/BY\s+(\d{2}[A-Z]{3}\d{2})\s+(\d{4})GMT/i', $r, $m)) {
+                    // if (preg_match('/BY\s+(\d{2}[A-Z]{3}\d{2})\s+(\d{4})GMT/i', $r, $m)) {
+                    if (preg_match('/BY\s+(\d{2}[A-Z]{3}\d{2})\s+(\d{4})(?=\D|$)/i', $r, $m)) {
                         // $m[1] = e.g. “07AUG25”, $m[2] = “1759”
                         $rawDate = $m[1];
                         $rawTime = $m[2];
@@ -148,7 +147,7 @@ class SabreBookingDetails extends Model
                         // $dt->setTimezone(new DateTimeZone('Europe/Berlin'));
 
                         // store and break
-                        $flightBookingInfo->last_ticket_datetime = $dt->format('Y-m-d H:i');
+                        $flightBookingInfo->last_ticket_datetime = $dt->format('Y-m-d H:i').":00";
                         break;
                     }
                 }
