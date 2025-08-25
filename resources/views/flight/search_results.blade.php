@@ -172,8 +172,7 @@
 
                                     @if ($minPrice && $minPrice > 0 && (!$maxPrice && $maxPrice == 0))
                                         @if ($totalPrice >= $minPrice)
-                                            @if (session('airline_carrier_code') &&
-                                                    in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                            @if (session('airline_carrier_code') && in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
                                                 @include('flight.result_row_v2')
                                             @endif
 
@@ -194,8 +193,7 @@
                                         @endif
                                     @elseif ($minPrice && $minPrice > 0 && ($maxPrice && $maxPrice > 0))
                                         @if ($totalPrice >= $minPrice && $totalPrice <= $maxPrice)
-                                            @if (session('airline_carrier_code') &&
-                                                    in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
+                                            @if (session('airline_carrier_code') && in_array($data['pricingInformation'][0]['fare']['validatingCarrierCode'], session('airline_carrier_code')))
                                                 @include('flight.result_row_v2')
                                             @endif
 

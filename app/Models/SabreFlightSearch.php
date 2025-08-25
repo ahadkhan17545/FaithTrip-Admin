@@ -59,7 +59,7 @@ class SabreFlightSearch extends Model
         session(['expires_in' => $expiresIn]);
     }
 
-    public static function getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $airlinePrefs){
+    public static function getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $cabinClass, $airlinePrefs){
 
         if(session('access_token') && session('access_token') != '' && session('expires_in') != ''){
 
@@ -98,6 +98,30 @@ class SabreFlightSearch extends Model
             "PassengerTypeQuantity" => $passengerTypeQuantity
         );
 
+
+        // cabin class and airlines preference start
+        $cabinCode = null;
+        if ($cabinClass === 'economy')          $cabinCode = 'Y';
+        elseif ($cabinClass === 'premium_economy') $cabinCode = 'S';
+        elseif ($cabinClass === 'business')        $cabinCode = 'C';
+        elseif ($cabinClass === 'first_class')     $cabinCode = 'F';
+
+        $preferLevel = 'Only'; // or 'Preferred'
+
+        // Build TPA_Extensions (per O&D)
+        $tpaExtensions = [];
+        if ($airlinePrefs !== null) {
+            $tpaExtensions['IncludeVendorPref'] = $airlinePrefs;
+        }
+        if (!empty($cabinCode)) {
+            $tpaExtensions['CabinPref'] = [
+                'Cabin'       => $cabinCode,
+                'PreferLevel' => $preferLevel,
+            ];
+        }
+        // cabin class and airlines preference end
+
+
         // oneway or return flights
         $flightTypeData = array();
         if($flightType == 1){
@@ -111,7 +135,8 @@ class SabreFlightSearch extends Model
                 "DestinationLocation" => [
                     "LocationCode" => $destinationCityCode
                 ],
-                "TPA_Extensions" => $airlinePrefs !== null ? ["IncludeVendorPref" => $airlinePrefs] : null
+                // "TPA_Extensions" => $airlinePrefs !== null ? ["IncludeVendorPref" => $airlinePrefs] : null
+                "TPA_Extensions" => !empty($tpaExtensions) ? $tpaExtensions : null
             ], function($value) {
                 return $value !== null;
             });
@@ -127,7 +152,8 @@ class SabreFlightSearch extends Model
                 "DestinationLocation" => [
                     "LocationCode" => $destinationCityCode
                 ],
-                "TPA_Extensions" => $airlinePrefs !== null ? ["IncludeVendorPref" => $airlinePrefs] : null
+                // "TPA_Extensions" => $airlinePrefs !== null ? ["IncludeVendorPref" => $airlinePrefs] : null
+                "TPA_Extensions" => !empty($tpaExtensions) ? $tpaExtensions : null
             ], function($value) {
                 return $value !== null;
             });
@@ -141,7 +167,8 @@ class SabreFlightSearch extends Model
                 "DestinationLocation" => [
                     "LocationCode" => $originCityCode
                 ],
-                "TPA_Extensions" => $airlinePrefs !== null ? ["IncludeVendorPref" => $airlinePrefs] : null
+                // "TPA_Extensions" => $airlinePrefs !== null ? ["IncludeVendorPref" => $airlinePrefs] : null
+                "TPA_Extensions" => !empty($tpaExtensions) ? $tpaExtensions : null
             ], function($value) {
                 return $value !== null;
             });

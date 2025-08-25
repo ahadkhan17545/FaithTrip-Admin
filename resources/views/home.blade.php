@@ -2,7 +2,7 @@
 
 @section('header_css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="{{url('assets')}}/admin-assets/css/homepage.css" rel="stylesheet" />
+    <link href="{{ url('assets') }}/admin-assets/css/homepage.css" rel="stylesheet" />
 @endsection
 
 @section('content')
@@ -20,13 +20,16 @@
                     <div class="search-tabs d-flex flex-wrap">
 
                         <label class="checkbox-label d-inline-block font-weight-500 me-2 border rounded fs-14 bg-white">
-                            <input type="radio" name="flight_type" value="1" onclick="showOnewayDate()" checked> One way
+                            <input type="radio" name="flight_type" value="1" onclick="showOnewayDate()" checked> One
+                            way
                         </label>
                         <label class="checkbox-label d-inline-block font-weight-500 me-2 border rounded fs-14 bg-white">
-                            <input type="radio" name="flight_type" value="2" onclick="showRoundTripDate()"> Round trip
+                            <input type="radio" name="flight_type" value="2" onclick="showRoundTripDate()"> Round
+                            trip
                         </label>
                         <label class="checkbox-label d-inline-block font-weight-500 me-2 border rounded fs-14 bg-white">
-                            <input type="radio" name="flight_type" value="3" onclick="showMultiCityDate()"> Multi City
+                            <input type="radio" name="flight_type" value="3" onclick="showMultiCityDate()"> Multi
+                            City
                         </label>
 
                         <div class="search-content d-block w-100 pt-3" id="search-content2">
@@ -37,14 +40,17 @@
                                         <div class="input-group rounded">
                                             <div class="form-floating flight-form">
                                                 <label for="flight_from">From</label>
-                                                <select class="form-control border-bottom-0 border-right flight_from" id="flight_from"></select>
+                                                <select class="form-control border-bottom-0 border-right flight_from"
+                                                    id="flight_from"></select>
                                             </div>
                                             <span class="input-group-text">
-                                                <img src="{{ url('assets') }}/admin-assets/img/arrow-symbol.png" id="oneway-swap">
+                                                <img src="{{ url('assets') }}/admin-assets/img/arrow-symbol.png"
+                                                    id="oneway-swap">
                                             </span>
                                             <div class="form-floating flight-to">
                                                 <label for="flight_to">To</label>
-                                                <select class="form-control border-bottom-0 border-right flight_to" id="flight_to"></select>
+                                                <select class="form-control border-bottom-0 border-right flight_to"
+                                                    id="flight_to"></select>
                                             </div>
                                         </div>
                                     </div>
@@ -55,7 +61,9 @@
                                             <div class="t-check-in"></div>
                                         </div>
 
-                                        <div data-t-start data-t-end class="oneWay-datepicker t-datepicker t-datepicker-modal-round d-flex w-100 border-0 d-none" id="roundDatePicker">
+                                        <div data-t-start data-t-end
+                                            class="oneWay-datepicker t-datepicker t-datepicker-modal-round d-flex w-100 border-0 d-none"
+                                            id="roundDatePicker">
                                             <div class="t-check-in w-100"></div>
                                             <div class="t-check-out w-100"></div>
                                         </div>
@@ -124,33 +132,20 @@
                                                     </ul>
                                                     <div class="class-type mt-2">
                                                         <div class="custom-control custom-radio pl-0">
-                                                            <input type="radio" id="economy1"
-                                                                name="cabin_class_oneway" value="Economy"
-                                                                class="cabin_class_oneway custom-control-input economy1"
-                                                                checked />
-                                                            <label class="custom-control-label fs-16 font-weight-500"
-                                                                for="economy1">Economy</label>
+                                                            <input type="radio" id="economy1" name="cabin_class_oneway" value="economy" class="cabin_class_oneway custom-control-input economy1" checked />
+                                                            <label class="custom-control-label fs-16 font-weight-500" for="economy1">Economy</label>
                                                         </div>
                                                         <div class="custom-control custom-radio pl-0">
-                                                            <input type="radio" id="premiumEconomy1"
-                                                                name="cabin_class_oneway" value="Premium-Economy"
-                                                                class="cabin_class_oneway custom-control-input premiumEconomy1" />
-                                                            <label class="custom-control-label fs-16 font-weight-500"
-                                                                for="premiumEconomy1">Premium economy</label>
+                                                            <input type="radio" id="premiumEconomy1" name="cabin_class_oneway" value="premium_economy" class="cabin_class_oneway custom-control-input premiumEconomy1" />
+                                                            <label class="custom-control-label fs-16 font-weight-500" for="premiumEconomy1">Premium economy</label>
                                                         </div>
                                                         <div class="custom-control custom-radio pl-0">
-                                                            <input type="radio" id="business1"
-                                                                name="cabin_class_oneway" value="Business"
-                                                                class="cabin_class_oneway custom-control-input business1" />
-                                                            <label class="custom-control-label fs-16 font-weight-500"
-                                                                for="business1">Business</label>
+                                                            <input type="radio" id="business1" name="cabin_class_oneway" value="business" class="cabin_class_oneway custom-control-input business1" />
+                                                            <label class="custom-control-label fs-16 font-weight-500" for="business1">Business</label>
                                                         </div>
                                                         <div class="custom-control custom-radio pl-0">
-                                                            <input type="radio" id="first1"
-                                                                name="cabin_class_oneway" value="First-Class"
-                                                                class="cabin_class_oneway custom-control-input first1" />
-                                                            <label class="custom-control-label fs-16 font-weight-500"
-                                                                for="first1">First-Class</label>
+                                                            <input type="radio" id="first1" name="cabin_class_oneway" value="first_class" class="cabin_class_oneway custom-control-input first1" />
+                                                            <label class="custom-control-label fs-16 font-weight-500" for="first1">First-Class</label>
                                                         </div>
                                                     </div>
                                                     <input hidden name="classType" id="class_type_one" value="Y" />
@@ -177,8 +172,9 @@
 
                                 <div class="row">
                                     <div class="col-lg-12 text-end">
-                                        <button type="button" id="add_another_city" class="btn btn-primary multicity-btn d-none">
-                                                <i class="far fa-plus-square"></i> Add Another City
+                                        <button type="button" id="add_another_city"
+                                            class="btn btn-primary multicity-btn d-none">
+                                            <i class="far fa-plus-square"></i> Add Another City
                                         </button>
                                     </div>
                                 </div>
@@ -198,7 +194,7 @@
             </div>
         </div>
 
-        @if(count($banners) > 0)
+        @if (count($banners) > 0)
             @include('promotional_banners')
         @endif
 
@@ -211,7 +207,6 @@
     <script src="{{ url('assets') }}/plugins/swiper/swiper-bundle.min.js"></script>
 
     <script>
-
         var swiper = new Swiper(".services-slider", {
             loop: true,
             slidesPerView: 2,
@@ -325,7 +320,7 @@
                     removeBtn.innerHTML = "<i class='fas fa-times'></i>";
                     removeBtn.className = "search-row-remove btn";
                     removeBtn.style.marginLeft = "10px";
-                    removeBtn.addEventListener("click", function () {
+                    removeBtn.addEventListener("click", function() {
                         clone.remove();
                     });
                     lastCol.appendChild(removeBtn);
@@ -334,7 +329,7 @@
             return clone;
         }
 
-        document.getElementById("add_another_city").addEventListener("click", function () {
+        document.getElementById("add_another_city").addEventListener("click", function() {
             const original = document.querySelector(".search-row"); // the first one
             const newRow = createRemovableRow(original);
             const allRows = document.querySelectorAll(".search-row");
@@ -393,7 +388,7 @@
             roundTripDiv.classList.add('d-block');
         }
 
-        function showMultiCityDate(){
+        function showMultiCityDate() {
             $("#flight_type").val(3);
 
             // hide roundtrip date
@@ -499,6 +494,5 @@
             });
 
         }
-
     </script>
 @endsection

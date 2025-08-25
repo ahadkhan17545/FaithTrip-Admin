@@ -420,7 +420,6 @@
                     @endphp
 
                     <input type="hidden" name="gds" value="Sabre">
-                    <input type="hidden" name="gds_unique_id" value="SOOL">
                     <input type="hidden" name="departure_date"
                         value="{{ $revlidatedData['groupedItineraryResponse']['itineraryGroups'][0]['groupDescription']['legDescriptions'][0]['departureDate'] }}">
                     <input type="hidden" name="departure_location"

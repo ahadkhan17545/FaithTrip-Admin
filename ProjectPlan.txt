@@ -3,10 +3,7 @@ Task List
 1. Share PNR Option in Customer Email
 2. Manage System user (Admin can create his own system user and b2b user can add his own system user)
 3. Remove Company profit form report of b2b user
-5. Auto Cancel Booking Before Last Ticketing Datetime (Cron JOB)
 6. Send email to passanger after booking/ticket issue/cancel
-7. Show Number of Available Seats in Search Results
-8. MultiCity Search
 
 
 Issue List
@@ -14,23 +11,56 @@ Issue List
 1. Incomplete Pyament Method Page
 2. About Us Page missing
 3. Policy Pages are missing
-7. Business Class fare not working . After selecting business class it shows the fare of Economy Class
 9. b2b te jei net fare ta dekhay etar sathe 0.3% increase kore dekhate hobe
 9. b2b agent der commission percentage ki fraction add kora jay na? like 6.5%/5.5%
 
 
 Sunday Deadline Task (Only for Oneway & RoundTrip)
 --------------------------------------------------
-2. B2b user can create user id and manage other users under his account
-3. Business Class fare not working . After selecting business class it shows the fare of Economy Class
-
+1. B2b user can create user id and manage other users under his account
 
 
 Next Update
 ===========
-1. Comission Calculation Issue (10 August)
-2. Option to apply filters on search results (10 August)
-3. Modify Search is not working after search (12 August)
-4. MultiCity Search (18 August)
+1. Check Filters on Search Results (12th August)
+2. Excluded Airlines Feature is not working (12th August)
+3. Modify Search is not working after search (12th August)
+4. Comission Calculation Issue (10th August)
+5. Option to apply filters on search results (11th August)
+6. MultiCity Search (18th August)
+
+
+Booking Request Issue
+=====================
+
+
+DAC-RUH (Riyadh King Khaled) (US Bangla Airlines) - 5th Sept, 13:55 [Oneway, No Transit]
+
+ei flight ta Booking Request aschilo
+
+Reason:
+-------
+The segment was returned UC (unable to confirm), so Sabre halted the workflow.
+
+Possible Reason to send UC:
+---------------------------
+Often pulls cached or slightly delayed inventory snapshots from ATPCO/airline availability feeds.
+airline can choose to display a booking class (U, for example) in availability but set it to “closed for sale”
+Airlines may control inventory with married segments (e.g., DAC–RUH alone is closed, but DAC–RUH–JED through-connect is open).
+Especially in LCCs or smaller carriers (like Biman Bangladesh “BS”), their inventory sync with Sabre can lag.
+
+Solution comes with Problem:
+----------------------------
+If i remove UC from HaltOnStatus List, the flight will be booked but You still can’t ticket. UC has no inventory; most ticketing/ET flow will block, and any autopricing you store can go stale before you fix the segment. Someone must rebook/reprice, try another RBD/flight, or contact the airline. Until then the PNR is effectively unusable. If UC is caused by married-segment logic, the segment will never auto-flip to HK; you must re-shop with the correct married pair/journey like DAC–RUH–JED.
+
+
+
+2. Sylhet(ZYL)-London Heathrow(LON) (Biman Bangladesh) - 10th Sept, 09:35 [Oneway, No Transit]
+I can book it now
+
+While you are booking there were two problem
+1. The segment was returned UC (unable to confirm), so Sabre halted the workflow.
+2. Passport Expiration Issue "ExpirationDate": "2025-08-19"  // This is in the past or very soon!
+
 
 

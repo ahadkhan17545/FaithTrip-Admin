@@ -125,7 +125,7 @@ class SabreFlightBooking extends Model
         ];
         $specialServices[] = [
             "SSR_Code" => "CTCE",
-            "Text" => (string) str_replace("@","//",$travellerEmail),
+            "Text" => strtoupper(str_replace("@","//",$travellerEmail)),
             "PersonName" => [
                 "NameNumber" => "1.1"
             ],

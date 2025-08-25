@@ -79,6 +79,7 @@ class SabreBookingDetails extends Model
                 }
                 if (isset($service['code']) && $service['code'] === 'OTHS') {
                     $specialServiceOTHSText[] = $service['message'];
+                    break;
                 }
             }
 
@@ -163,6 +164,47 @@ class SabreBookingDetails extends Model
                         $flightBookingInfo->last_ticket_datetime = $dt->format('Y-m-d H:i').":00";
                         break;
                     }
+
+
+                    // NEW: BY DDMMM HH MM [optional <STATION>] LT / LOCAL TIME
+                    if (preg_match('/BY\s+(\d{2})([A-Z]{3})\s+(\d{2})[\s:](\d{2})(?:\s+([A-Z]{3}))?\s*(?:LT|LOCAL\s*TIME)\b/i', $r, $m)) {
+                        $day     = (int)$m[1];                 // e.g. 11
+                        $monAbbr = strtoupper($m[2]);          // e.g. AUG
+                        $hour    = (int)$m[3];                 // e.g. 06
+                        $minute  = (int)$m[4];                 // e.g. 55
+                        $station = isset($m[5]) ? strtoupper($m[5]) : null; // e.g. DAC (optional)
+
+                        if (!isset($monthMap[$monAbbr])) {
+                            continue; // unknown month; skip
+                        }
+
+                        // Infer year from departure date
+                        $year = (int)date('Y', strtotime($flightBookingInfo->departure_date));
+                        $month = $monthMap[$monAbbr];
+
+                        // Minimal station->timezone map for LT
+                        $stationTzMap = [
+                            'DAC' => 'Asia/Dhaka',
+                            // add more as needed
+                        ];
+
+                        // Build in local time if station known; otherwise treat as GMT
+                        $srcTz = new DateTimeZone(isset($stationTzMap[$station]) ? $stationTzMap[$station] : 'GMT');
+
+                        $dtLocal = DateTime::createFromFormat(
+                            'Y-n-j H:i',
+                            sprintf('%04d-%d-%d %02d:%02d', $year, $month, $day, $hour, $minute),
+                            $srcTz
+                        );
+
+                        if ($dtLocal) {
+                            // Store in GMT to match your existing behavior
+                            $dtLocal->setTimezone(new DateTimeZone('GMT'));
+                            $flightBookingInfo->last_ticket_datetime = $dtLocal->format('Y-m-d H:i') . ":00";
+                            break;
+                        }
+                    }
+
                 }
 
 

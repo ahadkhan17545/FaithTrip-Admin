@@ -80,7 +80,7 @@ class FlightBookingController extends Controller
             'pnr_id' => $bookinPnrID,
             'booking_id' => null,
             'gds' => $request->gds,
-            'gds_unique_id' => $request->gds_unique_id,
+            'gds_unique_id' => 'SOOL',
             'traveller_name' => $request->traveller_name,
             'traveller_email' => $request->traveller_email,
             'traveller_contact' => $request->traveller_contact,

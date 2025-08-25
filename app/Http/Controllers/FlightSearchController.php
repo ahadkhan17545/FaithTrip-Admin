@@ -69,7 +69,7 @@ class FlightSearchController extends Controller
         // sabre
         $sabreGds = Gds::where('code', 'sabre')->first();
         if($sabreGds->status == 1){
-            $searchResults = SabreFlightSearch::getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $airlinePrefs);
+            $searchResults = SabreFlightSearch::getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $cabinClass, $airlinePrefs);
             session(['search_results' => $searchResults]);
 
             // for carrier filters
@@ -189,7 +189,7 @@ class FlightSearchController extends Controller
                 }, $preferredAirlinesArray);
             }
 
-            $searchResults = SabreFlightSearch::getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $airlinePrefs);
+            $searchResults = SabreFlightSearch::getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $cabinClass, $airlinePrefs);
             session(['search_results' => $searchResults]);
 
             // for carrier filters
@@ -280,7 +280,7 @@ class FlightSearchController extends Controller
                 }, $preferredAirlinesArray);
             }
 
-            $searchResults = SabreFlightSearch::getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $airlinePrefs);
+            $searchResults = SabreFlightSearch::getFlightSearchResults($originCityCode, $destinationCityCode, $departureDate, $returnDate, $adult, $child, $infant, $flightType, $cabinClass, $airlinePrefs);
             session(['search_results' => $searchResults]);
 
             // for carrier filters
