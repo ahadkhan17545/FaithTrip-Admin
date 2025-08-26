@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BankAccount;
 use App\Models\Banner;
 use App\Models\CompanyProfile;
+use Yajra\DataTables\DataTables;
 use App\Models\MfsAccount;
 use App\Models\OfficeAddress;
 use Illuminate\Support\Facades\DB;
@@ -95,6 +96,27 @@ class HomeController extends Controller
         $companyProfile = CompanyProfile::where('user_id', Auth::user()->id)->first();
         $officeAddress = OfficeAddress::where('status', 1)->orderBy('id', 'desc')->get();
         return view('payment_method', compact('bankAccounts', 'mfsAccounts', 'companyProfile', 'officeAddress'));
+    }
+
+    public function viewActivityLogs(Request $request){
+        if ($request->ajax()) {
+
+            $query = DB::table('activity_logs')
+                        ->leftJoin('users', 'activity_logs.user_id', 'users.id')
+                        ->select('activity_logs.*', 'users.name as user_name')
+                        ->orderBy('id', 'desc');
+
+            return Datatables::of($query)
+                    ->filterColumn('user_name', function($query, $keyword) {
+                        $query->where('users.name', 'like', "%{$keyword}%");
+                    })
+                    ->editColumn('created_at', function($data) {
+                        return date("Y-m-d h:i a", strtotime($data->created_at));
+                    })
+                    ->addIndexColumn()
+                    ->make(true);
+        }
+        return view('activity_logs');
     }
 
 }

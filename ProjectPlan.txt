@@ -30,37 +30,4 @@ Next Update
 6. MultiCity Search (18th August)
 
 
-Booking Request Issue
-=====================
-
-
-DAC-RUH (Riyadh King Khaled) (US Bangla Airlines) - 5th Sept, 13:55 [Oneway, No Transit]
-
-ei flight ta Booking Request aschilo
-
-Reason:
--------
-The segment was returned UC (unable to confirm), so Sabre halted the workflow.
-
-Possible Reason to send UC:
----------------------------
-Often pulls cached or slightly delayed inventory snapshots from ATPCO/airline availability feeds.
-airline can choose to display a booking class (U, for example) in availability but set it to “closed for sale”
-Airlines may control inventory with married segments (e.g., DAC–RUH alone is closed, but DAC–RUH–JED through-connect is open).
-Especially in LCCs or smaller carriers (like Biman Bangladesh “BS”), their inventory sync with Sabre can lag.
-
-Solution comes with Problem:
-----------------------------
-If i remove UC from HaltOnStatus List, the flight will be booked but You still can’t ticket. UC has no inventory; most ticketing/ET flow will block, and any autopricing you store can go stale before you fix the segment. Someone must rebook/reprice, try another RBD/flight, or contact the airline. Until then the PNR is effectively unusable. If UC is caused by married-segment logic, the segment will never auto-flip to HK; you must re-shop with the correct married pair/journey like DAC–RUH–JED.
-
-
-
-2. Sylhet(ZYL)-London Heathrow(LON) (Biman Bangladesh) - 10th Sept, 09:35 [Oneway, No Transit]
-I can book it now
-
-While you are booking there were two problem
-1. The segment was returned UC (unable to confirm), so Sabre halted the workflow.
-2. Passport Expiration Issue "ExpirationDate": "2025-08-19"  // This is in the past or very soon!
-
-
 

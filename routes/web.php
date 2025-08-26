@@ -134,6 +134,9 @@ Route::group(['middleware' => ['auth', 'CheckUserStatus']], function () {
 
     Route::group(['middleware' => ['CheckUserType']], function () {
 
+        // Activity Logs
+        Route::get('view/activity/logs', [HomeController::class, 'viewActivityLogs'])->name('ViewActivityLogs');
+
         // office address
         Route::get('view/office/address', [OfficeAddressController::class, 'viewOfficeAddress'])->name('ViewOfficeAddress');
         Route::post('save/office/address', [OfficeAddressController::class, 'saveOfficeAddress'])->name('SaveOfficeAddress');

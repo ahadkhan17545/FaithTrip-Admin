@@ -137,6 +137,13 @@
                     </ul>
                 </li>
 
+                <li class="@if($currentRoute == 'ViewActivityLogs') mm-active @endif">
+                    <a class="text-capitalize" href="{{ url('/view/activity/logs') }}">
+                        <i class="typcn typcn-document-text"></i>
+                        Activity Logs
+                    </a>
+                </li>
+
                 <li class="@if(in_array($currentRoute, ['ViewAllBanners', 'ViewOfficeAddress'])) mm-active @endif">
                     <a class="has-arrow material-ripple" href="javascript:void(0);">
                         <i class="typcn typcn-tabs-outline"></i>Content Management
