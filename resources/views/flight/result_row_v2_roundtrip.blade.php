@@ -243,7 +243,19 @@
     </div>
 </div>
 <div class="col-lg-12 additional_info mt-2 d-block">
-    <h6>per passnger: BDT {{ number_format($data['pricingInformation'][0]['fare']['totalFare']['totalPrice']) }}</h6>
+    @php
+        $refundStatus = "";
+        if(isset($data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['nonRefundable'])){
+            if($data['pricingInformation'][0]['fare']['passengerInfoList'][0]['passengerInfo']['nonRefundable'] == true)
+                $refundStatus = "Yes";
+            else
+                $refundStatus = "No";
+        }
+    @endphp
+
+    @if($refundStatus != "")
+    <h6>Refundable: <span style="@if($refundStatus == "Yes") color: green; @else color: red; @endif font-weight: 600;">{{$refundStatus}}</span></h6>
+    @endif
 
     @foreach ($segmentArray as $segmentIndex => $segmentData)
         <h6>
