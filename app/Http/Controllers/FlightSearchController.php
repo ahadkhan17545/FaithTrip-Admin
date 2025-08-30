@@ -123,6 +123,12 @@ class FlightSearchController extends Controller
         $sabreGds = Gds::where('code', 'sabre')->first();
         if($sabreGds->status == 1){
             $searchResults = json_decode(session('search_results'), true);
+
+
+            // print_r(session('search_results'));
+            // exit();
+
+
             $search_results_operating_carriers = session('search_results_operating_carriers');
             return view('flight.search_results', compact('searchResults', 'search_results_operating_carriers'));
         }

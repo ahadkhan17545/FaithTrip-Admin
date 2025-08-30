@@ -101,4 +101,13 @@
         }
     }
 
+    if (! function_exists('aircraft_name')) {
+        function aircraft_name(?string $code): string
+        {
+            if (!$code) return 'Aircraft TBA';
+            $map = config('aircraft');
+            return $map[$code] ?? $code; // fallback to code if unknown
+        }
+    }
+
 ?>

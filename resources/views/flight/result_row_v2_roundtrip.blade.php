@@ -258,8 +258,12 @@
     @endif
 
     @foreach ($segmentArray as $segmentIndex => $segmentData)
+        @php
+            $equipCode = $segmentData['carrier']['equipment']['code'] ?? null;
+            $aircraft  = aircraft_name($equipCode);
+        @endphp
         <h6>
-            {{ $segmentData['carrier']['operating'] }}-{{ $segmentData['carrier']['marketingFlightNumber'] }}:
+            {{ $segmentData['carrier']['operating'] }}-{{ $segmentData['carrier']['marketingFlightNumber'] }} ({{ $aircraft }}):
 
             From <strong>{{ $segmentData['departure']['airport'] }}</strong>
             ({{(new DateTimeImmutable($segmentData['departure']['dateTime']))->format("d-M-y h:i A")}})
