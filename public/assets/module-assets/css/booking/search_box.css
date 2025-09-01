@@ -1,5 +1,4 @@
 /*Search area----------------------------------*/
-
 .search-modal .modal-content {
     border: 0;
     background-color: transparent;
@@ -91,7 +90,8 @@
 
 @media (min-width: 576px) {
     .search-box .tab-content {
-        padding: 40px;
+        /* padding: 40px; */
+        padding: 25px;
     }
 }
 

@@ -64,7 +64,8 @@
 
 @media (min-width: 576px) {
     .search-box .tab-content {
-        padding: 40px;
+        /* padding: 40px; */
+        padding: 25px;
     }
 }
 
@@ -1243,7 +1244,8 @@ select::-ms-expand {
 
 @media (min-width: 1400px) {
     .search-content-wrap {
-        max-width: 1340px;
+        /* max-width: 1340px; */
+        max-width: 1400px;
     }
 }
 

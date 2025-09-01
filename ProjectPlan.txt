@@ -11,8 +11,8 @@ Issue List
 1. Incomplete Pyament Method Page
 2. About Us Page missing
 3. Policy Pages are missing
-9. b2b te jei net fare ta dekhay etar sathe 0.3% increase kore dekhate hobe
-9. b2b agent der commission percentage ki fraction add kora jay na? like 6.5%/5.5%
+4. b2b te jei net fare ta dekhay etar sathe 0.3% increase kore dekhate hobe
+5. b2b agent der commission percentage ki fraction add kora jay na? like 6.5%/5.5%
 
 
 Sunday Deadline Task (Only for Oneway & RoundTrip)
@@ -25,7 +25,7 @@ Next Update
 1. Check Filters on Search Results (12th August)
 2. Excluded Airlines Feature is not working (12th August)
 3. Modify Search is not working after search (12th August)
-4. Comission Calculation Issue (10th August)
+4. Comission Calculation Issue accroding to Findings.pdf (10th August)
 5. Option to apply filters on search results (11th August)
 6. MultiCity Search (18th August)
 
